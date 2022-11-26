@@ -14,7 +14,7 @@ namespace rex {
     class stringToLexerPass : public basicPass<vstr, lexer> {
         std::wistringstream ss;
     public:
-        explicit stringToLexerPass(const vstr &before);
+        explicit stringToLexerPass(vstr &before);
 
         lexer run() override;
     };

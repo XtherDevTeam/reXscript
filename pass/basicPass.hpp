@@ -9,9 +9,9 @@ namespace rex {
 
     template<class T, class T1> class basicPass {
     protected:
-        const T &before;
+        T &before;
     public:
-        basicPass(const T &before) : before(before) {}
+        basicPass(T &before) : before(before) {}
 
         virtual T1 run() = 0;
     };

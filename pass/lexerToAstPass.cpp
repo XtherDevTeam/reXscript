@@ -3,12 +3,16 @@
 //
 
 #include "lexerToAstPass.hpp"
+#include <frontend/parser.hpp>
 
 namespace rex {
-    lexerToASTPass::lexerToASTPass(const lexer &lex) : basicPass(lex) {
+    lexerToASTPass::lexerToASTPass(lexer &lex) : basicPass(lex) {
 
     }
 
     AST lexerToASTPass::run() {
+        parser p{basicPass::before};
+
+        return p.parseFile();
     }
 } // rex

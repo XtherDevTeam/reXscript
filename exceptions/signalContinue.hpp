@@ -5,6 +5,8 @@
 #ifndef REXSCRIPT_SIGNALCONTINUE_HPP
 #define REXSCRIPT_SIGNALCONTINUE_HPP
 
+#include <exceptions/interpreterSignal.hpp>
+
 namespace rex {
 
     class signalContinue : public interpreterSignal {

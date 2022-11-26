@@ -315,11 +315,13 @@ namespace rex {
                 throw parserException(lex.line, lex.col, L"expected a right-hand-side node after operators");
             }
         }
+        if (vRhs)
+            vLhs = {AST::treeKind::multiplicationExpression, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
     AST parser::parseAdditionExpression() {
-        AST vLhs = parsePrimary();
+        AST vLhs = parseMultiplicationExpression();
         if (!vLhs)
             return makeNotMatch();
         if (lex.curToken.kind != lexer::token::tokenKind::plus and lex.curToken.kind != lexer::token::tokenKind::minus)
@@ -336,11 +338,13 @@ namespace rex {
                 throw parserException(lex.line, lex.col, L"expected a right-hand-side node after operators");
             }
         }
+        if (vRhs)
+            vLhs = {AST::treeKind::additionExpression, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
     AST parser::parseBinaryShiftExpression() {
-        AST vLhs = parsePrimary();
+        AST vLhs = parseAdditionExpression();
         if (!vLhs)
             return makeNotMatch();
         if (lex.curToken.kind != lexer::token::tokenKind::binaryShiftLeft and lex.curToken.kind != lexer::token::tokenKind::binaryShiftRight)
@@ -357,11 +361,13 @@ namespace rex {
                 throw parserException(lex.line, lex.col, L"expected a right-hand-side node after operators");
             }
         }
+        if (vRhs)
+            vLhs = {AST::treeKind::binaryShiftExpression, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
     AST parser::parseLogicEqualExpression() {
-        AST vLhs = parsePrimary();
+        AST vLhs = parseBinaryShiftExpression();
         if (!vLhs)
             return makeNotMatch();
         if (lex.curToken.kind != lexer::token::tokenKind::equal and
@@ -388,11 +394,13 @@ namespace rex {
                 throw parserException(lex.line, lex.col, L"expected a right-hand-side node after operators");
             }
         }
+        if (vRhs)
+            vLhs = {AST::treeKind::logicEqualExpression, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
     AST parser::parseBinaryExpression() {
-        AST vLhs = parsePrimary();
+        AST vLhs = parseLogicEqualExpression();
         if (!vLhs)
             return makeNotMatch();
         if (lex.curToken.kind != lexer::token::tokenKind::binaryAnd and lex.curToken.kind != lexer::token::tokenKind::binaryOr and lex.curToken.kind != lexer::token::tokenKind::binaryXor)
@@ -409,11 +417,13 @@ namespace rex {
                 throw parserException(lex.line, lex.col, L"expected a right-hand-side node after operators");
             }
         }
+        if (vRhs)
+            vLhs = {AST::treeKind::binaryExpression, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
     AST parser::parseLogicAndExpression() {
-        AST vLhs = parsePrimary();
+        AST vLhs = parseBinaryExpression();
         if (!vLhs)
             return makeNotMatch();
         if (lex.curToken.kind != lexer::token::tokenKind::logicAnd and lex.curToken.kind != lexer::token::tokenKind::logicOr)
@@ -430,6 +440,8 @@ namespace rex {
                 throw parserException(lex.line, lex.col, L"expected a right-hand-side node after operators");
             }
         }
+        if (vRhs)
+            vLhs = {AST::treeKind::logicAndExpression, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
@@ -677,5 +689,36 @@ namespace rex {
 
         result = parseLvalueExpression();
         return result;
+    }
+
+    AST parser::parseFile() {
+        AST base = {AST::treeKind::blockStmt, (vec<AST>){}};
+        AST stmt = parseStmts();
+        while (stmt) {
+            switch (stmt.kind) {
+                case AST::treeKind::ifStmt:
+                case AST::treeKind::ifElseStmt:
+                case AST::treeKind::whileStmt:
+                case AST::treeKind::forStmt:
+                case AST::treeKind::rangeBasedForStmt:
+                case AST::treeKind::blockStmt:
+                    break;
+                default: {
+                    if (lex.curToken.kind != lexer::token::tokenKind::semicolon) {
+                        throw parserException(lex.line, lex.col, L"expected `;` after statements");
+                    }
+                    lex.scan();
+                    break;
+                }
+            }
+            base.child.push_back(stmt);
+            stmt = parseStmts();
+        }
+
+        if (lex.curToken.kind != lexer::token::tokenKind::eof) {
+            throw parserException(lex.line, lex.col, L"expected EOF");
+        }
+        
+        return base;
     }
 } // rex

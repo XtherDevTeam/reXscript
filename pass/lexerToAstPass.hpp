@@ -13,7 +13,7 @@ namespace rex {
 
     class lexerToASTPass : public basicPass<lexer, AST> {
     public:
-        explicit lexerToASTPass(const rex::lexer &lex);
+        explicit lexerToASTPass(rex::lexer &lex);
 
         AST run() override;
     };

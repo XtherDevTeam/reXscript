@@ -14,7 +14,7 @@ namespace rex {
     void lexer::getCh() {
         vchar backup = curCh;
         curCh = stream.get();
-        if (curCh == -1) {
+        if (curCh == 0 or curCh == -1) {
             curCh = L'\0';
             if (!backup)
                 throw endOfFileException();
@@ -27,8 +27,9 @@ namespace rex {
     }
 
     lexer::token lexer::scan() {
-        if (curCh == '\0')
+        if (curCh == '\0'){
             return {line, col, token::tokenKind::eof, L""};
+        }
         while (curCh == ' ' or curCh == '\n' or curCh == '\r' or curCh == '\t') getCh();
         if (std::isalpha(curCh)) {
             return curToken = alphaStart();
@@ -360,6 +361,7 @@ namespace rex {
     }
 
     void lexer::dropState() {
-        states.pop_back();
+        if (!states.empty())
+            states.pop_back();
     }
 } // rex

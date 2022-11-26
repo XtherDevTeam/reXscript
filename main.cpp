@@ -1,5 +1,8 @@
+#include "frontend/ast.hpp"
+#include "frontend/parser.hpp"
 #include <iostream>
 #include <pass/stringToLexerPass.hpp>
+#include <pass/lexerToAstPass.hpp>
 
 int main() {
     std::string buf;
@@ -8,8 +11,7 @@ int main() {
     code = std::move(rex::string2wstring(buf));
     rex::stringToLexerPass pass1(code);
     rex::lexer lexer = pass1.run();
-    for (auto tok = lexer.scan(); tok.kind != rex::lexer::token::tokenKind::eof; tok = lexer.scan()) {
-        std::cout << rex::wstring2string(tok.value) << std::endl;
-    }
+    rex::parser parser{lexer};
+    rex::AST result = parser.parseStmts();
     return 0;
 }

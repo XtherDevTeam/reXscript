@@ -5,7 +5,7 @@
 #include "stringToLexerPass.hpp"
 
 namespace rex {
-    stringToLexerPass::stringToLexerPass(const vstr &before) : basicPass(before), ss(before) {
+    stringToLexerPass::stringToLexerPass(vstr &before) : basicPass(before), ss(before) {
 
     }
 
