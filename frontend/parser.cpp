@@ -16,7 +16,8 @@ namespace rex {
             // string is not a basic literal because it is an object
             case lexer::token::tokenKind::integer:
             case lexer::token::tokenKind::boolean:
-            case lexer::token::tokenKind::decimal: {
+            case lexer::token::tokenKind::decimal:
+            case lexer::token::tokenKind::string: {
                 AST res = {AST::treeKind::basicLiterals, lex.curToken};
                 lex.scan();
                 return res;
@@ -661,8 +662,52 @@ namespace rex {
         return {AST::treeKind::ifElseStmt, {condition, stmt, elseStmt}};
     }
 
+    AST parser::parseReturnStmt() {
+        if (lex.curToken.kind != lexer::token::tokenKind::kReturn) {
+            return makeNotMatch();
+        }
+        lex.scan();
+
+        AST result = parseLvalueExpression();
+        if (!result)
+            throw parserException(lex.line, lex.col, L"expected LvalueExpressions after `return`");
+
+        return {AST::treeKind::returnStmt, (vec<AST>){result}};
+    }
+
+    AST parser::parseContinueStmt() {
+        if (lex.curToken.kind != lexer::token::tokenKind::kContinue) {
+            return makeNotMatch();
+        }
+        lex.scan();
+
+        return {AST::treeKind::continueStmt, (lexer::token){}};
+    }
+
+    AST parser::parseBreakStmt() {
+        if (lex.curToken.kind != lexer::token::tokenKind::kBreak) {
+            return makeNotMatch();
+        }
+        lex.scan();
+
+        return {AST::treeKind::breakStmt, (lexer::token){}};
+    }
+
     AST parser::parseStmts() {
         AST result;
+
+        result = parseReturnStmt();
+        if (result)
+            return result;
+
+        result = parseContinueStmt();
+        if (result)
+            return result;
+
+        result = parseBreakStmt();
+        if (result)
+            return result;
+
         result = parseVariableDefOrDeclStmt();
         if (result)
             return result;

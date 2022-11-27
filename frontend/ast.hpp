@@ -41,7 +41,10 @@ namespace rex {
             forStmt,                    // like for (a; b; c) {}
             rangeBasedForStmt,          // like forEach (a in b) {}
             ifStmt,                     // like if (True) {}
-            ifElseStmt,                 // like if (True) {} else return 0;
+            ifElseStmt,                 // like if (True) {} else return 0
+            returnStmt,                 // like return 1 + 1
+            continueStmt,               // like continue
+            breakStmt,                  // like break
             operators,                  // like +, -, *, /
         } kind;
 

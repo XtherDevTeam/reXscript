@@ -67,6 +67,12 @@ namespace rex {
 
         AST parseIfStmt();
 
+        AST parseReturnStmt();
+
+        AST parseContinueStmt();
+
+        AST parseBreakStmt();
+
         AST parseStmts(); // a set of all statements
 
         AST parseFile(); // parse a whole file which is from passes

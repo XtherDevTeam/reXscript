@@ -25,6 +25,9 @@ namespace rex {
     std::string wstring2string(const std::wstring &str);
     std::wstring string2wstring(const std::string &str);
     std::wstring buildErrorMessage(vsize line, vsize col, const vstr& what);
+    template<typename T>
+    using unsafePtr = T*;
+    using unknownPtr = unsafePtr<void*>;
 //    using rexNativeFunc = std::function<void(st)
 }
 

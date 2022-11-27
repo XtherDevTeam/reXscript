@@ -4,7 +4,6 @@
 
 #ifndef REXSCRIPT_SIGNALRETURN_HPP
 #define REXSCRIPT_SIGNALRETURN_HPP
-
 #include "interpreterSignal.hpp"
 
 namespace rex {
