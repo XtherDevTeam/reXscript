@@ -5,56 +5,53 @@
 #ifndef REXSCRIPT_HEAP_HPP
 #define REXSCRIPT_HEAP_HPP
 
+#include "backend/value.hpp"
 #include "share/share.hpp"
 
 namespace rex {
     class heap {
     public:
-        template<typename T>
-        struct managedPtr {
-            struct base {
-                rex::vsize refCount;
-                T v;
+        struct vItem {
+            vItem *prev;
+            vItem *next;
 
-                base() : refCount(0), v() {}
+            bool marked;
 
-                base(T &v) : refCount(0), v(v) {}
+            enum class vKind {
+                vNull,
+                vVec,
+                vStr,
+                vVal,
+            } kind;
 
-                base(const T &v) : refCount(0), v(v) {}
-            } *ptr;
+            union vValue {
+                value *valPtr;
+                vec<value> *vecPtr;
+                vstr *strPtr;
 
+                vValue(vec<value> *v);
 
-            managedPtr<T>(T &v) {
-                ptr = new base(v);
-                ptr->refCount++;
-            }
+                vValue(vstr *v);
 
-            managedPtr<T>(const T &v) {
-                ptr = new base(v);
-                ptr->refCount++;
-            }
+                vValue(value *v);
 
-            managedPtr<T>(managedPtr<T> &v) {
-                ptr = v.ptr;
-                ptr->refCount++;
-            }
+                vValue();
+            } val;
 
-            managedPtr<T>(const managedPtr<T> &v) {
-                ptr = v.ptr;
-                ptr->refCount++;
-            }
+            vItem();
 
-            ~managedPtr<T>() {
-                ptr->refCount--;
-                if (!ptr->refCount) {
-                    delete ptr;
-                }
-            }
+            vItem(vItem *prev, vKind kind, vValue val);
+        } *start, *end;
 
-            T& operator()() {
-                return ptr->v;
-            }
-        };
+        heap();
+
+        vItem *createVec();
+
+        vItem *createVal();
+
+        vItem *createStr();
+
+        void remove(vItem * v);
     };
 }
 

@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 file(GLOB REX_SRC
         frontend/*.cpp
+        backend/*.cpp
         interpreter/*.cpp
         pass/*.cpp
         share/*.cpp

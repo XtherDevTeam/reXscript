@@ -3,7 +3,7 @@
 #include <iostream>
 #include <pass/stringToLexerPass.hpp>
 #include <pass/lexerToAstPass.hpp>
-#include <backend/heap.hpp>
+#include <backend/value.hpp>
 
 int main() {
     std::string buf;
@@ -14,5 +14,6 @@ int main() {
     rex::lexer lexer = pass1.run();
     rex::parser parser{lexer};
     rex::AST result = parser.parseStmts();
+    rex::value a(rex::value::vKind::vInt, (rex::value::vValue){(rex::vint)1});
     return 0;
 }

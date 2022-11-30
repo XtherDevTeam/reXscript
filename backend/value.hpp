@@ -6,24 +6,28 @@
 #define REXSCRIPT_VALUE_HPP
 
 #include "share/share.hpp"
+
 namespace rex {
     class value {
     public:
         enum class vKind {
-            vInt,
-            vDeci,
-            vBool,
-            vStr,
-            vObject,
-            vUnsafePointer,
-            vManagedPointer,
+            vNull = 0b000000001,
+            vInt = 0b000000010,
+            vDeci = 0b000000100,
+            vBool = 0b000001000,
+            vStr = 0b000010000,
+            vObject = 0b000100000,
+            vVec = 0b001000000,
+            vRef = 0b010000000,
         } kind;
 
         union vValue {
             vint vInt;
             vdeci vDeci;
             vbool vBool;
-            unknownPtr vPtr;
+            unsafePtr<unknownPtr> vPtr;
+
+            vValue();
 
             vValue(vint v);
 
@@ -31,13 +35,15 @@ namespace rex {
 
             vValue(vbool v);
 
-            template<typename T>
-            vValue(unsafePtr<T> v) : vPtr(static_cast<unknownPtr>(v)) {}
-        } value;
+            template<typename T1>
+            vValue(unsafePtr<T1> v) : vPtr(static_cast<unsafePtr<unknownPtr>>(v)) {}
+        } val;
+
+        map<vstr, value> object;
 
         template<typename T>
-        unsafePtr<T> getPtr() {
-            return static_cast<unsafePtr<T>>(value);
+        T& getPtr() {
+            return static_cast<unsafePtr<T>>(val.vPtr);
         }
 
         const vint & getInt();
@@ -51,6 +57,10 @@ namespace rex {
         vdeci &getDeciRef();
 
         vbool &getBoolRef();
+
+        value();
+
+        value(vKind k, const vValue &v);
     };
 }
 
