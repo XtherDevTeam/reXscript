@@ -5,7 +5,7 @@
 #ifndef REXSCRIPT_HEAP_HPP
 #define REXSCRIPT_HEAP_HPP
 
-#include "backend/value.hpp"
+#include <interpreter/value.hpp>
 #include "share/share.hpp"
 
 namespace rex {

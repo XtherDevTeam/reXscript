@@ -3,7 +3,7 @@
 #include <iostream>
 #include <pass/stringToLexerPass.hpp>
 #include <pass/lexerToAstPass.hpp>
-#include <backend/value.hpp>
+#include <interpreter/value.hpp>
 
 int main() {
     std::string buf;
