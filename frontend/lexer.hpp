@@ -68,7 +68,7 @@ namespace rex {
                 kFunc,
                 kObject,
                 kClosure,
-                kVar,
+                kLet,
                 kImport,
                 kAs,
                 kIn,
@@ -76,13 +76,40 @@ namespace rex {
                 kElse,
                 eof,
             } kind;
-            vstr value;
+            union vBasicValue {
+                vint vInt;
+                vdeci vDeci;
+                vbool vBool;
+
+                vBasicValue(vint v);
+
+                vBasicValue(vdeci v);
+
+                vBasicValue(vbool v);
+
+                vBasicValue();
+            } basicVal;
+
+            vstr strVal;
+
+            token();
+
+            token(vsize line, vsize col, tokenKind kind);
+
+            token(vsize line, vsize col, tokenKind kind, vBasicValue basicVal);
+
+            token(vsize line, vsize col, tokenKind kind, vstr strVal);
         };
 
         struct lexerState {
-            vsize line, col, pos;
+            vsize line, col;
+            std::istream::pos_type pos;
             vchar curCh;
             token curToken;
+
+            lexerState();
+
+            lexerState(vsize line, vsize col, std::istream::pos_type pos, vchar curCh, lexer::token  curToken);
         };
         vec<lexerState> states;
 

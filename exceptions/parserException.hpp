@@ -11,7 +11,7 @@ namespace rex {
 
     class parserException : public rexException {
     public:
-        parserException(vsize line, vsize col, const vstr& reason);
+        parserException(vsize line, vsize col, const vstr &reason);
     };
 
 } // rex

@@ -5,7 +5,8 @@
 #include "parserException.hpp"
 
 namespace rex {
-    parserException::parserException(vsize line, vsize col, const vstr& reason) : rexException(buildErrorMessage(line, col, reason)) {
+    parserException::parserException(vsize line, vsize col, const vstr &reason) : rexException(
+            buildErrorMessage(line, col, reason)) {
 
     }
 } // rex

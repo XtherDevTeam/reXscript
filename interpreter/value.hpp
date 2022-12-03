@@ -11,14 +11,14 @@ namespace rex {
     class value {
     public:
         enum class vKind {
-            vNull = 0b000000001,
-            vInt = 0b000000010,
-            vDeci = 0b000000100,
-            vBool = 0b000001000,
-            vStr = 0b000010000,
-            vObject = 0b000100000,
-            vVec = 0b001000000,
-            vRef = 0b010000000,
+            vNull = 0b0000000000001,
+            vInt = 0b0000000000010,
+            vDeci = 0b0000000000100,
+            vBool = 0b0000000001000,
+            vStr = 0b0000000010000,
+            vObject = 0b0000000100000,
+            vVec = 0b0000001000000,
+            vRef = 0b0000010000000,
         } kind;
 
         union vValue {
@@ -36,14 +36,14 @@ namespace rex {
             vValue(vbool v);
 
             template<typename T1>
-            vValue(unsafePtr<T1> v) : vPtr(static_cast<unsafePtr<unknownPtr>>(v)) {}
+            vValue(unsafePtr<T1> v) : vPtr((unsafePtr<unknownPtr>)(v)) {}
         } val;
 
-        map<vstr, value> object;
+        map<vstr, value*> object;
 
         template<typename T>
         T& getPtr() {
-            return static_cast<unsafePtr<T>>(val.vPtr);
+            return (unsafePtr<T>)(val.vPtr);
         }
 
         const vint & getInt();
@@ -58,9 +58,19 @@ namespace rex {
 
         vbool &getBoolRef();
 
+        bool setMember(const vstr &l, const value &r);
+
+        bool deleteMember(const vstr &l);
+
+        value &operator[](const vstr &l);
+
         value();
 
         value(vKind k, const vValue &v);
+
+        value(const value& v);
+
+        ~value();
     };
 }
 

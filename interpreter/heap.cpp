@@ -64,4 +64,19 @@ namespace rex {
             delete v;
         }
     }
+
+    heap::vItem *heap::createStr(const vstr &v) {
+        if (start == nullptr) {
+            start = end = new vItem();
+            start->kind = heap::vItem::vKind::vStr;
+            start->val = new vstr{v};
+        } else {
+            end = new vItem(end, heap::vItem::vKind::vStr, new vstr{v});
+        }
+        return end;
+    }
+
+    heap::heap() : start(), end() {
+
+    }
 }

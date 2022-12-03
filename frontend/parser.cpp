@@ -71,7 +71,7 @@ namespace rex {
                 case lexer::token::tokenKind::leftParentheses: {
                     AST arg = parseArguments();
                     if (arg) {
-                        base = {AST::treeKind::subscriptExpression, (vec<AST>) {base, arg}};
+                        base = {AST::treeKind::invokingExpression, (vec<AST>) {base, arg}};
                     } else {
                         throw parserException(lex.line, lex.col,
                                               L"cannot match a Arguments node for subscriptExpression");
@@ -199,7 +199,7 @@ namespace rex {
         if (!blockNode)
             throw parserException(lex.line, lex.col, L"expected a code block");
 
-        return {AST::treeKind::closureDefinition, (vec<AST>) {passVarsBase, argumentsNode, blockNode}};
+        return {AST::treeKind::lambdaDefinition, (vec<AST>) {passVarsBase, argumentsNode, blockNode}};
     }
 
     AST parser::parseFunctionDefinition() {
@@ -219,18 +219,26 @@ namespace rex {
     }
 
     AST parser::parseMemberExpression() {
-        AST lhs = parseSubscriptExpression();
-        if (!lhs) {
+        AST vLhs = parseSubscriptExpression();
+        if (!vLhs)
             return makeNotMatch();
-        }
-        if (lex.curToken.kind != lexer::token::tokenKind::dot) {
-            return lhs;
-        }
+        if (lex.curToken.kind != lexer::token::tokenKind::dot)
+            return vLhs;
         lex.scan();
-        AST rhs = parseMemberExpression();
-        if (!rhs)
+        AST vRhs = parseSubscriptExpression();
+        if (!vRhs)
             throw parserException(lex.line, lex.col, L"expected a right-hand-side node after `.`");
-        return {AST::treeKind::memberExpression, (vec<AST>) {lhs, rhs}};
+        while (lex.curToken.kind == lexer::token::tokenKind::dot) {
+            vLhs = {AST::treeKind::memberExpression, {vLhs, vRhs}};
+            lex.scan();
+            vRhs = parseSubscriptExpression();
+            if (!vRhs) {
+                throw parserException(lex.line, lex.col, L"expected a right-hand-side node after `.`");
+            }
+        }
+        if (vRhs)
+            vLhs = {AST::treeKind::memberExpression, {vLhs, vRhs}};
+        return vLhs;
     }
 
     AST parser::parsePrimary() {
@@ -275,7 +283,9 @@ namespace rex {
     AST parser::parseUniqueExpression() {
         lex.saveState();
 
-        if (lex.curToken.kind == lexer::token::tokenKind::incrementSign or lex.curToken.kind == lexer::token::tokenKind::decrementSign or lex.curToken.kind == lexer::token::tokenKind::minus) {
+        if (lex.curToken.kind == lexer::token::tokenKind::incrementSign or
+            lex.curToken.kind == lexer::token::tokenKind::decrementSign or
+            lex.curToken.kind == lexer::token::tokenKind::minus) {
             AST vOperator = {AST::treeKind::operators, lex.curToken};
             lex.scan();
             AST vItem = parsePrimary();
@@ -286,7 +296,7 @@ namespace rex {
             }
 
             lex.dropState();
-            return {AST::treeKind::uniqueExpression, (vec<AST>){vOperator, vItem}};
+            return {AST::treeKind::uniqueExpression, (vec<AST>) {vOperator, vItem}};
         } else {
             AST vItem = parsePrimary();
             if (!vItem) {
@@ -302,12 +312,16 @@ namespace rex {
         AST vLhs = parseUniqueExpression();
         if (!vLhs)
             return makeNotMatch();
-        if (lex.curToken.kind != lexer::token::tokenKind::asterisk and lex.curToken.kind != lexer::token::tokenKind::slash and lex.curToken.kind != lexer::token::tokenKind::percentSign)
+        if (lex.curToken.kind != lexer::token::tokenKind::asterisk and
+            lex.curToken.kind != lexer::token::tokenKind::slash and
+            lex.curToken.kind != lexer::token::tokenKind::percentSign)
             return vLhs;
         AST vOp = {AST::treeKind::operators, lex.curToken};
         lex.scan();
         AST vRhs = parseUniqueExpression();
-        while (lex.curToken.kind == lexer::token::tokenKind::asterisk or lex.curToken.kind == lexer::token::tokenKind::slash or lex.curToken.kind == lexer::token::tokenKind::percentSign) {
+        while (lex.curToken.kind == lexer::token::tokenKind::asterisk or
+               lex.curToken.kind == lexer::token::tokenKind::slash or
+               lex.curToken.kind == lexer::token::tokenKind::percentSign) {
             vLhs = {AST::treeKind::multiplicationExpression, {vLhs, vOp, vRhs}};
             vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
@@ -330,7 +344,8 @@ namespace rex {
         AST vOp = {AST::treeKind::operators, lex.curToken};
         lex.scan();
         AST vRhs = parseMultiplicationExpression();
-        while (lex.curToken.kind == lexer::token::tokenKind::plus or lex.curToken.kind == lexer::token::tokenKind::minus) {
+        while (lex.curToken.kind == lexer::token::tokenKind::plus or
+               lex.curToken.kind == lexer::token::tokenKind::minus) {
             vLhs = {AST::treeKind::additionExpression, {vLhs, vOp, vRhs}};
             vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
@@ -348,12 +363,14 @@ namespace rex {
         AST vLhs = parseAdditionExpression();
         if (!vLhs)
             return makeNotMatch();
-        if (lex.curToken.kind != lexer::token::tokenKind::binaryShiftLeft and lex.curToken.kind != lexer::token::tokenKind::binaryShiftRight)
+        if (lex.curToken.kind != lexer::token::tokenKind::binaryShiftLeft and
+            lex.curToken.kind != lexer::token::tokenKind::binaryShiftRight)
             return vLhs;
         AST vOp = {AST::treeKind::operators, lex.curToken};
         lex.scan();
         AST vRhs = parseAdditionExpression();
-        while (lex.curToken.kind == lexer::token::tokenKind::binaryShiftLeft or lex.curToken.kind == lexer::token::tokenKind::binaryShiftRight) {
+        while (lex.curToken.kind == lexer::token::tokenKind::binaryShiftLeft or
+               lex.curToken.kind == lexer::token::tokenKind::binaryShiftRight) {
             vLhs = {AST::treeKind::binaryShiftExpression, {vLhs, vOp, vRhs}};
             vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
@@ -404,12 +421,16 @@ namespace rex {
         AST vLhs = parseLogicEqualExpression();
         if (!vLhs)
             return makeNotMatch();
-        if (lex.curToken.kind != lexer::token::tokenKind::binaryAnd and lex.curToken.kind != lexer::token::tokenKind::binaryOr and lex.curToken.kind != lexer::token::tokenKind::binaryXor)
+        if (lex.curToken.kind != lexer::token::tokenKind::binaryAnd and
+            lex.curToken.kind != lexer::token::tokenKind::binaryOr and
+            lex.curToken.kind != lexer::token::tokenKind::binaryXor)
             return vLhs;
         AST vOp = {AST::treeKind::operators, lex.curToken};
         lex.scan();
         AST vRhs = parseLogicEqualExpression();
-        while (lex.curToken.kind == lexer::token::tokenKind::binaryAnd or lex.curToken.kind == lexer::token::tokenKind::binaryOr or lex.curToken.kind == lexer::token::tokenKind::binaryXor) {
+        while (lex.curToken.kind == lexer::token::tokenKind::binaryAnd or
+               lex.curToken.kind == lexer::token::tokenKind::binaryOr or
+               lex.curToken.kind == lexer::token::tokenKind::binaryXor) {
             vLhs = {AST::treeKind::binaryExpression, {vLhs, vOp, vRhs}};
             vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
@@ -427,12 +448,14 @@ namespace rex {
         AST vLhs = parseBinaryExpression();
         if (!vLhs)
             return makeNotMatch();
-        if (lex.curToken.kind != lexer::token::tokenKind::logicAnd and lex.curToken.kind != lexer::token::tokenKind::logicOr)
+        if (lex.curToken.kind != lexer::token::tokenKind::logicAnd and
+            lex.curToken.kind != lexer::token::tokenKind::logicOr)
             return vLhs;
         AST vOp = {AST::treeKind::operators, lex.curToken};
         lex.scan();
         AST vRhs = parseBinaryExpression();
-        while (lex.curToken.kind == lexer::token::tokenKind::logicAnd or lex.curToken.kind == lexer::token::tokenKind::logicOr) {
+        while (lex.curToken.kind == lexer::token::tokenKind::logicAnd or
+               lex.curToken.kind == lexer::token::tokenKind::logicOr) {
             vLhs = {AST::treeKind::logicAndExpression, {vLhs, vOp, vRhs}};
             vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
@@ -457,11 +480,17 @@ namespace rex {
             lex.dropState();
             return makeNotMatch();
         }
-        if (lex.curToken.kind != lexer::token::tokenKind::additionAssignment and lex.curToken.kind != lexer::token::tokenKind::subtractionAssignment and lex.curToken.kind != lexer::token::tokenKind::multiplicationAssignment and lex.curToken.kind != lexer::token::tokenKind::divisionAssignment and lex.curToken.kind != lexer::token::tokenKind::reminderAssignment and lex.curToken.kind != lexer::token::tokenKind::assignSign) {
+        if (lex.curToken.kind != lexer::token::tokenKind::additionAssignment and
+            lex.curToken.kind != lexer::token::tokenKind::subtractionAssignment and
+            lex.curToken.kind != lexer::token::tokenKind::multiplicationAssignment and
+            lex.curToken.kind != lexer::token::tokenKind::divisionAssignment and
+            lex.curToken.kind != lexer::token::tokenKind::reminderAssignment and
+            lex.curToken.kind != lexer::token::tokenKind::assignSign) {
             lex.returnState();
             return makeNotMatch();
         }
         AST vOp = {AST::treeKind::operators, lex.curToken};
+        lex.scan();
         AST vRhs = parseLvalueExpression();
         if (!vRhs) {
             throw parserException(lex.line, lex.col, L"expected a right-hand-side node after operators");
@@ -476,7 +505,7 @@ namespace rex {
             return makeNotMatch();
         }
         lex.scan();
-        AST base = {AST::treeKind::blockStmt, (vec<AST>){}};
+        AST base = {AST::treeKind::blockStmt, (vec<AST>) {}};
         AST stmt = parseStmts();
         while (stmt) {
             switch (stmt.kind) {
@@ -505,17 +534,17 @@ namespace rex {
         return base;
     }
 
-    AST parser::parseVariableDefOrDeclStmt() {
-        if (lex.curToken.kind != lexer::token::tokenKind::kVar) {
+    AST parser::parseLetStmt() {
+        if (lex.curToken.kind != lexer::token::tokenKind::kLet) {
             return makeNotMatch();
         }
         lex.scan();
-        AST base{AST::treeKind::variableDefOrDeclStmt, (vec<AST>){}};
+        AST base{AST::treeKind::letStmt, (vec<AST>) {}};
         AST lhs, rhs;
         while (true) {
             lhs = parseIdentifier();
             if (!lhs) {
-                throw parserException(lex.line, lex.col, L"expected at least one identifier or assignment");
+                throw parserException(lex.line, lex.col, L"expected at least one assignment");
             }
             if (lex.curToken.kind == lexer::token::tokenKind::assignSign) {
                 lex.scan();
@@ -523,12 +552,11 @@ namespace rex {
                 if (!rhs) {
                     throw parserException(lex.line, lex.col, L"expected LvalueExpression after assignSign");
                 }
+            } else {
+                throw parserException(lex.line, lex.col, L"expected `=`");
             }
 
-            if (rhs)
-                base.child.push_back((AST){AST::treeKind::variableDefInitExpr, (vec<AST>){lhs, rhs}});
-            else
-                base.child.push_back(lhs);
+            base.child.push_back((AST) {AST::treeKind::letAssignmentPair, (vec<AST>) {lhs, rhs}});
 
             if (lex.curToken.kind != lexer::token::tokenKind::comma)
                 break;
@@ -556,7 +584,7 @@ namespace rex {
         if (!stmt)
             throw parserException(lex.line, lex.col, L"expected statements after `)`");
 
-        return {AST::treeKind::whileStmt, (vec<AST>){condition, stmt}};
+        return {AST::treeKind::whileStmt, (vec<AST>) {condition, stmt}};
     }
 
     AST parser::parseForStmt() {
@@ -585,7 +613,7 @@ namespace rex {
         lex.scan();
 
         AST updateStmt = parseStmts();
-        if(!updateStmt)
+        if (!updateStmt)
             throw parserException(lex.line, lex.col, L"expected a statement after the `;`");
 
         if (lex.curToken.kind != lexer::token::tokenKind::rightParentheses)
@@ -653,7 +681,7 @@ namespace rex {
             throw parserException(lex.line, lex.col, L"expected statements after `)`");
 
         if (lex.curToken.kind != lexer::token::tokenKind::kElse)
-            return {AST::treeKind::ifStmt, (vec<AST>){condition, stmt}};
+            return {AST::treeKind::ifStmt, (vec<AST>) {condition, stmt}};
 
         AST elseStmt = parseStmts();
         if (!stmt)
@@ -672,7 +700,7 @@ namespace rex {
         if (!result)
             throw parserException(lex.line, lex.col, L"expected LvalueExpressions after `return`");
 
-        return {AST::treeKind::returnStmt, (vec<AST>){result}};
+        return {AST::treeKind::returnStmt, (vec<AST>) {result}};
     }
 
     AST parser::parseContinueStmt() {
@@ -681,7 +709,7 @@ namespace rex {
         }
         lex.scan();
 
-        return {AST::treeKind::continueStmt, (lexer::token){}};
+        return {AST::treeKind::continueStmt, (lexer::token) {}};
     }
 
     AST parser::parseBreakStmt() {
@@ -690,7 +718,7 @@ namespace rex {
         }
         lex.scan();
 
-        return {AST::treeKind::breakStmt, (lexer::token){}};
+        return {AST::treeKind::breakStmt, (lexer::token) {}};
     }
 
     AST parser::parseStmts() {
@@ -708,7 +736,7 @@ namespace rex {
         if (result)
             return result;
 
-        result = parseVariableDefOrDeclStmt();
+        result = parseLetStmt();
         if (result)
             return result;
 
@@ -737,7 +765,7 @@ namespace rex {
     }
 
     AST parser::parseFile() {
-        AST base = {AST::treeKind::blockStmt, (vec<AST>){}};
+        AST base = {AST::treeKind::blockStmt, (vec<AST>) {}};
         AST stmt = parseStmts();
         while (stmt) {
             switch (stmt.kind) {
@@ -763,7 +791,7 @@ namespace rex {
         if (lex.curToken.kind != lexer::token::tokenKind::eof) {
             throw parserException(lex.line, lex.col, L"expected EOF");
         }
-        
+
         return base;
     }
 } // rex

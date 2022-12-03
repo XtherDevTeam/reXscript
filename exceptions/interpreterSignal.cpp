@@ -8,4 +8,8 @@ namespace rex {
     interpreterSignal::interpreterSignal() {
 
     }
+
+    const char *interpreterSignal::what() const noexcept {
+        return nullptr;
+    }
 } // rex

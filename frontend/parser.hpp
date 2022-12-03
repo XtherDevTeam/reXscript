@@ -57,7 +57,7 @@ namespace rex {
 
         AST parseBlockStmt();
 
-        AST parseVariableDefOrDeclStmt();
+        AST parseLetStmt();
 
         AST parseWhileStmt();
 

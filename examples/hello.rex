@@ -1,7 +1,7 @@
 import 'stdlib/io.rex' as io;
 
 const main = func () {
-    var obj = object {
+    let obj = object {
         'stmt': 'FUCK CCF.',
         'online': 'true'
     };

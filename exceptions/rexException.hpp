@@ -14,9 +14,9 @@ namespace rex {
     class rexException : std::exception {
         std::string why;
     public:
-        rexException(const vstr& str);
+        rexException(const vstr &str);
 
-        const char * what() const noexcept override;
+        const char *what() const noexcept override;
     };
 
 } // rex

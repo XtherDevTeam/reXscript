@@ -23,4 +23,39 @@ namespace rex {
     interpreter::interpreter() : env(nullptr) {}
 
     interpreter::interpreter(environment *env) : env(env) {}
+
+    value interpreter::interpret(const AST &) {
+        return value();
+    }
+
+    value interpreter::invokeFunc(value *val, const vec<value> &args, value *passThisPtr) {
+        return value();
+    }
+
+    value *interpreter::getRvalue(const AST &target) {
+        switch (target.kind) {
+            case AST::treeKind::identifier: {
+
+            }
+            case AST::treeKind::invokingExpression: {
+
+            }
+            case AST::treeKind::subscriptExpression: {
+
+            }
+            case AST::treeKind::memberExpression: {
+
+            }
+            default: {
+
+            }
+        }
+    }
+
+    value interpreter::makeErr(const vstr &errName, const vstr &errMsg) {
+        value res{value::vKind::vObject, (unsafePtr<unknownPtr>)nullptr};
+        res[L"errName"] = (value){value::vKind::vStr, env->envHeap.createStr(errName)};
+        res[L"errMsg"] = (value){value::vKind::vStr, env->envHeap.createStr(errMsg)};
+        return res;
+    }
 }

@@ -22,12 +22,16 @@ namespace rex {
     using vec = std::vector<T>;
     template<typename A, typename B>
     using map = std::map<A, B>;
+
     std::string wstring2string(const std::wstring &str);
+
     std::wstring string2wstring(const std::string &str);
-    std::wstring buildErrorMessage(vsize line, vsize col, const vstr& what);
+
+    std::wstring buildErrorMessage(vsize line, vsize col, const vstr &what);
+
     template<typename T>
-    using unsafePtr = T*;
-    using unknownPtr = unsafePtr<void*>;
+    using unsafePtr = T *;
+    using unknownPtr = unsafePtr<void *>;
 //    using rexNativeFunc = std::function<void(st)
 
     template<typename T>
@@ -66,7 +70,7 @@ namespace rex {
 
         template<typename T1>
         managedPtr<T>(const managedPtr<T1> &v) {
-            ptr = (managedPtr<T>::base*)v.ptr;
+            ptr = (managedPtr<T>::base *) v.ptr;
             ptr->refCount++;
         }
 
@@ -77,7 +81,7 @@ namespace rex {
             }
         }
 
-        T& operator()() {
+        T &operator()() {
             return ptr->v;
         }
     };

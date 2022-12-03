@@ -7,7 +7,8 @@
 
 namespace rex {
 
-    template<class T, class T1> class basicPass {
+    template<class T, class T1>
+    class basicPass {
     protected:
         T &before;
     public:

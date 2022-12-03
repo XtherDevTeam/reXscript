@@ -51,6 +51,8 @@ namespace rex {
 
         vItem *createStr();
 
+        vItem *createStr(const vstr &v);
+
         void remove(vItem * v);
     };
 }

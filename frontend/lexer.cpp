@@ -5,6 +5,7 @@
 #include "lexer.hpp"
 #include <exceptions/unexpectedTokenException.hpp>
 #include <exceptions/endOfFileException.hpp>
+#include <utility>
 
 namespace rex {
     lexer::lexer(std::wistream &ss) : stream(ss), line(0), col(0), curCh() {
@@ -27,8 +28,8 @@ namespace rex {
     }
 
     lexer::token lexer::scan() {
-        if (curCh == '\0'){
-            return {line, col, token::tokenKind::eof, L""};
+        if (curCh == '\0') {
+            return {line, col, token::tokenKind::eof};
         }
         while (curCh == ' ' or curCh == '\n' or curCh == '\r' or curCh == '\t') getCh();
         if (std::isalpha(curCh)) {
@@ -82,46 +83,50 @@ namespace rex {
 
     lexer::token lexer::alphaStart() {
         lexer::token tok{line, col, token::tokenKind::identifier, vstr()};
-        tok.value += curCh;
+        vstr tempStr;
+        tempStr += curCh;
         getCh();
         while (isalpha(curCh) or isdigit(curCh) or curCh == L'_') {
-            tok.value += curCh;
+            tempStr += curCh;
             getCh();
         }
 
         // 关键词处理
-        if (tok.value == L"return") {
+        if (tempStr == L"return") {
             tok.kind = token::tokenKind::kReturn;
-        } else if (tok.value == L"continue") {
+        } else if (tempStr == L"continue") {
             tok.kind = token::tokenKind::kContinue;
-        } else if (tok.value == L"break") {
+        } else if (tempStr == L"break") {
             tok.kind = token::tokenKind::kBreak;
-        } else if (tok.value == L"for") {
+        } else if (tempStr == L"for") {
             tok.kind = token::tokenKind::kFor;
-        } else if (tok.value == L"forEach") {
+        } else if (tempStr == L"forEach") {
             tok.kind = token::tokenKind::kForEach;
-        } else if (tok.value == L"while") {
+        } else if (tempStr == L"while") {
             tok.kind = token::tokenKind::kWhile;
-        } else if (tok.value == L"func") {
+        } else if (tempStr == L"func") {
             tok.kind = token::tokenKind::kFunc;
-        } else if (tok.value == L"object") {
+        } else if (tempStr == L"object") {
             tok.kind = token::tokenKind::kObject;
-        } else if (tok.value == L"closure") {
+        } else if (tempStr == L"lambda") {
             tok.kind = token::tokenKind::kClosure;
-        } else if (tok.value == L"var") {
-            tok.kind = token::tokenKind::kVar;
-        } else if (tok.value == L"import") {
+        } else if (tempStr == L"let") {
+            tok.kind = token::tokenKind::kLet;
+        } else if (tempStr == L"import") {
             tok.kind = token::tokenKind::kImport;
-        } else if (tok.value == L"as") {
+        } else if (tempStr == L"as") {
             tok.kind = token::tokenKind::kAs;
-        } else if (tok.value == L"in") {
+        } else if (tempStr == L"in") {
             tok.kind = token::tokenKind::kIn;
-        } else if (tok.value == L"if") {
+        } else if (tempStr == L"if") {
             tok.kind = token::tokenKind::kIf;
-        } else if (tok.value == L"else") {
+        } else if (tempStr == L"else") {
             tok.kind = token::tokenKind::kElse;
-        } else if (tok.value == L"true" or tok.value == L"false") {
+        } else if (tempStr == L"true" or tempStr == L"false") {
             tok.kind = token::tokenKind::boolean;
+            tok.basicVal.vBool = tempStr == L"true";
+        } else {
+            tok.strVal = tempStr;
         }
 
         return tok;
@@ -133,9 +138,9 @@ namespace rex {
         while (curCh != '"') {
             if (curCh == '\\') {
                 getCh();
-                tok.value += '\\';
+                tok.strVal += '\\';
             }
-            tok.value += curCh;
+            tok.strVal += curCh;
             getCh();
         }
         getCh(); // skip "
@@ -143,74 +148,69 @@ namespace rex {
     }
 
     lexer::token lexer::digitStart() {
-        lexer::token tok{line, col, token::tokenKind::integer, vstr()};
-        tok.value += curCh;
+        lexer::token tok{line, col, token::tokenKind::integer, (vint) 0};
+        vstr tempStr;
+        tempStr += curCh;
         getCh();
         while (isdigit(curCh)) {
-            tok.value += curCh;
+            tempStr += curCh;
             getCh();
         }
         if (curCh == '.') {
             tok.kind = token::tokenKind::decimal;
-            tok.value += curCh;
+            tempStr += curCh;
             while (isdigit(curCh)) {
-                tok.value += curCh;
+                tempStr += curCh;
             }
         }
+        tok.basicVal.vInt = stol(tempStr);
         return tok;
     }
 
     lexer::token lexer::minusStart() {
-        lexer::token tok{line, col, token::tokenKind::minus, L"-"};
+        lexer::token tok{line, col, token::tokenKind::minus};
         getCh();
         if (curCh == '=') {
             tok.kind = token::tokenKind::subtractionAssignment;
-            tok.value += '=';
             getCh();
         } else if (curCh == '-') {
             tok.kind = token::tokenKind::decrementSign;
-            tok.value += '-';
             getCh();
         } else if (curCh == '>') {
             tok.kind = token::tokenKind::toSign;
-            tok.value += '>';
             getCh();
         }
         return tok;
     }
 
     lexer::token lexer::plusStart() {
-        lexer::token tok{line, col, token::tokenKind::plus, L"+"};
+        lexer::token tok{line, col, token::tokenKind::plus};
         getCh();
         if (curCh == '=') {
             tok.kind = token::tokenKind::additionAssignment;
-            tok.value += '=';
             getCh();
         } else if (curCh == '+') {
             tok.kind = token::tokenKind::decrementSign;
-            tok.value += '+';
             getCh();
         }
         return tok;
     }
 
     lexer::token lexer::asteriskStart() {
-        lexer::token tok{line, col, token::tokenKind::asterisk, L"*"};
+        lexer::token tok{line, col, token::tokenKind::asterisk};
         getCh();
         if (curCh == '=') {
             tok.kind = token::tokenKind::multiplicationAssignment;
-            tok.value += '=';
             getCh();
         }
         return tok;
     }
 
     lexer::token lexer::slashStart() {
-        lexer::token tok{line, col, token::tokenKind::slash, L"/"};
+        lexer::token tok{line, col, token::tokenKind::slash};
         getCh();
         if (curCh == '=') {
             tok.kind = token::tokenKind::divisionAssignment;
-            tok.value += '=';
             getCh();
         } else if (curCh == '/') {
             getCh();
@@ -220,7 +220,7 @@ namespace rex {
         } else if (curCh == '*') {
             getCh();
             while (curCh) {
-                if (curCh  == '*') {
+                if (curCh == '*') {
                     getCh();
                     if (curCh == '/') {
                         getCh();
@@ -235,125 +235,122 @@ namespace rex {
     }
 
     lexer::token lexer::percentSignStart() {
-        lexer::token tok{line, col, token::tokenKind::percentSign, L"%"};
+        lexer::token tok{line, col, token::tokenKind::percentSign};
         getCh();
         if (curCh == '=') {
             tok.kind = token::tokenKind::reminderAssignment;
-            tok.value += '=';
             getCh();
         }
         return tok;
     }
 
     lexer::token lexer::equalStart() {
-        lexer::token tok{line, col, token::tokenKind::assignSign, L"="};
+        lexer::token tok{line, col, token::tokenKind::assignSign};
         getCh();
         if (curCh == '=') {
             tok.kind = token::tokenKind::equal;
-            tok.value += '=';
             getCh();
         }
         return tok;
     }
 
     lexer::token lexer::notStart() {
-        lexer::token tok{line, col, token::tokenKind::logicNot, L"!"};
+        lexer::token tok{line, col, token::tokenKind::logicNot};
         getCh();
         if (curCh == '=') {
             tok.kind = token::tokenKind::notEqual;
-            tok.value += '=';
             getCh();
         }
         return tok;
     }
 
     lexer::token lexer::lessStart() {
-        lexer::token tok{line, col, token::tokenKind::lessThan, L"<"};
+        lexer::token tok{line, col, token::tokenKind::lessThan};
         getCh();
         if (curCh == '=') {
             tok.kind = token::tokenKind::lessEqual;
-            tok.value += '=';
             getCh();
         }
         return tok;
     }
 
     lexer::token lexer::greaterStart() {
-        lexer::token tok{line, col, token::tokenKind::greaterThan, L">"};
+        lexer::token tok{line, col, token::tokenKind::greaterThan};
         getCh();
         if (curCh == '=') {
             tok.kind = token::tokenKind::greaterEqual;
-            tok.value += '=';
             getCh();
         }
         return tok;
     }
 
     lexer::token lexer::semicolonStart() {
-        lexer::token tok{line, col, token::tokenKind::semicolon, L";"};
+        lexer::token tok{line, col, token::tokenKind::semicolon};
         getCh();
         return tok;
     }
 
     lexer::token lexer::colonStart() {
-        lexer::token tok{line, col, token::tokenKind::colon, L":"};
+        lexer::token tok{line, col, token::tokenKind::colon};
         getCh();
         return tok;
     }
 
     lexer::token lexer::commaStart() {
-        lexer::token tok{line, col, token::tokenKind::comma, L","};
+        lexer::token tok{line, col, token::tokenKind::comma};
         getCh();
         return tok;
     }
 
     lexer::token lexer::dotStart() {
-        lexer::token tok{line, col, token::tokenKind::dot, L"."};
+        lexer::token tok{line, col, token::tokenKind::dot};
         getCh();
         return tok;
     }
 
     lexer::token lexer::leftParenthesesStart() {
-        lexer::token tok{line, col, token::tokenKind::leftParentheses, L"("};
+        lexer::token tok{line, col, token::tokenKind::leftParentheses};
         getCh();
         return tok;
     }
 
     lexer::token lexer::rightParenthesesStart() {
-        lexer::token tok{line, col, token::tokenKind::rightParentheses, L")"};
+        lexer::token tok{line, col, token::tokenKind::rightParentheses};
         getCh();
         return tok;
     }
 
     lexer::token lexer::leftBracketStart() {
-        lexer::token tok{line, col, token::tokenKind::leftBracket, L"["};
+        lexer::token tok{line, col, token::tokenKind::leftBracket};
         getCh();
         return tok;
     }
 
     lexer::token lexer::rightBracketStart() {
-        lexer::token tok{line, col, token::tokenKind::rightBracket, L"]"};
+        lexer::token tok{line, col, token::tokenKind::rightBracket};
         getCh();
         return tok;
     }
 
     lexer::token lexer::leftBracesStart() {
-        lexer::token tok{line, col, token::tokenKind::leftBraces, L"{"};
+        lexer::token tok{line, col, token::tokenKind::leftBraces};
         getCh();
         return tok;
     }
 
     lexer::token lexer::rightBracesStart() {
-        lexer::token tok{line, col, token::tokenKind::rightBraces, L"}"};
+        lexer::token tok{line, col, token::tokenKind::rightBraces};
         getCh();
         return tok;
     }
 
     void lexer::saveState() {
-        states.push_back({line, col, (vsize)stream.tellg(), curCh, curToken});
+        states.emplace_back(line, col, (vint) stream.tellg(), curCh, curToken);
     }
 
     void lexer::returnState() {
+        if (stream.eof())
+            stream.clear();
         lexerState &state = states.back();
         line = state.line, col = state.col, curCh = state.curCh, curToken = state.curToken;
         stream.seekg(static_cast<long long>(state.pos));
@@ -363,5 +360,51 @@ namespace rex {
     void lexer::dropState() {
         if (!states.empty())
             states.pop_back();
+    }
+
+    lexer::token::vBasicValue::vBasicValue(vint v) : vInt(v) {
+
+    }
+
+    lexer::token::vBasicValue::vBasicValue(vdeci v) : vDeci(v) {
+
+    }
+
+    lexer::token::vBasicValue::vBasicValue(vbool v) : vBool(v) {
+
+    }
+
+    lexer::token::vBasicValue::vBasicValue() : vInt(0) {
+
+    }
+
+
+    lexer::token::token() : line(), col(), kind(), basicVal(), strVal() {
+
+    }
+
+    lexer::token::token(vsize line, vsize col, lexer::token::tokenKind kind) :
+        line(line), col(col), kind(kind), basicVal(), strVal() {
+
+    }
+
+    lexer::token::token(vsize line, vsize col, lexer::token::tokenKind kind, lexer::token::vBasicValue basicVal) :
+        line(line), col(col), kind(kind), basicVal(basicVal), strVal() {
+
+    }
+
+    lexer::token::token(vsize line, vsize col, lexer::token::tokenKind kind, vstr strVal) :
+            line(line), col(col), kind(kind), basicVal(), strVal(std::move(strVal)) {
+
+    }
+
+
+    lexer::lexerState::lexerState() : line(), col(), pos(), curCh(), curToken() {
+
+    }
+
+    lexer::lexerState::lexerState(vsize line, vsize col, std::istream::pos_type pos, vchar curCh, lexer::token curToken) :
+            line(line), col(col), pos(pos), curCh(curCh), curToken(std::move(curToken)) {
+
     }
 } // rex

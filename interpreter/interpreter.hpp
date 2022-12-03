@@ -39,63 +39,13 @@ namespace rex {
 
         interpreter(environment *env);
 
-        value parseBasicLiterals(const AST &target);
+        value makeErr(const vstr &errName, const vstr &errMsg);
 
-        value parseIdentifier(const AST &target);
+        value invokeFunc(value *val, const vec<value> &args, value *passThisPtr = nullptr);
 
-        value parseSubscriptExpression(const AST &target);
+        value *getRvalue(const AST & target);
 
-        value parseListLiteral(const AST &target);
-
-        value parseObjectLiteral(const AST &target);
-
-        value parseArguments(const AST &target);
-
-        value parseClosureDefinition(const AST &target);
-
-        value parseFunctionDefinition(const AST &target);
-
-        value parseMemberExpression(const AST &target);
-
-        value parsePrimary(const AST &target);
-
-        value parseUniqueExpression(const AST &target);
-
-        value parseMultiplicationExpression(const AST &target);
-
-        value parseAdditionExpression(const AST &target);
-
-        value parseBinaryShiftExpression(const AST &target);
-
-        value parseLogicEqualExpression(const AST &target);
-
-        value parseBinaryExpression(const AST &target);
-
-        value parseLogicAndExpression(const AST &target);
-
-        value parseLvalueExpression(const AST &target); // a set of all lvalue expressions
-
-        value parseAssignmentExpression(const AST &target);
-
-        value parseBlockStmt(const AST &target);
-
-        value parseVariableDefOrDeclStmt(const AST &target);
-
-        value parseWhileStmt(const AST &target);
-
-        value parseForStmt(const AST &target);
-
-        value parseRangeBasedForStmt(const AST &target);
-
-        value parseIfStmt(const AST &target);
-
-        value parseReturnStmt(const AST &target);
-
-        value parseContinueStmt(const AST &target);
-
-        value parseBreakStmt(const AST &target);
-
-        value parseStmts(const AST &target); // a set of all statements
+        value interpret(const AST & target);
     };
 
     using nativeFuncPtr = std::function<value(interpreter *, vec<value> &)>;

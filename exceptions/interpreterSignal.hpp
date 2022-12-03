@@ -5,12 +5,15 @@
 #ifndef REXSCRIPT_INTERPRETERSIGNAL_HPP
 #define REXSCRIPT_INTERPRETERSIGNAL_HPP
 
+#include <exception>
+
 namespace rex {
 
-    class interpreterSignal {
-
+    class interpreterSignal : std::exception {
     public:
         interpreterSignal();
+
+        const char * what() const noexcept override;
     };
 
 } // rex

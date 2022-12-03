@@ -7,5 +7,6 @@
 #include <utility>
 
 namespace rex {
-    unexpectedTokenException::unexpectedTokenException(vsize line, vsize col, vchar ch)  : rexException(buildErrorMessage(line, col, vstr(L"Unexpected token: ") + ch)) {}
+    unexpectedTokenException::unexpectedTokenException(vsize line, vsize col, vchar ch) : rexException(
+            buildErrorMessage(line, col, vstr(L"Unexpected token: ") + ch)) {}
 } // rex

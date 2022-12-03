@@ -5,11 +5,11 @@
 #include "ast.hpp"
 
 namespace rex {
-    AST::AST(AST::treeKind K, lexer::token L) : kind(K), leaf(std::move(L)) {
+    AST::AST(AST::treeKind k, lexer::token l) : kind(k), leaf(std::move(l)) {
 
     }
 
-    AST::AST(AST::treeKind K, vec<AST> C) : kind(K), leaf(), child(std::move(C)) {
+    AST::AST(AST::treeKind k, vec<AST> c) : kind(k), leaf(), child(std::move(c)) {
 
     }
 
