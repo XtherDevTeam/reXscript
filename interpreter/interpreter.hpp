@@ -18,6 +18,10 @@ namespace rex {
 
             void popLocalCxt();
 
+            vsize getCurLocalCxtIdx();
+
+            void backToLocalCxt(vsize idx);
+
             stackFrame();
 
             stackFrame(managedPtr<value> &moduleCxt, const vec<value::cxtObject> &localCxt);
@@ -38,6 +42,8 @@ namespace rex {
         value invokeFunc(managedPtr<value> func, const vec<value> &args, const managedPtr<value>& passThisPtr);
 
         value interpretLvalueExpressions(const AST &target);
+
+        value interpretAssignments(const AST &target);
 
         // 整合解释器和符号查找器
         // 对于Rvalue -> 返回ref形式

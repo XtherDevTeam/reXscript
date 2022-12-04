@@ -15,7 +15,8 @@ int main() {
     rex::parser parser{lexer};
     rex::AST ast = parser.parseStmts();
     rex::managedPtr<rex::environment> env = rex::managePtr(rex::environment{});
-    rex::managedPtr<rex::interpreter> interpreter = rex::managePtr(rex::interpreter{env, {}});
+    rex::managedPtr<rex::value> moduleCxt = rex::managePtr(rex::value{});
+    rex::managedPtr<rex::interpreter> interpreter = rex::managePtr(rex::interpreter{env, moduleCxt});
     rex::value result = interpreter->interpret(ast);
     return 0;
 }
