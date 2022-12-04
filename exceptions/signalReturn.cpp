@@ -7,4 +7,11 @@
 #include <utility>
 
 namespace rex {
+    signalReturn::signalReturn(const value &v) : msg(v) {
+
+    }
+
+    const value &signalReturn::get() {
+        return msg;
+    }
 } // rex

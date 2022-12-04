@@ -76,6 +76,7 @@ namespace rex {
                 kElse,
                 eof,
             } kind;
+
             union vBasicValue {
                 vint vInt;
                 vdeci vDeci;
@@ -109,8 +110,9 @@ namespace rex {
 
             lexerState();
 
-            lexerState(vsize line, vsize col, std::istream::pos_type pos, vchar curCh, lexer::token  curToken);
+            lexerState(vsize line, vsize col, std::istream::pos_type pos, vchar curCh, lexer::token curToken);
         };
+
         vec<lexerState> states;
 
         token curToken;
@@ -173,6 +175,12 @@ namespace rex {
         token leftBracesStart();
 
         token rightBracesStart();
+
+        token andStart();
+
+        token orStart();
+
+        token xorStart();
     };
 
 } // rex

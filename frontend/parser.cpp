@@ -173,14 +173,14 @@ namespace rex {
         lex.scan();
 
         AST passVarsBase = {AST::treeKind::arguments, (vec<AST>) {}};
-        AST temp = parseMemberExpression();
+        AST temp = parseIdentifier();
         while (temp) {
             if (lex.curToken.kind != lexer::token::tokenKind::comma) {
                 break;
             }
             passVarsBase.child.push_back(temp);
             lex.scan();
-            temp = parseMemberExpression();
+            temp = parseIdentifier();
         }
 
         if (lex.curToken.kind != lexer::token::tokenKind::rightParentheses)
@@ -191,7 +191,25 @@ namespace rex {
             throw parserException(lex.line, lex.col, L"expected '->'");
         lex.scan();
 
-        AST argumentsNode = parseArguments();
+        if (lex.curToken.kind != lexer::token::tokenKind::leftParentheses)
+            throw parserException(lex.line, lex.col, L"expected a '(' to open a Arguments node");
+        lex.scan();
+
+        AST argumentsNode = {AST::treeKind::arguments, (vec<AST>) {}};
+        temp = parseIdentifier();
+        while (temp) {
+            if (lex.curToken.kind != lexer::token::tokenKind::comma) {
+                break;
+            }
+            argumentsNode.child.push_back(temp);
+            lex.scan();
+            temp = parseIdentifier();
+        }
+
+        if (lex.curToken.kind != lexer::token::tokenKind::rightParentheses)
+            throw parserException(lex.line, lex.col, L"expected a ')' to close a Arguments node");
+        lex.scan();
+
         if (!argumentsNode)
             throw parserException(lex.line, lex.col, L"expected an Arguments node");
 
@@ -207,9 +225,24 @@ namespace rex {
             return makeNotMatch();
         lex.scan();
 
-        AST argumentsNode = parseArguments();
-        if (!argumentsNode)
-            throw parserException(lex.line, lex.col, L"expected an Arguments node");
+        if (lex.curToken.kind != lexer::token::tokenKind::leftParentheses)
+            throw parserException(lex.line, lex.col, L"expected a '(' to open a Arguments node");
+        lex.scan();
+
+        AST argumentsNode = {AST::treeKind::arguments, (vec<AST>) {}};
+        AST temp = parseIdentifier();
+        while (temp) {
+            if (lex.curToken.kind != lexer::token::tokenKind::comma) {
+                break;
+            }
+            argumentsNode.child.push_back(temp);
+            lex.scan();
+            temp = parseIdentifier();
+        }
+
+        if (lex.curToken.kind != lexer::token::tokenKind::rightParentheses)
+            throw parserException(lex.line, lex.col, L"expected a ')' to close a Arguments node");
+        lex.scan();
 
         AST blockNode = parseBlockStmt();
         if (!blockNode)
@@ -316,14 +349,16 @@ namespace rex {
             lex.curToken.kind != lexer::token::tokenKind::slash and
             lex.curToken.kind != lexer::token::tokenKind::percentSign)
             return vLhs;
-        AST vOp = {AST::treeKind::operators, lex.curToken};
+        AST vOp = (AST){AST::treeKind::operators, lex.curToken};
         lex.scan();
         AST vRhs = parseUniqueExpression();
+        if (!vRhs)
+            throw parserException(lex.line, lex.col, L"expected a right-hand-side node after operators");
         while (lex.curToken.kind == lexer::token::tokenKind::asterisk or
-               lex.curToken.kind == lexer::token::tokenKind::slash or
-               lex.curToken.kind == lexer::token::tokenKind::percentSign) {
+                lex.curToken.kind == lexer::token::tokenKind::slash or
+                lex.curToken.kind == lexer::token::tokenKind::percentSign) {
+            vOp = (AST){AST::treeKind::operators, lex.curToken};
             vLhs = {AST::treeKind::multiplicationExpression, {vLhs, vOp, vRhs}};
-            vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
             vRhs = parseUniqueExpression();
             if (!vRhs) {

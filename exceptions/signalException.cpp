@@ -7,4 +7,11 @@
 #include <utility>
 
 namespace rex {
+    signalException::signalException(const value &v) : msg(v) {
+
+    }
+
+    const value &signalException::get() {
+        return msg;
+    }
 } // rex

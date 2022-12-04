@@ -13,7 +13,7 @@ namespace rex {
     public:
         interpreterSignal();
 
-        const char * what() const noexcept override;
+        const char *what() const noexcept override;
     };
 
 } // rex

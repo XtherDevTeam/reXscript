@@ -6,10 +6,16 @@
 #define REXSCRIPT_SIGNALEXCEPTION_HPP
 
 #include "interpreterSignal.hpp"
+#include "interpreter/value.hpp"
 
 namespace rex {
 
-    class signalException : interpreterSignal{
+    class signalException : interpreterSignal {
+        value msg;
+    public:
+        signalException(const value &v);
+
+        const value &get();
     };
 
 } // rex

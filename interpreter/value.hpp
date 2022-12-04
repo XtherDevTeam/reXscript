@@ -1,31 +1,56 @@
 //
-// Created by XIaokang00010 on 2022/11/27.
+// Created by XIaokang00010 on 2022/12/3.
 //
 
 #ifndef REXSCRIPT_VALUE_HPP
 #define REXSCRIPT_VALUE_HPP
 
+#include "frontend/ast.hpp"
 #include "share/share.hpp"
 
 namespace rex {
     class value {
     public:
-        enum class vKind {
-            vNull = 0b0000000000001,
-            vInt = 0b0000000000010,
-            vDeci = 0b0000000000100,
-            vBool = 0b0000000001000,
-            vStr = 0b0000000010000,
-            vObject = 0b0000000100000,
-            vVec = 0b0000001000000,
-            vRef = 0b0000010000000,
+        using vecObject = vec<managedPtr<value>>;
+        using cxtObject = map<vstr, managedPtr<value>>;
+        using nativeFuncPtr = std::function<value(void*, vec<value>, managedPtr<value>)>;
+
+        struct funcObject {
+            vec<vstr> argsName;
+            AST code;
+
+            funcObject();
+
+            funcObject(const vec<vstr> &argsName, AST code);
+        };
+
+        struct lambdaObject {
+            managedPtr<value> outerCxt;
+            funcObject func;
+
+            lambdaObject();
+
+            lambdaObject(managedPtr<value> outerCxt, funcObject func);
+        };
+
+        enum class vKind : uint16_t {
+            vNull,
+            vInt,
+            vDeci,
+            vBool,
+            vStr,
+            vVec,
+            vObject,
+            vFunc,
+            vLambda,
+            vNativeFuncPtr,
+            vRef,
         } kind;
 
         union vValue {
             vint vInt;
             vdeci vDeci;
             vbool vBool;
-            unsafePtr<unknownPtr> vPtr;
 
             vValue();
 
@@ -34,44 +59,66 @@ namespace rex {
             vValue(vdeci v);
 
             vValue(vbool v);
+        } basicValue;
 
-            template<typename T1>
-            vValue(unsafePtr<T1> v) : vPtr((unsafePtr<unknownPtr>)(v)) {}
-        } val;
+        // objects are saved here.
+        managedPtr<value> refObj;
+        managedPtr<vstr> strObj;
+        managedPtr<vecObject> vecObj;
+        managedPtr<funcObject> funcObj;
+        managedPtr<lambdaObject> lambdaObj;
+        managedPtr<nativeFuncPtr> nativeFuncObj;
 
-        map<vstr, value*> object;
+        // members
+        cxtObject members;
 
-        template<typename T>
-        T& getPtr() {
-            return (unsafePtr<T>)(val.vPtr);
-        }
+        bool isRef();
 
-        const vint & getInt();
+        // make a deep copy from this value to dest
+        void deepCopy(value &dest);
 
-        const vdeci & getDeci();
+        vint &getInt();
 
-        const vbool & getBool();
+        vbool &getBool();
 
-        vint &getIntRef();
+        vdeci &getDeci();
 
-        vdeci &getDeciRef();
+        value &getRef();
 
-        vbool &getBoolRef();
+        vecObject &getVec();
 
-        bool setMember(const vstr &l, const value &r);
+        funcObject &getFunc();
 
-        bool deleteMember(const vstr &l);
+        lambdaObject &getLambda();
 
-        value &operator[](const vstr &l);
+        vstr &getStr();
+
+        managedPtr<value> operator[](const vstr &v);
+
+        value(const vstr &v, cxtObject members);
+
+        value(const vecObject &v, cxtObject members);
+
+        value(cxtObject members);
+
+        value(const funcObject &v);
+
+        value(const lambdaObject &v);
+
+        value(const nativeFuncPtr &v);
+
+        value(const managedPtr<value> &v);
+
+        value(vint v);
+
+        value(vdeci v);
+
+        value(vbool v);
 
         value();
-
-        value(vKind k, const vValue &v);
-
-        value(const value& v);
-
-        ~value();
     };
-}
 
-#endif
+#define valueKindComparator(x, y) ((vsize)((vsize)(x) << 16) | (vsize)(y))
+} // rex
+
+#endif //REXSCRIPT_VALUE_HPP

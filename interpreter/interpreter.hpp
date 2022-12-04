@@ -1,54 +1,50 @@
 //
-// Created by XIaokang00010 on 2022/11/30.
+// Created by XIaokang00010 on 2022/12/3.
 //
 
 #ifndef REXSCRIPT_INTERPRETER_HPP
 #define REXSCRIPT_INTERPRETER_HPP
 
-#include "frontend/ast.hpp"
-#include "interpreter/value.hpp"
-#include <functional>
-#include <interpreter/heap.hpp>
+#include "value.hpp"
 
 namespace rex {
+
     struct environment {
         struct stackFrame {
-            heap::vItem *globalContext;
-            vec<map<vstr, value>> localContext;
-            
+            managedPtr<value> moduleCxt;
+            vec<value::cxtObject> localCxt;
+
+            void pushLocalCxt(const value::cxtObject &cxt);
+
+            void popLocalCxt();
+
             stackFrame();
 
-            stackFrame(heap::vItem *globCxt);
-
-            stackFrame(heap::vItem *globCxt, const map<vstr, value> &initLocalCxt);
-
-            void pushLocalContext(const map<vstr, value> &initLocalCxt);
-
-            void popLocalContext();
+            stackFrame(managedPtr<value> &moduleCxt, const vec<value::cxtObject> &localCxt);
         };
-        heap envHeap;
-        map<vstr, heap::vItem *> loadedModules; // save the runtime modules in heap
-        
-        vec<stackFrame> envStack;
+
+        managedPtr<value> globalCxt;
     };
 
     class interpreter {
-        environment *env;
+        vec<environment::stackFrame> stack;
+        managedPtr<value> moduleCxt;
+        managedPtr<environment> env;
     public:
-        interpreter();
+        interpreter(const managedPtr<environment> &env, const managedPtr<value> &moduleCxt);
 
-        interpreter(environment *env);
+        static value makeErr(const vstr &errName, const vstr &errMsg);
 
-        value makeErr(const vstr &errName, const vstr &errMsg);
+        value invokeFunc(managedPtr<value> func, const vec<value> &args, const managedPtr<value>& passThisPtr);
 
-        value invokeFunc(value *val, const vec<value> &args, value *passThisPtr = nullptr);
+        value interpretLvalueExpressions(const AST &target);
 
-        value *getRvalue(const AST & target);
-
-        value interpret(const AST & target);
+        // 整合解释器和符号查找器
+        // 对于Rvalue -> 返回ref形式
+        // 对于Lvalue -> 返回value形式
+        value interpret(const AST &target);
     };
 
-    using nativeFuncPtr = std::function<value(interpreter *, vec<value> &)>;
-}
+} // rex
 
-#endif
+#endif //REXSCRIPT_INTERPRETER_HPP

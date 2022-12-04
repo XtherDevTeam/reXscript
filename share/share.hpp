@@ -31,60 +31,16 @@ namespace rex {
 
     template<typename T>
     using unsafePtr = T *;
-    using unknownPtr = unsafePtr<void *>;
-//    using rexNativeFunc = std::function<void(st)
 
     template<typename T>
-    struct managedPtr {
-        struct base {
-            rex::vsize refCount;
-            T v;
+    using managedPtr = std::shared_ptr<T>;
 
-            base() : refCount(0), v() {}
+    using unknownPtr = unsafePtr<void *>;
 
-            base(T &v) : refCount(0), v(v) {}
-
-            base(const T &v) : refCount(0), v(v) {}
-        } *ptr;
-
-
-        managedPtr<T>(T &v) {
-            ptr = new base(v);
-            ptr->refCount++;
-        }
-
-        managedPtr<T>(const T &v) {
-            ptr = new base(v);
-            ptr->refCount++;
-        }
-
-        managedPtr<T>(managedPtr<T> &v) {
-            ptr = v.ptr;
-            ptr->refCount++;
-        }
-
-        managedPtr<T>(const managedPtr<T> &v) {
-            ptr = v.ptr;
-            ptr->refCount++;
-        }
-
-        template<typename T1>
-        managedPtr<T>(const managedPtr<T1> &v) {
-            ptr = (managedPtr<T>::base *) v.ptr;
-            ptr->refCount++;
-        }
-
-        ~managedPtr<T>() {
-            ptr->refCount--;
-            if (!ptr->refCount) {
-                delete ptr;
-            }
-        }
-
-        T &operator()() {
-            return ptr->v;
-        }
-    };
+    template<typename T>
+    managedPtr<T> managePtr(const T& v) {
+        return std::make_shared<T>(v);
+    }
 }
 
 #endif //REXSCRIPT_SHARE_HPP

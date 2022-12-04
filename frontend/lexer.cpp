@@ -5,7 +5,6 @@
 #include "lexer.hpp"
 #include <exceptions/unexpectedTokenException.hpp>
 #include <exceptions/endOfFileException.hpp>
-#include <utility>
 
 namespace rex {
     lexer::lexer(std::wistream &ss) : stream(ss), line(0), col(0), curCh() {
@@ -76,6 +75,12 @@ namespace rex {
             return curToken = leftBracesStart();
         } else if (curCh == L'}') {
             return curToken = rightBracesStart();
+        } else if (curCh == '&') {
+            return curToken = andStart();
+        } else if (curCh == '|') {
+            return curToken = orStart();
+        } else if (curCh == '^') {
+            return curToken = xorStart();
         } else {
             throw unexpectedTokenException(line, col, curCh);
         }
@@ -159,11 +164,16 @@ namespace rex {
         if (curCh == '.') {
             tok.kind = token::tokenKind::decimal;
             tempStr += curCh;
+            getCh();
             while (isdigit(curCh)) {
                 tempStr += curCh;
+                getCh();
             }
         }
-        tok.basicVal.vInt = stol(tempStr);
+        if (tok.kind == token::tokenKind::integer)
+            tok.basicVal.vInt = std::stol(tempStr);
+        else
+            tok.basicVal.vDeci = std::stof(tempStr);
         return tok;
     }
 
@@ -270,6 +280,9 @@ namespace rex {
         if (curCh == '=') {
             tok.kind = token::tokenKind::lessEqual;
             getCh();
+        } else if (curCh == '<') {
+            tok.kind = token::tokenKind::binaryShiftLeft;
+            getCh();
         }
         return tok;
     }
@@ -279,6 +292,9 @@ namespace rex {
         getCh();
         if (curCh == '=') {
             tok.kind = token::tokenKind::greaterEqual;
+            getCh();
+        } else if (curCh == '>') {
+            tok.kind = token::tokenKind::binaryShiftRight;
             getCh();
         }
         return tok;
@@ -362,6 +378,32 @@ namespace rex {
             states.pop_back();
     }
 
+    lexer::token lexer::andStart() {
+        lexer::token tok{line, col, token::tokenKind::binaryAnd};
+        getCh();
+        if (curCh == '&') {
+            tok.kind = token::tokenKind::logicAnd;
+            getCh();
+        }
+        return tok;
+    }
+
+    lexer::token lexer::orStart() {
+        lexer::token tok{line, col, token::tokenKind::binaryOr};
+        getCh();
+        if (curCh == '|') {
+            tok.kind = token::tokenKind::logicOr;
+            getCh();
+        }
+        return tok;
+    }
+
+    lexer::token lexer::xorStart() {
+        lexer::token tok{line, col, token::tokenKind::binaryXor};
+        getCh();
+        return tok;
+    }
+
     lexer::token::vBasicValue::vBasicValue(vint v) : vInt(v) {
 
     }
@@ -384,12 +426,12 @@ namespace rex {
     }
 
     lexer::token::token(vsize line, vsize col, lexer::token::tokenKind kind) :
-        line(line), col(col), kind(kind), basicVal(), strVal() {
+            line(line), col(col), kind(kind), basicVal(), strVal() {
 
     }
 
     lexer::token::token(vsize line, vsize col, lexer::token::tokenKind kind, lexer::token::vBasicValue basicVal) :
-        line(line), col(col), kind(kind), basicVal(basicVal), strVal() {
+            line(line), col(col), kind(kind), basicVal(basicVal), strVal() {
 
     }
 
@@ -403,7 +445,8 @@ namespace rex {
 
     }
 
-    lexer::lexerState::lexerState(vsize line, vsize col, std::istream::pos_type pos, vchar curCh, lexer::token curToken) :
+    lexer::lexerState::lexerState(vsize line, vsize col, std::istream::pos_type pos, vchar curCh, lexer::token curToken)
+            :
             line(line), col(col), pos(pos), curCh(curCh), curToken(std::move(curToken)) {
 
     }
