@@ -13,8 +13,8 @@ namespace rex {
 
     }
 
-    value::funcObject::funcObject(const vec<vstr> &argsName, AST code) :
-            argsName(argsName), code(std::move(code)) {
+    value::funcObject::funcObject(const managedPtr<value> &moduleCxt, const vec<vstr> &argsName, AST code) :
+            moduleCxt(moduleCxt), argsName(argsName), code(std::move(code)) {
 
     }
 

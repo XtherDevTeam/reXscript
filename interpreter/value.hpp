@@ -16,12 +16,13 @@ namespace rex {
         using nativeFuncPtr = std::function<value(void*, vec<value>, const managedPtr<value>& )>;
 
         struct funcObject {
+            managedPtr<value> moduleCxt;
             vec<vstr> argsName;
             AST code;
 
             funcObject();
 
-            funcObject(const vec<vstr> &argsName, AST code);
+            funcObject(const managedPtr<value> &moduleCxt, const vec<vstr> &argsName, AST code);
         };
 
         struct lambdaObject {

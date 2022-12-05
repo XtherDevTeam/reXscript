@@ -50,7 +50,7 @@ namespace rex {
         try {
             switch (func->kind) {
                 case value::vKind::vFunc: {
-                    stack.push_back({stack.empty() ? moduleCxt : stack.back().moduleCxt, {}});
+                    stack.push_back({func->getFunc().moduleCxt, {}});
                     stack.back().pushLocalCxt({});
 
                     if (passThisPtr)
@@ -64,7 +64,7 @@ namespace rex {
                     return {};
                 }
                 case value::vKind::vLambda: {
-                    stack.push_back({stack.empty() ? moduleCxt : stack.back().moduleCxt, {}});
+                    stack.push_back({func->getFunc().moduleCxt, {}});
                     stack.back().pushLocalCxt({});
 
                     if (passThisPtr)
@@ -197,6 +197,7 @@ namespace rex {
                     lambda.func.argsName.push_back(i.leaf.strVal);
                 }
                 lambda.func.code = target.child[2];
+                lambda.func.moduleCxt = stack.empty() ? moduleCxt : stack.back().moduleCxt;
                 return {lambda};
             }
             case AST::treeKind::functionDefinition: {
@@ -205,6 +206,7 @@ namespace rex {
                     func.argsName.push_back(i.leaf.strVal);
                 }
                 func.code = target.child[1];
+                func.moduleCxt = stack.empty() ? moduleCxt : stack.back().moduleCxt;
                 return {func};
             }
             case AST::treeKind::memberExpression: {
@@ -254,7 +256,7 @@ namespace rex {
                     case AST::treeKind::invokingExpression: {
                         if (auto it = l.members.find(target.child[1].child[0].leaf.strVal); it != l.members.end()) {
                             vec<value> args;
-                            for (auto &i: target.child[1].child[0].child) {
+                            for (auto &i: target.child[1].child[1].child) {
                                 args.push_back(interpret(i));
                             }
                             return invokeFunc(it->second, args,

@@ -9,17 +9,17 @@
 
 namespace rex {
     namespace stringMethods {
-        value substr(void* interpreter, vec<value> args, const managedPtr<value>&  passThisPtr);
+        value substr(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
-        value startsWith(void* interpreter, vec<value> args, const managedPtr<value>&  passThisPtr);
+        value startsWith(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
-        value endsWith(void* interpreter, vec<value> args, const managedPtr<value>&  passThisPtr);
+        value endsWith(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
-        value charAt(void* interpreter, vec<value> args, const managedPtr<value>&  passThisPtr);
+        value charAt(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
-        value fromChar(void* interpreter, vec<value> args, const managedPtr<value>&  passThisPtr);
+        value fromChar(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
-        value length(void* interpreter, vec<value> args, const managedPtr<value>&  passThisPtr);
+        value length(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }
@@ -29,9 +29,11 @@ namespace rex {
     }
 
     namespace globalMethods {
-        value input(void* interpreter, vec<value> args, const managedPtr<value>&  passThisPtr);
+        value input(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
-        value print(void* interpreter, vec<value> args, const managedPtr<value>&  passThisPtr);
+        value print(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value rexImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }

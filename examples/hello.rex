@@ -1,10 +1,8 @@
-import 'stdlib/io.rex' as io;
+let add = func(a, b) {
+    return a + b;
+};
 
-const main = func () {
-    let obj = object {
-        'stmt': 'FUCK CCF.',
-        'online': 'true'
-    };
-    io.print("Hello, reXscript!", obj.stmt, obj.online);
+let rexModInit = func() {
+    print("Neihou, saaigaai!\n", "My location is ", *__path__, "\n");
     return 0;
 };

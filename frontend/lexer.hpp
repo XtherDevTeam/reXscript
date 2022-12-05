@@ -69,7 +69,6 @@ namespace rex {
                 kObject,
                 kClosure,
                 kLet,
-                kImport,
                 kAs,
                 kIn,
                 kIf,

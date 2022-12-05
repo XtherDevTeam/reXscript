@@ -9,8 +9,9 @@ file(GLOB REX_SRC
         interpreter/*.cpp
         pass/*.cpp
         share/*.cpp
-        exceptions/*.cpp)
+        exceptions/*.cpp
+        *.cpp)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_executable(rex main.cpp ${REX_SRC})
+add_executable(rex exec/main.cpp ${REX_SRC})

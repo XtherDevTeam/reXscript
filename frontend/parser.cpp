@@ -837,10 +837,6 @@ namespace rex {
             stmt = parseStmts();
         }
 
-        if (lex.curToken.kind != lexer::token::tokenKind::eof) {
-            throw parserException(lex.line, lex.col, L"expected EOF");
-        }
-
         return base;
     }
 

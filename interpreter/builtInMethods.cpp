@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "builtInMethods.hpp"
+#include "rex.hpp"
 
 namespace rex {
     value::cxtObject stringMethods::getMethodsCxt() {
@@ -78,6 +79,15 @@ namespace rex {
         value::cxtObject result;
         result[L"input"] = managePtr(value{(value::nativeFuncPtr) input});
         result[L"print"] = managePtr(value{(value::nativeFuncPtr) print});
+        result[L"import"] = managePtr(value{(value::nativeFuncPtr) rexImport});
         return result;
+    }
+
+    value globalMethods::rexImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+        auto *in = (rex::interpreter*)interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        return rex::importExternModules(in->env, args[0].getStr());
     }
 }

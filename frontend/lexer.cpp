@@ -13,12 +13,11 @@ namespace rex {
     }
 
     void lexer::getCh() {
-        vchar backup = curCh;
-        curCh = stream.get();
-        if (curCh == 0 or curCh == -1) {
-            curCh = L'\0';
-            if (!backup)
-                throw endOfFileException();
+        if (!stream) {
+            throw endOfFileException();
+        }
+        if(!stream.get(curCh)) {
+            curCh = '\0';
         }
         if (curCh == L'\n') {
             line++, col = 0;
@@ -32,7 +31,7 @@ namespace rex {
             return {line, col, token::tokenKind::eof};
         }
         while (curCh == ' ' or curCh == '\n' or curCh == '\r' or curCh == '\t') getCh();
-        if (std::isalpha(curCh)) {
+        if (std::isalpha(curCh) or curCh == '_') {
             return curToken = alphaStart();
         } else if (std::isdigit(curCh)) {
             return curToken = digitStart();
@@ -118,8 +117,6 @@ namespace rex {
             tok.kind = token::tokenKind::kClosure;
         } else if (tempStr == L"let") {
             tok.kind = token::tokenKind::kLet;
-        } else if (tempStr == L"import") {
-            tok.kind = token::tokenKind::kImport;
         } else if (tempStr == L"as") {
             tok.kind = token::tokenKind::kAs;
         } else if (tempStr == L"in") {

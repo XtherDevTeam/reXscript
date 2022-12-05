@@ -1,7 +1,7 @@
-#include <frontend/ast.hpp>
-#include <frontend/parser.hpp>
+#include "frontend/ast.hpp"
+#include "frontend/parser.hpp"
 #include <iostream>
-#include <pass/stringToLexerPass.hpp>
+#include "pass/stringToLexerPass.hpp"
 #include "interpreter/value.hpp"
 #include "interpreter/builtInMethods.hpp"
 #include "interpreter/interpreter.hpp"
@@ -33,6 +33,16 @@ void lexTest() {
     std::cout << (char *) s.c_str() << std::endl;
 }
 
+void fuckIstringstream() {
+    std::wstring s = L"a\\n";
+    std::wistringstream ss{s};
+    rex::vchar ch{};
+    while (ss) {
+        if(!ss.get(ch)) break;
+        printf("%c", ch);
+    }
+}
+
 int main() {
     rex::managedPtr<rex::environment> env = rex::managePtr(rex::environment{});
     rex::managedPtr<rex::value> moduleCxt = rex::managePtr(rex::value{});
@@ -41,5 +51,6 @@ int main() {
     rex::managedPtr<rex::interpreter> interpreter = rex::managePtr(rex::interpreter{env, moduleCxt});
     interactiveShell(interpreter);
 //    lexTest();
+//fuckIstringstream();
     return 0;
 }
