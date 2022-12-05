@@ -2,6 +2,7 @@
 // Created by XIaokang00010 on 2022/11/13.
 //
 
+#include <iomanip>
 #include "lexer.hpp"
 #include <exceptions/unexpectedTokenException.hpp>
 #include <exceptions/endOfFileException.hpp>
@@ -127,6 +128,12 @@ namespace rex {
             tok.kind = token::tokenKind::kIf;
         } else if (tempStr == L"else") {
             tok.kind = token::tokenKind::kElse;
+        } else if (tempStr == L"try") {
+            tok.kind = token::tokenKind::kTry;
+        } else if (tempStr == L"catch") {
+            tok.kind = token::tokenKind::kCatch;
+        } else if (tempStr == L"throw") {
+            tok.kind = token::tokenKind::kThrow;
         } else if (tempStr == L"true" or tempStr == L"false") {
             tok.kind = token::tokenKind::boolean;
             tok.basicVal.vBool = tempStr == L"true";
@@ -149,6 +156,9 @@ namespace rex {
             getCh();
         }
         getCh(); // skip "
+        std::wistringstream ss{tok.strVal};
+        tok.strVal = {};
+        parseString(ss, tok.strVal);
         return tok;
     }
 
@@ -365,8 +375,7 @@ namespace rex {
     }
 
     void lexer::returnState() {
-        if (stream.eof())
-            stream.clear();
+        stream.clear();
         lexerState &state = states.back();
         line = state.line, col = state.col, curCh = state.curCh, curToken = state.curToken;
         stream.seekg(static_cast<long long>(state.pos));

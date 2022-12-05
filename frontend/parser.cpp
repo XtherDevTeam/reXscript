@@ -67,6 +67,7 @@ namespace rex {
                         throw parserException(lex.line, lex.col,
                                               L"cannot match a LvalueExpression node for subscriptExpression");
                     }
+                    break;
                 }
                 case lexer::token::tokenKind::leftParentheses: {
                     AST arg = parseArguments();
@@ -94,10 +95,10 @@ namespace rex {
         lex.scan();
         AST base = {AST::treeKind::listLiteral, (vec<AST>) {}}, current = parseLvalueExpression();
         while (current) {
+            base.child.push_back(current);
             if (lex.curToken.kind != lexer::token::tokenKind::comma)
                 break;
             lex.scan();
-            base.child.push_back(current);
             current = parseLvalueExpression();
         }
         if (lex.curToken.kind != lexer::token::tokenKind::rightBracket) {
@@ -151,14 +152,14 @@ namespace rex {
         lex.scan();
         AST base = {AST::treeKind::arguments, (vec<AST>) {}}, current = parseLvalueExpression();
         while (current) {
+            base.child.push_back(current);
             if (lex.curToken.kind != lexer::token::tokenKind::comma)
                 break;
             lex.scan();
-            base.child.push_back(current);
             current = parseLvalueExpression();
         }
         if (lex.curToken.kind != lexer::token::tokenKind::rightParentheses) {
-            throw parserException(lex.line, lex.col, L"expected a '}' to close an Arguments node");
+            throw parserException(lex.line, lex.col, L"expected a ')' to close an Arguments node");
         }
         lex.scan();
         return base;
@@ -175,10 +176,10 @@ namespace rex {
         AST passVarsBase = {AST::treeKind::arguments, (vec<AST>) {}};
         AST temp = parseIdentifier();
         while (temp) {
+            passVarsBase.child.push_back(temp);
             if (lex.curToken.kind != lexer::token::tokenKind::comma) {
                 break;
             }
-            passVarsBase.child.push_back(temp);
             lex.scan();
             temp = parseIdentifier();
         }
@@ -198,10 +199,10 @@ namespace rex {
         AST argumentsNode = {AST::treeKind::arguments, (vec<AST>) {}};
         temp = parseIdentifier();
         while (temp) {
+            argumentsNode.child.push_back(temp);
             if (lex.curToken.kind != lexer::token::tokenKind::comma) {
                 break;
             }
-            argumentsNode.child.push_back(temp);
             lex.scan();
             temp = parseIdentifier();
         }
@@ -232,10 +233,10 @@ namespace rex {
         AST argumentsNode = {AST::treeKind::arguments, (vec<AST>) {}};
         AST temp = parseIdentifier();
         while (temp) {
+            argumentsNode.child.push_back(temp);
             if (lex.curToken.kind != lexer::token::tokenKind::comma) {
                 break;
             }
-            argumentsNode.child.push_back(temp);
             lex.scan();
             temp = parseIdentifier();
         }
@@ -318,7 +319,9 @@ namespace rex {
 
         if (lex.curToken.kind == lexer::token::tokenKind::incrementSign or
             lex.curToken.kind == lexer::token::tokenKind::decrementSign or
-            lex.curToken.kind == lexer::token::tokenKind::minus) {
+            lex.curToken.kind == lexer::token::tokenKind::minus or
+            lex.curToken.kind == lexer::token::tokenKind::binaryAnd or
+            lex.curToken.kind == lexer::token::tokenKind::asterisk) {
             AST vOperator = {AST::treeKind::operators, lex.curToken};
             lex.scan();
             AST vItem = parsePrimary();
@@ -609,11 +612,14 @@ namespace rex {
 
         if (lex.curToken.kind != lexer::token::tokenKind::leftParentheses)
             throw parserException(lex.line, lex.col, L"expected `(` after `while`");
+        lex.scan();
+
         AST condition = parseLvalueExpression();
         if (!condition)
             throw parserException(lex.line, lex.col, L"expected LvalueExpression after `(`");
         if (lex.curToken.kind != lexer::token::tokenKind::rightParentheses)
             throw parserException(lex.line, lex.col, L"expected `)` after condition");
+        lex.scan();
 
         AST stmt = parseStmts();
         if (!stmt)
@@ -759,6 +765,14 @@ namespace rex {
     AST parser::parseStmts() {
         AST result;
 
+        result = parseTryCatchStmt();
+        if (result)
+            return result;
+
+        result = parseThrowStmt();
+        if (result)
+            return result;
+
         result = parseReturnStmt();
         if (result)
             return result;
@@ -828,5 +842,37 @@ namespace rex {
         }
 
         return base;
+    }
+
+    AST parser::parseTryCatchStmt() {
+        if (lex.curToken.kind != lexer::token::tokenKind::kTry)
+            return {};
+        lex.scan();
+        AST tryBlock = parseBlockStmt();
+        if (!tryBlock)
+            throw parserException(lex.line, lex.col, L"expected blockStmt after `try`");
+        if (lex.curToken.kind != lexer::token::tokenKind::kCatch)
+            throw parserException(lex.line, lex.col, L"expected `catch` after blockStmt");
+        lex.scan();
+        if (lex.curToken.kind != lexer::token::tokenKind::kAs)
+            throw parserException(lex.line, lex.col, L"expected `as` after `catch`");
+        lex.scan();
+        AST catchId = parseIdentifier();
+        if (!catchId)
+            throw parserException(lex.line, lex.col, L"expected an identifier after `as`");
+        AST catchBlock = parseBlockStmt();
+        if (!catchBlock)
+            throw parserException(lex.line, lex.col, L"expected blockStmt after identifier");
+        return {AST::treeKind::tryCatchStmt, {tryBlock, catchId, catchBlock}};
+    }
+
+    AST parser::parseThrowStmt() {
+        if (lex.curToken.kind != lexer::token::tokenKind::kThrow)
+            return {};
+        lex.scan();
+        AST expr = parseLvalueExpression();
+        if (!expr)
+            throw parserException(lex.line, lex.col, L"expected LvalueExpression after `throw`");
+        return {AST::treeKind::throwStmt, {expr}};
     }
 } // rex

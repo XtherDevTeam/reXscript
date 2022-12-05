@@ -17,3 +17,55 @@ std::wstring rex::buildErrorMessage(rex::vsize line, rex::vsize col, const rex::
     ss << "At line " << line << " column " << col << ": " << what;
     return ss.str();
 }
+
+void rex::parseString(std::wistream &input, rex::vstr &value) {
+    vchar ch = '\0';
+    while (!input.eof() && input.good()) {
+        input.get(ch);
+        if (ch == '\\') {
+            input.get(ch);
+            switch (ch) {
+                case '\\':
+                case '"':
+                case '\'':
+                case '/':
+                    value.push_back(ch);
+                    break;
+                case 'b':
+                    value.push_back('\b');
+                    break;
+                case 'f':
+                    value.push_back('\f');
+                    break;
+                case 'n':
+                    value.push_back('\n');
+                    break;
+                case 'r':
+                    value.push_back('\r');
+                    break;
+                case 't':
+                    value.push_back('\t');
+                    break;
+                case 'u': {
+                    vchar fuckutf{};
+                    for (vint i = 3; (!input.eof() && input.good()) && i >= 0; i--) {
+                        input.get(ch);
+                        if ('a' <= ch and ch <= 'z')
+                            fuckutf += ((ch - 'a' + 10) * (1 << 4 * i));
+                        else if ('A' <= ch and ch <= 'Z')
+                            fuckutf += ((ch - 'A' + 10) * (1 << 4 * i));
+                        else
+                            fuckutf += ((ch - '0') * (1 << 4 * i));
+                    }
+                    value.push_back(fuckutf);
+                    break;
+                }
+                default:
+                    value.push_back(ch);
+                    break;
+            }
+        } else {
+            value.push_back(ch);
+        }
+    }
+}

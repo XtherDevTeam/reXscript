@@ -31,10 +31,15 @@ namespace rex {
     };
 
     class interpreter {
+    public:
         vec<environment::stackFrame> stack;
         managedPtr<value> moduleCxt;
         managedPtr<environment> env;
-    public:
+
+        vsize getCurStackIdx();
+
+        void backToStackIdx(vsize stkIdx);
+
         interpreter(const managedPtr<environment> &env, const managedPtr<value> &moduleCxt);
 
         static value makeErr(const vstr &errName, const vstr &errMsg);

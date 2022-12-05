@@ -41,6 +41,8 @@ namespace rex {
     managedPtr<T> managePtr(const T& v) {
         return std::make_shared<T>(v);
     }
+
+    void parseString(std::wistream & input, vstr& value);
 }
 
 #endif //REXSCRIPT_SHARE_HPP

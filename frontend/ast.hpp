@@ -46,6 +46,8 @@ namespace rex {
             returnStmt,                 // like return 1 + 1
             continueStmt,               // like continue
             breakStmt,                  // like break
+            tryCatchStmt,               // try {...} catch as e {...}
+            throwStmt,                  // throw sth
             operators,                  // like +, -, *, /
         } kind;
 

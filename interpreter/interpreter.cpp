@@ -252,9 +252,9 @@ namespace rex {
                         }
                     }
                     case AST::treeKind::invokingExpression: {
-                        if (auto it = l.members.find(target.child[1].leaf.strVal); it != l.members.end()) {
+                        if (auto it = l.members.find(target.child[1].child[0].leaf.strVal); it != l.members.end()) {
                             vec<value> args;
-                            for (auto &i: target.child[1].child) {
+                            for (auto &i: target.child[1].child[0].child) {
                                 args.push_back(interpret(i));
                             }
                             return invokeFunc(it->second, args,
@@ -274,7 +274,7 @@ namespace rex {
             case AST::treeKind::uniqueExpression: {
                 value rhs = interpret(target.child[1]);
                 value &r = rhs.isRef() ? rhs.getRef() : rhs;
-                switch (target.child[1].leaf.kind) {
+                switch (target.child[0].leaf.kind) {
                     case lexer::token::tokenKind::minus: {
                         switch (r.kind) {
                             case value::vKind::vInt:
@@ -336,6 +336,11 @@ namespace rex {
                             }
                         }
                     }
+                    case lexer::token::tokenKind::asterisk: {
+                        value dest;
+                        r.deepCopy(dest);
+                        return dest;
+                    }
                     default: {
                         return {};
                     }
@@ -362,12 +367,16 @@ namespace rex {
             }
             case AST::treeKind::letStmt: {
                 for (auto &item: target.child) {
+                    value rhs = interpret(item.child[1]);
+                    if (rhs.isRef())
+                        rhs = rhs.getRef();
+
                     if (!stack.empty()) {
-                        stack.back().localCxt.back()[item.child[0].leaf.strVal] = managePtr(interpret(item.child[1]));
+                        stack.back().localCxt.back()[item.child[0].leaf.strVal] = managePtr(rhs);
                     } else if (moduleCxt) {
-                        moduleCxt->members[item.child[0].leaf.strVal] = managePtr(interpret(item.child[1]));
+                        moduleCxt->members[item.child[0].leaf.strVal] = managePtr(rhs);
                     } else {
-                        env->globalCxt->members[item.child[0].leaf.strVal] = managePtr(interpret(item.child[1]));
+                        env->globalCxt->members[item.child[0].leaf.strVal] = managePtr(rhs);
                     }
                 }
                 return {};
@@ -494,6 +503,26 @@ namespace rex {
             }
             case AST::treeKind::breakStmt: {
                 throw signalBreak{};
+            }
+            case AST::treeKind::tryCatchStmt: {
+                auto cxtIdx = stack.back().getCurLocalCxtIdx();
+                auto stkIdx = getCurStackIdx();
+                try {
+                    interpret(target.child[0]);
+                } catch (signalException &e) {
+                    backToStackIdx(stkIdx);
+                    stack.back().backToLocalCxt(cxtIdx);
+                    stack.back().pushLocalCxt({{target.child[1].leaf.strVal, managePtr(e.get())}});
+                    interpret(target.child[2]);
+                    stack.back().popLocalCxt();
+                }
+                return {};
+            }
+            case AST::treeKind::throwStmt: {
+                throw signalException(interpret(target.child[0]));
+            }
+            case AST::treeKind::returnStmt: {
+                throw signalReturn(interpret(target.child[0]));
             }
             default: {
                 return {};
@@ -978,9 +1007,11 @@ namespace rex {
         value rhs = interpret(target.child[2]);
         if (rhs.isRef())
             rhs = rhs.getRef();
+
         switch (target.child[1].leaf.kind) {
             case lexer::token::tokenKind::assignSign: {
                 (*l) = rhs;
+                return lhs;
             }
             case lexer::token::tokenKind::additionAssignment: {
                 switch (valueKindComparator(l->kind, rhs.kind)) {
@@ -1184,5 +1215,13 @@ namespace rex {
                 return {};
             }
         }
+    }
+
+    vsize interpreter::getCurStackIdx() {
+        return stack.size();
+    }
+
+    void interpreter::backToStackIdx(vsize stkIdx) {
+        while (stack.size() > stkIdx) stack.pop_back();
     }
 } // rex

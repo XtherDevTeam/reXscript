@@ -171,6 +171,64 @@ namespace rex {
             throw rexException(L"NullPointerException: strObj == nullptr");
     }
 
+    value::operator vstr() {
+        std::wstringstream ss;
+        ss << L"<rexValue type=";
+        switch (kind) {
+            case vKind::vNull: {
+                ss << L"null>";
+                break;
+            }
+            case vKind::vInt: {
+                ss << L"int val=" << basicValue.vInt << L">";
+                break;
+            }
+            case vKind::vDeci: {
+                ss << L"deci val=" << basicValue.vDeci << L">";
+                break;
+            }
+            case vKind::vBool: {
+                ss << L"bool val=" << basicValue.vBool << L">";
+                break;
+            }
+            case vKind::vStr: {
+                ss << L"str val=" << getStr() << L">";
+                break;
+            }
+            case vKind::vVec: {
+                ss << L"vec val=[";
+                for (vsize i = 0;i < getVec().size();i++) {
+                    ss << (vstr) {*(getVec()[i])} << L",";
+                }
+                if (!getVec().empty())
+                    ss.seekp(-1, ss.cur);
+                ss << L"]>";
+                break;
+            }
+            case vKind::vObject:
+                ss << L"vec val={";
+                for (auto &i : members) {
+                    ss << L'"' << i.first << L'"' << ": " << (vstr){*i.second} << L',';
+                }
+                if (!members.empty())
+                    ss.seekp(-1, ss.cur);
+                break;
+            case vKind::vFunc:
+                ss << L"func>";
+                break;
+            case vKind::vLambda:
+                ss << L"lambda>";
+                break;
+            case vKind::vNativeFuncPtr:
+                ss << L"nativeFunc>";
+                break;
+            case vKind::vRef:
+                ss << L"ref val=" << (vstr){getRef()} << L">";
+                break;
+        }
+        return ss.str();
+    }
+
     value::vValue::vValue() : vInt(0) {
 
     }
