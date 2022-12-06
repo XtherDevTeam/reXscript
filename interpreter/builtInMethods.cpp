@@ -5,6 +5,7 @@
 #include <iostream>
 #include "builtInMethods.hpp"
 #include "rex.hpp"
+#include "exceptions/signalException.hpp"
 
 namespace rex {
     value::cxtObject stringMethods::getMethodsCxt() {
@@ -19,15 +20,35 @@ namespace rex {
     }
 
     value stringMethods::substr(void *selfPtr, vec<value> args, const managedPtr<value>&  passThisPtr) {
-        return {};
+        switch (args.size()) {
+            case 1: {
+                if (args[0].isRef())
+                    args[0] = args[0].getRef();
+                return {passThisPtr->getStr().substr(args[0].getInt()), getMethodsCxt()};
+            }
+            case 2: {
+                if (args[0].isRef())
+                    args[0] = args[0].getRef();
+                if (args[1].isRef())
+                    args[1] = args[1].getRef();
+                return {passThisPtr->getStr().substr(args[0].getInt(), args[1].getInt()), getMethodsCxt()};
+            }
+            default: {
+                throw rex::signalException(rex::interpreter::makeErr(L"argumentsError", L"substr() expected one or two arguments"));
+            }
+        }
     }
 
     value stringMethods::startsWith(void *selfPtr, vec<value> args, const managedPtr<value>&  passThisPtr) {
-        return {};
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+        return {passThisPtr->getStr().starts_with(args[0].getStr())};
     }
 
     value stringMethods::endsWith(void *selfPtr, vec<value> args, const managedPtr<value>&  passThisPtr) {
-        return {};
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+        return {passThisPtr->getStr().ends_with(args[0].getStr())};
     }
 
     value stringMethods::charAt(void *selfPtr, vec<value> args, const managedPtr<value>&  passThisPtr) {
