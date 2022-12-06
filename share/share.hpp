@@ -10,6 +10,7 @@
 #include <share/localr.hpp>
 #include <map>
 #include <sstream>
+#include <memory>
 
 namespace rex {
     using vsize = unsigned long long;
