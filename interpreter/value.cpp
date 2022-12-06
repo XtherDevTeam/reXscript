@@ -249,7 +249,7 @@ namespace rex {
 
     }
 
-    value::vValue::vValue(unsafePtr<unknownPtr> unknown) : unknown(unknown) {
+    value::vValue::vValue(unknownPtr unknown) : unknown(unknown) {
 
     }
 } // rex
