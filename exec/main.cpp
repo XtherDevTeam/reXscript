@@ -45,7 +45,7 @@ void fuckIstringstream() {
 
 int main() {
     rex::managedPtr<rex::environment> env = rex::managePtr(rex::environment{});
-    rex::managedPtr<rex::value> moduleCxt = rex::managePtr(rex::value{});
+    rex::managedPtr<rex::value> moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
     env->globalCxt = rex::managePtr(rex::value{rex::globalMethods::getMethodsCxt()});
     env->globalCxt->members[L"__local__"] = moduleCxt;
     rex::managedPtr<rex::interpreter> interpreter = rex::managePtr(rex::interpreter{env, moduleCxt});

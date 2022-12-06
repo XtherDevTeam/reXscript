@@ -18,7 +18,7 @@ namespace rex {
 
     managedPtr<value> importExternModules(const managedPtr <environment> &env, const vstr &path);
 
-
+    managedPtr<value> importNativeModules(const managedPtr <environment> &env, const vstr &path);
 }
 
 #endif //REXSCRIPT_REX_HPP

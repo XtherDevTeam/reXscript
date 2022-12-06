@@ -52,6 +52,7 @@ namespace rex {
             vint vInt;
             vdeci vDeci;
             vbool vBool;
+            unknownPtr unknown;
 
             vValue();
 
@@ -60,6 +61,8 @@ namespace rex {
             vValue(vdeci v);
 
             vValue(vbool v);
+
+            vValue(unknownPtr unknown);
         } basicValue;
 
         // objects are saved here.
@@ -117,6 +120,8 @@ namespace rex {
         value(vdeci v);
 
         value(vbool v);
+
+        value(unknownPtr unk);
 
         value();
     };

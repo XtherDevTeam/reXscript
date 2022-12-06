@@ -35,6 +35,8 @@ namespace rex {
 
         value rexImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
+        value rexNativeImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
         value::cxtObject getMethodsCxt();
     }
 }

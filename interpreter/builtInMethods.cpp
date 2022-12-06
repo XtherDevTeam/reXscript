@@ -80,6 +80,7 @@ namespace rex {
         result[L"input"] = managePtr(value{(value::nativeFuncPtr) input});
         result[L"print"] = managePtr(value{(value::nativeFuncPtr) print});
         result[L"import"] = managePtr(value{(value::nativeFuncPtr) rexImport});
+        result[L"nativeImport"] = managePtr(value{(value::nativeFuncPtr) rexNativeImport});
         return result;
     }
 
@@ -89,5 +90,13 @@ namespace rex {
             args[0] = args[0].getRef();
 
         return rex::importExternModules(in->env, args[0].getStr());
+    }
+
+    value globalMethods::rexNativeImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+        auto *in = (rex::interpreter*)interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        return rex::importNativeModules(in->env, args[0].getStr());
     }
 }

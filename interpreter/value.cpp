@@ -229,6 +229,10 @@ namespace rex {
         return ss.str();
     }
 
+    value::value(unknownPtr unk) : kind(vKind::vInt), basicValue(unk) {
+
+    }
+
     value::vValue::vValue() : vInt(0) {
 
     }
@@ -242,6 +246,10 @@ namespace rex {
     }
 
     value::vValue::vValue(vbool v) : vBool(v) {
+
+    }
+
+    value::vValue::vValue(unsafePtr<unknownPtr> unknown) : unknown(unknown) {
 
     }
 } // rex
