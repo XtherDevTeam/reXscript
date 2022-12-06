@@ -11,6 +11,7 @@
 #include <map>
 #include <sstream>
 #include <memory>
+#include <functional>
 
 namespace rex {
     using vsize = unsigned long long;
