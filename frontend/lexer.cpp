@@ -375,7 +375,7 @@ namespace rex {
         stream.clear();
         lexerState &state = states.back();
         line = state.line, col = state.col, curCh = state.curCh, curToken = state.curToken;
-        stream.seekg(static_cast<long long>(state.pos));
+        stream.seekg(state.pos);
         dropState();
     }
 

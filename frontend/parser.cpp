@@ -150,7 +150,9 @@ namespace rex {
             return makeNotMatch();
         }
         lex.scan();
-        AST base = {AST::treeKind::arguments, (vec<AST>) {}}, current = parseLvalueExpression();
+
+        AST base = {AST::treeKind::arguments, (vec<AST>) {}};
+        AST current = parseLvalueExpression();
         while (current) {
             base.child.push_back(current);
             if (lex.curToken.kind != lexer::token::tokenKind::comma)
@@ -671,7 +673,6 @@ namespace rex {
 
     AST parser::parseRangeBasedForStmt() {
         if (lex.curToken.kind != lexer::token::tokenKind::kForEach) {
-            lex.dropState();
             return makeNotMatch();
         }
         lex.scan();
