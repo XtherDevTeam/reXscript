@@ -46,6 +46,42 @@ namespace rex {
 
         value invokeFunc(managedPtr<value> func, const vec<value> &args, const managedPtr<value>& passThisPtr);
 
+        value opAdd(value &a, value &b);
+
+        value opSub(value &a, value &b);
+
+        value opMul(value &a, value &b);
+
+        value opDiv(value &a, value &b);
+
+        value opMod(value &a, value &b);
+
+        value opBinaryShiftLeft(value &a, value &b);
+
+        value opBinaryShiftRight(value &a, value &b);
+
+        value opEqual(value &a, value &b);
+
+        value opNotEqual(value &a, value &b);
+
+        value opGreaterEqual(value &a, value &b);
+
+        value opLessEqual(value &a, value &b);
+
+        value opGreaterThan(value &a, value &b);
+
+        value opLessThan(value &a, value &b);
+
+        value opBinaryOr(value &a, value &b);
+
+        value opBinaryAnd(value &a, value &b);
+
+        value opBinaryXor(value &a, value &b);
+
+        value opLogicAnd(value &a, value &b);
+
+        value opLogicOr(value &a, value &b);
+
         value interpretLvalueExpressions(const AST &target);
 
         value interpretAssignments(const AST &target);

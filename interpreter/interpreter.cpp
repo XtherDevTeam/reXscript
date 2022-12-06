@@ -534,470 +534,47 @@ namespace rex {
 
     value interpreter::interpretLvalueExpressions(const AST &target) {
         value lhs = interpret(target.child[0]);
-        if (lhs.isRef())
-            lhs = lhs.getRef();
         value rhs = interpret(target.child[2]);
-        if (rhs.isRef())
-            rhs = rhs.getRef();
 
-        switch (valueKindComparator(lhs.kind, rhs.kind)) {
-            case valueKindComparator(value::vKind::vInt, value::vKind::vInt): {
-                switch (target.child[1].leaf.kind) {
-                    case lexer::token::tokenKind::asterisk:
-                        return {lhs.getInt() * rhs.getInt()};
-                    case lexer::token::tokenKind::slash:
-                        return {lhs.getInt() / rhs.getInt()};
-                    case lexer::token::tokenKind::percentSign:
-                        return {lhs.getInt() % rhs.getInt()};
-                    case lexer::token::tokenKind::plus:
-                        return {lhs.getInt() + rhs.getInt()};
-                    case lexer::token::tokenKind::minus:
-                        return {lhs.getInt() - rhs.getInt()};
-                    case lexer::token::tokenKind::binaryShiftLeft:
-                        return {lhs.getInt() << rhs.getInt()};
-                    case lexer::token::tokenKind::binaryShiftRight:
-                        return {lhs.getInt() >> rhs.getInt()};
-                    case lexer::token::tokenKind::equal:
-                        return {lhs.getInt() == rhs.getInt()};
-                    case lexer::token::tokenKind::notEqual:
-                        return {lhs.getInt() != rhs.getInt()};
-                    case lexer::token::tokenKind::greaterEqual:
-                        return {lhs.getInt() >= rhs.getInt()};
-                    case lexer::token::tokenKind::lessEqual:
-                        return {lhs.getInt() <= rhs.getInt()};
-                    case lexer::token::tokenKind::greaterThan:
-                        return {lhs.getInt() > rhs.getInt()};
-                    case lexer::token::tokenKind::lessThan:
-                        return {lhs.getInt() < rhs.getInt()};
-                    case lexer::token::tokenKind::binaryAnd:
-                        return {lhs.getInt() & rhs.getInt()};
-                    case lexer::token::tokenKind::binaryOr:
-                        return {lhs.getInt() | rhs.getInt()};
-                    case lexer::token::tokenKind::binaryXor:
-                        return {lhs.getInt() ^ rhs.getInt()};
-                    case lexer::token::tokenKind::logicAnd:
-                        return {lhs.getInt() && rhs.getInt()};
-                    case lexer::token::tokenKind::logicOr:
-                        return {lhs.getInt() || rhs.getInt()};
-                    default:
-                        throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
-                }
-            }
-            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci): {
-                switch (target.child[1].leaf.kind) {
-                    case lexer::token::tokenKind::asterisk:
-                        return {(vdeci) lhs.getInt() * rhs.getDeci()};
-                    case lexer::token::tokenKind::slash:
-                        return {(vdeci) lhs.getInt() / rhs.getDeci()};
-                    case lexer::token::tokenKind::plus:
-                        return {(vdeci) lhs.getInt() * rhs.getDeci()};
-                    case lexer::token::tokenKind::minus:
-                        return {(vdeci) lhs.getInt() - rhs.getDeci()};
-                    case lexer::token::tokenKind::equal:
-                        return {(vdeci) lhs.getInt() == rhs.getDeci()};
-                    case lexer::token::tokenKind::notEqual:
-                        return {(vdeci) lhs.getInt() != rhs.getDeci()};
-                    case lexer::token::tokenKind::greaterEqual:
-                        return {(vdeci) lhs.getInt() >= rhs.getDeci()};
-                    case lexer::token::tokenKind::lessEqual:
-                        return {(vdeci) lhs.getInt() <= rhs.getDeci()};
-                    case lexer::token::tokenKind::greaterThan:
-                        return {(vdeci) lhs.getInt() > rhs.getDeci()};
-                    case lexer::token::tokenKind::lessThan:
-                        return {(vdeci) lhs.getInt() < rhs.getDeci()};
-                    case lexer::token::tokenKind::binaryAnd:
-                        return {lhs.getInt() & rhs.getInt()};
-                    case lexer::token::tokenKind::binaryOr:
-                        return {lhs.getInt() | rhs.getInt()};
-                    case lexer::token::tokenKind::binaryXor:
-                        return {lhs.getInt() ^ rhs.getInt()};
-                    case lexer::token::tokenKind::logicAnd:
-                        return {lhs.getInt() && (vint) rhs.getDeci()};
-                    case lexer::token::tokenKind::logicOr:
-                        return {lhs.getInt() || (vint) rhs.getDeci()};
-                    default:
-                        throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
-                }
-            }
-            case valueKindComparator(value::vKind::vInt, value::vKind::vBool): {
-                switch (target.child[1].leaf.kind) {
-                    case lexer::token::tokenKind::asterisk:
-                        return {lhs.getInt() * rhs.getBool()};
-                    case lexer::token::tokenKind::slash:
-                        return {lhs.getInt() / rhs.getBool()};
-                    case lexer::token::tokenKind::plus:
-                        return {lhs.getInt() + rhs.getBool()};
-                    case lexer::token::tokenKind::minus:
-                        return {lhs.getInt() - rhs.getBool()};
-                    case lexer::token::tokenKind::equal:
-                        return {lhs.getInt() == rhs.getBool()};
-                    case lexer::token::tokenKind::notEqual:
-                        return {lhs.getInt() != rhs.getBool()};
-                    case lexer::token::tokenKind::greaterEqual:
-                        return {lhs.getInt() >= rhs.getBool()};
-                    case lexer::token::tokenKind::lessEqual:
-                        return {lhs.getInt() <= rhs.getBool()};
-                    case lexer::token::tokenKind::greaterThan:
-                        return {lhs.getInt() > rhs.getBool()};
-                    case lexer::token::tokenKind::lessThan:
-                        return {lhs.getInt() < rhs.getBool()};
-                    case lexer::token::tokenKind::binaryAnd:
-                        return {lhs.getInt() & rhs.getInt()};
-                    case lexer::token::tokenKind::binaryOr:
-                        return {lhs.getInt() | rhs.getInt()};
-                    case lexer::token::tokenKind::binaryXor:
-                        return {lhs.getInt() ^ rhs.getInt()};
-                    case lexer::token::tokenKind::logicAnd:
-                        return {lhs.getInt() && rhs.getBool()};
-                    case lexer::token::tokenKind::logicOr:
-                        return {lhs.getInt() || rhs.getBool()};
-                    default:
-                        throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
-                }
-            }
-            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt): {
-                switch (target.child[1].leaf.kind) {
-                    case lexer::token::tokenKind::asterisk:
-                        return {lhs.getDeci() * (vdeci) rhs.getInt()};
-                    case lexer::token::tokenKind::slash:
-                        return {lhs.getDeci() / (vdeci) rhs.getInt()};
-                    case lexer::token::tokenKind::plus:
-                        return {lhs.getDeci() + (vdeci) rhs.getInt()};
-                    case lexer::token::tokenKind::minus:
-                        return {lhs.getDeci() - (vdeci) rhs.getInt()};
-                    case lexer::token::tokenKind::equal:
-                        return {lhs.getDeci() == (vdeci) rhs.getInt()};
-                    case lexer::token::tokenKind::notEqual:
-                        return {lhs.getDeci() != (vdeci) rhs.getInt()};
-                    case lexer::token::tokenKind::greaterEqual:
-                        return {lhs.getDeci() >= (vdeci) rhs.getInt()};
-                    case lexer::token::tokenKind::lessEqual:
-                        return {lhs.getDeci() <= (vdeci) rhs.getInt()};
-                    case lexer::token::tokenKind::greaterThan:
-                        return {lhs.getDeci() > (vdeci) rhs.getInt()};
-                    case lexer::token::tokenKind::lessThan:
-                        return {lhs.getDeci() < (vdeci) rhs.getInt()};
-                    case lexer::token::tokenKind::binaryAnd:
-                        return {lhs.getInt() & rhs.getInt()};
-                    case lexer::token::tokenKind::binaryOr:
-                        return {lhs.getInt() | rhs.getInt()};
-                    case lexer::token::tokenKind::binaryXor:
-                        return {lhs.getInt() ^ rhs.getInt()};
-                    case lexer::token::tokenKind::logicAnd:
-                        return {(vbool) lhs.getDeci() && rhs.getBool()};
-                    case lexer::token::tokenKind::logicOr:
-                        return {(vbool) lhs.getDeci() || rhs.getBool()};
-                    default:
-                        throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
-                }
-            }
-            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci): {
-                switch (target.child[1].leaf.kind) {
-                    case lexer::token::tokenKind::asterisk:
-                        return {lhs.getDeci() * rhs.getDeci()};
-                    case lexer::token::tokenKind::slash:
-                        return {lhs.getDeci() / rhs.getDeci()};
-                    case lexer::token::tokenKind::plus:
-                        return {lhs.getDeci() + rhs.getDeci()};
-                    case lexer::token::tokenKind::minus:
-                        return {lhs.getDeci() - rhs.getDeci()};
-                    case lexer::token::tokenKind::equal:
-                        return {lhs.getDeci() == rhs.getDeci()};
-                    case lexer::token::tokenKind::notEqual:
-                        return {lhs.getDeci() != rhs.getDeci()};
-                    case lexer::token::tokenKind::greaterEqual:
-                        return {lhs.getDeci() >= rhs.getDeci()};
-                    case lexer::token::tokenKind::lessEqual:
-                        return {lhs.getDeci() <= rhs.getDeci()};
-                    case lexer::token::tokenKind::greaterThan:
-                        return {lhs.getDeci() > rhs.getDeci()};
-                    case lexer::token::tokenKind::lessThan:
-                        return {lhs.getDeci() < rhs.getDeci()};
-                    case lexer::token::tokenKind::binaryAnd:
-                        return {lhs.getInt() & rhs.getInt()};
-                    case lexer::token::tokenKind::binaryOr:
-                        return {lhs.getInt() | rhs.getInt()};
-                    case lexer::token::tokenKind::binaryXor:
-                        return {lhs.getInt() ^ rhs.getInt()};
-                    case lexer::token::tokenKind::logicAnd:
-                        return {(vbool) lhs.getDeci() && (vbool) rhs.getDeci()};
-                    case lexer::token::tokenKind::logicOr:
-                        return {(vbool) lhs.getDeci() || (vbool) rhs.getDeci()};
-                    default:
-                        throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
-                }
-            }
-            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool): {
-                switch (target.child[1].leaf.kind) {
-                    case lexer::token::tokenKind::asterisk:
-                        return {lhs.getDeci() * (vdeci) rhs.getBool()};
-                    case lexer::token::tokenKind::slash:
-                        return {lhs.getDeci() / (vdeci) rhs.getBool()};
-                    case lexer::token::tokenKind::plus:
-                        return {lhs.getDeci() + (vdeci) rhs.getBool()};
-                    case lexer::token::tokenKind::minus:
-                        return {lhs.getDeci() - (vdeci) rhs.getBool()};
-                    case lexer::token::tokenKind::equal:
-                        return {lhs.getDeci() == (vdeci) rhs.getBool()};
-                    case lexer::token::tokenKind::notEqual:
-                        return {lhs.getDeci() != (vdeci) rhs.getBool()};
-                    case lexer::token::tokenKind::greaterEqual:
-                        return {lhs.getDeci() >= (vdeci) rhs.getBool()};
-                    case lexer::token::tokenKind::lessEqual:
-                        return {lhs.getDeci() <= (vdeci) rhs.getBool()};
-                    case lexer::token::tokenKind::greaterThan:
-                        return {lhs.getDeci() > (vdeci) rhs.getBool()};
-                    case lexer::token::tokenKind::lessThan:
-                        return {lhs.getDeci() < (vdeci) rhs.getBool()};
-                    case lexer::token::tokenKind::binaryAnd:
-                        return {lhs.getInt() & rhs.getInt()};
-                    case lexer::token::tokenKind::binaryOr:
-                        return {lhs.getInt() | rhs.getInt()};
-                    case lexer::token::tokenKind::binaryXor:
-                        return {lhs.getInt() ^ rhs.getInt()};
-                    case lexer::token::tokenKind::logicAnd:
-                        return {(vbool) lhs.getDeci() && rhs.getBool()};
-                    case lexer::token::tokenKind::logicOr:
-                        return {(vbool) lhs.getDeci() || rhs.getBool()};
-                    default:
-                        throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
-                }
-            }
-            case valueKindComparator(value::vKind::vBool, value::vKind::vInt): {
-                switch (target.child[1].leaf.kind) {
-                    case lexer::token::tokenKind::asterisk:
-                        return {lhs.getBool() * rhs.getInt()};
-                    case lexer::token::tokenKind::slash:
-                        return {lhs.getBool() / rhs.getInt()};
-                    case lexer::token::tokenKind::percentSign:
-                        return {lhs.getBool() % rhs.getInt()};
-                    case lexer::token::tokenKind::plus:
-                        return {lhs.getBool() + rhs.getInt()};
-                    case lexer::token::tokenKind::minus:
-                        return {lhs.getBool() - rhs.getInt()};
-                    case lexer::token::tokenKind::equal:
-                        return {lhs.getBool() == rhs.getInt()};
-                    case lexer::token::tokenKind::notEqual:
-                        return {lhs.getBool() != rhs.getInt()};
-                    case lexer::token::tokenKind::greaterEqual:
-                        return {lhs.getBool() >= rhs.getInt()};
-                    case lexer::token::tokenKind::lessEqual:
-                        return {lhs.getBool() <= rhs.getInt()};
-                    case lexer::token::tokenKind::greaterThan:
-                        return {lhs.getBool() > rhs.getInt()};
-                    case lexer::token::tokenKind::lessThan:
-                        return {lhs.getBool() < rhs.getInt()};
-                    case lexer::token::tokenKind::binaryAnd:
-                        return {lhs.getInt() & rhs.getInt()};
-                    case lexer::token::tokenKind::binaryOr:
-                        return {lhs.getInt() | rhs.getInt()};
-                    case lexer::token::tokenKind::binaryXor:
-                        return {lhs.getInt() ^ rhs.getInt()};
-                    case lexer::token::tokenKind::logicAnd:
-                        return {lhs.getBool() && (vbool) rhs.getInt()};
-                    case lexer::token::tokenKind::logicOr:
-                        return {lhs.getBool() || (vbool) rhs.getInt()};
-                    default:
-                        throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
-                }
-            }
-            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci): {
-                switch (target.child[1].leaf.kind) {
-                    case lexer::token::tokenKind::asterisk:
-                        return {(vdeci) lhs.getBool() * rhs.getDeci()};
-                    case lexer::token::tokenKind::slash:
-                        return {(vdeci) lhs.getBool() / rhs.getDeci()};
-                    case lexer::token::tokenKind::plus:
-                        return {(vdeci) lhs.getBool() + rhs.getDeci()};
-                    case lexer::token::tokenKind::minus:
-                        return {(vdeci) lhs.getBool() - rhs.getDeci()};
-                    case lexer::token::tokenKind::equal:
-                        return {(vdeci) lhs.getBool() == rhs.getDeci()};
-                    case lexer::token::tokenKind::notEqual:
-                        return {(vdeci) lhs.getBool() != rhs.getDeci()};
-                    case lexer::token::tokenKind::greaterEqual:
-                        return {(vdeci) lhs.getBool() >= rhs.getDeci()};
-                    case lexer::token::tokenKind::lessEqual:
-                        return {(vdeci) lhs.getBool() <= rhs.getDeci()};
-                    case lexer::token::tokenKind::greaterThan:
-                        return {(vdeci) lhs.getBool() > rhs.getDeci()};
-                    case lexer::token::tokenKind::lessThan:
-                        return {(vdeci) lhs.getBool() < rhs.getDeci()};
-                    case lexer::token::tokenKind::binaryAnd:
-                        return {lhs.getInt() & rhs.getInt()};
-                    case lexer::token::tokenKind::binaryOr:
-                        return {lhs.getInt() | rhs.getInt()};
-                    case lexer::token::tokenKind::binaryXor:
-                        return {lhs.getInt() ^ rhs.getInt()};
-                    case lexer::token::tokenKind::logicAnd:
-                        return {lhs.getBool() && (vbool) rhs.getDeci()};
-                    case lexer::token::tokenKind::logicOr:
-                        return {lhs.getBool() || (vbool) rhs.getDeci()};
-                    default:
-                        throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
-                }
-            }
-            case valueKindComparator(value::vKind::vBool, value::vKind::vBool): {
-                switch (target.child[1].leaf.kind) {
-                    case lexer::token::tokenKind::asterisk:
-                    case lexer::token::tokenKind::slash:
-                    case lexer::token::tokenKind::equal:
-                        return {lhs.getBool() == rhs.getBool()};
-                    case lexer::token::tokenKind::notEqual:
-                        return {lhs.getBool() != rhs.getBool()};
-                    case lexer::token::tokenKind::greaterThan:
-                        return {lhs.getBool() > rhs.getBool()};
-                    case lexer::token::tokenKind::lessThan:
-                        return {lhs.getBool() < rhs.getBool()};
-                    case lexer::token::tokenKind::binaryAnd:
-                        return {lhs.getInt() & rhs.getInt()};
-                    case lexer::token::tokenKind::binaryOr:
-                        return {lhs.getInt() | rhs.getInt()};
-                    case lexer::token::tokenKind::binaryXor:
-                        return {lhs.getInt() ^ rhs.getInt()};
-                    case lexer::token::tokenKind::logicAnd:
-                        return {lhs.getBool() && rhs.getBool()};
-                    case lexer::token::tokenKind::logicOr:
-                        return {lhs.getBool() || rhs.getBool()};
-                    default:
-                        throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
-                }
-            }
-            default: {
-                lhs.deepCopy(lhs); // deep copy to make changes
-                switch (target.child[1].leaf.kind) {
-                    case lexer::token::tokenKind::asterisk: {
-                        if (auto it = lhs.members.find(L"rexMul"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexMul` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::slash: {
-                        if (auto it = lhs.members.find(L"rexDiv"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexDiv` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::percentSign: {
-                        if (auto it = lhs.members.find(L"rexMod"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexMod` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::plus: {
-                        if (auto it = lhs.members.find(L"rexAdd"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexAdd` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::minus: {
-                        if (auto it = lhs.members.find(L"rexSub"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexSub` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::binaryShiftLeft: {
-                        if (auto it = lhs.members.find(L"rexBinaryShiftLeft"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexBinaryShiftLeft` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::binaryShiftRight: {
-                        if (auto it = lhs.members.find(L"rexBinaryShiftRight"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexBinaryShiftRight` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::greaterEqual: {
-                        if (auto it = lhs.members.find(L"rexGreaterEqual"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexGreaterEqual` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::lessEqual: {
-                        if (auto it = lhs.members.find(L"rexLessEqual"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexLessEqual` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::greaterThan: {
-                        if (auto it = lhs.members.find(L"rexGreaterThan"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexGreaterThan` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::lessThan: {
-                        if (auto it = lhs.members.find(L"rexLessThan"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexLessThan` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::binaryAnd: {
-                        if (auto it = lhs.members.find(L"rexBinaryAnd"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexBinaryAnd` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::binaryOr: {
-                        if (auto it = lhs.members.find(L"rexBinaryOr"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexBinaryOr` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::binaryXor: {
-                        if (auto it = lhs.members.find(L"rexBinaryXor"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexBinaryXor` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::logicAnd: {
-                        if (auto it = lhs.members.find(L"rexLogicAnd"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexLogicAnd` operation"));
-                        }
-                    }
-                    case lexer::token::tokenKind::logicOr: {
-                        if (auto it = lhs.members.find(L"rexLogicOr"); it != lhs.members.end()) {
-                            return invokeFunc(it->second, {lhs, rhs}, managePtr(lhs));
-                        } else {
-                            throw signalException(makeErr(L"internalError",
-                                                          L"no overloaded callable objects for `rexLogicOr` operation"));
-                        }
-                    }
-                    default:
-                        throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
-                }
-            }
+        switch (target.child[1].leaf.kind) {
+            case lexer::token::tokenKind::asterisk:
+                return opMul(lhs, rhs);
+            case lexer::token::tokenKind::slash:
+                return opDiv(lhs, rhs);
+            case lexer::token::tokenKind::percentSign:
+                return opMod(lhs, rhs);
+            case lexer::token::tokenKind::plus:
+                return opAdd(lhs, rhs);
+            case lexer::token::tokenKind::minus:
+                return opSub(lhs, rhs);
+            case lexer::token::tokenKind::binaryShiftLeft:
+                return opBinaryShiftLeft(lhs, rhs);
+            case lexer::token::tokenKind::binaryShiftRight:
+                return opBinaryShiftRight(lhs, rhs);
+            case lexer::token::tokenKind::equal:
+                return opEqual(lhs, rhs);
+            case lexer::token::tokenKind::notEqual:
+                return opNotEqual(lhs, rhs);
+            case lexer::token::tokenKind::greaterEqual:
+                return opGreaterEqual(lhs, rhs);
+            case lexer::token::tokenKind::lessEqual:
+                return opLessEqual(lhs, rhs);
+            case lexer::token::tokenKind::greaterThan:
+                return opGreaterThan(lhs, rhs);
+            case lexer::token::tokenKind::lessThan:
+                return opLessThan(lhs, rhs);
+            case lexer::token::tokenKind::binaryOr:
+                return opBinaryOr(lhs, rhs);
+            case lexer::token::tokenKind::binaryAnd:
+                return opBinaryAnd(lhs, rhs);
+            case lexer::token::tokenKind::binaryXor:
+                return opBinaryXor(lhs, rhs);
+            case lexer::token::tokenKind::logicAnd:
+                return opLogicAnd(lhs, rhs);
+            case lexer::token::tokenKind::logicOr:
+                return opLogicOr(lhs, rhs);
+            default:
+                return {};
         }
     }
 
@@ -1225,5 +802,537 @@ namespace rex {
 
     void interpreter::backToStackIdx(vsize stkIdx) {
         while (stack.size() > stkIdx) stack.pop_back();
+    }
+
+    value interpreter::opAdd(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() + b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() + (vint)b.getBool();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
+                return (vdeci)a.getInt() + b.getDeci();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() + b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() + (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
+                return (vdeci)a.getBool() + b.getDeci();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
+                return a.getDeci() + (vdeci)b.getInt();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
+                return a.getDeci() + (vdeci)b.getBool();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
+                return a.getDeci() + b.getDeci();
+            default: {
+                if (auto it = a.members.find(L"rexAdd") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opSub(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() - b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() - (vint)b.getBool();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
+                return (vdeci)a.getInt() - b.getDeci();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() - b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() - (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
+                return (vdeci)a.getBool() - b.getDeci();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
+                return a.getDeci() - (vdeci)b.getInt();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
+                return a.getDeci() - (vdeci)b.getBool();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
+                return a.getDeci() - b.getDeci();
+            default: {
+                if (auto it = a.members.find(L"rexSub") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opMul(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() * b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() * (vint)b.getBool();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
+                return (vdeci)a.getInt() * b.getDeci();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() * b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() * (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
+                return (vdeci)a.getBool() * b.getDeci();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
+                return a.getDeci() * (vdeci)b.getInt();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
+                return a.getDeci() * (vdeci)b.getBool();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
+                return a.getDeci() * b.getDeci();
+            default: {
+                if (auto it = a.members.find(L"rexMul") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opDiv(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() / b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() / (vint)b.getBool();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
+                return (vdeci)a.getInt() / b.getDeci();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() / b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() / (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
+                return (vdeci)a.getBool() / b.getDeci();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
+                return a.getDeci() / (vdeci)b.getInt();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
+                return a.getDeci() / (vdeci)b.getBool();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
+                return a.getDeci() / b.getDeci();
+            default: {
+                if (auto it = a.members.find(L"rexDiv") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opMod(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() % b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() % (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() % b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() % (vint)b.getBool();
+            default: {
+                if (auto it = a.members.find(L"rexAdd") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opBinaryShiftLeft(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() << b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() << (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() << b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() << (vint)b.getBool();
+            default: {
+                if (auto it = a.members.find(L"rexBinaryShiftLeft") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opBinaryShiftRight(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() >> b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() >> (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() >> b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() >> (vint)b.getBool();
+            default: {
+                if (auto it = a.members.find(L"rexBinaryShiftLeft") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opEqual(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() == b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() == (vint)b.getBool();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
+                return (vdeci)a.getInt() == b.getDeci();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() == b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() == (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
+                return (vdeci)a.getBool() == b.getDeci();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
+                return a.getDeci() == (vdeci)b.getInt();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
+                return a.getDeci() == (vdeci)b.getBool();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
+                return a.getDeci() == b.getDeci();
+            default: {
+                if (auto it = a.members.find(L"rexEqual") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opNotEqual(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() != b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() != (vint)b.getBool();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
+                return (vdeci)a.getInt() != b.getDeci();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() != b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() != (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
+                return (vdeci)a.getBool() != b.getDeci();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
+                return a.getDeci() != (vdeci)b.getInt();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
+                return a.getDeci() != (vdeci)b.getBool();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
+                return a.getDeci() != b.getDeci();
+            default: {
+                if (auto it = a.members.find(L"rexNotEqual") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opGreaterEqual(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() >= b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() >= (vint)b.getBool();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
+                return (vdeci)a.getInt() >= b.getDeci();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() >= b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() >= (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
+                return (vdeci)a.getBool() >= b.getDeci();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
+                return a.getDeci() >= (vdeci)b.getInt();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
+                return a.getDeci() >= (vdeci)b.getBool();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
+                return a.getDeci() >= b.getDeci();
+            default: {
+                if (auto it = a.members.find(L"rexGreaterEqual") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opLessEqual(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() <= b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() <= (vint)b.getBool();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
+                return (vdeci)a.getInt() <= b.getDeci();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() <= b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() <= (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
+                return (vdeci)a.getBool() <= b.getDeci();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
+                return a.getDeci() <= (vdeci)b.getInt();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
+                return a.getDeci() <= (vdeci)b.getBool();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
+                return a.getDeci() <= b.getDeci();
+            default: {
+                if (auto it = a.members.find(L"rexLessEqual") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opGreaterThan(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() > b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() > (vint)b.getBool();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
+                return (vdeci)a.getInt() > b.getDeci();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() > b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() > (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
+                return (vdeci)a.getBool() > b.getDeci();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
+                return a.getDeci() > (vdeci)b.getInt();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
+                return a.getDeci() > (vdeci)b.getBool();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
+                return a.getDeci() > b.getDeci();
+            default: {
+                if (auto it = a.members.find(L"rexGreaterThan") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opLessThan(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() < b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() < (vint)b.getBool();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
+                return (vdeci)a.getInt() < b.getDeci();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() < b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() < (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
+                return (vdeci)a.getBool() < b.getDeci();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
+                return a.getDeci() < (vdeci)b.getInt();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
+                return a.getDeci() < (vdeci)b.getBool();
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
+                return a.getDeci() < b.getDeci();
+            default: {
+                if (auto it = a.members.find(L"rexLessThan") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opBinaryOr(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() | b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() | (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() | b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() | (vint)b.getBool();
+            default: {
+                if (auto it = a.members.find(L"rexBinaryOr") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opBinaryAnd(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() & b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() & (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() & b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() & (vint)b.getBool();
+            default: {
+                if (auto it = a.members.find(L"rexBinaryAnd") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opBinaryXor(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() ^ b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() ^ (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() ^ b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() ^ (vint)b.getBool();
+            default: {
+                if (auto it = a.members.find(L"rexBinaryXor") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opLogicAnd(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() && b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() && (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() && b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() && (vint)b.getBool();
+            default: {
+                if (auto it = a.members.find(L"rexLogicAnd") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+    }
+
+    value interpreter::opLogicOr(value &a, value &b) {
+        if (a.isRef())
+            a = a.isRef();
+        if (b.isRef())
+            b = b.isRef();
+
+        switch (valueKindComparator(a.kind, b.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
+                return a.getInt() || b.getInt();
+            case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
+                return a.getInt() || (vint)b.getBool();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
+                return (vint)a.getBool() || b.getInt();
+            case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
+                return (vint)a.getBool() || (vint)b.getBool();
+            default: {
+                if (auto it = a.members.find(L"rexLogicOr") ; it != a.members.end())
+                    return invokeFunc(it->second, {b}, managePtr(a));
+                else
+                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
     }
 } // rex
