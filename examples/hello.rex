@@ -3,6 +3,8 @@ let add = func(a, b) {
 };
 
 let rexModInit = func() {
-    print("Neihou, saaigaai!\n", "My location is ", *__path__, "\n");
+    for (let i = 0;i < 10;i += 1) {
+        print(format("Konnichiha, sekai! My location is ${str}.\nText: ${str} I: ${int bs=dec}\n", __path__, "Hello, world!", i));
+    }
     return 0;
 };

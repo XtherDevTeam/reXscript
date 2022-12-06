@@ -806,6 +806,10 @@ namespace rex {
         if (result)
             return result;
 
+        result = parseBlockStmt();
+        if (result)
+            return result;
+
         result = parseAssignmentExpression();
         if (result)
             return result;

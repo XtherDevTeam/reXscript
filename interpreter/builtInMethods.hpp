@@ -8,6 +8,26 @@
 #include "value.hpp"
 
 namespace rex {
+    struct formatterTagInfo {
+        enum class tagKind : vint {
+            vStr,
+            vInt,
+            vDeci,
+            vBool,
+            dollar,
+        } kind;
+        enum class tagBase : vint {
+            hex = 16,
+            dec = 10,
+            oct = 8,
+        } base;
+        vint precision;
+
+        formatterTagInfo();
+
+        vchar * parse(vchar *str);
+    };
+
     namespace stringMethods {
         value substr(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
@@ -20,6 +40,16 @@ namespace rex {
         value fromChar(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
         value length(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value rexEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value rexNotEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value rexAdd(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value rexAddAssign(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value formatter(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }
@@ -36,6 +66,8 @@ namespace rex {
         value rexImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
         value rexNativeImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value format(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }
