@@ -16,7 +16,7 @@ namespace rex {
         if (!stream) {
             throw endOfFileException();
         }
-        if(!stream.get(curCh)) {
+        if (!stream.get(curCh)) {
             curCh = '\0';
         }
         if (curCh == L'\n') {
@@ -160,7 +160,7 @@ namespace rex {
     }
 
     lexer::token lexer::digitStart() {
-        lexer::token tok{line, col, token::tokenKind::integer, (vint) 0};
+        lexer::token tok{line, col, token::tokenKind::integer, token::vBasicValue{(vint) 0}};
         vstr tempStr;
         tempStr += curCh;
         getCh();

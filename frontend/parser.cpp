@@ -355,15 +355,15 @@ namespace rex {
             lex.curToken.kind != lexer::token::tokenKind::slash and
             lex.curToken.kind != lexer::token::tokenKind::percentSign)
             return vLhs;
-        AST vOp = (AST){AST::treeKind::operators, lex.curToken};
+        AST vOp = (AST) {AST::treeKind::operators, lex.curToken};
         lex.scan();
         AST vRhs = parseUniqueExpression();
         if (!vRhs)
             throw parserException(lex.line, lex.col, L"expected a right-hand-side node after operators");
         while (lex.curToken.kind == lexer::token::tokenKind::asterisk or
-                lex.curToken.kind == lexer::token::tokenKind::slash or
-                lex.curToken.kind == lexer::token::tokenKind::percentSign) {
-            vOp = (AST){AST::treeKind::operators, lex.curToken};
+               lex.curToken.kind == lexer::token::tokenKind::slash or
+               lex.curToken.kind == lexer::token::tokenKind::percentSign) {
+            vOp = (AST) {AST::treeKind::operators, lex.curToken};
             vLhs = {AST::treeKind::multiplicationExpression, {vLhs, vOp, vRhs}};
             lex.scan();
             vRhs = parseUniqueExpression();

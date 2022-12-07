@@ -14,4 +14,10 @@ file(GLOB REX_SRC
 
 include_directories(${PROJECT_SOURCE_DIR})
 
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+if (CMAKE_HOST_SYSTEM_NAME MATCHES "Windows")
+    set(CMAKE_EXE_LINKER_FLAGS "--static -lpthread")
+endif ()
+
 add_executable(rex exec/main.cpp ${REX_SRC})

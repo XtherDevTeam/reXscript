@@ -44,7 +44,7 @@ namespace rex {
 
         static value makeErr(const vstr &errName, const vstr &errMsg);
 
-        value invokeFunc(managedPtr<value> func, const vec<value> &args, const managedPtr<value>& passThisPtr);
+        value invokeFunc(managedPtr<value> func, const vec<value> &args, const managedPtr<value> &passThisPtr);
 
         value opAdd(value &a, value &b);
 

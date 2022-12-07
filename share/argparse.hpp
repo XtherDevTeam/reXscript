@@ -25,6 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE  OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 #pragma once
+
 #include <algorithm>
 #include <any>
 #include <array>
@@ -54,37 +55,46 @@ namespace argparse {
 
     namespace details { // namespace for helper methods
 
-        template <typename T, typename = void>
-        struct HasContainerTraits : std::false_type {};
+        template<typename T, typename = void>
+        struct HasContainerTraits : std::false_type {
+        };
 
-        template <> struct HasContainerTraits<std::string> : std::false_type {};
+        template<>
+        struct HasContainerTraits<std::string> : std::false_type {
+        };
 
-        template <> struct HasContainerTraits<std::string_view> : std::false_type {};
+        template<>
+        struct HasContainerTraits<std::string_view> : std::false_type {
+        };
 
-        template <typename T>
+        template<typename T>
         struct HasContainerTraits<
                 T, std::void_t<typename T::value_type, decltype(std::declval<T>().begin()),
                         decltype(std::declval<T>().end()),
-                        decltype(std::declval<T>().size())>> : std::true_type {};
+                        decltype(std::declval<T>().size())>> : std::true_type {
+        };
 
-        template <typename T>
+        template<typename T>
         static constexpr bool IsContainer = HasContainerTraits<T>::value;
 
-        template <typename T, typename = void>
-        struct HasStreamableTraits : std::false_type {};
+        template<typename T, typename = void>
+        struct HasStreamableTraits : std::false_type {
+        };
 
-        template <typename T>
+        template<typename T>
         struct HasStreamableTraits<
                 T,
                 std::void_t<decltype(std::declval<std::ostream &>() << std::declval<T>())>>
-                : std::true_type {};
+                : std::true_type {
+        };
 
-        template <typename T>
+        template<typename T>
         static constexpr bool IsStreamable = HasStreamableTraits<T>::value;
 
         constexpr std::size_t repr_max_container_size = 5;
 
-        template <typename T> std::string repr(T const &val) {
+        template<typename T>
+        std::string repr(T const &val) {
             if constexpr (std::is_same_v<T, bool>) {
                 return val ? "true" : "false";
             } else if constexpr (std::is_convertible_v<T, std::string_view>) {
@@ -124,19 +134,19 @@ namespace argparse {
 
         namespace {
 
-            template <typename T> constexpr bool standard_signed_integer = false;
-            template <> constexpr bool standard_signed_integer<signed char> = true;
-            template <> constexpr bool standard_signed_integer<short int> = true;
-            template <> constexpr bool standard_signed_integer<int> = true;
-            template <> constexpr bool standard_signed_integer<long int> = true;
-            template <> constexpr bool standard_signed_integer<long long int> = true;
+            template<typename T> constexpr bool standard_signed_integer = false;
+            template<> constexpr bool standard_signed_integer<signed char> = true;
+            template<> constexpr bool standard_signed_integer<short int> = true;
+            template<> constexpr bool standard_signed_integer<int> = true;
+            template<> constexpr bool standard_signed_integer<long int> = true;
+            template<> constexpr bool standard_signed_integer<long long int> = true;
 
-            template <typename T> constexpr bool standard_unsigned_integer = false;
-            template <> constexpr bool standard_unsigned_integer<unsigned char> = true;
-            template <> constexpr bool standard_unsigned_integer<unsigned short int> = true;
-            template <> constexpr bool standard_unsigned_integer<unsigned int> = true;
-            template <> constexpr bool standard_unsigned_integer<unsigned long int> = true;
-            template <>
+            template<typename T> constexpr bool standard_unsigned_integer = false;
+            template<> constexpr bool standard_unsigned_integer<unsigned char> = true;
+            template<> constexpr bool standard_unsigned_integer<unsigned short int> = true;
+            template<> constexpr bool standard_unsigned_integer<unsigned int> = true;
+            template<> constexpr bool standard_unsigned_integer<unsigned long int> = true;
+            template<>
             constexpr bool standard_unsigned_integer<unsigned long long int> = true;
 
         } // namespace
@@ -145,11 +155,11 @@ namespace argparse {
         constexpr int radix_10 = 10;
         constexpr int radix_16 = 16;
 
-        template <typename T>
+        template<typename T>
         constexpr bool standard_integer =
                 standard_signed_integer<T> || standard_unsigned_integer<T>;
 
-        template <class F, class Tuple, class Extra, std::size_t... I>
+        template<class F, class Tuple, class Extra, std::size_t... I>
         constexpr decltype(auto)
         apply_plus_one_impl(F &&f, Tuple &&t, Extra &&x,
                             std::index_sequence<I...> /*unused*/) {
@@ -157,7 +167,7 @@ namespace argparse {
                                std::forward<Extra>(x));
         }
 
-        template <class F, class Tuple, class Extra>
+        template<class F, class Tuple, class Extra>
         constexpr decltype(auto) apply_plus_one(F &&f, Tuple &&t, Extra &&x) {
             return details::apply_plus_one_impl(
                     std::forward<F>(f), std::forward<Tuple>(t), std::forward<Extra>(x),
@@ -169,7 +179,7 @@ namespace argparse {
             return std::tuple(s.data(), s.data() + s.size());
         }
 
-        template <class CharT, class Traits>
+        template<class CharT, class Traits>
         constexpr bool starts_with(std::basic_string_view<CharT, Traits> prefix,
                                    std::basic_string_view<CharT, Traits> s) noexcept {
             return s.substr(0, prefix.size()) == prefix;
@@ -198,7 +208,7 @@ namespace argparse {
             return {false, s};
         }
 
-        template <class T, auto Param>
+        template<class T, auto Param>
         inline auto do_from_chars(std::string_view s) -> T {
             T x;
             auto [first, last] = pointer_range(s);
@@ -218,13 +228,15 @@ namespace argparse {
             return x; // unreachable
         }
 
-        template <class T, auto Param = 0> struct parse_number {
+        template<class T, auto Param = 0>
+        struct parse_number {
             auto operator()(std::string_view s) -> T {
                 return do_from_chars<T, Param>(s);
             }
         };
 
-        template <class T> struct parse_number<T, radix_16> {
+        template<class T>
+        struct parse_number<T, radix_16> {
             auto operator()(std::string_view s) -> T {
                 if (auto [ok, rest] = consume_hex_prefix(s); ok) {
                     return do_from_chars<T, radix_16>(rest);
@@ -233,7 +245,8 @@ namespace argparse {
             }
         };
 
-        template <class T> struct parse_number<T> {
+        template<class T>
+        struct parse_number<T> {
             auto operator()(std::string_view s) -> T {
                 auto [ok, rest] = consume_hex_prefix(s);
                 if (ok) {
@@ -248,14 +261,15 @@ namespace argparse {
 
         namespace {
 
-            template <class T> inline const auto generic_strtod = nullptr;
-            template <> inline const auto generic_strtod<float> = strtof;
-            template <> inline const auto generic_strtod<double> = strtod;
-            template <> inline const auto generic_strtod<long double> = strtold;
+            template<class T> inline const auto generic_strtod = nullptr;
+            template<> inline const auto generic_strtod<float> = strtof;
+            template<> inline const auto generic_strtod<double> = strtod;
+            template<> inline const auto generic_strtod<long double> = strtold;
 
         } // namespace
 
-        template <class T> inline auto do_strtod(std::string const &s) -> T {
+        template<class T>
+        inline auto do_strtod(std::string const &s) -> T {
             if (isspace(static_cast<unsigned char>(s[0])) || s[0] == '+') {
                 throw std::invalid_argument{"pattern not found"};
             }
@@ -277,7 +291,8 @@ namespace argparse {
             return x; // unreachable
         }
 
-        template <class T> struct parse_number<T, chars_format::general> {
+        template<class T>
+        struct parse_number<T, chars_format::general> {
             auto operator()(std::string const &s) -> T {
                 if (auto r = consume_hex_prefix(s); r.is_hexadecimal) {
                     throw std::invalid_argument{
@@ -288,7 +303,8 @@ namespace argparse {
             }
         };
 
-        template <class T> struct parse_number<T, chars_format::hex> {
+        template<class T>
+        struct parse_number<T, chars_format::hex> {
             auto operator()(std::string const &s) -> T {
                 if (auto r = consume_hex_prefix(s); !r.is_hexadecimal) {
                     throw std::invalid_argument{"chars_format::hex parses hexfloat"};
@@ -298,7 +314,8 @@ namespace argparse {
             }
         };
 
-        template <class T> struct parse_number<T, chars_format::scientific> {
+        template<class T>
+        struct parse_number<T, chars_format::scientific> {
             auto operator()(std::string const &s) -> T {
                 if (auto r = consume_hex_prefix(s); r.is_hexadecimal) {
                     throw std::invalid_argument{
@@ -313,7 +330,8 @@ namespace argparse {
             }
         };
 
-        template <class T> struct parse_number<T, chars_format::fixed> {
+        template<class T>
+        struct parse_number<T, chars_format::fixed> {
             auto operator()(std::string const &s) -> T {
                 if (auto r = consume_hex_prefix(s); r.is_hexadecimal) {
                     throw std::invalid_argument{
@@ -328,7 +346,7 @@ namespace argparse {
             }
         };
 
-        template <typename StrIt>
+        template<typename StrIt>
         std::string join(StrIt first, StrIt last, const std::string &separator) {
             if (first == last) {
                 return "";
@@ -345,7 +363,9 @@ namespace argparse {
 
     } // namespace details
 
-    enum class nargs_pattern { optional, any, at_least_one };
+    enum class nargs_pattern {
+        optional, any, at_least_one
+    };
 
     enum class default_arguments : unsigned int {
         none = 0,
@@ -365,17 +385,18 @@ namespace argparse {
 
     class Argument {
         friend class ArgumentParser;
+
         friend auto operator<<(std::ostream &stream, const ArgumentParser &parser)
         -> std::ostream &;
 
-        template <std::size_t N, std::size_t... I>
+        template<std::size_t N, std::size_t... I>
         explicit Argument(std::string_view prefix_chars,
                           std::array<std::string_view, N> &&a,
                           std::index_sequence<I...> /*unused*/)
                 : m_is_optional((is_optional(a[I], prefix_chars) || ...)),
                   m_is_required(false), m_is_repeatable(false), m_is_used(false),
                   m_prefix_chars(prefix_chars) {
-            ((void)m_names.emplace_back(a[I]), ...);
+            ((void) m_names.emplace_back(a[I]), ...);
             std::sort(
                     m_names.begin(), m_names.end(), [](const auto &lhs, const auto &rhs) {
                         return lhs.size() == rhs.size() ? lhs < rhs : lhs.size() < rhs.size();
@@ -383,7 +404,7 @@ namespace argparse {
         }
 
     public:
-        template <std::size_t N>
+        template<std::size_t N>
         explicit Argument(std::string_view prefix_chars,
                           std::array<std::string_view, N> &&a)
                 : Argument(prefix_chars, std::move(a), std::make_index_sequence<N>{}) {}
@@ -398,7 +419,8 @@ namespace argparse {
             return *this;
         }
 
-        template <typename T> Argument &default_value(T &&value) {
+        template<typename T>
+        Argument &default_value(T &&value) {
             m_default_value_repr = details::repr(value);
             m_default_value = std::forward<T>(value);
             return *this;
@@ -415,7 +437,7 @@ namespace argparse {
             return *this;
         }
 
-        template <class F, class... Args>
+        template<class F, class... Args>
         auto action(F &&callable, Args &&... bound_args)
         -> std::enable_if_t<std::is_invocable_v<F, Args..., std::string const>,
                 Argument &> {
@@ -440,7 +462,7 @@ namespace argparse {
             return *this;
         }
 
-        template <char Shape, typename T>
+        template<char Shape, typename T>
         auto scan() -> std::enable_if_t<std::is_arithmetic_v<T>, Argument &> {
             static_assert(!(std::is_const_v<T> || std::is_volatile_v<T>),
                           "T should not be cv-qualified");
@@ -511,7 +533,7 @@ namespace argparse {
             return nargs(nargs_pattern::any);
         }
 
-        template <typename Iterator>
+        template<typename Iterator>
         Iterator consume(Iterator start, Iterator end,
                          std::string_view used_name = {}) {
             if (!m_is_repeatable && m_is_used) {
@@ -596,7 +618,7 @@ namespace argparse {
             std::stringstream usage;
             // Find the longest variant to show in the usage string
             std::string longest_name = m_names.front();
-            for (const auto &s : m_names) {
+            for (const auto &s: m_names) {
                 if (s.size() > longest_name.size()) {
                     longest_name = s;
                 }
@@ -682,7 +704,8 @@ namespace argparse {
             return stream;
         }
 
-        template <typename T> bool operator!=(const T &rhs) const {
+        template<typename T>
+        bool operator!=(const T &rhs) const {
             return !(*this == rhs);
         }
 
@@ -690,7 +713,8 @@ namespace argparse {
          * Compare to an argument value of known type
          * @throws std::logic_error in case of incompatible types
          */
-        template <typename T> bool operator==(const T &rhs) const {
+        template<typename T>
+        bool operator==(const T &rhs) const {
             if constexpr (!details::IsContainer<T>) {
                 return get<T>() == rhs;
             } else {
@@ -964,7 +988,7 @@ namespace argparse {
          * Get argument value given a type
          * @throws std::logic_error in case of incompatible types
          */
-        template <typename T>
+        template<typename T>
         auto get() const
         -> std::conditional_t<details::IsContainer<T>, T, const T &> {
             if (!m_values.empty()) {
@@ -991,7 +1015,8 @@ namespace argparse {
          * @pre The object has no default value.
          * @returns The stored value if any, std::nullopt otherwise.
          */
-        template <typename T> auto present() const -> std::optional<T> {
+        template<typename T>
+        auto present() const -> std::optional<T> {
             if (m_default_value.has_value()) {
                 throw std::logic_error("Argument with default value always presents");
             }
@@ -1004,7 +1029,7 @@ namespace argparse {
             return std::any_cast<T>(m_values.front());
         }
 
-        template <typename T>
+        template<typename T>
         static auto any_cast_container(const std::vector<std::any> &operand) -> T {
             using ValueType = typename T::value_type;
 
@@ -1030,10 +1055,10 @@ namespace argparse {
         std::vector<std::any> m_values;
         NArgsRange m_num_args_range{1, 1};
         bool m_accepts_optional_like_value = false;
-        bool m_is_optional : true;
-        bool m_is_required : true;
-        bool m_is_repeatable : true;
-        bool m_is_used : true; // True if the optional argument is used by user
+        bool m_is_optional: true;
+        bool m_is_required: true;
+        bool m_is_repeatable: true;
+        bool m_is_used: true; // True if the optional argument is used by user
         std::string_view m_prefix_chars; // ArgumentParser has the prefix_chars
     };
 
@@ -1069,6 +1094,7 @@ namespace argparse {
         }
 
         ArgumentParser(ArgumentParser &&) noexcept = default;
+
         ArgumentParser &operator=(ArgumentParser &&) = default;
 
         ArgumentParser(const ArgumentParser &other)
@@ -1119,7 +1145,8 @@ namespace argparse {
 
         // Parameter packing
         // Call add_argument with variadic number of string arguments
-        template <typename... Targs> Argument &add_argument(Targs... f_args) {
+        template<typename... Targs>
+        Argument &add_argument(Targs... f_args) {
             using array_of_sv = std::array<std::string_view, sizeof...(Targs)>;
             auto argument =
                     m_optional_arguments.emplace(std::cend(m_optional_arguments),
@@ -1136,15 +1163,15 @@ namespace argparse {
 
         // Parameter packed add_parents method
         // Accepts a variadic number of ArgumentParser objects
-        template <typename... Targs>
+        template<typename... Targs>
         ArgumentParser &add_parents(const Targs &... f_args) {
-            for (const ArgumentParser &parent_parser : {std::ref(f_args)...}) {
-                for (const auto &argument : parent_parser.m_positional_arguments) {
+            for (const ArgumentParser &parent_parser: {std::ref(f_args)...}) {
+                for (const auto &argument: parent_parser.m_positional_arguments) {
                     auto it = m_positional_arguments.insert(
                             std::cend(m_positional_arguments), argument);
                     index_argument(it);
                 }
-                for (const auto &argument : parent_parser.m_optional_arguments) {
+                for (const auto &argument: parent_parser.m_optional_arguments) {
                     auto it = m_optional_arguments.insert(std::cend(m_optional_arguments),
                                                           argument);
                     index_argument(it);
@@ -1166,8 +1193,8 @@ namespace argparse {
         /* Getter for arguments and subparsers.
          * @throws std::logic_error in case of an invalid argument or subparser name
          */
-        template <typename T = Argument>
-        T& at(std::string_view name) {
+        template<typename T = Argument>
+        T &at(std::string_view name) {
             if constexpr (std::is_same_v<T, Argument>) {
                 return (*this)[name];
             } else {
@@ -1197,7 +1224,7 @@ namespace argparse {
         void parse_args(const std::vector<std::string> &arguments) {
             parse_args_internal(arguments);
             // Check if all arguments are parsed
-            for ([[maybe_unused]] const auto &[unused, argument] : m_argument_map) {
+            for ([[maybe_unused]] const auto &[unused, argument]: m_argument_map) {
                 argument->validate();
             }
         }
@@ -1211,7 +1238,7 @@ namespace argparse {
         parse_known_args(const std::vector<std::string> &arguments) {
             auto unknown_arguments = parse_known_args_internal(arguments);
             // Check if all arguments are parsed
-            for ([[maybe_unused]] const auto &[unused, argument] : m_argument_map) {
+            for ([[maybe_unused]] const auto &[unused, argument]: m_argument_map) {
                 argument->validate();
             }
             return unknown_arguments;
@@ -1241,7 +1268,7 @@ namespace argparse {
          * @throws std::logic_error if the option has no value
          * @throws std::bad_any_cast if the option is not of type T
          */
-        template <typename T = std::string>
+        template<typename T = std::string>
         auto get(std::string_view arg_name) const
         -> std::conditional_t<details::IsContainer<T>, T, const T &> {
             if (!m_is_parsed) {
@@ -1255,7 +1282,7 @@ namespace argparse {
          * @throws std::logic_error if there is no such option
          * @throws std::bad_any_cast if the option is not of type T
          */
-        template <typename T = std::string>
+        template<typename T = std::string>
         auto present(std::string_view arg_name) const -> std::optional<T> {
             return (*this)[arg_name].present<T>();
         }
@@ -1326,7 +1353,7 @@ namespace argparse {
                 stream << "Positional arguments:\n";
             }
 
-            for (const auto &argument : parser.m_positional_arguments) {
+            for (const auto &argument: parser.m_positional_arguments) {
                 stream.width(static_cast<std::streamsize>(longest_arg_length));
                 stream << argument;
             }
@@ -1336,7 +1363,7 @@ namespace argparse {
                        << "Optional arguments:\n";
             }
 
-            for (const auto &argument : parser.m_optional_arguments) {
+            for (const auto &argument: parser.m_optional_arguments) {
                 stream.width(static_cast<std::streamsize>(longest_arg_length));
                 stream << argument;
             }
@@ -1346,7 +1373,7 @@ namespace argparse {
                            ? (parser.m_optional_arguments.empty() ? "" : "\n")
                            : "\n")
                        << "Subcommands:\n";
-                for (const auto &[command, subparser] : parser.m_subparser_map) {
+                for (const auto &[command, subparser]: parser.m_subparser_map) {
                     stream << std::setw(2) << " ";
                     stream << std::setw(static_cast<int>(longest_arg_length - 2))
                            << command;
@@ -1376,11 +1403,11 @@ namespace argparse {
             stream << "Usage: " << this->m_program_name;
 
             // Add any options inline here
-            for (const auto &argument : this->m_optional_arguments) {
+            for (const auto &argument: this->m_optional_arguments) {
                 stream << " " << argument.get_inline_usage();
             }
             // Put positional arguments after the optionals
-            for (const auto &argument : this->m_positional_arguments) {
+            for (const auto &argument: this->m_positional_arguments) {
                 if (!argument.m_metavar.empty()) {
                     stream << " " << argument.m_metavar;
                 } else {
@@ -1391,7 +1418,7 @@ namespace argparse {
             if (!m_subparser_map.empty()) {
                 stream << " {";
                 std::size_t i{0};
-                for (const auto &[command, unused] : m_subparser_map) {
+                for (const auto &[command, unused]: m_subparser_map) {
                     if (i == 0) {
                         stream << command;
                     } else {
@@ -1436,7 +1463,7 @@ namespace argparse {
         std::vector<std::string>
         preprocess_arguments(const std::vector<std::string> &raw_arguments) const {
             std::vector<std::string> arguments{};
-            for (const auto &arg : raw_arguments) {
+            for (const auto &arg: raw_arguments) {
 
                 const auto argument_starts_with_prefix_chars =
                         [this](const std::string &a) -> bool {
@@ -1644,10 +1671,10 @@ namespace argparse {
                 return 0;
             }
             std::size_t max_size = 0;
-            for ([[maybe_unused]] const auto &[unused, argument] : m_argument_map) {
+            for ([[maybe_unused]] const auto &[unused, argument]: m_argument_map) {
                 max_size = std::max(max_size, argument->get_arguments_length());
             }
-            for ([[maybe_unused]] const auto &[command, unused] : m_subparser_map) {
+            for ([[maybe_unused]] const auto &[command, unused]: m_subparser_map) {
                 max_size = std::max(max_size, command.size());
             }
             return max_size;
@@ -1658,7 +1685,7 @@ namespace argparse {
                 std::list<std::reference_wrapper<ArgumentParser>>::iterator;
 
         void index_argument(argument_it it) {
-            for (const auto &name : std::as_const(it->m_names)) {
+            for (const auto &name: std::as_const(it->m_names)) {
                 m_argument_map.insert_or_assign(name, it);
             }
         }

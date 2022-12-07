@@ -418,7 +418,7 @@ namespace rex {
                 if (expr.isRef())
                     expr = expr.getRef();
 
-                while(expr.getBool()) {
+                while (expr.getBool()) {
                     try {
                         interpret(target.child[3]);
                     } catch (const signalContinue &e) {
@@ -451,7 +451,7 @@ namespace rex {
 
 
                 stack.back().pushLocalCxt(
-                        (value::cxtObject){{target.child[0].leaf.strVal, rIter}});
+                        (value::cxtObject) {{target.child[0].leaf.strVal, rIter}});
 
                 auto cxtIdx = stack.back().getCurLocalCxtIdx();
 
@@ -816,23 +816,23 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() + b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() + (vint)b.getBool();
+                return a.getInt() + (vint) b.getBool();
             case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
-                return (vdeci)a.getInt() + b.getDeci();
+                return (vdeci) a.getInt() + b.getDeci();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() + b.getInt();
+                return (vint) a.getBool() + b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() + (vint)b.getBool();
+                return (vint) a.getBool() + (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
-                return (vdeci)a.getBool() + b.getDeci();
+                return (vdeci) a.getBool() + b.getDeci();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
-                return a.getDeci() + (vdeci)b.getInt();
+                return a.getDeci() + (vdeci) b.getInt();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
-                return a.getDeci() + (vdeci)b.getBool();
+                return a.getDeci() + (vdeci) b.getBool();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
                 return a.getDeci() + b.getDeci();
             default: {
-                if (auto it = a.members.find(L"rexAdd") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexAdd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -850,23 +850,23 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() - b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() - (vint)b.getBool();
+                return a.getInt() - (vint) b.getBool();
             case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
-                return (vdeci)a.getInt() - b.getDeci();
+                return (vdeci) a.getInt() - b.getDeci();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() - b.getInt();
+                return (vint) a.getBool() - b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() - (vint)b.getBool();
+                return (vint) a.getBool() - (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
-                return (vdeci)a.getBool() - b.getDeci();
+                return (vdeci) a.getBool() - b.getDeci();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
-                return a.getDeci() - (vdeci)b.getInt();
+                return a.getDeci() - (vdeci) b.getInt();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
-                return a.getDeci() - (vdeci)b.getBool();
+                return a.getDeci() - (vdeci) b.getBool();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
                 return a.getDeci() - b.getDeci();
             default: {
-                if (auto it = a.members.find(L"rexSub") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexSub"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -884,23 +884,23 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() * b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() * (vint)b.getBool();
+                return a.getInt() * (vint) b.getBool();
             case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
-                return (vdeci)a.getInt() * b.getDeci();
+                return (vdeci) a.getInt() * b.getDeci();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() * b.getInt();
+                return (vint) a.getBool() * b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() * (vint)b.getBool();
+                return (vint) a.getBool() * (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
-                return (vdeci)a.getBool() * b.getDeci();
+                return (vdeci) a.getBool() * b.getDeci();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
-                return a.getDeci() * (vdeci)b.getInt();
+                return a.getDeci() * (vdeci) b.getInt();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
-                return a.getDeci() * (vdeci)b.getBool();
+                return a.getDeci() * (vdeci) b.getBool();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
                 return a.getDeci() * b.getDeci();
             default: {
-                if (auto it = a.members.find(L"rexMul") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexMul"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -918,23 +918,23 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() / b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() / (vint)b.getBool();
+                return a.getInt() / (vint) b.getBool();
             case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
-                return (vdeci)a.getInt() / b.getDeci();
+                return (vdeci) a.getInt() / b.getDeci();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() / b.getInt();
+                return (vint) a.getBool() / b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() / (vint)b.getBool();
+                return (vint) a.getBool() / (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
-                return (vdeci)a.getBool() / b.getDeci();
+                return (vdeci) a.getBool() / b.getDeci();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
-                return a.getDeci() / (vdeci)b.getInt();
+                return a.getDeci() / (vdeci) b.getInt();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
-                return a.getDeci() / (vdeci)b.getBool();
+                return a.getDeci() / (vdeci) b.getBool();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
                 return a.getDeci() / b.getDeci();
             default: {
-                if (auto it = a.members.find(L"rexDiv") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexDiv"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -952,13 +952,13 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() % b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() % (vint)b.getBool();
+                return a.getInt() % (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() % b.getInt();
+                return (vint) a.getBool() % b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() % (vint)b.getBool();
+                return (vint) a.getBool() % (vint) b.getBool();
             default: {
-                if (auto it = a.members.find(L"rexAdd") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexAdd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -976,13 +976,13 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() << b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() << (vint)b.getBool();
+                return a.getInt() << (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() << b.getInt();
+                return (vint) a.getBool() << b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() << (vint)b.getBool();
+                return (vint) a.getBool() << (vint) b.getBool();
             default: {
-                if (auto it = a.members.find(L"rexBinaryShiftLeft") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexBinaryShiftLeft"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1000,13 +1000,13 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() >> b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() >> (vint)b.getBool();
+                return a.getInt() >> (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() >> b.getInt();
+                return (vint) a.getBool() >> b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() >> (vint)b.getBool();
+                return (vint) a.getBool() >> (vint) b.getBool();
             default: {
-                if (auto it = a.members.find(L"rexBinaryShiftLeft") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexBinaryShiftLeft"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1024,23 +1024,23 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() == b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() == (vint)b.getBool();
+                return a.getInt() == (vint) b.getBool();
             case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
-                return (vdeci)a.getInt() == b.getDeci();
+                return (vdeci) a.getInt() == b.getDeci();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() == b.getInt();
+                return (vint) a.getBool() == b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() == (vint)b.getBool();
+                return (vint) a.getBool() == (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
-                return (vdeci)a.getBool() == b.getDeci();
+                return (vdeci) a.getBool() == b.getDeci();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
-                return a.getDeci() == (vdeci)b.getInt();
+                return a.getDeci() == (vdeci) b.getInt();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
-                return a.getDeci() == (vdeci)b.getBool();
+                return a.getDeci() == (vdeci) b.getBool();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
                 return a.getDeci() == b.getDeci();
             default: {
-                if (auto it = a.members.find(L"rexEqual") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1058,23 +1058,23 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() != b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() != (vint)b.getBool();
+                return a.getInt() != (vint) b.getBool();
             case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
-                return (vdeci)a.getInt() != b.getDeci();
+                return (vdeci) a.getInt() != b.getDeci();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() != b.getInt();
+                return (vint) a.getBool() != b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() != (vint)b.getBool();
+                return (vint) a.getBool() != (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
-                return (vdeci)a.getBool() != b.getDeci();
+                return (vdeci) a.getBool() != b.getDeci();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
-                return a.getDeci() != (vdeci)b.getInt();
+                return a.getDeci() != (vdeci) b.getInt();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
-                return a.getDeci() != (vdeci)b.getBool();
+                return a.getDeci() != (vdeci) b.getBool();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
                 return a.getDeci() != b.getDeci();
             default: {
-                if (auto it = a.members.find(L"rexNotEqual") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexNotEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1092,23 +1092,23 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() >= b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() >= (vint)b.getBool();
+                return a.getInt() >= (vint) b.getBool();
             case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
-                return (vdeci)a.getInt() >= b.getDeci();
+                return (vdeci) a.getInt() >= b.getDeci();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() >= b.getInt();
+                return (vint) a.getBool() >= b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() >= (vint)b.getBool();
+                return (vint) a.getBool() >= (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
-                return (vdeci)a.getBool() >= b.getDeci();
+                return (vdeci) a.getBool() >= b.getDeci();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
-                return a.getDeci() >= (vdeci)b.getInt();
+                return a.getDeci() >= (vdeci) b.getInt();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
-                return a.getDeci() >= (vdeci)b.getBool();
+                return a.getDeci() >= (vdeci) b.getBool();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
                 return a.getDeci() >= b.getDeci();
             default: {
-                if (auto it = a.members.find(L"rexGreaterEqual") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexGreaterEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1126,23 +1126,23 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() <= b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() <= (vint)b.getBool();
+                return a.getInt() <= (vint) b.getBool();
             case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
-                return (vdeci)a.getInt() <= b.getDeci();
+                return (vdeci) a.getInt() <= b.getDeci();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() <= b.getInt();
+                return (vint) a.getBool() <= b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() <= (vint)b.getBool();
+                return (vint) a.getBool() <= (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
-                return (vdeci)a.getBool() <= b.getDeci();
+                return (vdeci) a.getBool() <= b.getDeci();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
-                return a.getDeci() <= (vdeci)b.getInt();
+                return a.getDeci() <= (vdeci) b.getInt();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
-                return a.getDeci() <= (vdeci)b.getBool();
+                return a.getDeci() <= (vdeci) b.getBool();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
                 return a.getDeci() <= b.getDeci();
             default: {
-                if (auto it = a.members.find(L"rexLessEqual") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexLessEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1160,23 +1160,23 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() > b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() > (vint)b.getBool();
+                return a.getInt() > (vint) b.getBool();
             case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
-                return (vdeci)a.getInt() > b.getDeci();
+                return (vdeci) a.getInt() > b.getDeci();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() > b.getInt();
+                return (vint) a.getBool() > b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() > (vint)b.getBool();
+                return (vint) a.getBool() > (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
-                return (vdeci)a.getBool() > b.getDeci();
+                return (vdeci) a.getBool() > b.getDeci();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
-                return a.getDeci() > (vdeci)b.getInt();
+                return a.getDeci() > (vdeci) b.getInt();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
-                return a.getDeci() > (vdeci)b.getBool();
+                return a.getDeci() > (vdeci) b.getBool();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
                 return a.getDeci() > b.getDeci();
             default: {
-                if (auto it = a.members.find(L"rexGreaterThan") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexGreaterThan"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1194,23 +1194,23 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() < b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() < (vint)b.getBool();
+                return a.getInt() < (vint) b.getBool();
             case valueKindComparator(value::vKind::vInt, value::vKind::vDeci):
-                return (vdeci)a.getInt() < b.getDeci();
+                return (vdeci) a.getInt() < b.getDeci();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() < b.getInt();
+                return (vint) a.getBool() < b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() < (vint)b.getBool();
+                return (vint) a.getBool() < (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vDeci):
-                return (vdeci)a.getBool() < b.getDeci();
+                return (vdeci) a.getBool() < b.getDeci();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vInt):
-                return a.getDeci() < (vdeci)b.getInt();
+                return a.getDeci() < (vdeci) b.getInt();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vBool):
-                return a.getDeci() < (vdeci)b.getBool();
+                return a.getDeci() < (vdeci) b.getBool();
             case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci):
                 return a.getDeci() < b.getDeci();
             default: {
-                if (auto it = a.members.find(L"rexLessThan") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexLessThan"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1228,13 +1228,13 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() | b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() | (vint)b.getBool();
+                return a.getInt() | (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() | b.getInt();
+                return (vint) a.getBool() | b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() | (vint)b.getBool();
+                return (vint) a.getBool() | (vint) b.getBool();
             default: {
-                if (auto it = a.members.find(L"rexBinaryOr") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexBinaryOr"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1252,13 +1252,13 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() & b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() & (vint)b.getBool();
+                return a.getInt() & (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() & b.getInt();
+                return (vint) a.getBool() & b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() & (vint)b.getBool();
+                return (vint) a.getBool() & (vint) b.getBool();
             default: {
-                if (auto it = a.members.find(L"rexBinaryAnd") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexBinaryAnd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1276,13 +1276,13 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() ^ b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() ^ (vint)b.getBool();
+                return a.getInt() ^ (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() ^ b.getInt();
+                return (vint) a.getBool() ^ b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() ^ (vint)b.getBool();
+                return (vint) a.getBool() ^ (vint) b.getBool();
             default: {
-                if (auto it = a.members.find(L"rexBinaryXor") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexBinaryXor"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1300,13 +1300,13 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() && b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() && (vint)b.getBool();
+                return a.getInt() && (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() && b.getInt();
+                return (vint) a.getBool() && b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() && (vint)b.getBool();
+                return (vint) a.getBool() && (vint) b.getBool();
             default: {
-                if (auto it = a.members.find(L"rexLogicAnd") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexLogicAnd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
@@ -1324,13 +1324,13 @@ namespace rex {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
                 return a.getInt() || b.getInt();
             case valueKindComparator(value::vKind::vInt, value::vKind::vBool):
-                return a.getInt() || (vint)b.getBool();
+                return a.getInt() || (vint) b.getBool();
             case valueKindComparator(value::vKind::vBool, value::vKind::vInt):
-                return (vint)a.getBool() || b.getInt();
+                return (vint) a.getBool() || b.getInt();
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
-                return (vint)a.getBool() || (vint)b.getBool();
+                return (vint) a.getBool() || (vint) b.getBool();
             default: {
-                if (auto it = a.members.find(L"rexLogicOr") ; it != a.members.end())
+                if (auto it = a.members.find(L"rexLogicOr"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));

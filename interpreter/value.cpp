@@ -49,7 +49,7 @@ namespace rex {
             }
             case vKind::vVec: {
                 dest.vecObj = managePtr(*vecObj);
-                for (auto &i : *dest.vecObj) {
+                for (auto &i: *dest.vecObj) {
                     i = managePtr(*i);
                 }
                 break;
@@ -64,7 +64,7 @@ namespace rex {
                 break;
             }
         }
-        for (auto &i : dest.members) {
+        for (auto &i: dest.members) {
             i.second = managePtr(*i.second);
         }
     }
@@ -150,7 +150,7 @@ namespace rex {
     }
 
     value::value(const value::nativeFuncPtr &v) :
-        kind(vKind::vNativeFuncPtr), members(), nativeFuncObj(new (nativeFuncPtr){v}) {
+            kind(vKind::vNativeFuncPtr), members(), nativeFuncObj(new(nativeFuncPtr){v}) {
 
     }
 
@@ -198,7 +198,7 @@ namespace rex {
             }
             case vKind::vVec: {
                 ss << L"vec val=[";
-                for (vsize i = 0;i < getVec().size();i++) {
+                for (vsize i = 0; i < getVec().size(); i++) {
                     ss << (vstr) {*(getVec()[i])} << L",";
                 }
                 if (!getVec().empty())
@@ -208,8 +208,8 @@ namespace rex {
             }
             case vKind::vObject:
                 ss << L"object val={";
-                for (auto &i : members) {
-                    ss << std::quoted(i.first) << ": " << (vstr){*i.second} << L',';
+                for (auto &i: members) {
+                    ss << std::quoted(i.first) << ": " << (vstr) {*i.second} << L',';
                 }
                 if (!members.empty())
                     ss.seekp(-1, ss.cur);
@@ -225,7 +225,7 @@ namespace rex {
                 ss << L"nativeFunc>";
                 break;
             case vKind::vRef:
-                ss << L"ref val=" << (vstr){getRef()} << L">";
+                ss << L"ref val=" << (vstr) {getRef()} << L">";
                 break;
         }
         return ss.str();

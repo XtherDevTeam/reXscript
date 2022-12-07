@@ -21,9 +21,9 @@ std::wstring rex::buildErrorMessage(rex::vsize line, rex::vsize col, const rex::
 void rex::parseString(std::wistream &input, rex::vstr &value) {
     vchar ch = '\0';
     while (input) {
-        if(!input.get(ch)) break;
+        if (!input.get(ch)) break;
         if (ch == '\\') {
-            if(!input.get(ch)) break;
+            if (!input.get(ch)) break;
             switch (ch) {
                 case '\\':
                 case '"':
@@ -49,7 +49,7 @@ void rex::parseString(std::wistream &input, rex::vstr &value) {
                 case 'u': {
                     vchar fuckutf{};
                     for (vint i = 3; input && i >= 0; i--) {
-                        if(!input.get(ch)) break;
+                        if (!input.get(ch)) break;
                         if ('a' <= ch and ch <= 'z')
                             fuckutf += ((ch - 'a' + 10) * (1 << 4 * i));
                         else if ('A' <= ch and ch <= 'Z')

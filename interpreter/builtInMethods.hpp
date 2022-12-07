@@ -25,7 +25,7 @@ namespace rex {
 
         formatterTagInfo();
 
-        vchar * parse(vchar *str);
+        vchar *parse(vchar *str);
     };
 
     namespace stringMethods {

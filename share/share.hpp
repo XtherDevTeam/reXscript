@@ -40,11 +40,11 @@ namespace rex {
     using unknownPtr = unsafePtr<void *>;
 
     template<typename T>
-    managedPtr<T> managePtr(const T& v) {
+    managedPtr<T> managePtr(const T &v) {
         return std::make_shared<T>(v);
     }
 
-    void parseString(std::wistream & input, vstr& value);
+    void parseString(std::wistream &input, vstr &value);
 }
 
 #endif //REXSCRIPT_SHARE_HPP

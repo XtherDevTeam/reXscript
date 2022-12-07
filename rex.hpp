@@ -16,14 +16,17 @@
 namespace rex {
     rex::managedPtr<rex::environment> getRexEnvironment();
 
-    managedPtr<value> importExternModules(const managedPtr <environment> &env, const vstr &path);
+    managedPtr<value> importExternModules(const managedPtr<environment> &env, const vstr &path);
 
-    managedPtr<value> importNativeModules(const managedPtr <environment> &env, const vstr &path);
+    managedPtr<value> importNativeModules(const managedPtr<environment> &env, const vstr &path);
 
-    void rexThreadWrapper(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func, const vec<value> &args,
-                          managedPtr<value> passThisPtr = nullptr);
+    void
+    rexThreadWrapper(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
+                     const vec<value> &args,
+                     managedPtr<value> passThisPtr = nullptr);
 
-    void spawnThread(const managedPtr <environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func, const vec<value> &args, managedPtr<value> passThisPtr = nullptr);
+    void spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
+                     const vec<value> &args, managedPtr<value> passThisPtr = nullptr);
 }
 
 #endif //REXSCRIPT_REX_HPP

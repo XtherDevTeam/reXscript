@@ -49,7 +49,7 @@ int main(int argc, const char **argv) {
         } else {
             std::cout << rexProg;
         }
-    } catch(const std::runtime_error& err) {
+    } catch (const std::runtime_error &err) {
         std::cerr << err.what() << std::endl;
         std::cout << rexProg;
         std::exit(1);

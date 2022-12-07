@@ -46,4 +46,5 @@ Here is a list of them.
 Format: `[projectName (author) (license)](link) purpose`
 
 - [argparse (p-ranav) (MIT License)](https://github.com/p-ranav/argparse) for arguments parsing
-- [localr (FurryR) (MIT License)](https://code.xueersi.com/home/project/detail?lang=code&pid=34118372&version=cpp&form=cpp&langType=cpp) for charset conversation between std::string and std::wstring 
+- [localr (FurryR) (MIT License)](https://code.xueersi.com/home/project/detail?lang=code&pid=34118372&version=cpp&form=cpp&langType=cpp)
+  for charset conversation between std::string and std::wstring 

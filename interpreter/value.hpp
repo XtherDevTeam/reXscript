@@ -13,7 +13,7 @@ namespace rex {
     public:
         using vecObject = vec<managedPtr<value>>;
         using cxtObject = map<vstr, managedPtr<value>>;
-        using nativeFuncPtr = std::function<value(void*, vec<value>, const managedPtr<value>& )>;
+        using nativeFuncPtr = std::function<value(void *, vec<value>, const managedPtr<value> &)>;
 
         struct funcObject {
             managedPtr<value> moduleCxt;

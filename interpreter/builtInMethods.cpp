@@ -64,6 +64,7 @@ namespace rex {
 
     value stringMethods::fromChar(void *selfPtr, vec<value> args, const managedPtr<value> &passThisPtr) {
         passThisPtr->getStr() = (vchar) args[0].getInt();
+        return passThisPtr;
     }
 
     value stringMethods::length(void *selfPtr, vec<value> args, const managedPtr<value> &passThisPtr) {
@@ -100,6 +101,8 @@ namespace rex {
         else
             passThisPtr->strObj = managePtr(
                     passThisPtr->getStr() + args[0].getStr()); // not unique, use copy construct instead
+
+        return passThisPtr;
     }
 
     value stringMethods::join(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
@@ -111,7 +114,7 @@ namespace rex {
         if (!args.empty())
             result.getStr() += args[0].getStr();
 
-        for (vsize i = 1;i < args.size();i++) {
+        for (vsize i = 1; i < args.size(); i++) {
             result.getStr() += passThisPtr->getStr();
             result.getStr() += args[i].getStr();
         }
