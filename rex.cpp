@@ -3,6 +3,7 @@
 //
 
 #include <fstream>
+#include <thread>
 #include <share/dlfcn.hpp>
 #include "rex.hpp"
 #include "exceptions/signalException.hpp"
@@ -11,16 +12,16 @@
 namespace rex {
 
     rex::managedPtr<rex::environment> getRexEnvironment() {
-        return rex::managePtr(rex::environment{});
+        return rex::managePtr(rex::environment{managePtr(value{globalMethods::getMethodsCxt()})});
     }
 
     managedPtr<value> importExternModules(const managedPtr<environment> &env, const vstr &path) {
         if (auto it = env->globalCxt->members.find(path); it != env->globalCxt->members.end()) {
             return it->second;
         } else {
-            std::wifstream f(path, std::ios::in);
+            std::wifstream f(wstring2string(path), std::ios::in);
             if (f.is_open()) {
-                rex::managedPtr<rex::value> moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
+                auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
                 env->globalCxt->members[path] = moduleCxt;
                 moduleCxt->members[L"__path__"] = managePtr(
                         value{path, rex::stringMethods::getMethodsCxt()});
@@ -58,11 +59,26 @@ namespace rex {
 
             using funcPtr = void(const managedPtr<environment> &, const managedPtr<value> &);
 
-            std::function<funcPtr> rexModInit = (funcPtr*) (dlsym(handle, "rexModInit"));
+            std::function<funcPtr> rexModInit = (funcPtr *) (dlsym(handle, "rexModInit"));
 
             rexModInit(env, moduleCxt);
 
             return moduleCxt;
         }
+    }
+
+    void spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
+                     const vec<value> &args,
+                     managedPtr<value> passThisPtr) {
+        std::thread th(rexThreadWrapper, std::cref(env), std::cref(cxt), std::cref(func), std::cref(args), passThisPtr);
+        th.detach();
+    }
+
+    void
+    rexThreadWrapper(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
+                     const vec<value> &args,
+                     managedPtr<value> passThisPtr) {
+        auto it = managePtr(interpreter{env, cxt});
+        it->invokeFunc(func, args, passThisPtr);
     }
 }

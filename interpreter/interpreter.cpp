@@ -293,6 +293,7 @@ namespace rex {
                                                                   L"no overloaded callable objects for `rexNegate` operation"));
                             }
                         }
+                        break;
                     }
                     case lexer::token::tokenKind::incrementSign: {
                         if (!rhs.isRef())
@@ -315,6 +316,7 @@ namespace rex {
                                                                   L"no overloaded callable objects for `rexIncrement` operation"));
                             }
                         }
+                        break;
                     }
                     case lexer::token::tokenKind::decrementSign: {
                         if (!rhs.isRef())

@@ -1,12 +1,12 @@
-#include "frontend/ast.hpp"
-#include "frontend/parser.hpp"
 #include <iostream>
-#include "pass/stringToLexerPass.hpp"
-#include "interpreter/value.hpp"
-#include "interpreter/builtInMethods.hpp"
-#include "interpreter/interpreter.hpp"
+#include "share/argparse.hpp"
+#include <rex.hpp>
 
-void interactiveShell(rex::managedPtr<rex::interpreter> &interpreter) {
+void interactiveShell(rex::managedPtr<rex::environment> &env) {
+    auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
+    env->globalCxt->members[L"__local__"] = moduleCxt;
+    auto interpreter = rex::managePtr(rex::interpreter{env, moduleCxt});
+
     interpreter->stack.emplace_back();
     interpreter->stack.back().pushLocalCxt({});
     while (std::cin) {
@@ -24,33 +24,35 @@ void interactiveShell(rex::managedPtr<rex::interpreter> &interpreter) {
     }
 }
 
-void lexTest() {
-    std::wstring s = L"wdnmdnmsl.wqnmgb()";
-    rex::stringToLexerPass pass1(s);
-    rex::lexer lexer = pass1.run();
-    rex::parser parser{lexer};
-    rex::AST ast = parser.parseStmts();
-    std::cout << (char *) s.c_str() << std::endl;
+void loadFile(rex::managedPtr<rex::environment> &env, const rex::vstr &path) {
+    auto moduleCxt = rex::importExternModules(env, path);
 }
 
-void fuckIstringstream() {
-    std::wstring s = L"a\\n";
-    std::wistringstream ss{s};
-    rex::vchar ch{};
-    while (ss) {
-        if(!ss.get(ch)) break;
-        printf("%c", ch);
+int main(int argc, const char **argv) {
+    argparse::ArgumentParser rexProg{"rex"};
+    rexProg.add_argument("--shell")
+            .help("open interactive shell")
+            .default_value(false)
+            .implicit_value(true);
+
+    rexProg.add_argument("--file")
+            .help("specify the file to be execute")
+            .default_value(std::string{});
+
+    try {
+        rexProg.parse_args(argc, argv);
+        auto env = rex::getRexEnvironment();
+        if (rexProg["--shell"] == true) {
+            interactiveShell(env);
+        } else if (!rexProg.get<std::string>("--file").empty()) {
+            loadFile(env, rex::string2wstring(rexProg.get<std::string>("--file")));
+        } else {
+            std::cout << rexProg;
+        }
+    } catch(const std::runtime_error& err) {
+        std::cerr << err.what() << std::endl;
+        std::cout << rexProg;
+        std::exit(1);
     }
-}
-
-int main() {
-    rex::managedPtr<rex::environment> env = rex::managePtr(rex::environment{});
-    rex::managedPtr<rex::value> moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
-    env->globalCxt = rex::managePtr(rex::value{rex::globalMethods::getMethodsCxt()});
-    env->globalCxt->members[L"__local__"] = moduleCxt;
-    rex::managedPtr<rex::interpreter> interpreter = rex::managePtr(rex::interpreter{env, moduleCxt});
-    interactiveShell(interpreter);
-//    lexTest();
-//fuckIstringstream();
     return 0;
 }

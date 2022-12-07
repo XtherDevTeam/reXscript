@@ -207,7 +207,7 @@ namespace rex {
             tok.kind = token::tokenKind::additionAssignment;
             getCh();
         } else if (curCh == '+') {
-            tok.kind = token::tokenKind::decrementSign;
+            tok.kind = token::tokenKind::incrementSign;
             getCh();
         }
         return tok;

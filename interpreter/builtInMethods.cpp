@@ -21,6 +21,7 @@ namespace rex {
         result[L"rexNotEqual"] = managePtr(value{(value::nativeFuncPtr) rexNotEqual});
         result[L"rexAdd"] = managePtr(value{(value::nativeFuncPtr) rexAdd});
         result[L"rexAddAssign"] = managePtr(value{(value::nativeFuncPtr) rexAddAssign});
+        result[L"join"] = managePtr(value{(value::nativeFuncPtr) join});
         return result;
     }
 
@@ -101,8 +102,63 @@ namespace rex {
                     passThisPtr->getStr() + args[0].getStr()); // not unique, use copy construct instead
     }
 
+    value stringMethods::join(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+        for (auto &i: args)
+            if (i.isRef())
+                i = i.getRef();
+
+        value result = {L"", getMethodsCxt()};
+        if (!args.empty())
+            result.getStr() += args[0].getStr();
+
+        for (vsize i = 1;i < args.size();i++) {
+            result.getStr() += passThisPtr->getStr();
+            result.getStr() += args[i].getStr();
+        }
+
+        return result;
+    }
+
     value::cxtObject vecMethods::getMethodsCxt() {
-        return {};
+        value::cxtObject result;
+        result[L"append"] = managePtr(value{(value::nativeFuncPtr) append});
+        result[L"rexEqual"] = managePtr(value{(value::nativeFuncPtr) rexEqual});
+        result[L"rexNotEqual"] = managePtr(value{(value::nativeFuncPtr) rexNotEqual});
+        return result;
+    }
+
+    value vecMethods::append(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+        for (auto &i: args)
+            passThisPtr->getVec().push_back(managePtr(i));
+        return passThisPtr;
+    }
+
+    value vecMethods::rexEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+        if (args[0].kind != value::vKind::vVec or passThisPtr->getVec().size() != args[0].getVec().size())
+            return {false};
+        for (auto it = args[0].getVec().begin(), it1 = passThisPtr->getVec().begin();
+             it != args[0].getVec().end(); it++, it1++) {
+            if (!in->opEqual(*(*it), *(*it1)).getBool())
+                return {false};
+        }
+        return {true};
+    }
+
+    value vecMethods::rexNotEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+        if (args[0].kind != value::vKind::vVec or passThisPtr->getVec().size() != args[0].getVec().size())
+            return {true};
+        for (auto it = args[0].getVec().begin(), it1 = passThisPtr->getVec().begin();
+             it != args[0].getVec().end(); it++, it1++) {
+            if (in->opNotEqual(*(*it), *(*it1)).getBool())
+                return {true};
+        }
+        return {false};
     }
 
     value globalMethods::input(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
@@ -161,7 +217,7 @@ namespace rex {
     }
 
     value globalMethods::format(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
-        for (auto &i : args)
+        for (auto &i: args)
             if (i.isRef())
                 i = i.getRef();
 
@@ -170,7 +226,7 @@ namespace rex {
 
         vsize cur = 1;
 
-        for (vchar* ch = &args[0].getStr().front(); *ch; ch++) {
+        for (vchar *ch = &args[0].getStr().front(); *ch; ch++) {
             if (*ch == L'$' && *(ch + 1) == L'{') {
                 ch += 2;
                 if (ch < &args[0].getStr().back()) {
@@ -202,7 +258,7 @@ namespace rex {
                             }
                             case formatterTagInfo::tagKind::vDeci: {
                                 std::wstringstream ss;
-                                ss << std::fixed << std::setprecision((int)tag.precision) << args[cur].getDeci();
+                                ss << std::fixed << std::setprecision((int) tag.precision) << args[cur].getDeci();
                                 result.getStr() += ss.str();
                                 cur++;
                                 break;
@@ -218,7 +274,8 @@ namespace rex {
                             }
                         }
                         if (*ch != L'}')
-                            throw signalException(interpreter::makeErr(L"formatError", L"expected `}` after the formatter tag"));
+                            throw signalException(
+                                    interpreter::makeErr(L"formatError", L"expected `}` after the formatter tag"));
                     } else {
                         throw signalException(interpreter::makeErr(L"formatError", L"invalid formatter tag"));
                     }

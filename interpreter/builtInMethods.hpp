@@ -51,10 +51,18 @@ namespace rex {
 
         value formatter(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
 
+        value join(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
         value::cxtObject getMethodsCxt();
     }
 
     namespace vecMethods {
+        value append(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value rexEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value rexNotEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
         value::cxtObject getMethodsCxt();
     }
 

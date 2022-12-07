@@ -128,15 +128,16 @@ namespace rex {
             if (lex.curToken.kind != lexer::token::tokenKind::colon) {
                 throw parserException(lex.line, lex.col, L"expected a `:` after an identifier");
             }
+            lex.scan();
             AST right = parseLvalueExpression();
             if (!right) {
                 throw parserException(lex.line, lex.col, L"expected a lvalue expression");
             }
+            base.child.push_back((AST) {AST::treeKind::memberPair, (vec<AST>) {left, right}});
             if (lex.curToken.kind != lexer::token::tokenKind::comma) {
-                throw parserException(lex.line, lex.col, L"expected a `,` after a pair of items");
+                break;
             }
             lex.scan();
-            base.child.push_back((AST) {AST::treeKind::memberPair, (vec<AST>) {left, right}});
         }
         if (lex.curToken.kind != lexer::token::tokenKind::rightBraces) {
             throw parserException(lex.line, lex.col, L"expected a `}` to close an objectLiteral");
@@ -255,7 +256,7 @@ namespace rex {
     }
 
     AST parser::parseMemberExpression() {
-        AST vLhs = parseSubscriptExpression();
+        AST vLhs = parsePrimary();
         if (!vLhs)
             return makeNotMatch();
         if (lex.curToken.kind != lexer::token::tokenKind::dot)
@@ -309,7 +310,7 @@ namespace rex {
         if (node)
             return node;
 
-        node = parseMemberExpression();
+        node = parseSubscriptExpression();
         if (node)
             return node;
 
@@ -326,7 +327,7 @@ namespace rex {
             lex.curToken.kind == lexer::token::tokenKind::asterisk) {
             AST vOperator = {AST::treeKind::operators, lex.curToken};
             lex.scan();
-            AST vItem = parsePrimary();
+            AST vItem = parseMemberExpression();
 
             if (!vItem) {
                 lex.returnState();
@@ -336,7 +337,7 @@ namespace rex {
             lex.dropState();
             return {AST::treeKind::uniqueExpression, (vec<AST>) {vOperator, vItem}};
         } else {
-            AST vItem = parsePrimary();
+            AST vItem = parseMemberExpression();
             if (!vItem) {
                 lex.returnState();
                 return makeNotMatch();

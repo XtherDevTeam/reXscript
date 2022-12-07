@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <utility>
+#include <iomanip>
 #include "exceptions/rexException.hpp"
 
 namespace rex {
@@ -192,7 +193,7 @@ namespace rex {
                 break;
             }
             case vKind::vStr: {
-                ss << L"str val=" << getStr() << L">";
+                ss << L"str val=" << std::quoted(getStr()) << L">";
                 break;
             }
             case vKind::vVec: {
@@ -206,12 +207,13 @@ namespace rex {
                 break;
             }
             case vKind::vObject:
-                ss << L"vec val={";
+                ss << L"object val={";
                 for (auto &i : members) {
-                    ss << L'"' << i.first << L'"' << ": " << (vstr){*i.second} << L',';
+                    ss << std::quoted(i.first) << ": " << (vstr){*i.second} << L',';
                 }
                 if (!members.empty())
                     ss.seekp(-1, ss.cur);
+                ss << L"}>";
                 break;
             case vKind::vFunc:
                 ss << L"func>";
