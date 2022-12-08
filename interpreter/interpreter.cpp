@@ -64,16 +64,18 @@ namespace rex {
                     return {};
                 }
                 case value::vKind::vLambda: {
-                    stack.push_back({func->getFunc().moduleCxt, {}});
+                    stack.push_back({func->getLambda().func.moduleCxt, {}});
                     stack.back().pushLocalCxt({});
+
+                    stack.back().localCxt.back()[L"outer"] = func->getLambda().outerCxt;
 
                     if (passThisPtr)
                         stack.back().localCxt.back()[L"this"] = passThisPtr;
 
                     for (vsize i = 0; i < args.size(); i++) {
-                        stack.back().localCxt.back()[func->lambdaObj->func.argsName[i]] = managePtr(args[i]);
+                        stack.back().localCxt.back()[func->getLambda().func.argsName[i]] = managePtr(args[i]);
                     }
-                    interpret(func->lambdaObj->func.code);
+                    interpret(func->getLambda().func.code);
                     stack.pop_back();
                     return {};
                 }
@@ -191,7 +193,10 @@ namespace rex {
                 value::lambdaObject lambda;
                 lambda.outerCxt = managePtr(value{value::cxtObject{}});
                 for (auto &i: target.child[0].child) {
-                    lambda.outerCxt->members[i.leaf.strVal] = managePtr(interpret(i));
+                    value it = interpret(i);
+                    if (it.isRef())
+                        it = it.getRef();
+                    lambda.outerCxt->members[i.leaf.strVal] = managePtr(it);
                 }
                 for (auto &i: target.child[1].child) {
                     lambda.func.argsName.push_back(i.leaf.strVal);
@@ -372,15 +377,15 @@ namespace rex {
             case AST::treeKind::letStmt: {
                 for (auto &item: target.child) {
                     value rhs = interpret(item.child[1]);
-                    if (rhs.isRef())
-                        rhs = rhs.getRef();
 
                     if (!stack.empty()) {
-                        stack.back().localCxt.back()[item.child[0].leaf.strVal] = managePtr(rhs);
+                        stack.back().localCxt.back()[item.child[0].leaf.strVal] = managePtr(
+                                rhs.isRef() ? rhs.getRef() : rhs);
                     } else if (moduleCxt) {
-                        moduleCxt->members[item.child[0].leaf.strVal] = managePtr(rhs);
+                        moduleCxt->members[item.child[0].leaf.strVal] = managePtr(rhs.isRef() ? rhs.getRef() : rhs);
                     } else {
-                        env->globalCxt->members[item.child[0].leaf.strVal] = managePtr(rhs);
+                        env->globalCxt->members[item.child[0].leaf.strVal] = managePtr(
+                                rhs.isRef() ? rhs.getRef() : rhs);
                     }
                 }
                 return {};

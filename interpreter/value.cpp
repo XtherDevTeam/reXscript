@@ -125,7 +125,7 @@ namespace rex {
     }
 
     value::value(const value::lambdaObject &v) :
-            kind(vKind::vFunc), basicValue(), members(), lambdaObj(new lambdaObject{v}) {
+            kind(vKind::vLambda), basicValue(), members(), lambdaObj(new lambdaObject{v}) {
 
     }
 

@@ -23,10 +23,10 @@ namespace rex {
     void
     rexThreadWrapper(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
                      const vec<value> &args,
-                     managedPtr<value> passThisPtr = nullptr);
+                     const managedPtr<value>& passThisPtr = nullptr);
 
     void spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
-                     const vec<value> &args, managedPtr<value> passThisPtr = nullptr);
+                     const vec<value> &args, const managedPtr<value>& passThisPtr = nullptr);
 }
 
 #endif //REXSCRIPT_REX_HPP

@@ -69,15 +69,15 @@ namespace rex {
 
     void spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
                      const vec<value> &args,
-                     managedPtr<value> passThisPtr) {
-        std::thread th(rexThreadWrapper, std::cref(env), std::cref(cxt), std::cref(func), std::cref(args), passThisPtr);
+                     const managedPtr<value>& passThisPtr) {
+        std::thread th(rexThreadWrapper, std::cref(env), std::cref(cxt), std::cref(func), std::cref(args), std::cref(passThisPtr));
         th.detach();
     }
 
     void
     rexThreadWrapper(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
                      const vec<value> &args,
-                     managedPtr<value> passThisPtr) {
+                     const managedPtr<value>& passThisPtr) {
         auto it = managePtr(interpreter{env, cxt});
         it->invokeFunc(func, args, passThisPtr);
     }
