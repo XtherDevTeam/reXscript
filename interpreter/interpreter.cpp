@@ -534,7 +534,7 @@ namespace rex {
                 throw signalReturn(interpret(target.child[0]));
             }
             default: {
-                return {};
+                throw signalException(makeErr(L"internalError", L"unexpected AST type"));
             }
         }
     }
@@ -796,9 +796,6 @@ namespace rex {
                             throw signalException(makeErr(L"typeError", L"cannot evaluate this expression"));
                     }
                 }
-            }
-            default: {
-                return {};
             }
         }
     }
