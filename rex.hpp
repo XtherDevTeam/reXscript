@@ -19,14 +19,6 @@ namespace rex {
     managedPtr<value> importExternModules(const managedPtr<environment> &env, const vstr &path);
 
     managedPtr<value> importNativeModules(const managedPtr<environment> &env, const vstr &path);
-
-    void
-    rexThreadWrapper(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
-                     const vec<value> &args,
-                     const managedPtr<value>& passThisPtr = nullptr);
-
-    void spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
-                     const vec<value> &args, const managedPtr<value>& passThisPtr = nullptr);
 }
 
 #endif //REXSCRIPT_REX_HPP

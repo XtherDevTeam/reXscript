@@ -79,6 +79,16 @@ namespace rex {
 
         value::cxtObject getMethodsCxt();
     }
+
+    namespace threadingMethods {
+        value start(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value wait(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+
+        value::cxtObject getMethodsCxt();
+
+        value getThreadingModule();
+    }
 }
 
 #endif //REXSCRIPT_BUILTINMETHODS_HPP

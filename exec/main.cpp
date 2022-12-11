@@ -1,4 +1,5 @@
 #include <iostream>
+#include "exceptions/parserException.hpp"
 #include "share/argparse.hpp"
 #include "exceptions/signalException.hpp"
 #include <rex.hpp>
@@ -25,8 +26,10 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
             std::cout << "output> " << rex::wstring2string(result) << std::endl;
         } catch (rex::signalException &e) {
             std::cerr << "exception> " << rex::wstring2string((rex::value)e.get()) << std::endl;
+        } catch (rex::parserException &e) {
+            std::cerr << "error> " << e.what() << std::endl;
         } catch (...) {
-            std::cerr << "exception> unknown" << std::endl;
+            std::cerr << "error> unknown" << std::endl;
         }
     }
 }
@@ -56,8 +59,10 @@ int main(int argc, const char **argv) {
                 loadFile(env, rex::string2wstring(rexProg.get<std::string>("--file")));
             } catch (rex::signalException &e) {
                 std::cerr << "exception> " << rex::wstring2string((rex::value)e.get()) << std::endl;
+            } catch (rex::parserException &e) {
+                std::cerr << "error> " << e.what() << std::endl;
             } catch (...) {
-                std::cerr << "exception> unknown" << std::endl;
+                std::cerr << "error> unknown" << std::endl;
             }
         } else {
             std::cout << rexProg;

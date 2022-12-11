@@ -8,6 +8,8 @@
 #include "exceptions/signalException.hpp"
 #include "exceptions/signalContinue.hpp"
 #include "exceptions/signalBreak.hpp"
+#include "interpreter/value.hpp"
+#include "share/share.hpp"
 
 namespace rex {
     void environment::stackFrame::pushLocalCxt(const value::cxtObject &cxt) {
@@ -36,6 +38,25 @@ namespace rex {
             localCxt.pop_back();
     }
 
+    environment::thread::thread() : th(), result() {
+    }
+
+    void environment::thread::setTh(const managedPtr<std::thread> &v) {
+        th = v;
+    }
+
+    void environment::thread::setResult(const managedPtr<value> &v) {
+        result = v;
+    }
+
+    const managedPtr<std::thread> & environment::thread::getTh() {
+        return th;
+    }
+
+    const managedPtr<value> & environment::thread::getResult() {
+        return result;
+    }
+
     interpreter::interpreter(const managedPtr<environment> &env, const managedPtr<value> &moduleCxt) : env(env),
                                                                                                        moduleCxt(
                                                                                                                moduleCxt),
@@ -57,7 +78,11 @@ namespace rex {
                         stack.back().localCxt.back()[L"this"] = passThisPtr;
 
                     for (vsize i = 0; i < args.size(); i++) {
-                        stack.back().localCxt.back()[func->funcObj->argsName[i]] = managePtr(args[i]);
+                        if (i < args.size()) {
+                            stack.back().localCxt.back()[func->getFunc().argsName[i]] = managePtr(args[i]);
+                        } else {
+                            stack.back().localCxt.back()[func->getFunc().argsName[i]] = managePtr(value{});
+                        }
                     }
                     interpret(func->funcObj->code);
                     stack.pop_back();
@@ -72,8 +97,12 @@ namespace rex {
                     if (passThisPtr)
                         stack.back().localCxt.back()[L"this"] = passThisPtr;
 
-                    for (vsize i = 0; i < args.size(); i++) {
-                        stack.back().localCxt.back()[func->getLambda().func.argsName[i]] = managePtr(args[i]);
+                    for (vsize i = 0; i < func->getLambda().func.argsName.size(); i++) {
+                        if (i < args.size()) {
+                            stack.back().localCxt.back()[func->getLambda().func.argsName[i]] = managePtr(args[i]);
+                        } else {
+                            stack.back().localCxt.back()[func->getLambda().func.argsName[i]] = managePtr(value{});
+                        }
                     }
                     interpret(func->getLambda().func.code);
                     stack.pop_back();
@@ -797,6 +826,9 @@ namespace rex {
                     }
                 }
             }
+            default: {
+                return {};
+            }
         }
     }
 
@@ -1338,5 +1370,30 @@ namespace rex {
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));
             }
         }
+    }
+
+    vint spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
+                     const vec<value> &args,
+                     const managedPtr<value>& passThisPtr) {
+        vint id{env->threadIdCounter};
+        env->threadPool[id].setTh(std::make_shared<std::thread>(rexThreadWrapper, std::cref(env), id, std::cref(cxt), std::cref(func), std::cref(args), std::cref(passThisPtr)));
+    
+        return id;
+    }
+
+    void
+    rexThreadWrapper(const managedPtr<environment> &env, vint tid, const managedPtr<value> &cxt, const managedPtr<value> &func,
+                     const vec<value> &args,
+                     const managedPtr<value>& passThisPtr) {
+        auto it = managePtr(interpreter{env, cxt});
+        auto res = it->invokeFunc(func, args, passThisPtr);
+        env->threadPool[tid].setResult(managePtr(res.isRef() ? res.getRef() : res));
+    }
+
+    value waitForThread(const managedPtr<environment> &env, vint id) {
+        env->threadPool[id].getTh()->join();
+        value res = env->threadPool[id].getResult();
+        env->threadPool.erase(id);
+        return res;
     }
 } // rex

@@ -10,3 +10,12 @@ if (DEFINED REX_IMPORT_AS_LIB)
 
     include_directories(${REX_SRC_DIR})
 endif ()
+
+if (CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
+    set(CMAKE_CXX_FLAGS "-ldl -lpthread")
+endif ()
+
+
+if (CMAKE_HOST_SYSTEM_NAME MATCHES "Windows")
+    set(CMAKE_CXX_FLAGS "-static -lpthread")
+endif ()

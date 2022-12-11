@@ -5,7 +5,9 @@
 #ifndef REXSCRIPT_INTERPRETER_HPP
 #define REXSCRIPT_INTERPRETER_HPP
 
+#include "share/share.hpp"
 #include "value.hpp"
+#include <thread>
 
 namespace rex {
 
@@ -27,7 +29,26 @@ namespace rex {
             stackFrame(managedPtr<value> &moduleCxt, const vec<value::cxtObject> &localCxt);
         };
 
+        class thread {
+            managedPtr<std::thread> th;
+            managedPtr<value> result;
+        public:
+            thread();
+
+            void setTh(const managedPtr<std::thread> &v);
+
+            const managedPtr<std::thread> &getTh();
+
+            void setResult(const managedPtr<value> &v);
+
+            const managedPtr<value> & getResult();
+        };
+
         managedPtr<value> globalCxt;
+
+        map<vint, thread> threadPool;
+
+        vint threadIdCounter;
     };
 
     class interpreter {
@@ -92,6 +113,15 @@ namespace rex {
         value interpret(const AST &target);
     };
 
+    void
+    rexThreadWrapper(const managedPtr<environment> &env, vint tid, const managedPtr<value> &cxt, const managedPtr<value> &func,
+                     const vec<value> &args,
+                     const managedPtr<value>& passThisPtr = nullptr);
+
+    vint spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
+                     const vec<value> &args, const managedPtr<value>& passThisPtr = nullptr);
+
+    value waitForThread(const managedPtr<environment> &env, vint id);
 } // rex
 
 #endif //REXSCRIPT_INTERPRETER_HPP

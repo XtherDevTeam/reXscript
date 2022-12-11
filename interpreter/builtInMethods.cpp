@@ -5,8 +5,10 @@
 #include <iostream>
 #include <iomanip>
 #include "builtInMethods.hpp"
+#include "interpreter/interpreter.hpp"
 #include "rex.hpp"
 #include "exceptions/signalException.hpp"
+#include "share/share.hpp"
 
 namespace rex {
     value::cxtObject stringMethods::getMethodsCxt() {
@@ -200,6 +202,7 @@ namespace rex {
         result[L"import"] = managePtr(value{(value::nativeFuncPtr) rexImport});
         result[L"nativeImport"] = managePtr(value{(value::nativeFuncPtr) rexNativeImport});
         result[L"format"] = managePtr(value{(value::nativeFuncPtr) format});
+        result[L"threading"] = managePtr(threadingMethods::getThreadingModule());
         return result;
     }
 
@@ -342,5 +345,33 @@ namespace rex {
             }
         }
         return str;
+    }
+
+    value threadingMethods::start(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+        auto in = static_cast<rex::interpreter*>(interpreter);
+        vec<value> thArgs;
+        for (vint i = 1;i < args.size();i++) {
+            value temp;
+            args[i].deepCopy(temp);
+            thArgs.push_back(temp);
+        }
+        return {spawnThread(in->env, in->moduleCxt, args[0].isRef() ? args[0].refObj : managePtr(args[0]), thArgs)};
+    }
+
+    value threadingMethods::wait(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+        auto in = static_cast<rex::interpreter*>(interpreter);
+        return in->env->threadPool[args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt()].getResult();
+    }
+
+    value::cxtObject threadingMethods::getMethodsCxt() {
+        value::cxtObject result;
+        result[L"start"] = managePtr(value{(value::nativeFuncPtr) start});
+        result[L"wait"] = managePtr(value{(value::nativeFuncPtr) wait});
+
+        return result;
+    }
+
+    value threadingMethods::getThreadingModule() {
+        return {getMethodsCxt()};
     }
 }
