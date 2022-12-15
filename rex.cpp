@@ -3,7 +3,6 @@
 //
 
 #include <fstream>
-#include <thread>
 #include <share/dlfcn.hpp>
 #include "rex.hpp"
 #include "exceptions/signalException.hpp"

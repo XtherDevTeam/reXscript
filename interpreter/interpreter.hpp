@@ -114,9 +114,9 @@ namespace rex {
     };
 
     void
-    rexThreadWrapper(const managedPtr<environment> &env, vint tid, const managedPtr<value> &cxt, const managedPtr<value> &func,
-                     const vec<value> &args,
-                     const managedPtr<value>& passThisPtr = nullptr);
+    rexThreadWrapper(managedPtr <environment> env, vint tid, managedPtr <value> cxt, managedPtr <value> func,
+                     vec <value> args,
+                     managedPtr <value> passThisPtr = nullptr);
 
     vint spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
                      const vec<value> &args, const managedPtr<value>& passThisPtr = nullptr);

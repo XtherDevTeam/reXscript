@@ -1376,15 +1376,15 @@ namespace rex {
                      const vec<value> &args,
                      const managedPtr<value>& passThisPtr) {
         vint id{env->threadIdCounter};
-        env->threadPool[id].setTh(std::make_shared<std::thread>(rexThreadWrapper, std::cref(env), id, std::cref(cxt), std::cref(func), std::cref(args), std::cref(passThisPtr)));
+        env->threadPool[id].setTh(std::make_shared<std::thread>(rexThreadWrapper, env, id, cxt, func, args, passThisPtr));
     
         return id;
     }
 
     void
-    rexThreadWrapper(const managedPtr<environment> &env, vint tid, const managedPtr<value> &cxt, const managedPtr<value> &func,
-                     const vec<value> &args,
-                     const managedPtr<value>& passThisPtr) {
+    rexThreadWrapper(managedPtr <environment> env, vint tid, managedPtr <value> cxt, managedPtr <value> func,
+                     vec <value> args,
+                     managedPtr <value> passThisPtr) {
         auto it = managePtr(interpreter{env, cxt});
         auto res = it->invokeFunc(func, args, passThisPtr);
         env->threadPool[tid].setResult(managePtr(res.isRef() ? res.getRef() : res));
