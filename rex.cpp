@@ -25,6 +25,7 @@ namespace rex {
                 moduleCxt->members[L"__path__"] = managePtr(
                         value{path, rex::stringMethods::getMethodsCxt()});
                 rex::managedPtr<rex::interpreter> interpreter = managePtr(rex::interpreter{env, moduleCxt});
+                interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{(rex::vint)0});
                 rex::lexer lexer{f};
                 rex::parser parser{lexer};
                 rex::AST ast = parser.parseFile();

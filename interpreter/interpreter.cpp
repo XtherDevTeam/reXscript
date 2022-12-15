@@ -57,10 +57,8 @@ namespace rex {
         return result;
     }
 
-    interpreter::interpreter(const managedPtr<environment> &env, const managedPtr<value> &moduleCxt) : env(env),
-                                                                                                       moduleCxt(
-                                                                                                               moduleCxt),
-                                                                                                       stack() {
+    interpreter::interpreter(const managedPtr<environment> &env, const managedPtr<value> &moduleCxt) :
+        env(env),moduleCxt(moduleCxt),stack(),interpreterCxt() {
 
     }
 
@@ -173,6 +171,11 @@ namespace rex {
                     }
                 }
                 // 全局范围解释
+                if (auto it = interpreterCxt.find(target.leaf.strVal);
+                        it != interpreterCxt.end()) {
+                    // 在当前Module Context中查找
+                    return {it->second};
+                }
                 if (auto it = moduleCxt->members.find(target.leaf.strVal);
                         it != moduleCxt->members.end()) {
                     // 在当前Module Context中查找
@@ -1386,6 +1389,7 @@ namespace rex {
                      vec <value> args,
                      managedPtr <value> passThisPtr) {
         auto it = managePtr(interpreter{env, cxt});
+        it->interpreterCxt[L"thread_id"] = managePtr(value{tid});
         auto res = it->invokeFunc(func, args, passThisPtr);
         env->threadPool[tid].setResult(managePtr(res.isRef() ? res.getRef() : res));
     }

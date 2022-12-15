@@ -48,7 +48,7 @@ namespace rex {
 
         map<vint, thread> threadPool;
 
-        vint threadIdCounter;
+        vint threadIdCounter{1};
     };
 
     class interpreter {
@@ -56,6 +56,7 @@ namespace rex {
         vec<environment::stackFrame> stack;
         managedPtr<value> moduleCxt;
         managedPtr<environment> env;
+        value::cxtObject interpreterCxt;
 
         vsize getCurStackIdx();
 

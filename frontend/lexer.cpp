@@ -13,6 +13,7 @@ namespace rex {
     }
 
     void lexer::getCh() {
+        start:
         if (!stream) {
             throw endOfFileException();
         }
@@ -21,6 +22,8 @@ namespace rex {
         }
         if (curCh == L'\n') {
             line++, col = 0;
+        } else if (curCh == L'\r') {
+            goto start;
         } else {
             col++;
         }

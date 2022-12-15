@@ -8,7 +8,7 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
     auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
     env->globalCxt->members[L"__local__"] = moduleCxt;
     auto interpreter = rex::managePtr(rex::interpreter{env, moduleCxt});
-
+    interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{(rex::vint)0});
     interpreter->stack.emplace_back();
     interpreter->stack.back().pushLocalCxt({});
     while (std::cin) {
@@ -28,8 +28,8 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
             std::cerr << "exception> " << rex::wstring2string((rex::value)e.get()) << std::endl;
         } catch (rex::parserException &e) {
             std::cerr << "error> " << e.what() << std::endl;
-        } catch (...) {
-            std::cerr << "error> unknown" << std::endl;
+        } catch (std::exception &e) {
+            std::cerr << "error> " << e.what() << std::endl;
         }
     }
 }
@@ -61,8 +61,8 @@ int main(int argc, const char **argv) {
                 std::cerr << "exception> " << rex::wstring2string((rex::value)e.get()) << std::endl;
             } catch (rex::parserException &e) {
                 std::cerr << "error> " << e.what() << std::endl;
-            } catch (...) {
-                std::cerr << "error> unknown" << std::endl;
+            } catch (std::exception &e) {
+                std::cerr << "error> " << e.what() << std::endl;
             }
         } else {
             std::cout << rexProg;
