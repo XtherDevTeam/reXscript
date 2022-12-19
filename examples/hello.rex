@@ -18,7 +18,7 @@ let thread_test = func() {
     };
     let th_id = threading.start(lam);
     let res = threading.wait(th_id);
-    print("This is thread ", thread_id, ", thread result: ", res, "\n");
+    print("This is thread ", *thread_id, ", thread result: ", *res, "\n");
     return 0;
 };
 

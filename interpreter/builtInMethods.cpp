@@ -360,7 +360,7 @@ namespace rex {
 
     value threadingMethods::wait(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
         auto in = static_cast<rex::interpreter*>(interpreter);
-        return in->env->threadPool[args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt()].getResult();
+        return waitForThread(in->env, args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt());
     }
 
     value::cxtObject threadingMethods::getMethodsCxt() {
