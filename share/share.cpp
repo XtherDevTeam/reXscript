@@ -69,3 +69,23 @@ void rex::parseString(std::wistream &input, rex::vstr &value) {
         }
     }
 }
+
+void rex::path::join(rex::vstr &a, const rex::vstr &b) {
+    if (a.empty()) {
+        a = b;
+        return;
+    }
+    if (b.empty()) {
+        a = a;
+        return;
+    }
+    if (a.back() == sep && b.front() == sep) {
+        a = a + b.substr(1);
+        return;
+    }
+    if (a.back() == sep || b.front() == sep) {
+        a = a + b;
+        return;
+    }
+    a = a + sep + b;
+}

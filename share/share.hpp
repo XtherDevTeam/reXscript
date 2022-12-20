@@ -12,6 +12,7 @@
 #include <sstream>
 #include <memory>
 #include <functional>
+#include <filesystem>
 
 namespace rex {
     using vsize = unsigned long long;
@@ -47,6 +48,12 @@ namespace rex {
     void parseString(std::wistream &input, vstr &value);
 
 #define nativeFn(name, interpreter, args, passThisPtr) rex::value name(void *interpreter, rex::vec<rex::value> args, const rex::managedPtr<rex::value> &passThisPtr)
+
+    namespace path {
+        constexpr vchar sep = '/';
+
+        void join(vstr &a, const vstr &b);
+    };
 }
 
 #endif //REXSCRIPT_SHARE_HPP

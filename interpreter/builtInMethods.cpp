@@ -203,6 +203,9 @@ namespace rex {
         result[L"nativeImport"] = managePtr(value{(value::nativeFuncPtr) rexNativeImport});
         result[L"format"] = managePtr(value{(value::nativeFuncPtr) format});
         result[L"threading"] = managePtr(threadingMethods::getThreadingModule());
+        result[L"importPrefixPath"] = managePtr(value{value::vecObject{
+                managePtr(value{L"", stringMethods::getMethodsCxt()})
+        }, rex::vecMethods::getMethodsCxt()});
         return result;
     }
 
@@ -348,9 +351,9 @@ namespace rex {
     }
 
     nativeFn(threadingMethods::start, interpreter, args, passThisPtr) {
-        auto in = static_cast<rex::interpreter*>(interpreter);
+        auto in = static_cast<rex::interpreter *>(interpreter);
         vec<value> thArgs;
-        for (vint i = 1;i < args.size();i++) {
+        for (vint i = 1; i < args.size(); i++) {
             value temp;
             args[i].deepCopy(temp);
             thArgs.push_back(temp);
@@ -359,7 +362,7 @@ namespace rex {
     }
 
     nativeFn(threadingMethods::wait, interpreter, args, passThisPtr) {
-        auto in = static_cast<rex::interpreter*>(interpreter);
+        auto in = static_cast<rex::interpreter *>(interpreter);
         return waitForThread(in->env, args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt());
     }
 
