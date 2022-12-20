@@ -29,61 +29,59 @@ namespace rex {
     };
 
     namespace stringMethods {
-        value substr(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(substr, interpreter, args, passThisPtr);
 
-        value startsWith(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(startsWith, interpreter, args, passThisPtr);
 
-        value endsWith(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(endsWith, interpreter, args, passThisPtr);
 
-        value charAt(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(charAt, interpreter, args, passThisPtr);
 
-        value fromChar(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(fromChar, interpreter, args, passThisPtr);
 
-        value length(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(length, interpreter, args, passThisPtr);
 
-        value rexEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(rexEqual, interpreter, args, passThisPtr);
 
-        value rexNotEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(rexNotEqual, interpreter, args, passThisPtr);
 
-        value rexAdd(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(rexAdd, interpreter, args, passThisPtr);
 
-        value rexAddAssign(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(rexAddAssign, interpreter, args, passThisPtr);
 
-        value formatter(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
-
-        value join(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(join, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }
 
     namespace vecMethods {
-        value append(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(append, interpreter, args, passThisPtr);
 
-        value rexEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(rexEqual, interpreter, args, passThisPtr);
 
-        value rexNotEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(rexNotEqual, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }
 
     namespace globalMethods {
-        value input(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(input, interpreter, args, passThisPtr);
 
-        value print(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(print, interpreter, args, passThisPtr);
 
-        value rexImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(rexImport, interpreter, args, passThisPtr);
 
-        value rexNativeImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(rexNativeImport, interpreter, args, passThisPtr);
 
-        value format(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(format, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }
 
     namespace threadingMethods {
-        value start(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(start, interpreter, args, passThisPtr);
 
-        value wait(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr);
+        nativeFn(wait, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
 

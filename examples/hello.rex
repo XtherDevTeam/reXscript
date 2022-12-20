@@ -2,11 +2,15 @@ let add = func(a, b) {
     return a + b;
 };
 
-let test = func(a, b) {
-    let lam = lambda (a, b) -> () {
+let lambda_test = func() {
+    let a = 114, b = 514;
+    let lam = lambda(a, b) -> (c) {
+        outer.a += c;
+        outer.b += c;
         return outer.a + outer.b;
     };
-    return lam;
+    print(lam(1919), " ", lam(810), "\n");
+    return 0;
 };
 
 let thread_test = func() {
@@ -28,7 +32,7 @@ let rexModInit = func() {
     print([1,2,3] == [1,2,3], " ", [1,2,3] == [1,2,4], "\n");
     print(" ".join("RootCui", "AK", "IOI!"), "\n");
     print(*([].append("RootCui", "AK", "IOI!")), "\n");
-    print(test(1,2)(), "\n");
+    print(lambda_test());
     thread_test();
     return 0;
 };

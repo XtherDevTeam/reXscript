@@ -27,7 +27,7 @@ namespace rex {
         return result;
     }
 
-    value stringMethods::substr(void *selfPtr, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::substr, interpreter, args, passThisPtr) {
         switch (args.size()) {
             case 1: {
                 if (args[0].isRef())
@@ -48,53 +48,53 @@ namespace rex {
         }
     }
 
-    value stringMethods::startsWith(void *selfPtr, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::startsWith, interpreter, args, passThisPtr) {
         if (args[0].isRef())
             args[0] = args[0].getRef();
         return {passThisPtr->getStr().starts_with(args[0].getStr())};
     }
 
-    value stringMethods::endsWith(void *selfPtr, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::endsWith, interpreter, args, passThisPtr) {
         if (args[0].isRef())
             args[0] = args[0].getRef();
         return {passThisPtr->getStr().ends_with(args[0].getStr())};
     }
 
-    value stringMethods::charAt(void *selfPtr, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::charAt, interpreter, args, passThisPtr) {
         return {(vint) passThisPtr->getStr()[args[0].getInt()]};
     }
 
-    value stringMethods::fromChar(void *selfPtr, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::fromChar, interpreter, args, passThisPtr) {
         passThisPtr->getStr() = (vchar) args[0].getInt();
         return passThisPtr;
     }
 
-    value stringMethods::length(void *selfPtr, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::length, interpreter, args, passThisPtr) {
         return {(vint) passThisPtr->getStr().length()};
     }
 
-    value stringMethods::rexEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::rexEqual, interpreter, args, passThisPtr) {
         if (args[0].isRef())
             args[0] = args[0].getRef();
 
         return {passThisPtr->getStr() == args[0].getStr()};
     }
 
-    value stringMethods::rexNotEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::rexNotEqual, interpreter, args, passThisPtr) {
         if (args[0].isRef())
             args[0] = args[0].getRef();
 
         return {passThisPtr->getStr() != args[0].getStr()};
     }
 
-    value stringMethods::rexAdd(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::rexAdd, interpreter, args, passThisPtr) {
         if (args[0].isRef())
             args[0] = args[0].getRef();
 
         return {passThisPtr->getStr() + args[0].getStr(), getMethodsCxt()};
     }
 
-    value stringMethods::rexAddAssign(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::rexAddAssign, interpreter, args, passThisPtr) {
         if (args[0].isRef())
             args[0] = args[0].getRef();
 
@@ -107,7 +107,7 @@ namespace rex {
         return passThisPtr;
     }
 
-    value stringMethods::join(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(stringMethods::join, interpreter, args, passThisPtr) {
         for (auto &i: args)
             if (i.isRef())
                 i = i.getRef();
@@ -132,13 +132,13 @@ namespace rex {
         return result;
     }
 
-    value vecMethods::append(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(vecMethods::append, interpreter, args, passThisPtr) {
         for (auto &i: args)
             passThisPtr->getVec().push_back(managePtr(i));
         return passThisPtr;
     }
 
-    value vecMethods::rexEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(vecMethods::rexEqual, interpreter, args, passThisPtr) {
         auto *in = (rex::interpreter *) interpreter;
         if (args[0].isRef())
             args[0] = args[0].getRef();
@@ -152,7 +152,7 @@ namespace rex {
         return {true};
     }
 
-    value vecMethods::rexNotEqual(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(vecMethods::rexNotEqual, interpreter, args, passThisPtr) {
         auto *in = (rex::interpreter *) interpreter;
         if (args[0].isRef())
             args[0] = args[0].getRef();
@@ -166,13 +166,13 @@ namespace rex {
         return {false};
     }
 
-    value globalMethods::input(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(globalMethods::input, interpreter, args, passThisPtr) {
         std::string s;
         std::getline(std::cin, s);
         return {string2wstring(s), rex::stringMethods::getMethodsCxt()};
     }
 
-    value globalMethods::print(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(globalMethods::print, interpreter, args, passThisPtr) {
         for (auto &i: args) {
             switch (i.kind) {
                 case value::vKind::vBool:
@@ -206,7 +206,7 @@ namespace rex {
         return result;
     }
 
-    value globalMethods::rexImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(globalMethods::rexImport, interpreter, args, passThisPtr) {
         auto *in = (rex::interpreter *) interpreter;
         if (args[0].isRef())
             args[0] = args[0].getRef();
@@ -214,7 +214,7 @@ namespace rex {
         return rex::importExternModules(in->env, args[0].getStr());
     }
 
-    value globalMethods::rexNativeImport(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(globalMethods::rexNativeImport, interpreter, args, passThisPtr) {
         auto *in = (rex::interpreter *) interpreter;
         if (args[0].isRef())
             args[0] = args[0].getRef();
@@ -222,7 +222,7 @@ namespace rex {
         return rex::importNativeModules(in->env, args[0].getStr());
     }
 
-    value globalMethods::format(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(globalMethods::format, interpreter, args, passThisPtr) {
         for (auto &i: args)
             if (i.isRef())
                 i = i.getRef();
@@ -347,7 +347,7 @@ namespace rex {
         return str;
     }
 
-    value threadingMethods::start(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(threadingMethods::start, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter*>(interpreter);
         vec<value> thArgs;
         for (vint i = 1;i < args.size();i++) {
@@ -358,7 +358,7 @@ namespace rex {
         return {spawnThread(in->env, in->moduleCxt, args[0].isRef() ? args[0].refObj : managePtr(args[0]), thArgs)};
     }
 
-    value threadingMethods::wait(void *interpreter, vec<value> args, const managedPtr<value> &passThisPtr) {
+    nativeFn(threadingMethods::wait, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter*>(interpreter);
         return waitForThread(in->env, args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt());
     }

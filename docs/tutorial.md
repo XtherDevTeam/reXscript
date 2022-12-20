@@ -27,3 +27,53 @@ We know, if the stack is empty, then it will try to create variables in the `mod
 
 # Expressions
 
+Expressions in reXscript 
+```c++
+memberExpression,           // member expression like aaa.bbb.ccc,
+                            // both 2 terms in expression are subscriptExpression
+                            // primary means match a literal or memberExpression
+uniqueExpression,           // like -[primary], --[primary], ++[primary], ![primary]
+multiplicationExpression,   // multiplication expressions like a * b, a / b, a % b
+additionExpression,         // addition expressions like a + b, a - b
+binaryShiftExpression,      // like a << b, a >> b
+logicEqualExpression,       // like a == b, a != b, a >= b, a <= b, a > b, a < b
+binaryExpression,           // like a | b, a & b, a ^ b,
+logicAndExpression,         // like a && b, a || b,
+assignmentExpression,       // like a = b, a += b, a -= b, a *= b, a /= b, a %= b
+```
+
+E.g. `a + (b.a + c.b) * g / 1.2 << k & 1`
+
+# Callable objects
+
+Callable objects in reXscript are like `func`, `lambda`, `objects` that implmented `rexInvoke` func.
+
+## Functions
+
+Syntax: `func (funcArgs) {codeBlock}`
+
+Functions is a callable object. The caller can pass values to the function (params), and the codes in the codeBlock will be executed. 
+
+## Lambda
+
+Syntax: `lambda (outerArgs) -> (funcArgs) {codeBlock}`
+
+outerArgs will be copied and saved in the members of lambda object, to access outerArgs in lambda object, you can use `outer.varname`.
+
+outerArgs will be persisetent saved in the lambda object.
+
+E.g.
+
+```rex
+let a = 114, b = 514;
+let lam = lambda(a, b) -> (c) {
+    a += c;
+    b += c;
+    return a + b;
+};
+print(lam(1919), " ", lam(810), "\n");
+```
+
+The above codes will print `4466 6086` on the screen.
+
+# Extended features

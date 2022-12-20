@@ -45,6 +45,8 @@ namespace rex {
     }
 
     void parseString(std::wistream &input, vstr &value);
+
+#define nativeFn(name, interpreter, args, passThisPtr) rex::value name(void *interpreter, rex::vec<rex::value> args, const rex::managedPtr<rex::value> &passThisPtr)
 }
 
 #endif //REXSCRIPT_SHARE_HPP
