@@ -1,5 +1,7 @@
 # reXscript - Relaunched Xscript Project.
 
+Yet another programming language.
+
 ## Build
 
 To build for production, execute the following script to build reXscript.
