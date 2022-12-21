@@ -30,7 +30,7 @@ namespace rex {
                 if (it = env->globalCxt->members.find(fullPath); it != env->globalCxt->members.end()) {
                     return it->second;
                 } else {
-                    std::wifstream f(wstring2string(fullPath), std::ios::in);
+                    std::ifstream f(wstring2string(fullPath), std::ios::in);
                     if (f.is_open()) {
                         auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
                         env->globalCxt->members[path] = moduleCxt;
@@ -38,7 +38,16 @@ namespace rex {
                                 value{fullPath, rex::stringMethods::getMethodsCxt()});
                         rex::managedPtr<rex::interpreter> interpreter = managePtr(rex::interpreter{env, moduleCxt});
                         interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{(rex::vint) 0});
-                        rex::lexer lexer{f};
+
+                        f.seekg(0, std::ios::end);
+                        long fileLen = f.tellg();
+                        vbytes buf(fileLen ,vbyte{});
+                        f.seekg(0, std::ios::beg);
+                        f.read(buf.data(), fileLen);
+                        std::wstringstream ss(string2wstring(buf));
+                        buf.clear();
+
+                        rex::lexer lexer{ss};
                         rex::parser parser{lexer};
                         rex::AST ast = parser.parseFile();
                         for (auto &i: ast.child) {

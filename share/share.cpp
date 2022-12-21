@@ -5,11 +5,15 @@
 #include <share/share.hpp>
 
 std::string rex::wstring2string(const std::wstring &str) {
-    return std::move(localr::string_convert<localr::codecvt<wchar_t, char>>::in(str));
+    vbytes ret{};
+    utf8Unicode::unicodeToUtf8(str, ret);
+    return ret;
 }
 
 std::wstring rex::string2wstring(const std::string &str) {
-    return std::move(localr::string_convert<localr::codecvt<char, wchar_t>>::in(str));
+    vstr ret{};
+    utf8Unicode::utf8ToUnicode(str, ret);
+    return ret;
 }
 
 std::wstring rex::buildErrorMessage(rex::vsize line, rex::vsize col, const rex::vstr &what) {

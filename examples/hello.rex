@@ -26,6 +26,15 @@ let thread_test = func() {
     return 0;
 };
 
+let charsets_test = func() {
+    let string = "This is a string that contains some unicode character like 你 好 世 界 ？ ！ 。";
+    print("Original: ", string, "\n");
+    print("Encode as ansi and decode with ansi: ", string.encode("ansi").decode("ansi"), "\n");
+    print("Encode as utf-8 and decode with utf-8: ", string.encode("utf-8").decode("utf-8"), "\n");
+    print("Yahoo!");
+    return 0;
+};
+
 let rexModInit = func() {
     let s = {a: 1, b: 2};
     print(*s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
@@ -34,5 +43,6 @@ let rexModInit = func() {
     print(*([].append("RootCui", "AK", "IOI!")), "\n");
     print(lambda_test());
     thread_test();
+    charsets_test();
     return 0;
 };

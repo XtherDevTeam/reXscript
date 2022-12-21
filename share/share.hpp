@@ -7,7 +7,7 @@
 
 #include <cstdint>
 #include <string>
-#include <share/localr.hpp>
+#include <share/utfutils.hpp>
 #include <map>
 #include <sstream>
 #include <memory>
