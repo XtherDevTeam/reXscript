@@ -24,6 +24,7 @@ namespace rex {
         result[L"rexAdd"] = managePtr(value{(value::nativeFuncPtr) rexAdd});
         result[L"rexAddAssign"] = managePtr(value{(value::nativeFuncPtr) rexAddAssign});
         result[L"join"] = managePtr(value{(value::nativeFuncPtr) join});
+        result[L"encode"] = managePtr(value{(value::nativeFuncPtr) encode});
         return result;
     }
 
@@ -125,7 +126,10 @@ namespace rex {
     }
 
     nativeFn(stringMethods::encode, interpreter, args, passThisPtr) {
-        // TODO: Add charset support
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        vstr &charsetName = args[0].isRef() ? args[0].getRef().getStr() : args[0].getStr();
+        auto encoder = in->env->globalCxt->members[L"charsets"]->members[charsetName]->members[L"encoder"];
+        return in->invokeFunc(encoder, {passThisPtr}, {});
     }
 
     value::cxtObject vecMethods::getMethodsCxt() {
@@ -462,7 +466,10 @@ namespace rex {
     }
 
     nativeFn(bytesMethods::decode, interpreter, args, passThisPtr) {
-        // TODO: Add charset support
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        vstr &charsetName = args[0].isRef() ? args[0].getRef().getStr() : args[0].getStr();
+        auto decoder = in->env->globalCxt->members[L"charsets"]->members[charsetName]->members[L"decoder"];
+        return in->invokeFunc(decoder, {passThisPtr}, {});
     }
 
     value::cxtObject bytesMethods::getMethodsCxt() {
@@ -471,6 +478,7 @@ namespace rex {
         result[L"rexEqual"] = managePtr(value{(value::nativeFuncPtr) rexEqual});
         result[L"rexNotEqual"] = managePtr(value{(value::nativeFuncPtr) rexNotEqual});
         result[L"concat"] = managePtr(value{(value::nativeFuncPtr) concat});
+        result[L"decode"] = managePtr(value{(value::nativeFuncPtr) decode});
 
         return result;
     }
