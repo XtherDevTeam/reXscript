@@ -43,6 +43,10 @@ namespace rex {
             case vKind::vNativeFuncPtr:
             case vKind::vRef:
                 break;
+            case vKind::vBytes: {
+                dest.bytesObj = managePtr(*bytesObj);
+                break;
+            }
             case vKind::vStr: {
                 dest.strObj = managePtr(*strObj);
                 break;
@@ -227,12 +231,26 @@ namespace rex {
             case vKind::vRef:
                 ss << L"ref val=" << (vstr) {getRef()} << L">";
                 break;
+            case vKind::vBytes:
+                ss << L"bytes val=" << std::quoted(getStr()) << L">";
+                break;
         }
         return ss.str();
     }
 
     value::value(unknownPtr unk) : kind(vKind::vInt), basicValue(unk) {
 
+    }
+
+    value::value(const vbytes &v, value::cxtObject members) : kind(vKind::vBytes), bytesObj(managePtr(v)), members(std::move(members)) {
+
+    }
+
+    vbytes &value::getBytes() {
+        if (bytesObj)
+            return *bytesObj;
+        else
+            throw rexException(L"NullPointerException: bytesObj == nullptr");
     }
 
     value::vValue::vValue() : vInt(0) {

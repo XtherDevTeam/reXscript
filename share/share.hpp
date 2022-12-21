@@ -21,6 +21,8 @@ namespace rex {
     using vdeci = float;
     using vstr = std::wstring;
     using vchar = wchar_t;
+    using vbytes = std::string;
+    using vbyte = char;
     template<typename T>
     using vec = std::vector<T>;
     template<typename A, typename B>

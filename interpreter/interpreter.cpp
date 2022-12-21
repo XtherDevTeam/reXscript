@@ -202,7 +202,7 @@ namespace rex {
                     case value::vKind::vVec:
                         return {{(*l.vecObj)[r.getInt()]}};
                     default: {
-                        if (auto it = l.members.find(L"rexSubscript"); it != l.members.end())
+                        if (auto it = l.members.find(L"rexIndex"); it != l.members.end())
                             return it->second;
                         if (r.kind == value::vKind::vStr)
                             return l[r.getStr()];
@@ -274,7 +274,7 @@ namespace rex {
                                 case value::vKind::vVec:
                                     return {{(*lhs.vecObj)[r.getInt()]}};
                                 default: {
-                                    if (auto vit = lhs.members.find(L"rexSubscript"); vit != lhs.members.end())
+                                    if (auto vit = lhs.members.find(L"rexIndex"); vit != lhs.members.end())
                                         return vit->second;
                                     if (r.kind == value::vKind::vStr)
                                         return lhs[r.getStr()];

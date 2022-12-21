@@ -40,6 +40,7 @@ namespace rex {
             vDeci,
             vBool,
             vStr,
+            vBytes,
             vVec,
             vObject,
             vFunc,
@@ -68,6 +69,7 @@ namespace rex {
         // objects are saved here.
         managedPtr<value> refObj;
         managedPtr<vstr> strObj;
+        managedPtr<vbytes> bytesObj;
         managedPtr<vecObject> vecObj;
         managedPtr<funcObject> funcObj;
         managedPtr<lambdaObject> lambdaObj;
@@ -97,11 +99,15 @@ namespace rex {
 
         vstr &getStr();
 
+        vbytes &getBytes();
+
         managedPtr<value> operator[](const vstr &v);
 
         operator vstr();
 
         value(const vstr &v, cxtObject members);
+
+        value(const vbytes &v, cxtObject members);
 
         value(const vecObject &v, cxtObject members);
 

@@ -56,7 +56,7 @@ namespace rex {
             return curToken = greaterStart();
         } else if (curCh == L'<') {
             return curToken = lessStart();
-        } else if (curCh == L'"') {
+        } else if (curCh == L'"' or curCh == L'\'') {
             return curToken = strStart();
         } else if (curCh == L';') {
             return curToken = semicolonStart();
@@ -145,9 +145,10 @@ namespace rex {
     }
 
     lexer::token lexer::strStart() {
+        vchar strV = curCh;
         lexer::token tok{line, col, token::tokenKind::string, vstr()};
         getCh();
-        while (curCh != '"') {
+        while (curCh != strV) {
             if (curCh == '\\') {
                 getCh();
                 tok.strVal += '\\';

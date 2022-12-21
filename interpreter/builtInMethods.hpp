@@ -51,6 +51,8 @@ namespace rex {
 
         nativeFn(join, interpreter, args, passThisPtr);
 
+        nativeFn(encode, interpreter, args, passThisPtr);
+
         value::cxtObject getMethodsCxt();
     }
 
@@ -63,6 +65,20 @@ namespace rex {
 
         value::cxtObject getMethodsCxt();
     }
+
+    namespace bytesMethods {
+        nativeFn(length, interpreter, args, passThisPtr);
+
+        nativeFn(rexEqual, interpreter, args, passThisPtr);
+
+        nativeFn(rexNotEqual, interpreter, args, passThisPtr);
+
+        nativeFn(decode, interpreter, args, passThisPtr);
+
+        nativeFn(concat, interpreter, args, passThisPtr);
+
+        value::cxtObject getMethodsCxt();
+    };
 
     namespace globalMethods {
         nativeFn(input, interpreter, args, passThisPtr);

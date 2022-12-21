@@ -124,6 +124,10 @@ namespace rex {
         return result;
     }
 
+    nativeFn(stringMethods::encode, interpreter, args, passThisPtr) {
+        // TODO: Add charset support
+    }
+
     value::cxtObject vecMethods::getMethodsCxt() {
         value::cxtObject result;
         result[L"append"] = managePtr(value{(value::nativeFuncPtr) append});
@@ -376,5 +380,45 @@ namespace rex {
 
     value threadingMethods::getThreadingModule() {
         return {getMethodsCxt()};
+    }
+
+    nativeFn(bytesMethods::length, interpreter, args, passThisPtr) {
+        return {(vint)passThisPtr->bytesObj->length()};
+    }
+
+    nativeFn(bytesMethods::rexEqual, interpreter, args, passThisPtr) {
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        return {passThisPtr->getBytes() == args[0].getBytes()};
+    }
+
+    nativeFn(bytesMethods::rexNotEqual, interpreter, args, passThisPtr) {
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        return {passThisPtr->getBytes() != args[0].getBytes()};
+    }
+
+    nativeFn(bytesMethods::concat, interpreter, args, passThisPtr) {
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        passThisPtr->getBytes() += args[0].getBytes();
+        return {};
+    }
+
+    nativeFn(bytesMethods::decode, interpreter, args, passThisPtr) {
+        // TODO: Add charset support
+    }
+
+    value::cxtObject bytesMethods::getMethodsCxt() {
+        value::cxtObject result;
+        result[L"length"] = managePtr(value{(value::nativeFuncPtr) length});
+        result[L"rexEqual"] = managePtr(value{(value::nativeFuncPtr) rexEqual});
+        result[L"rexNotEqual"] = managePtr(value{(value::nativeFuncPtr) rexNotEqual});
+        result[L"concat"] = managePtr(value{(value::nativeFuncPtr) concat});
+
+        return result;
     }
 }
