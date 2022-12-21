@@ -81,6 +81,16 @@ namespace rex {
     };
 
     namespace globalMethods {
+        namespace charsetsMethods {
+            nativeFn(ansiEncoder, interpreter, args, passThisPtr);
+
+            nativeFn(ansiDecoder, interpreter, args, passThisPtr);
+
+            nativeFn(utf8Encoder, interpreter, args, passThisPtr);
+
+            nativeFn(utf8Decoder, interpreter, args, passThisPtr);
+        }
+
         nativeFn(input, interpreter, args, passThisPtr);
 
         nativeFn(print, interpreter, args, passThisPtr);

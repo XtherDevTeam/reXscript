@@ -232,7 +232,7 @@ namespace rex {
                 ss << L"ref val=" << (vstr) {getRef()} << L">";
                 break;
             case vKind::vBytes:
-                ss << L"bytes val=" << std::quoted(getStr()) << L">";
+                ss << L"bytes val=unshown" << L">";
                 break;
         }
         return ss.str();

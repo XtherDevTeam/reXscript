@@ -210,7 +210,60 @@ namespace rex {
         result[L"importPrefixPath"] = managePtr(value{value::vecObject{
                 managePtr(value{L"", stringMethods::getMethodsCxt()})
         }, rex::vecMethods::getMethodsCxt()});
+        result[L"charsets"] = managePtr(value{value::cxtObject{}});
+
+        // initialize default charsets
+        result[L"charsets"]->members[L"ansi"] = managePtr(value{value::cxtObject{}});
+        result[L"charsets"]->members[L"utf-8"] = managePtr(value{value::cxtObject{}});
+
+        result[L"charsets"]->members[L"ansi"]->members[L"encoder"] =
+                managePtr(value{(value::nativeFuncPtr) charsetsMethods::ansiEncoder});
+        result[L"charsets"]->members[L"ansi"]->members[L"decoder"] =
+                managePtr(value{(value::nativeFuncPtr) charsetsMethods::ansiDecoder});
+
+        result[L"charsets"]->members[L"utf-8"]->members[L"encoder"] =
+                managePtr(value{(value::nativeFuncPtr) charsetsMethods::utf8Encoder});
+        result[L"charsets"]->members[L"utf-8"]->members[L"decoder"] =
+                managePtr(value{(value::nativeFuncPtr) charsetsMethods::utf8Decoder});
+
+
         return result;
+    }
+
+    nativeFn(globalMethods::charsetsMethods::ansiEncoder, interpreter, args, passThisPtr) {
+        vstr &str = args[0].isRef() ? args[0].getRef().getStr() : args[0].getStr();
+        vbytes output{};
+
+        for (auto &i: str) {
+            output.push_back(i < 256 ? (vbyte) i : '?');
+        }
+
+        return {output, bytesMethods::getMethodsCxt()};
+    }
+
+    nativeFn(globalMethods::charsetsMethods::ansiDecoder, interpreter, args, passThisPtr) {
+        vbytes &str = args[0].isRef() ? args[0].getRef().getBytes() : args[0].getBytes();
+        vstr output{};
+
+        for (auto &i: str) {
+            output += i;
+        }
+
+        return {output, stringMethods::getMethodsCxt()};
+    }
+
+    nativeFn(globalMethods::charsetsMethods::utf8Encoder, interpreter, args, passThisPtr) {
+        vstr &str = args[0].isRef() ? args[0].getRef().getStr() : args[0].getStr();
+        vbytes output{wstring2string(str)};
+
+        return {output, bytesMethods::getMethodsCxt()};
+    }
+
+    nativeFn(globalMethods::charsetsMethods::utf8Decoder, interpreter, args, passThisPtr) {
+        vbytes &str = args[0].isRef() ? args[0].getRef().getBytes() : args[0].getBytes();
+        vstr output{string2wstring(str)};
+
+        return {output, stringMethods::getMethodsCxt()};
     }
 
     nativeFn(globalMethods::rexImport, interpreter, args, passThisPtr) {
@@ -383,7 +436,7 @@ namespace rex {
     }
 
     nativeFn(bytesMethods::length, interpreter, args, passThisPtr) {
-        return {(vint)passThisPtr->bytesObj->length()};
+        return {(vint) passThisPtr->bytesObj->length()};
     }
 
     nativeFn(bytesMethods::rexEqual, interpreter, args, passThisPtr) {
