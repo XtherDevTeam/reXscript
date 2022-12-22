@@ -148,7 +148,7 @@ namespace rex::ffi {
         ss << "extern \"C\" void rexModInit(const managedPtr<environment> &env, const managedPtr<value> &mod) {"
            << std::endl;
         for (auto &i: ffiExports) {
-            ss << L"mod->members[" << std::quoted(i.first) << L"] = "
+            ss << L"mod->members[L" << std::quoted(i.first) << L"] = "
                << L"managePtr(value{(value::nativeFuncPtr) _rexExport_" << i.first << L"});\n";
         }
         ss << L"}" << std::endl;
