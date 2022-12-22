@@ -35,6 +35,16 @@ let charsets_test = func() {
     return 0;
 };
 
+let rexstd_test = func() {
+    let std = nativeImport("libstdlib.dylib");
+    let file = std.fs.open("../examples/hello.rex", "r+");
+    let content = file.read(file.length).decode("utf-8");
+    print(content, "\n");
+    print("Is EOF: ", file.eof(), "\n");
+    file.close();
+    return 0;
+};
+
 let rexModInit = func() {
     let s = {a: 1, b: 2};
     print(*s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
@@ -44,5 +54,6 @@ let rexModInit = func() {
     print(lambda_test());
     thread_test();
     charsets_test();
+    rexstd_test();
     return 0;
 };

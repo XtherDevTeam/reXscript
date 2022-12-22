@@ -15,7 +15,7 @@ namespace rex {
     public:
         signalException(const value &v);
 
-        const value &get();
+        value &get();
     };
 
 } // rex

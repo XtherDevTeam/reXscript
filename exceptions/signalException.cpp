@@ -11,7 +11,7 @@ namespace rex {
 
     }
 
-    const value &signalException::get() {
+    value &signalException::get() {
         return msg;
     }
 } // rex

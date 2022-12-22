@@ -35,7 +35,7 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
 }
 
 void loadFile(rex::managedPtr<rex::environment> &env, const rex::vstr &path) {
-    auto moduleCxt = rex::importExternModules(env, path);
+    auto moduleCxt = rex::importExternModule(env, path);
 }
 
 int main(int argc, const char **argv) {

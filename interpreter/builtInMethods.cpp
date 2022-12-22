@@ -275,7 +275,7 @@ namespace rex {
         if (args[0].isRef())
             args[0] = args[0].getRef();
 
-        return rex::importExternModules(in->env, args[0].getStr());
+        return rex::importExternModule(in->env, args[0].getStr());
     }
 
     nativeFn(globalMethods::rexNativeImport, interpreter, args, passThisPtr) {
@@ -283,7 +283,7 @@ namespace rex {
         if (args[0].isRef())
             args[0] = args[0].getRef();
 
-        return rex::importNativeModules(in->env, args[0].getStr());
+        return rex::importNativeModule(in->env, args[0].getStr());
     }
 
     nativeFn(globalMethods::format, interpreter, args, passThisPtr) {

@@ -26,7 +26,7 @@ namespace rex {
      * @param path The path to the module file to import
      * @return A pointer to the module context object
      */
-    managedPtr<value> importExternModules(const managedPtr<environment> &env, const vstr &path);
+    managedPtr<value> importExternModule(const managedPtr<environment> &env, const vstr &path);
 
     /**
      * @brief Import a native module
@@ -34,7 +34,23 @@ namespace rex {
      * @param path The path to the native module file to import
      * @return A pointer to the module context object
      */
-    managedPtr<value> importNativeModules(const managedPtr<environment> &env, const vstr &path);
+    managedPtr<value> importNativeModule(const managedPtr<environment> &env, const vstr &path);
+
+    /**
+     * @brief Import an external reXscript module without importPathPrefix
+     * @param env The environment object for the current interpreter
+     * @param path The path to the module file to import
+     * @return A pointer to the module context object
+     */
+    managedPtr<value> importExternModuleEx(const managedPtr<environment> &env, const vstr &fullPath);
+
+    /**
+     * @brief Import a native module without importPathPrefix
+     * @param env The environment object for the current interpreter
+     * @param path The path to the native module file to import
+     * @return A pointer to the module context object
+     */
+    managedPtr<value> importNativeModuleEx(const managedPtr<environment> &env, const vstr &fullPath);
 }
 
 #endif //REXSCRIPT_REX_HPP
