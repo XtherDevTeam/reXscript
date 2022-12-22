@@ -10,6 +10,7 @@ file(GLOB REX_SRC
         pass/*.cpp
         share/*.cpp
         exceptions/*.cpp
+        ffi/*.cpp
         *.cpp)
 
 include_directories(${PROJECT_SOURCE_DIR})

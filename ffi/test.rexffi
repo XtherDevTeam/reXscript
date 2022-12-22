@@ -1,0 +1,19 @@
+ffi-lib: hello.h
+
+ffi-types:
+    i32:
+        c-style: int
+        type-to-rex: (value){(vint)($param)}
+        rex-to-type: (int)($param.getInt())
+    :i32
+:end-ffi-types
+
+ffi-exports:
+    name: add
+    symbol: add
+    params: i32,i32
+    result: i32
+:end-ffi-exports
+
+ffi-helpers:
+:end-ffi-helpers

@@ -3,6 +3,7 @@
 #include "share/argparse.hpp"
 #include "exceptions/signalException.hpp"
 #include <rex.hpp>
+#include <ffi/ffi.hpp>
 
 void interactiveShell(rex::managedPtr<rex::environment> &env) {
     auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
@@ -38,6 +39,12 @@ void loadFile(rex::managedPtr<rex::environment> &env, const rex::vstr &path) {
     auto moduleCxt = rex::importExternModule(env, path);
 }
 
+void ffiGenerator(const rex::vstr &path) {
+    rex::ffi::ffiDescriptor f;
+    f.fromFile(path);
+    std::cout << rex::wstring2string(f.generateHeader()) << std::endl;
+}
+
 int main(int argc, const char **argv) {
     argparse::ArgumentParser rexProg{"rex"};
     rexProg.add_argument("--shell")
@@ -46,6 +53,10 @@ int main(int argc, const char **argv) {
             .implicit_value(true);
 
     rexProg.add_argument("--file")
+            .help("specify the file to be execute")
+            .default_value(std::string{});
+
+    rexProg.add_argument("--generate-ffi")
             .help("specify the file to be execute")
             .default_value(std::string{});
 
@@ -64,6 +75,8 @@ int main(int argc, const char **argv) {
             } catch (std::exception &e) {
                 std::cerr << "error> " << e.what() << std::endl;
             }
+        } else if (!rexProg.get<std::string>("--generate-ffi").empty()) {
+            ffiGenerator(rex::string2wstring(rexProg.get<std::string>("--generate-ffi")));
         } else {
             std::cout << rexProg;
         }

@@ -56,6 +56,32 @@ namespace rex {
 
         void join(vstr &a, const vstr &b);
     };
+
+    template<typename T>
+    void
+    split(const std::basic_string<T> &s, const std::basic_string<T> &delim, std::vector<std::basic_string<T>> &ret) {
+        size_t last = 0;
+        size_t index = s.find_first_of(delim, last);
+        while (index != std::basic_string<T>::npos) {
+            ret.push_back(s.substr(last, index - last));
+            last = index + 1;
+            index = s.find_first_of(delim, last);
+        }
+        if (index - last > 0) {
+            ret.push_back(s.substr(last, index - last));
+        }
+    }
+
+    template<typename T>
+    std::basic_string<T>
+    replaceAll(std::basic_string<T> src, const std::basic_string<T> &oldValue, const std::basic_string<T> &newValue) {
+        for (vsize pos(0); pos != std::basic_string<T>::npos; pos += newValue.length()) {
+            if ((pos = src.find(oldValue, pos)) != std::basic_string<T>::npos) {
+                src.replace(pos, oldValue.length(), newValue);
+            } else break;
+        }
+        return src;
+    }
 }
 
 #endif //REXSCRIPT_SHARE_HPP

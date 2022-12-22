@@ -37,11 +37,21 @@ let charsets_test = func() {
 
 let rexstd_test = func() {
     let std = nativeImport("libstdlib.dylib");
-    let file = std.fs.open("../examples/hello.rex", "r+");
+
+    std.fs.mkdirs("1/a");
+
+    let file = std.fs.open("1/a/test.txt", "w+");
+    file.write("Hello, world! 你好，世界！".encode("utf-8"));
+    file.close();
+
+    file = std.fs.open("1/a/test.txt", "r");
     let content = file.read(file.length).decode("utf-8");
-    print(content, "\n");
+    print(*content, "\n");
     print("Is EOF: ", file.eof(), "\n");
     file.close();
+
+    print("Stating file: ", std.fs.stat("1/a/test.txt"), " ", std.fs.stat("1/a"), "\n");
+    print("Unlinking file: ", std.fs.unlink("1/a/test.txt"), "\n");
     return 0;
 };
 
