@@ -34,6 +34,6 @@ After writing the FFI description file, you can generate the corresponding libra
 
 ### To build the full native module
 
-In the above you have finished writing the native module headers, next you need to clone the http://www.xiaokang00010.top:4001/xiaokang00010/rexNativeModule` repository locally and make some modifications.
+In the above you have finished writing the native module headers, next you need to clone the `http://www.xiaokang00010.top:4001/xiaokang00010/rexNativeModule` repository locally and make some modifications.
 
 Go to the repository directory, delete `library.h`, and overwrite `library.cpp` with your generated file, and you are now ready to use the `cmake` tool to generate the reXscript native modules for your project.
