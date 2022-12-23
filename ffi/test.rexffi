@@ -8,11 +8,18 @@ ffi-types:
     :i32
 :end-ffi-types
 
+ffi-consts:
+    name: F_OK
+    symbol: F_OK
+    type: i32
+    value: 114514
+:end-ffi-consts
+
 ffi-exports:
     name: add
     symbol: add
     params: i32,i32
-    result: i32
+    result: none
 :end-ffi-exports
 
 ffi-helpers:

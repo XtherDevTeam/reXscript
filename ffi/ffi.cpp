@@ -21,7 +21,7 @@ namespace rex::ffi {
         buf.clear();
 
         // parse file
-        // 0 is global, 2 is types, 3 is types-parsing, 5 is exports, 7 is helpers
+        // 0 is global, 2 is types, 3 is types-parsing, 5 is exports, 7 is helpers, 8 is consts
         int mode{};
         vstr parsingTemp{};
 
@@ -41,6 +41,8 @@ namespace rex::ffi {
                         mode = 2;
                     } else if (line.starts_with(L"ffi-exports:")) {
                         mode = 5;
+                    } else if (line.starts_with(L"ffi-consts:")) {
+                        mode = 8;
                     } else if (line.starts_with(L"ffi-helpers")) {
                         mode = 7;
                     } else {
@@ -98,6 +100,21 @@ namespace rex::ffi {
                     }
                     break;
                 }
+                case 8: {
+                    // exports-parsing
+                    if (line.starts_with(L"name: ")) {
+                        parsingTemp = line.substr(6);
+                    } else if (line.starts_with(L"symbol: ")) {
+                        ffiConsts[parsingTemp].name = line.substr(8);
+                    } else if (line.starts_with(L"type: ")) {
+                        ffiConsts[parsingTemp].type = line.substr(6);
+                    } else if (line.starts_with(L"value: ")) {
+                        ffiConsts[parsingTemp].value = line.substr(7);
+                    } else if (line.starts_with(L":end-ffi-consts")) {
+                        mode = 0;
+                    }
+                    break;
+                }
                 default: {
                     break;
                 }
@@ -129,7 +146,9 @@ namespace rex::ffi {
                 argCnt++;
             }
             // export caller progress
-            ss << L"auto rexCallResult = " << i.second.name << L"(";
+            if (i.second.resultType != L"none")
+                ss << L"auto rexCallResult = ";
+            ss << i.second.name << L"(";
             if (argCnt) {
                 ss << L"arg0";
                 for (long c = 1; c < argCnt; c++) {
@@ -138,9 +157,13 @@ namespace rex::ffi {
             }
             ss << L");\n";
             // export return statement
-            ss << L"return "
-               << replaceAll(ffiTypes[i.second.resultType].typeToRex, vstr{L"$param"}, vstr{L"rexCallResult"})
-               << L";\n";
+            if (i.second.resultType != L"none") {
+                ss << L"return "
+                   << replaceAll(ffiTypes[i.second.resultType].typeToRex, vstr{L"$param"}, vstr{L"rexCallResult"})
+                   << L";\n";
+            } else {
+                ss << L"return {};\n";
+            }
             ss << L"}" << std::endl;
         }
 
@@ -150,6 +173,12 @@ namespace rex::ffi {
         for (auto &i: ffiExports) {
             ss << L"mod->members[L" << std::quoted(i.first) << L"] = "
                << L"managePtr(value{(value::nativeFuncPtr) _rexExport_" << i.first << L"});\n";
+        }
+        for (auto &i: ffiConsts) {
+            vstr replacement =
+                    replaceAll(ffiTypes[i.second.type].typeToRex, vstr{L"$param"}, vstr{i.second.value});
+            ss << L"mod->members[L" << std::quoted(i.first) << L"] = " << L"managePtr("
+               << replacement << L");" << std::endl;
         }
         ss << L"}" << std::endl;
 

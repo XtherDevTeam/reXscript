@@ -55,6 +55,12 @@ let rexstd_test = func() {
     return 0;
 };
 
+let rexffi_unittest = func() {
+    let lib = nativeImport("libtest.dylib");
+    print(lib.hello(114, 514));
+    return 0;
+};
+
 let rexModInit = func() {
     let s = {a: 1, b: 2};
     print(*s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
@@ -65,5 +71,6 @@ let rexModInit = func() {
     thread_test();
     charsets_test();
     rexstd_test();
+    rexffi_unittest();
     return 0;
 };
