@@ -11,18 +11,18 @@ ffi-lib: hello.h ; complete with your own library headers
 
 ffi-types:
 ; just define your own structure and write down how to covert to rex::value
-i32:
-c-style: int
-type-to-rex: (value){(vint)($param)}
-rex-to-type: (i32)($param.getInt())
-:i32
+    i32:
+        c-style: int
+        type-to-rex: (value){(vint)($param)}
+        rex-to-type: (i32)($param.getInt())
+    :i32
 :end-ffi-types
 
 ffi-exports:
 ; write down the export functions below
-name: add
-params: i32,i32
-result: i32
+    name: add
+    params: i32,i32
+    result: i32 ; if the function returns nothing, fill this place with `none`
 :end-ffi-exports
 
 ffi-helpers:
