@@ -36,7 +36,7 @@ let charsets_test = func() {
 };
 
 let rexstd_test = func() {
-    let std = nativeImport("libstdlib.dylib");
+    let std = nativeImport("libstd.dylib");
 
     std.fs.mkdirs("1/a");
 
@@ -52,6 +52,8 @@ let rexstd_test = func() {
 
     print("Stating file: ", std.fs.stat("1/a/test.txt"), " ", std.fs.stat("1/a"), "\n");
     print("Unlinking file: ", std.fs.unlink("1/a/test.txt"), "\n");
+    print("Listdir: ", std.fs.listDir("."), "\n");
+    print("realpath: ", std.fs.realpath("."), "\n");
     return 0;
 };
 
