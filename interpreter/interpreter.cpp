@@ -142,6 +142,7 @@ namespace rex {
                         return {target.leaf.basicVal.vBool};
                     case lexer::token::tokenKind::string:
                         return {target.leaf.strVal, stringMethods::getMethodsCxt()};
+                    case lexer::token::tokenKind::kNull:
                     default:
                         return {};
                 }

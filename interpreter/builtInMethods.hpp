@@ -109,6 +109,8 @@ namespace rex {
 
         nativeFn(wait, interpreter, args, passThisPtr);
 
+        nativeFn(sleep, interpreter, args, passThisPtr);
+
         value::cxtObject getMethodsCxt();
 
         value getThreadingModule();

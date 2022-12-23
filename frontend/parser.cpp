@@ -17,6 +17,7 @@ namespace rex {
             case lexer::token::tokenKind::integer:
             case lexer::token::tokenKind::boolean:
             case lexer::token::tokenKind::decimal:
+            case lexer::token::tokenKind::kNull:
             case lexer::token::tokenKind::string: {
                 AST res = {AST::treeKind::basicLiterals, lex.curToken};
                 lex.scan();

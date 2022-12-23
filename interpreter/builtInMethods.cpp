@@ -427,10 +427,16 @@ namespace rex {
         return waitForThread(in->env, args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt());
     }
 
+    nativeFn(threadingMethods::sleep, interpreter, args, passThisPtr) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt()));
+        return {};
+    }
+
     value::cxtObject threadingMethods::getMethodsCxt() {
         value::cxtObject result;
         result[L"start"] = managePtr(value{(value::nativeFuncPtr) start});
         result[L"wait"] = managePtr(value{(value::nativeFuncPtr) wait});
+        result[L"sleep"] = managePtr(value{(value::nativeFuncPtr) sleep});
 
         return result;
     }
