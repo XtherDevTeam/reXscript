@@ -77,3 +77,38 @@ print(lam(1919), " ", lam(810), "\n");
 The above codes will print `4466 6086` on the screen.
 
 # Extended features
+
+## Iterator
+
+Iterators provide a way to traverse data structures
+
+These abstractions should be included in iterators: `isEnd`, `next`.
+
+Like:
+
+```rex
+let iter_test = func() {
+    let data = {
+        num: 100,
+        rexIter: func() {
+            let it = {
+                cur: 0,
+                container: this,
+                next: func() {
+                    let cur = this.cur;
+                    if (this.cur > this.container.num) {
+                        break;
+                    }
+                    ++this.cur;
+                    return cur;
+                }
+            };
+            return it;
+        }
+    };
+    forEach (i in data) {
+        print(*i, "\t");
+    }
+    return 0;
+};
+```

@@ -63,6 +63,31 @@ let rexffi_unittest = func() {
     return 0;
 };
 
+let iter_test = func() {
+    let data = {
+        num: 100,
+        rexIter: func() {
+            let it = {
+                cur: 0,
+                container: this,
+                next: func() {
+                    let cur = this.cur;
+                    if (this.cur > this.container.num) {
+                        break;
+                    }
+                    ++this.cur;
+                    return cur;
+                }
+            };
+            return it;
+        }
+    };
+    forEach (i in data) {
+        print(*i, "\t");
+    }
+    return 0;
+};
+
 let rexModInit = func() {
     let s = {a: 1, b: 2};
     print(*s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
@@ -74,5 +99,6 @@ let rexModInit = func() {
     charsets_test();
     rexstd_test();
     rexffi_unittest();
+    iter_test();
     return 0;
 };

@@ -692,7 +692,7 @@ namespace rex {
         lex.scan();
 
         AST expression = parseLvalueExpression();
-        if (!identifier)
+        if (!expression)
             throw parserException(lex.line, lex.col, L"expected an expression after `in`");
 
         if (lex.curToken.kind != lexer::token::tokenKind::rightParentheses)
@@ -714,11 +714,14 @@ namespace rex {
 
         if (lex.curToken.kind != lexer::token::tokenKind::leftParentheses)
             throw parserException(lex.line, lex.col, L"expected `(` after `while`");
+        lex.scan();
+
         AST condition = parseLvalueExpression();
         if (!condition)
             throw parserException(lex.line, lex.col, L"expected LvalueExpression after `(`");
         if (lex.curToken.kind != lexer::token::tokenKind::rightParentheses)
             throw parserException(lex.line, lex.col, L"expected `)` after condition");
+        lex.scan();
 
         AST stmt = parseStmts();
         if (!stmt)

@@ -49,16 +49,16 @@ namespace rex {
         result = v;
     }
 
-    const managedPtr<std::thread> & environment::thread::getTh() {
+    const managedPtr<std::thread> &environment::thread::getTh() {
         return th;
     }
 
-    const managedPtr<value> & environment::thread::getResult() {
+    const managedPtr<value> &environment::thread::getResult() {
         return result;
     }
 
     interpreter::interpreter(const managedPtr<environment> &env, const managedPtr<value> &moduleCxt) :
-        env(env),moduleCxt(moduleCxt),stack(),interpreterCxt() {
+            env(env), moduleCxt(moduleCxt), stack(), interpreterCxt() {
 
     }
 
@@ -156,8 +156,10 @@ namespace rex {
             }
             case AST::treeKind::objectLiteral: {
                 value::cxtObject cxt;
+                value r;
                 for (auto &i: target.child) {
-                    cxt[i.child[0].leaf.strVal] = managePtr(interpret(i.child[1]));
+                    r = interpret(i.child[1]);
+                    cxt[i.child[0].leaf.strVal] = managePtr(r.isRef() ? r.getRef() : r);
                 }
                 return {cxt};
             }
@@ -167,25 +169,25 @@ namespace rex {
                     for (auto it = stack.back().localCxt.rbegin();
                          it != stack.back().localCxt.rend(); it++) {
                         if (auto vit = it->find(target.leaf.strVal); vit != it->end()) {
-                            return {vit->second};
+                            return {vit->second->isRef() ? vit->second->refObj : vit->second};
                         }
                     }
                 }
                 // 全局范围解释
-                if (auto it = interpreterCxt.find(target.leaf.strVal);
-                        it != interpreterCxt.end()) {
+                if (auto vit = interpreterCxt.find(target.leaf.strVal);
+                        vit != interpreterCxt.end()) {
                     // 在当前Module Context中查找
-                    return {it->second};
+                    return {vit->second->isRef() ? vit->second->refObj : vit->second};
                 }
-                if (auto it = moduleCxt->members.find(target.leaf.strVal);
-                        it != moduleCxt->members.end()) {
+                if (auto vit = moduleCxt->members.find(target.leaf.strVal);
+                        vit != moduleCxt->members.end()) {
                     // 在当前Module Context中查找
-                    return {it->second};
+                    return {vit->second->isRef() ? vit->second->refObj : vit->second};
                 }
-                if (auto it = env->globalCxt->members.find(target.leaf.strVal);
-                        it != env->globalCxt->members.end()) {
+                if (auto vit = env->globalCxt->members.find(target.leaf.strVal);
+                        vit != env->globalCxt->members.end()) {
                     // 在Global Context中查找
-                    return {it->second};
+                    return {vit->second->isRef() ? vit->second->refObj : vit->second};
                 }
                 // 符号不存在
                 throw signalException(makeErr(L"internalError", L"undefined symbol: `" + target.leaf.strVal + L"`"));
@@ -200,11 +202,12 @@ namespace rex {
                 switch (l.kind) {
                     case value::vKind::vStr:
                         return {(vint) {(*l.strObj)[r.getInt()]}};
-                    case value::vKind::vVec:
-                        return {{(*l.vecObj)[r.getInt()]}};
+                    case value::vKind::vVec:{
+                        return {(*l.vecObj)[r.getInt()]->isRef() ? (*l.vecObj)[r.getInt()]->refObj : (*l.vecObj)[r.getInt()]};
+                    }
                     default: {
                         if (auto it = l.members.find(L"rexIndex"); it != l.members.end())
-                            return it->second;
+                            return invokeFunc(it->second, {r}, val.isRef() ? val.refObj : managePtr(l));
                         if (r.kind == value::vKind::vStr)
                             return l[r.getStr()];
                         else
@@ -486,26 +489,34 @@ namespace rex {
                     throw signalException(makeErr(L"internalError", L"undefined identifier: `rexIter`"));
                 }
                 std::shared_ptr<value> rIter = managePtr(invokeFunc(rexIter, {}, obj));
-
+                if(rIter->isRef())
+                    rIter = rIter->refObj;
 
                 stack.back().pushLocalCxt(
-                        (value::cxtObject) {{target.child[0].leaf.strVal, rIter}});
+                        (value::cxtObject) {{target.child[0].leaf.strVal, {}}});
+
+                auto &itVal = stack.back().localCxt.back()[target.child[0].leaf.strVal];
 
                 auto cxtIdx = stack.back().getCurLocalCxtIdx();
 
-                std::shared_ptr<value> itNext, itIsEnd;
+                std::shared_ptr<value> itNext;
 
                 if (auto it = rIter->members.find(L"next"); it != rIter->members.end())
                     itNext = it->second;
                 else
                     throw signalException(makeErr(L"internalError", L"undefined identifier: `next`"));
 
-                if (auto it = rIter->members.find(L"isEnd"); it != rIter->members.end())
-                    itIsEnd = it->second;
-                else
-                    throw signalException(makeErr(L"internalError", L"undefined identifier: `isEnd`"));
+                while (true) {
+                    try {
+                        if (auto val = invokeFunc(itNext, {}, rIter); val.isRef())
+                            itVal = val.refObj;
+                        else
+                            itVal = managePtr(val);
+                    } catch (const signalBreak &e) {
+                        stack.back().backToLocalCxt(cxtIdx);
+                        break;
+                    }
 
-                while (!invokeFunc(itIsEnd, {}, rIter).getBool()) {
                     try {
                         interpret(target.child[2]);
                     } catch (const signalContinue &e) {
@@ -514,8 +525,6 @@ namespace rex {
                         stack.back().backToLocalCxt(cxtIdx);
                         break;
                     }
-
-                    *rIter = invokeFunc(itNext, {}, rIter);
                 }
 
                 stack.back().popLocalCxt();
@@ -1378,17 +1387,18 @@ namespace rex {
 
     vint spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
                      const vec<value> &args,
-                     const managedPtr<value>& passThisPtr) {
+                     const managedPtr<value> &passThisPtr) {
         vint id{env->threadIdCounter};
-        env->threadPool[id].setTh(std::make_shared<std::thread>(rexThreadWrapper, env, id, cxt, func, args, passThisPtr));
-    
+        env->threadPool[id].setTh(
+                std::make_shared<std::thread>(rexThreadWrapper, env, id, cxt, func, args, passThisPtr));
+
         return id;
     }
 
     void
-    rexThreadWrapper(managedPtr <environment> env, vint tid, managedPtr <value> cxt, managedPtr <value> func,
-                     vec <value> args,
-                     managedPtr <value> passThisPtr) {
+    rexThreadWrapper(managedPtr<environment> env, vint tid, managedPtr<value> cxt, managedPtr<value> func,
+                     vec<value> args,
+                     managedPtr<value> passThisPtr) {
         auto it = managePtr(interpreter{env, cxt});
         it->interpreterCxt[L"thread_id"] = managePtr(value{tid});
         auto res = it->invokeFunc(func, args, passThisPtr);
