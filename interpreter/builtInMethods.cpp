@@ -250,6 +250,7 @@ namespace rex {
 
         result[L"rexPlatform"] = managePtr(value{getOSName(), stringMethods::getMethodsCxt()});
         result[L"rexArch"] = managePtr(value{getCPUArch(), stringMethods::getMethodsCxt()});
+        result[L"rexDylibSuffix"] = managePtr(value{getDylibSuffix(), stringMethods::getMethodsCxt()});
 
         result[L"charsets"] = managePtr(value{value::cxtObject{}});
 

@@ -86,6 +86,10 @@ rex::vstr rex::getCPUArch() {
     return architecture;
 }
 
+rex::vstr rex::getDylibSuffix() {
+    return dylibSuffix;
+}
+
 void rex::path::join(rex::vstr &a, const rex::vstr &b) {
     if (a.empty()) {
         a = b;

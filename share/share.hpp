@@ -18,13 +18,17 @@ namespace rex {
 
 #if defined(__linux__)
 #define operatingSystem L"linux"
+#define dylibSuffix L"so"
 #elif defined(__APPLE__)
 #define operatingSystem L"darwin"
+#define dylibSuffix L"dylib"
 #elif defined(_WIN32)
 #pragma comment(lib, "ws2_32.lib")
 #define operatingSystem L"win32"
+#define dylibSuffix L"dll"
 #else
 #define operatingSystem L"unknown"
+#define dylibSuffix L"so"
 #endif
 
 #if defined(__aarch64__)
@@ -112,6 +116,8 @@ namespace rex {
     vstr getOSName();
 
     vstr getCPUArch();
+
+    vstr getDylibSuffix();
 }
 
 #endif //REXSCRIPT_SHARE_HPP
