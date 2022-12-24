@@ -112,3 +112,47 @@ let iter_test = func() {
     return 0;
 };
 ```
+
+## References and deepCopy
+
+Generally, when reXscript initialize an object from another object. It'll be constructed by reference instead of copy.
+
+So some code might not work properly in reXscript like the following example.
+
+```shell
+input> let lst = [1,2,2,3,3,3,4,4,4,4,5,5,5,5,5]
+output> <rexValue type=null>
+input> let b = lst
+output> <rexValue type=null>
+input> b
+output> <rexValue type=ref val=<rexValue type=vec val=[<rexValue type=int val=1>,<rexValue type=int val=2>,<rexValue type=int val=2>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>]>>
+input> lst
+output> <rexValue type=ref val=<rexValue type=vec val=[<rexValue type=int val=1>,<rexValue type=int val=2>,<rexValue type=int val=2>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>]>>
+input> lst.removeAll(4)
+output> <rexValue type=ref val=<rexValue type=vec val=[<rexValue type=int val=1>,<rexValue type=int val=2>,<rexValue type=int val=2>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>]>>
+input> b
+output> <rexValue type=ref val=<rexValue type=vec val=[<rexValue type=int val=1>,<rexValue type=int val=2>,<rexValue type=int val=2>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>]>>
+```
+
+As you can see, reXscript constructed object `b` by reference and the changes on the original object `lst` can affect on `b`.
+
+To avoid this, you can use deepCopy to construct an object like
+
+```shell
+input> let lst = [1,2,2,3,3,3,4,4,4,4,5,5,5,5,5]
+output> <rexValue type=null>
+input> let b = *lst
+output> <rexValue type=null>
+input> lst
+output> <rexValue type=ref val=<rexValue type=vec val=[<rexValue type=int val=1>,<rexValue type=int val=2>,<rexValue type=int val=2>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>]>>
+input> b
+output> <rexValue type=ref val=<rexValue type=vec val=[<rexValue type=int val=1>,<rexValue type=int val=2>,<rexValue type=int val=2>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>]>>
+input> lst.removeAll(4)
+output> <rexValue type=ref val=<rexValue type=vec val=[<rexValue type=int val=1>,<rexValue type=int val=2>,<rexValue type=int val=2>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>]>>
+input> lst
+output> <rexValue type=ref val=<rexValue type=vec val=[<rexValue type=int val=1>,<rexValue type=int val=2>,<rexValue type=int val=2>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>]>>
+input> b
+output> <rexValue type=ref val=<rexValue type=vec val=[<rexValue type=int val=1>,<rexValue type=int val=2>,<rexValue type=int val=2>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=3>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=4>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>,<rexValue type=int val=5>]>>
+```
+
+In this time, reXscript constucted `b` by copy, so the changes on `lst` couldn't affect on `b`.

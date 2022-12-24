@@ -135,6 +135,10 @@ namespace rex {
     value::cxtObject vecMethods::getMethodsCxt() {
         value::cxtObject result;
         result[L"append"] = managePtr(value{(value::nativeFuncPtr) append});
+        result[L"pop"] = managePtr(value{(value::nativeFuncPtr) pop});
+        result[L"remove"] = managePtr(value{(value::nativeFuncPtr) remove});
+        result[L"removeAll"] = managePtr(value{(value::nativeFuncPtr) removeAll});
+
         result[L"rexEqual"] = managePtr(value{(value::nativeFuncPtr) rexEqual});
         result[L"rexNotEqual"] = managePtr(value{(value::nativeFuncPtr) rexNotEqual});
         return result;
@@ -142,7 +146,40 @@ namespace rex {
 
     nativeFn(vecMethods::append, interpreter, args, passThisPtr) {
         for (auto &i: args)
-            passThisPtr->getVec().push_back(managePtr(i));
+            passThisPtr->getVec().push_back(managePtr(i.isRef() ? i.getRef() : i));
+        return passThisPtr;
+    }
+
+    nativeFn(vecMethods::pop, interpreter, args, passThisPtr) {
+        passThisPtr->getVec().pop_back();
+        return passThisPtr;
+    }
+
+    nativeFn(vecMethods::remove, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        value lhs = args[0].isRef() ? args[0].getRef() : args[0];
+        for (auto it = passThisPtr->getVec().begin(); it != passThisPtr->getVec().end();) {
+            if (in->opEqual(lhs, **it).getBool()) {
+                passThisPtr->getVec().erase(it);
+                break;
+            } else {
+                it++;
+            }
+        }
+
+        return passThisPtr;
+    }
+
+    nativeFn(vecMethods::removeAll, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        value lhs = args[0].isRef() ? args[0].getRef() : args[0];
+        for (auto it = passThisPtr->getVec().begin(); it != passThisPtr->getVec().end();) {
+            if (in->opEqual(lhs, **it).getBool())
+                it = passThisPtr->getVec().erase(it);
+            else
+                it++;
+        }
+
         return passThisPtr;
     }
 
@@ -428,7 +465,8 @@ namespace rex {
     }
 
     nativeFn(threadingMethods::sleep, interpreter, args, passThisPtr) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt()));
+        std::this_thread::sleep_for(
+                std::chrono::milliseconds(args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt()));
         return {};
     }
 

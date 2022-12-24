@@ -59,6 +59,12 @@ namespace rex {
     namespace vecMethods {
         nativeFn(append, interpreter, args, passThisPtr);
 
+        nativeFn(pop, interpreter, args, passThisPtr);
+
+        nativeFn(remove, interpreter, args, passThisPtr);
+
+        nativeFn(removeAll, interpreter, args, passThisPtr);
+
         nativeFn(rexEqual, interpreter, args, passThisPtr);
 
         nativeFn(rexNotEqual, interpreter, args, passThisPtr);
