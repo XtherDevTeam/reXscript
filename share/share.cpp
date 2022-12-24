@@ -16,6 +16,10 @@ std::wstring rex::string2wstring(const std::string &str) {
     return ret;
 }
 
+std::wstring rex::string2wstring(const std::wstring &str) {
+    return str;
+}
+
 std::wstring rex::buildErrorMessage(rex::vsize line, rex::vsize col, const rex::vstr &what) {
     std::wstringstream ss;
     ss << "At line " << line << " column " << col << ": " << what;

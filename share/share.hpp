@@ -32,6 +32,8 @@ namespace rex {
 
     std::wstring string2wstring(const std::string &str);
 
+    std::wstring string2wstring(const std::wstring &str);
+
     std::wstring buildErrorMessage(vsize line, vsize col, const vstr &what);
 
     template<typename T>
