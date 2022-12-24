@@ -1,29 +1,75 @@
-name: Build and release
+name: Compile & Upload
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
 
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up CMake
-        uses: actions/setup-cmake@v2
+      - uses: actions/checkout@v3
+
+      - name: Configure CMake
+        run: make cmake_prod
+
+      - name: Build
+        run: make build_prod
+
+      - name: Remove useless files
+        run: cd ${{github.workspace}}/cmake-build-release ; rm -rf CMakeFiles Testing
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
         with:
-          cmake-version: 3.18.2
-      - name: Build with CMake
-        run: |
-          make cmake_prod
-          make build_prod
-      - name: Test build
-        run: |
-          cd cmake-build-release
-          ./rex --version
-      - name: Publish build artifact
-        uses: actions/upload-artifact@v2
+          name: linux-amd64-build
+          path: ${{github.workspace}}/cmake-build-release
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure CMake
+        run: make cmake_prod
+
+      - name: Build
+        run: make build_prod
+
+      - name: Remove useless files
+        run: dir ${{github.workspace}}/cmake-build-release | where {$_. name -notlike '*.exe*'} | Remove-Item -Recurse -force
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
         with:
-          name: rex
-          path: cmake-build-release/rex*
+          name: windows-amd64-build
+          path: ${{github.workspace}}/cmake-build-release
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure CMake
+        run: make cmake_prod
+
+      - name: Build
+        run: make build_prod
+
+      - name: Remove useless files
+        run: cd ${{github.workspace}}/cmake-build-release ; rm -rf CMakeFiles Testing
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: macos-amd64-build
+          path: ${{github.workspace}}/cmake-build-release
