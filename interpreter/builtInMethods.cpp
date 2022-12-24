@@ -99,11 +99,7 @@ namespace rex {
         if (args[0].isRef())
             args[0] = args[0].getRef();
 
-        if (passThisPtr.unique())
-            passThisPtr->getStr() += args[0].getStr();
-        else
-            passThisPtr->strObj = managePtr(
-                    passThisPtr->getStr() + args[0].getStr()); // not unique, use copy construct instead
+        passThisPtr->getStr() += args[0].getStr();
 
         return passThisPtr;
     }
@@ -251,6 +247,10 @@ namespace rex {
         result[L"importPrefixPath"] = managePtr(value{value::vecObject{
                 managePtr(value{L"", stringMethods::getMethodsCxt()})
         }, rex::vecMethods::getMethodsCxt()});
+
+        result[L"rexPlatform"] = managePtr(value{getOSName(), stringMethods::getMethodsCxt()});
+        result[L"rexArch"] = managePtr(value{getCPUArch(), stringMethods::getMethodsCxt()});
+
         result[L"charsets"] = managePtr(value{value::cxtObject{}});
 
         // initialize default charsets

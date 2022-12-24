@@ -119,7 +119,7 @@ Generally, when reXscript initialize an object from another object. It'll be con
 
 So some code might not work properly in reXscript like the following example.
 
-```shell
+```html
 input> let lst = [1,2,2,3,3,3,4,4,4,4,5,5,5,5,5]
 output> <rexValue type=null>
 input> let b = lst
@@ -138,7 +138,7 @@ As you can see, reXscript constructed object `b` by reference and the changes on
 
 To avoid this, you can use deepCopy to construct an object like
 
-```shell
+```html
 input> let lst = [1,2,2,3,3,3,4,4,4,4,5,5,5,5,5]
 output> <rexValue type=null>
 input> let b = *lst

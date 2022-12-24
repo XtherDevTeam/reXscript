@@ -78,6 +78,14 @@ void rex::parseString(std::wistream &input, rex::vstr &value) {
     }
 }
 
+rex::vstr rex::getOSName() {
+    return operatingSystem;
+}
+
+rex::vstr rex::getCPUArch() {
+    return architecture;
+}
+
 void rex::path::join(rex::vstr &a, const rex::vstr &b) {
     if (a.empty()) {
         a = b;

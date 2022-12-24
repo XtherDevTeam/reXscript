@@ -15,6 +15,30 @@
 #include <filesystem>
 
 namespace rex {
+
+#if defined(__linux__)
+#define operatingSystem L"linux"
+#elif defined(__APPLE__)
+#define operatingSystem L"darwin"
+#elif defined(_WIN32)
+#pragma comment(lib, "ws2_32.lib")
+#define operatingSystem L"win32"
+#else
+#define operatingSystem L"unknown"
+#endif
+
+#if defined(__aarch64__)
+#define architecture L"arm64"
+#elif defined(__x86_64__)
+#define architecture L"amd64"
+#elif defined(__i386__)
+#define architecture "i386"
+#elif defined(__arm__)
+#define architecture L"arm"
+#else
+#define architecture L"unknown"
+#endif
+
     using vsize = unsigned long long;
     using vint = int64_t;
     using vbool = bool;
@@ -84,6 +108,10 @@ namespace rex {
         }
         return src;
     }
+
+    vstr getOSName();
+
+    vstr getCPUArch();
 }
 
 #endif //REXSCRIPT_SHARE_HPP
