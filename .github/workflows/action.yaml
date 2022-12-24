@@ -1,0 +1,29 @@
+name: Build and release
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up CMake
+        uses: actions/setup-cmake@v2
+        with:
+          cmake-version: 3.18.2
+      - name: Build with CMake
+        run: |
+          make cmake_prod
+          make build_prod
+      - name: Test build
+        run: |
+          cd cmake-build-release
+          ./rex --version
+      - name: Publish build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: rex
+          path: cmake-build-release/rex*
