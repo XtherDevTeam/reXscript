@@ -4,12 +4,25 @@ let add = func(a, b) {
 
 let lambda_test = func() {
     let a = 114, b = 514;
-    let lam = lambda(a, b) -> (c) {
+    let lam = lambda (a, b) -> (c) {
         outer.a += c;
         outer.b += c;
         return outer.a + outer.b;
     };
     print(lam(1919), " ", lam(810), "\n");
+    return 0;
+};
+
+let str_test = func () {
+    let str = "    Root Cui AK IOI       ";
+    print("Original string: ", *str, "\n");
+    str = str.trim();
+    print("After str.trim(): ", *str, "\n");
+    print("str.split(): ", "\n");
+    let split_result = str.split(" ");
+    for (let i = 0;i < split_result.length();++i) {
+        print(*split_result[i], "\n");
+    }
     return 0;
 };
 
@@ -59,7 +72,7 @@ let rexstd_test = func() {
 
 let rexffi_unittest = func() {
     let lib = nativeImport("libtest.dylib");
-    print(lib.hello(114, 514));
+    print(lib.hello(114, 514), "\n");
     return 0;
 };
 
@@ -85,6 +98,7 @@ let iter_test = func() {
     forEach (i in data) {
         print(*i, "\t");
     }
+    print("\n");
     return 0;
 };
 
@@ -100,5 +114,6 @@ let rexModInit = func() {
     rexstd_test();
     rexffi_unittest();
     iter_test();
+    str_test();
     return 0;
 };

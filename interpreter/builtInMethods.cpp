@@ -25,6 +25,8 @@ namespace rex {
         result[L"rexAddAssign"] = managePtr(value{(value::nativeFuncPtr) rexAddAssign});
         result[L"join"] = managePtr(value{(value::nativeFuncPtr) join});
         result[L"encode"] = managePtr(value{(value::nativeFuncPtr) encode});
+        result[L"trim"] = managePtr(value{(value::nativeFuncPtr) trim});
+        result[L"split"] = managePtr(value{(value::nativeFuncPtr) split});
         return result;
     }
 
@@ -47,6 +49,23 @@ namespace rex {
                         rex::interpreter::makeErr(L"argumentsError", L"substr() expected one or two arguments"));
             }
         }
+    }
+
+    nativeFn(stringMethods::trim, interpreter, args, passThisPtr) {
+        vstr s = passThisPtr->getStr();
+        s.erase(0, s.find_first_not_of(L' '));
+        s.erase(s.find_last_not_of(L' ') + 1);
+        return {s, getMethodsCxt()};
+    }
+
+    nativeFn(stringMethods::split, interpreter, args, passThisPtr) {
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+        value result{value::vecObject{}, rex::vecMethods::getMethodsCxt()};
+        rex::split(passThisPtr->getStr(), args[0].getStr(), [&] (const vstr &r) {
+            result.getVec().push_back(managePtr(value{r, getMethodsCxt()}));
+        });
+        return result;
     }
 
     nativeFn(stringMethods::startsWith, interpreter, args, passThisPtr) {
@@ -134,10 +153,14 @@ namespace rex {
         result[L"pop"] = managePtr(value{(value::nativeFuncPtr) pop});
         result[L"remove"] = managePtr(value{(value::nativeFuncPtr) remove});
         result[L"removeAll"] = managePtr(value{(value::nativeFuncPtr) removeAll});
-
+        result[L"length"] = managePtr(value{(value::nativeFuncPtr) length});
         result[L"rexEqual"] = managePtr(value{(value::nativeFuncPtr) rexEqual});
         result[L"rexNotEqual"] = managePtr(value{(value::nativeFuncPtr) rexNotEqual});
         return result;
+    }
+
+    nativeFn(vecMethods::length, interpreter, args, passThisPtr) {
+        return {(vint)passThisPtr->getVec().size()};
     }
 
     nativeFn(vecMethods::append, interpreter, args, passThisPtr) {

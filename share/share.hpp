@@ -102,6 +102,21 @@ namespace rex {
         }
     }
 
+    template<typename T, typename cbT>
+    void
+    split(const std::basic_string<T> &s, const std::basic_string<T> &delim, cbT callback) {
+        size_t last = 0;
+        size_t index = s.find_first_of(delim, last);
+        while (index != std::basic_string<T>::npos) {
+            callback(s.substr(last, index - last));
+            last = index + 1;
+            index = s.find_first_of(delim, last);
+        }
+        if (index - last > 0) {
+            callback(s.substr(last, index - last));
+        }
+    }
+
     template<typename T>
     std::basic_string<T>
     replaceAll(std::basic_string<T> src, const std::basic_string<T> &oldValue, const std::basic_string<T> &newValue) {

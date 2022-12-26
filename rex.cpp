@@ -11,7 +11,18 @@
 namespace rex {
 
     rex::managedPtr<rex::environment> getRexEnvironment() {
-        return rex::managePtr(rex::environment{managePtr(value{globalMethods::getMethodsCxt()})});
+        auto env = rex::managePtr(rex::environment{managePtr(value{globalMethods::getMethodsCxt()})});
+        auto cstr = std::getenv("rexPackagesPath");
+        auto str = rex::string2wstring(cstr == nullptr ? "" : cstr);
+        managedPtr<value> rexPackagesPath = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
+        if (!str.empty()) {
+            split(str, vstr{L";"}, [&](const vstr &i) {
+                rexPackagesPath->getVec().push_back(
+                        managePtr(value{i, rex::stringMethods::getMethodsCxt()}));
+            });
+        }
+        env->globalCxt->members[L"rexPackagesPath"] = rexPackagesPath;
+        return env;
     }
 
     managedPtr<value> importExternModule(const managedPtr<environment> &env, const vstr &path) {
@@ -82,7 +93,7 @@ namespace rex {
 
                 f.seekg(0, std::ios::end);
                 long fileLen = f.tellg();
-                vbytes buf(fileLen ,vbyte{});
+                vbytes buf(fileLen, vbyte{});
                 f.seekg(0, std::ios::beg);
                 f.read(buf.data(), fileLen);
                 std::wstringstream ss(string2wstring(buf));

@@ -53,6 +53,10 @@ namespace rex {
 
         nativeFn(encode, interpreter, args, passThisPtr);
 
+        nativeFn(trim, interpreter, args, passThisPtr);
+
+        nativeFn(split, interpreter, args, passThisPtr);
+
         value::cxtObject getMethodsCxt();
     }
 
@@ -68,6 +72,8 @@ namespace rex {
         nativeFn(rexEqual, interpreter, args, passThisPtr);
 
         nativeFn(rexNotEqual, interpreter, args, passThisPtr);
+
+        nativeFn(length, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }
