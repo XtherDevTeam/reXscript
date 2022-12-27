@@ -61,6 +61,12 @@ namespace rex {
     }
 
     namespace vecMethods {
+        namespace iterator {
+            nativeFn(next, interpreter, args, passThisPtr);
+
+            value::cxtObject getMethodsCxt(const value::vecObject &container);
+        };
+
         nativeFn(append, interpreter, args, passThisPtr);
 
         nativeFn(pop, interpreter, args, passThisPtr);
@@ -74,6 +80,8 @@ namespace rex {
         nativeFn(rexNotEqual, interpreter, args, passThisPtr);
 
         nativeFn(length, interpreter, args, passThisPtr);
+
+        nativeFn(rexIter, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }

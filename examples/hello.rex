@@ -20,8 +20,8 @@ let str_test = func () {
     print("After str.trim(): ", *str, "\n");
     print("str.split(): ", "\n");
     let split_result = str.split(" ");
-    for (let i = 0;i < split_result.length();++i) {
-        print(*split_result[i], "\n");
+    forEach (i in split_result) {
+        print(*i, "\n");
     }
     return 0;
 };
@@ -96,9 +96,14 @@ let iter_test = func() {
         }
     };
     forEach (i in data) {
-        print(*i, "\t");
+        print(*i, " ");
     }
     print("\n");
+    print("Vec object iterator test:\n");
+    let vec = ["this is a string", false, 0, -114.514, "Root Cui AK IOI"];
+    forEach (i in vec) {
+        print(*i, "\n");
+    }
     return 0;
 };
 

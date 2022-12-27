@@ -9,6 +9,7 @@
 #include "rex.hpp"
 #include "exceptions/signalException.hpp"
 #include "share/share.hpp"
+#include "exceptions/signalBreak.hpp"
 
 namespace rex {
     value::cxtObject stringMethods::getMethodsCxt() {
@@ -156,6 +157,7 @@ namespace rex {
         result[L"length"] = managePtr(value{(value::nativeFuncPtr) length});
         result[L"rexEqual"] = managePtr(value{(value::nativeFuncPtr) rexEqual});
         result[L"rexNotEqual"] = managePtr(value{(value::nativeFuncPtr) rexNotEqual});
+        result[L"rexIter"] = managePtr(value{(value::nativeFuncPtr) rexIter});
         return result;
     }
 
@@ -228,6 +230,10 @@ namespace rex {
                 return {true};
         }
         return {false};
+    }
+
+    nativeFn(vecMethods::rexIter, interpreter, args, passThisPtr) {
+        return {iterator::getMethodsCxt(passThisPtr->getVec())};
     }
 
     nativeFn(globalMethods::input, interpreter, args, passThisPtr) {
@@ -549,5 +555,24 @@ namespace rex {
         result[L"decode"] = managePtr(value{(value::nativeFuncPtr) decode});
 
         return result;
+    }
+
+    value::cxtObject vecMethods::iterator::getMethodsCxt(const value::vecObject &container) {
+        value::cxtObject result;
+        result[L"container"] = managePtr(value{container, vecMethods::getMethodsCxt()});
+        result[L"cur"] = managePtr(value{(vint)0});
+        result[L"next"] = managePtr(value{(value::nativeFuncPtr) next});
+        return result;
+    }
+
+    nativeFn(vecMethods::iterator::next, interpreter, args, passThisPtr) {
+        auto container =
+                passThisPtr->members[L"container"]->isRef() ? passThisPtr->members[L"container"]->getRef().getVec() : passThisPtr->members[L"container"]->getVec();
+        auto &index = passThisPtr->members[L"cur"]->getInt();
+        if (index >= container.size())
+            throw signalBreak();
+        auto res = container[index]->isRef() ? container[index]->refObj : container[index];
+        index++;
+        return {res};
     }
 }
