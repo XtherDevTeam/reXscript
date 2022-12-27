@@ -1388,7 +1388,7 @@ namespace rex {
     vint spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
                      const vec<value> &args,
                      const managedPtr<value> &passThisPtr) {
-        vint id{env->threadIdCounter};
+        vint id{env->threadIdCounter++};
         env->threadPool[id].setTh(
                 std::make_shared<std::thread>(rexThreadWrapper, env, id, cxt, func, args, passThisPtr));
 

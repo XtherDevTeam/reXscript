@@ -107,7 +107,7 @@ let iter_test = func() {
     return 0;
 };
 
-let rexModInit = func() {
+let main_test = func() {
     let s = {a: 1, b: 2};
     print(*s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
     print([1,2,3] == [1,2,3], " ", [1,2,3] == [1,2,4], "\n");
@@ -120,5 +120,14 @@ let rexModInit = func() {
     rexffi_unittest();
     iter_test();
     str_test();
+    return 0;
+};
+
+let rexModInit = func() {
+    for (let i = 0; i < 100; ++i) {
+        print(format("${int bs=dec} times: \n", i));
+        let th = threading.start(main_test);
+        threading.wait(th);
+    }
     return 0;
 };
