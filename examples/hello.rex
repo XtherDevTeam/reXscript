@@ -1,8 +1,8 @@
-let add = func(a, b) {
+let add = func (a, b) {
     return a + b;
 };
 
-let lambda_test = func() {
+let lambda_test = func () {
     let a = 114, b = 514;
     let lam = lambda (a, b) -> (c) {
         outer.a += c;
@@ -49,7 +49,7 @@ let charsets_test = func() {
 };
 
 let rexstd_test = func() {
-    let std = nativeImport("libstd.dylib");
+    let std = require("libstd.dylib");
 
     std.fs.mkdirs("1/a");
 
@@ -71,7 +71,7 @@ let rexstd_test = func() {
 };
 
 let rexffi_unittest = func() {
-    let lib = nativeImport("libtest.dylib");
+    let lib = require("libtest.dylib");
     print(lib.hello(114, 514), "\n");
     return 0;
 };

@@ -18,8 +18,9 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
         std::getline(std::cin, buf);
         std::wstring code;
         code = std::move(rex::string2wstring(buf));
-        rex::stringToLexerPass pass1(code);
-        rex::lexer lexer = pass1.run();
+        std::wistringstream ss(code);
+        code.clear();
+        rex::lexer lexer{ss};
         rex::parser parser{lexer};
         rex::AST ast = parser.parseStmts();
         try {

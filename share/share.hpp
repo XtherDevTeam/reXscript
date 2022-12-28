@@ -85,6 +85,8 @@ namespace rex {
         constexpr vchar sep = '/';
 
         void join(vstr &a, const vstr &b);
+
+        vstr getRealpath(const vstr &path);
     };
 
     template<typename T>

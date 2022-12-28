@@ -115,9 +115,13 @@ namespace rex {
 
         nativeFn(print, interpreter, args, passThisPtr);
 
-        nativeFn(rexImport, interpreter, args, passThisPtr);
+        nativeFn(rexRequireMod, interpreter, args, passThisPtr);
 
-        nativeFn(rexNativeImport, interpreter, args, passThisPtr);
+        nativeFn(rexRequireNativeMod, interpreter, args, passThisPtr);
+
+        nativeFn(rexRequirePackage, interpreter, args, passThisPtr);
+
+        nativeFn(rexRequire, interpreter, args, passThisPtr);
 
         nativeFn(format, interpreter, args, passThisPtr);
 

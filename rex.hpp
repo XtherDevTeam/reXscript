@@ -8,7 +8,6 @@
 #include <iostream>
 #include <frontend/ast.hpp>
 #include <frontend/parser.hpp>
-#include <pass/stringToLexerPass.hpp>
 #include "interpreter/value.hpp"
 #include "interpreter/builtInMethods.hpp"
 #include "interpreter/interpreter.hpp"
@@ -37,6 +36,14 @@ namespace rex {
     managedPtr<value> importNativeModule(const managedPtr<environment> &env, const vstr &path);
 
     /**
+     * @brief Import an external reXscript package
+     * @param env The environment object for the current interpreter
+     * @param path The path to the package directory to import
+     * @return A pointer to the module context object
+     */
+    managedPtr<value> importExternPackage(const managedPtr<environment> &env, const vstr &pkgName);
+
+    /**
      * @brief Import an external reXscript module without importPathPrefix
      * @param env The environment object for the current interpreter
      * @param path The path to the module file to import
@@ -51,6 +58,15 @@ namespace rex {
      * @return A pointer to the module context object
      */
     managedPtr<value> importNativeModuleEx(const managedPtr<environment> &env, const vstr &fullPath);
+
+    /**
+     * @brief Import an external package without importPathPrefix
+     * @param env The environment object for the current interpreter
+     * @param pkgDirPath The path to the package file to import
+     * @return A pointer to the package context object
+     */
+    managedPtr <value>
+    importExternPackageEx(const managedPtr <environment> &env, const vstr &pkgDirPath);
 }
 
 #endif //REXSCRIPT_REX_HPP

@@ -109,3 +109,7 @@ void rex::path::join(rex::vstr &a, const rex::vstr &b) {
     }
     a = a + sep + b;
 }
+
+rex::vstr rex::path::getRealpath(const rex::vstr &path) {
+    return string2wstring(std::filesystem::absolute(std::filesystem::path(wstring2string(path))).string());
+}

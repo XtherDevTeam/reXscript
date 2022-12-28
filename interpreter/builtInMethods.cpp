@@ -10,6 +10,7 @@
 #include "exceptions/signalException.hpp"
 #include "share/share.hpp"
 #include "exceptions/signalBreak.hpp"
+#include "exceptions/rexException.hpp"
 
 namespace rex {
     value::cxtObject stringMethods::getMethodsCxt() {
@@ -63,7 +64,7 @@ namespace rex {
         if (args[0].isRef())
             args[0] = args[0].getRef();
         value result{value::vecObject{}, rex::vecMethods::getMethodsCxt()};
-        rex::split(passThisPtr->getStr(), args[0].getStr(), [&] (const vstr &r) {
+        rex::split(passThisPtr->getStr(), args[0].getStr(), [&](const vstr &r) {
             result.getVec().push_back(managePtr(value{r, getMethodsCxt()}));
         });
         return result;
@@ -162,7 +163,7 @@ namespace rex {
     }
 
     nativeFn(vecMethods::length, interpreter, args, passThisPtr) {
-        return {(vint)passThisPtr->getVec().size()};
+        return {(vint) passThisPtr->getVec().size()};
     }
 
     nativeFn(vecMethods::append, interpreter, args, passThisPtr) {
@@ -269,8 +270,10 @@ namespace rex {
         value::cxtObject result;
         result[L"input"] = managePtr(value{(value::nativeFuncPtr) input});
         result[L"print"] = managePtr(value{(value::nativeFuncPtr) print});
-        result[L"import"] = managePtr(value{(value::nativeFuncPtr) rexImport});
-        result[L"nativeImport"] = managePtr(value{(value::nativeFuncPtr) rexNativeImport});
+        result[L"requireMod"] = managePtr(value{(value::nativeFuncPtr) rexRequireMod});
+        result[L"requireNativeMod"] = managePtr(value{(value::nativeFuncPtr) rexRequireNativeMod});
+        result[L"requirePackage"] = managePtr(value{(value::nativeFuncPtr) rexRequirePackage});
+        result[L"require"] = managePtr(value{(value::nativeFuncPtr) rexRequire});
         result[L"format"] = managePtr(value{(value::nativeFuncPtr) format});
         result[L"threading"] = managePtr(threadingMethods::getThreadingModule());
         result[L"importPrefixPath"] = managePtr(value{value::vecObject{
@@ -337,7 +340,7 @@ namespace rex {
         return {output, stringMethods::getMethodsCxt()};
     }
 
-    nativeFn(globalMethods::rexImport, interpreter, args, passThisPtr) {
+    nativeFn(globalMethods::rexRequireMod, interpreter, args, passThisPtr) {
         auto *in = (rex::interpreter *) interpreter;
         if (args[0].isRef())
             args[0] = args[0].getRef();
@@ -345,12 +348,37 @@ namespace rex {
         return rex::importExternModule(in->env, args[0].getStr());
     }
 
-    nativeFn(globalMethods::rexNativeImport, interpreter, args, passThisPtr) {
+    nativeFn(globalMethods::rexRequireNativeMod, interpreter, args, passThisPtr) {
         auto *in = (rex::interpreter *) interpreter;
         if (args[0].isRef())
             args[0] = args[0].getRef();
 
         return rex::importNativeModule(in->env, args[0].getStr());
+    }
+
+    nativeFn(globalMethods::rexRequirePackage, interpreter, args, passThisPtr) {
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        return rex::importExternPackage(in->env, args[0].getStr());
+    }
+
+    nativeFn(globalMethods::rexRequire, interpreter, args, passThisPtr) {
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        std::filesystem::path p(wstring2string(args[0].getStr()));
+        if (p.has_extension()) {
+            if (string2wstring(p.extension()) == L".rex") {
+                return rex::importExternModule(in->env, args[0].getStr());
+            } else if (string2wstring(p.extension()) == L"." + getDylibSuffix()) {
+                return rex::importNativeModule(in->env, args[0].getStr());
+            }
+        }
+
+        return importExternPackage(in->env, args[0].getStr());
     }
 
     nativeFn(globalMethods::format, interpreter, args, passThisPtr) {
@@ -560,14 +588,15 @@ namespace rex {
     value::cxtObject vecMethods::iterator::getMethodsCxt(const value::vecObject &container) {
         value::cxtObject result;
         result[L"container"] = managePtr(value{container, vecMethods::getMethodsCxt()});
-        result[L"cur"] = managePtr(value{(vint)0});
+        result[L"cur"] = managePtr(value{(vint) 0});
         result[L"next"] = managePtr(value{(value::nativeFuncPtr) next});
         return result;
     }
 
     nativeFn(vecMethods::iterator::next, interpreter, args, passThisPtr) {
         auto container =
-                passThisPtr->members[L"container"]->isRef() ? passThisPtr->members[L"container"]->getRef().getVec() : passThisPtr->members[L"container"]->getVec();
+                passThisPtr->members[L"container"]->isRef() ? passThisPtr->members[L"container"]->getRef().getVec()
+                                                            : passThisPtr->members[L"container"]->getVec();
         auto &index = passThisPtr->members[L"cur"]->getInt();
         if (index >= container.size())
             throw signalBreak();
