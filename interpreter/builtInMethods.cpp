@@ -260,15 +260,19 @@ namespace rex {
                 case value::vKind::vStr:
                     std::cout << wstring2string(i.getStr());
                     break;
-                case value::vKind::vBytes:
+                case value::vKind::vBytes: {
+                    std::ios::fmtflags f(std::cout.flags());
                     for (auto &c: i.getBytes()) {
                         if (isprint(c)) {
                             std::cout << c;
                         } else {
-                            std::cout << "\\x" << std::hex << std::setw(2) << std::setfill('0')  <<  static_cast<int>((unsigned char)c);
+                            std::cout << "\\x" << std::hex << std::setw(2) << std::setfill('0')
+                                      << static_cast<int>((unsigned char) c);
                         }
                     }
+                    std::cout.flags(f);
                     break;
+                }
                 default:
                     if (auto it = i.members.find(L"rexStr"); it != i.members.end()) {
                         std::cout << wstring2string(
