@@ -5,10 +5,10 @@ Yet another programming language.
 ## Usage
 
 ```bash
-Usage: rex [--help] [--version] [--shell VAR] [--args VAR...] [--generate-ffi VAR] file
+Usage: rex [--help] [--version] [--shell] [--args VAR...] [--generate-ffi] file
 
 Positional arguments:
-  file          	specify the file to be executed 
+  file          	specify the file to be executed [default: ""]
 
 Optional arguments:
   -h, --help    	shows help message and exits 

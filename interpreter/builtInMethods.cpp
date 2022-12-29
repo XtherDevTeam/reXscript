@@ -244,7 +244,9 @@ namespace rex {
     }
 
     nativeFn(globalMethods::print, interpreter, args, passThisPtr) {
-        for (auto &i: args) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        for (auto &item: args) {
+            auto &i = item.isRef() ? item.getRef() : item;
             switch (i.kind) {
                 case value::vKind::vBool:
                     std::cout << i.getBool();
@@ -259,7 +261,11 @@ namespace rex {
                     std::cout << wstring2string(i.getStr());
                     break;
                 default:
-                    std::cout << wstring2string(i);
+                    if (auto it = i.members.find(L"rexStr"); it != i.members.end()) {
+                        std::cout << wstring2string(in->invokeFunc(it->second, {}, item.isRef() ? item.refObj : managePtr(item)).getStr());
+                    } else {
+                        std::cout << wstring2string(i);
+                    }
                     break;
             }
         }

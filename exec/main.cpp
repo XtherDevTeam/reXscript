@@ -49,16 +49,21 @@ void ffiGenerator(const rex::vstr &path) {
 int main(int argc, const char **argv) {
     argparse::ArgumentParser rexProg{"rex"};
     rexProg.add_argument("--shell")
-            .help("open interactive shell");
+            .help("open interactive shell")
+            .default_value(false)
+            .implicit_value(true);
 
     rexProg.add_argument("file")
-            .help("specify the file to be executed");
+            .help("specify the file to be executed")
+            .default_value(std::string{});
 
     rexProg.add_argument("--args")
             .help("specify the arguments to pass to the reXscript program").nargs(1, 1145141919);
 
     rexProg.add_argument("--generate-ffi")
-            .help("specify the FFI config file");
+            .help("specify the FFI config file")
+            .default_value(false)
+            .implicit_value(true);
 
     try {
         rexProg.parse_args(argc, argv);
@@ -71,11 +76,11 @@ int main(int argc, const char **argv) {
             }
         }
 
-        if (rexProg.present("--shell")) {
+        if (rexProg.get<bool>("--shell")) {
             interactiveShell(env);
-        } else if (rexProg.present("--generate-ffi")) {
+        } else if (rexProg.get<bool>("--generate-ffi")) {
             ffiGenerator(rex::string2wstring(rexProg.get<std::string>("--generate-ffi")));
-        } else if (rexProg.present("file")) {
+        } else if (!rexProg.get<rex::vbytes>("file").empty()) {
             try {
                 loadFile(env, rex::string2wstring(rexProg.get<std::string>("file")));
             } catch (rex::signalException &e) {
