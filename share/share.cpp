@@ -90,6 +90,18 @@ rex::vstr rex::getDylibSuffix() {
     return dylibSuffix;
 }
 
+rex::vbytes rex::getPrintableBytes(const rex::vbytes &src) {
+    std::stringstream ss;
+    for (auto &c: src) {
+        if (isprint(c)) {
+            ss << c;
+        } else {
+            ss << "\\x" << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>((unsigned char) c);
+        }
+    }
+    return ss.str();
+}
+
 void rex::path::join(rex::vstr &a, const rex::vstr &b) {
     if (a.empty()) {
         a = b;

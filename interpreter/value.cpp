@@ -178,61 +178,60 @@ namespace rex {
 
     value::operator vstr() {
         std::wstringstream ss;
-        ss << L"<rexValue type=";
         switch (kind) {
             case vKind::vNull: {
-                ss << L"null>";
+                ss << L"null";
                 break;
             }
             case vKind::vInt: {
-                ss << L"int val=" << basicValue.vInt << L">";
+                ss << basicValue.vInt;
                 break;
             }
             case vKind::vDeci: {
-                ss << L"deci val=" << basicValue.vDeci << L">";
+                ss << basicValue.vDeci;
                 break;
             }
             case vKind::vBool: {
-                ss << L"bool val=" << basicValue.vBool << L">";
+                ss << basicValue.vBool;
                 break;
             }
             case vKind::vStr: {
-                ss << L"str val=" << std::quoted(getStr()) << L">";
+                ss << std::quoted(getStr());
                 break;
             }
             case vKind::vVec: {
-                ss << L"vec val=[";
+                ss << L"[";
                 for (vsize i = 0; i < getVec().size(); i++) {
                     ss << (vstr) {*(getVec()[i])} << L",";
                 }
                 if (!getVec().empty())
                     ss.seekp(-1, ss.cur);
-                ss << L"]>";
+                ss << L"]";
                 break;
             }
             case vKind::vObject:
-                ss << L"object val={";
+                ss << L"{";
                 for (auto &i: members) {
                     ss << std::quoted(i.first) << ": " << (vstr) {*i.second} << L',';
                 }
                 if (!members.empty())
                     ss.seekp(-1, ss.cur);
-                ss << L"}>";
+                ss << L"}";
                 break;
             case vKind::vFunc:
-                ss << L"func>";
+                ss << L"<func addr=" << &funcObj << ">";
                 break;
             case vKind::vLambda:
-                ss << L"lambda>";
+                ss << L"<lambda addr=" << &lambdaObj << ">";
                 break;
             case vKind::vNativeFuncPtr:
-                ss << L"nativeFunc>";
+                ss << L"<nativeFn addr=" << &nativeFuncObj << ">";
                 break;
             case vKind::vRef:
-                ss << L"ref val=" << (vstr) {getRef()} << L">";
+                ss << (vstr) {getRef()};
                 break;
             case vKind::vBytes:
-                ss << L"bytes val=unshown" << L">";
+                ss << L"b" << std::quoted(string2wstring(getPrintableBytes(getBytes())));
                 break;
         }
         return ss.str();

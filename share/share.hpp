@@ -135,6 +135,8 @@ namespace rex {
     vstr getCPUArch();
 
     vstr getDylibSuffix();
+
+    vbytes getPrintableBytes(const vbytes &src);
 }
 
 #endif //REXSCRIPT_SHARE_HPP

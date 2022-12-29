@@ -260,9 +260,19 @@ namespace rex {
                 case value::vKind::vStr:
                     std::cout << wstring2string(i.getStr());
                     break;
+                case value::vKind::vBytes:
+                    for (auto &c: i.getBytes()) {
+                        if (isprint(c)) {
+                            std::cout << c;
+                        } else {
+                            std::cout << "\\x" << std::hex << std::setw(2) << std::setfill('0')  <<  static_cast<int>((unsigned char)c);
+                        }
+                    }
+                    break;
                 default:
                     if (auto it = i.members.find(L"rexStr"); it != i.members.end()) {
-                        std::cout << wstring2string(in->invokeFunc(it->second, {}, item.isRef() ? item.refObj : managePtr(item)).getStr());
+                        std::cout << wstring2string(
+                                in->invokeFunc(it->second, {}, item.isRef() ? item.refObj : managePtr(item)).getStr());
                     } else {
                         std::cout << wstring2string(i);
                     }
