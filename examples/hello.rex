@@ -49,7 +49,7 @@ let charsets_test = func() {
 };
 
 let rexstd_test = func() {
-    let std = require("libstd.dylib");
+    let std = require("../../rexStdlib/dist/libstd.dylib");
 
     std.fs.mkdirs("1/a");
 
@@ -67,12 +67,6 @@ let rexstd_test = func() {
     print("Unlinking file: ", std.fs.unlink("1/a/test.txt"), "\n");
     print("Listdir: ", std.fs.listDir("."), "\n");
     print("realpath: ", std.fs.realpath("."), "\n");
-    return 0;
-};
-
-let rexffi_unittest = func() {
-    let lib = require("libtest.dylib");
-    print(lib.hello(114, 514), "\n");
     return 0;
 };
 
@@ -107,6 +101,34 @@ let iter_test = func() {
     return 0;
 };
 
+let sqlite_test = func() {
+    let sqlite = require("../../rexStdlib/dist/libstd.dylib").sqlite;
+    let db = sqlite.open(":memory:");
+    db.executeScript(
+        "
+        create table oj_contest_ranking
+        (
+            uid                integer primary key,
+            scores             string default '[]',
+            final_score        integer default 0
+        );
+        insert into oj_contest_ranking (uid, scores, final_score) values (114514, 'reXscript NB', 1919810);
+        "
+    );
+    let rows = db.execute("select * from oj_contest_ranking");
+    db.close();
+    forEach (i in rows) {
+        print(i["scores"].decode("ansi"), "\n");
+    }
+    return 0;
+};
+
+let args_test = func() {
+    forEach (i in rexArgs) {
+        print(*i, "\n");
+    }
+};
+
 let main_test = func() {
     let s = {a: 1, b: 2};
     print(*s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
@@ -117,17 +139,14 @@ let main_test = func() {
     thread_test();
     charsets_test();
     rexstd_test();
-    rexffi_unittest();
     iter_test();
     str_test();
+    sqlite_test();
+    args_test();
     return 0;
 };
 
 let rexModInit = func() {
-    for (let i = 0; i < 100; ++i) {
-        print(format("${int bs=dec} times: \n", i));
-        let th = threading.start(main_test);
-        threading.wait(th);
-    }
+    main_test();
     return 0;
 };

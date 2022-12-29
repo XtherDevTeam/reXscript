@@ -80,7 +80,7 @@ int main(int argc, const char **argv) {
                 loadFile(env, rex::string2wstring(rexProg.get<std::string>("file")));
             } catch (rex::signalException &e) {
                 std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
-            } catch (rex::parserException &e) {
+            } catch (rex::rexException &e) {
                 std::cerr << "error> " << e.what() << std::endl;
             } catch (std::exception &e) {
                 std::cerr << "error> " << e.what() << std::endl;

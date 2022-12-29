@@ -2,6 +2,7 @@
 // Created by XIaokang00010 on 2022/12/3.
 //
 
+#include <iostream>
 #include "interpreter.hpp"
 #include "exceptions/signalReturn.hpp"
 #include "builtInMethods.hpp"
@@ -10,6 +11,7 @@
 #include "exceptions/signalBreak.hpp"
 #include "interpreter/value.hpp"
 #include "share/share.hpp"
+#include "exceptions/rexException.hpp"
 
 namespace rex {
     void environment::stackFrame::pushLocalCxt(const value::cxtObject &cxt) {
@@ -202,8 +204,9 @@ namespace rex {
                 switch (l.kind) {
                     case value::vKind::vStr:
                         return {(vint) {(*l.strObj)[r.getInt()]}};
-                    case value::vKind::vVec:{
-                        return {(*l.vecObj)[r.getInt()]->isRef() ? (*l.vecObj)[r.getInt()]->refObj : (*l.vecObj)[r.getInt()]};
+                    case value::vKind::vVec: {
+                        return {(*l.vecObj)[r.getInt()]->isRef() ? (*l.vecObj)[r.getInt()]->refObj
+                                                                 : (*l.vecObj)[r.getInt()]};
                     }
                     default: {
                         if (auto it = l.members.find(L"rexIndex"); it != l.members.end())
@@ -489,7 +492,7 @@ namespace rex {
                     throw signalException(makeErr(L"internalError", L"undefined identifier: `rexIter`"));
                 }
                 std::shared_ptr<value> rIter = managePtr(invokeFunc(rexIter, {}, obj));
-                if(rIter->isRef())
+                if (rIter->isRef())
                     rIter = rIter->refObj;
 
                 stack.back().pushLocalCxt(
@@ -1401,8 +1404,20 @@ namespace rex {
                      managedPtr<value> passThisPtr) {
         auto it = managePtr(interpreter{env, cxt});
         it->interpreterCxt[L"thread_id"] = managePtr(value{tid});
-        auto res = it->invokeFunc(func, args, passThisPtr);
-        env->threadPool[tid].setResult(managePtr(res.isRef() ? res.getRef() : res));
+        try {
+            auto res = it->invokeFunc(func, args, passThisPtr);
+            env->threadPool[tid].setResult(managePtr(res.isRef() ? res.getRef() : res));
+        } catch (rex::signalException &e) {
+            std::cerr << "Uncaught exception in thread " << tid <<  "> " << rex::wstring2string((rex::value) e.get()) << std::endl;
+            throw;
+        } catch (rex::rexException &e) {
+            std::cerr << "Uncaught exception in thread " << tid <<  "> " << e.what() << std::endl;
+            throw;
+        } catch (std::exception &e) {
+            std::cerr << "Uncaught exception in thread " << tid <<  "> " << e.what() << std::endl;
+            throw;
+        }
+        env->threadPool[tid].setResult(managePtr(value{}));
     }
 
     value waitForThread(const managedPtr<environment> &env, vint id) {
