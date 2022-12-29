@@ -632,8 +632,6 @@ namespace rex {
 
     value interpreter::interpretAssignments(const AST &target) {
         value lhs = interpret(target.child[0]);
-        if (!lhs.isRef())
-            throw signalException(makeErr(L"typeError", L"expected a referenced object"));
         auto &l = lhs.refObj;
         value rhs = interpret(target.child[2]);
         if (rhs.isRef())

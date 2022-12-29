@@ -46,7 +46,7 @@ namespace rex {
     using vsize = unsigned long long;
     using vint = int64_t;
     using vbool = bool;
-    using vdeci = float;
+    using vdeci = double;
     using vstr = std::wstring;
     using vchar = wchar_t;
     using vbytes = std::string;
