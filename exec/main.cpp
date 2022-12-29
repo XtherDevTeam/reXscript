@@ -9,7 +9,7 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
     auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
     env->globalCxt->members[L"__local__"] = moduleCxt;
     auto interpreter = rex::managePtr(rex::interpreter{env, moduleCxt});
-    interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{(rex::vint)0});
+    interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{(rex::vint) 0});
     interpreter->stack.emplace_back();
     interpreter->stack.back().pushLocalCxt({});
     while (std::cin) {
@@ -27,7 +27,7 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
             rex::value result = interpreter->interpret(ast);
             std::cout << "output> " << rex::wstring2string(result) << std::endl;
         } catch (rex::signalException &e) {
-            std::cerr << "exception> " << rex::wstring2string((rex::value)e.get()) << std::endl;
+            std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
         } catch (rex::parserException &e) {
             std::cerr << "error> " << e.what() << std::endl;
         } catch (std::exception &e) {
@@ -49,35 +49,42 @@ void ffiGenerator(const rex::vstr &path) {
 int main(int argc, const char **argv) {
     argparse::ArgumentParser rexProg{"rex"};
     rexProg.add_argument("--shell")
-            .help("open interactive shell")
-            .default_value(false)
-            .implicit_value(true);
+            .help("open interactive shell");
 
-    rexProg.add_argument("--file")
-            .help("specify the file to be execute")
-            .default_value(std::string{});
+    rexProg.add_argument("file")
+            .help("specify the file to be executed");
+
+    rexProg.add_argument("--args")
+            .help("specify the arguments to pass to the reXscript program").nargs(1, 1145141919);
 
     rexProg.add_argument("--generate-ffi")
-            .help("specify the file to be execute")
-            .default_value(std::string{});
+            .help("specify the FFI config file");
 
     try {
         rexProg.parse_args(argc, argv);
         auto env = rex::getRexEnvironment();
-        if (rexProg["--shell"] == true) {
+
+        if (rexProg.present("--args")) {
+            for (auto &i: rexProg.get<std::list<std::string>>("--args")) {
+                env->globalCxt->members[L"rexArgs"]->getVec().push_back(rex::managePtr(
+                        rex::value{rex::string2wstring(i), rex::stringMethods::getMethodsCxt()}));
+            }
+        }
+
+        if (rexProg.present("--shell")) {
             interactiveShell(env);
-        } else if (!rexProg.get<std::string>("--file").empty()) {
+        } else if (rexProg.present("--generate-ffi")) {
+            ffiGenerator(rex::string2wstring(rexProg.get<std::string>("--generate-ffi")));
+        } else if (rexProg.present("file")) {
             try {
-                loadFile(env, rex::string2wstring(rexProg.get<std::string>("--file")));
+                loadFile(env, rex::string2wstring(rexProg.get<std::string>("file")));
             } catch (rex::signalException &e) {
-                std::cerr << "exception> " << rex::wstring2string((rex::value)e.get()) << std::endl;
+                std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
             } catch (rex::parserException &e) {
                 std::cerr << "error> " << e.what() << std::endl;
             } catch (std::exception &e) {
                 std::cerr << "error> " << e.what() << std::endl;
             }
-        } else if (!rexProg.get<std::string>("--generate-ffi").empty()) {
-            ffiGenerator(rex::string2wstring(rexProg.get<std::string>("--generate-ffi")));
         } else {
             std::cout << rexProg;
         }

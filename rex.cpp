@@ -22,6 +22,7 @@ namespace rex {
             });
         }
         env->globalCxt->members[L"rexPackagesPath"] = rexPackagesPath;
+        env->globalCxt->members[L"rexArgs"] = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
         return env;
     }
 

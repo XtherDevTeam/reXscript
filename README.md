@@ -2,6 +2,22 @@
 
 Yet another programming language.
 
+## Usage
+
+```bash
+Usage: rex [--help] [--version] [--shell VAR] [--args VAR...] [--generate-ffi VAR] file
+
+Positional arguments:
+  file          	specify the file to be executed 
+
+Optional arguments:
+  -h, --help    	shows help message and exits 
+  -v, --version 	prints version information and exits 
+  --shell       	open interactive shell 
+  --args        	specify the arguments to pass to the reXscript program [nargs=1..1145141919] 
+  --generate-ffi	specify the FFI config file 
+```
+
 ## Build
 
 To build for production, execute the following script to build reXscript.
