@@ -186,7 +186,7 @@ namespace rex {
                 env->globalCxt->members[pkgDirPath] = moduleCxt;
                 moduleCxt->members[L"__path__"] = managePtr(
                         value{pkgDirPath + L"/packageLoader.rex", rex::stringMethods::getMethodsCxt()});
-                moduleCxt->members[L"rexPackage"] = managePtr(value{pkgDirPath, rex::stringMethods::getMethodsCxt()});
+                moduleCxt->members[L"rexPkgRoot"] = managePtr(value{pkgDirPath, rex::stringMethods::getMethodsCxt()});
 
                 rex::managedPtr<rex::interpreter> interpreter = managePtr(rex::interpreter{env, moduleCxt});
 
@@ -213,6 +213,20 @@ namespace rex {
                         interpreter::makeErr(L"importError", L"Cannot open file: file not exist or damaged"));
             }
         }
+    }
+
+    managedPtr <value>
+    importEx(const managedPtr <environment> &env, const vstr &modPath, const value::cxtObject &defaultContext) {
+        std::filesystem::path p(wstring2string(modPath));
+        if (p.has_extension()) {
+            if (string2wstring(p.extension()) == L".rex") {
+                return rex::importExternModule(env, modPath, defaultContext);
+            } else if (string2wstring(p.extension()) == L"." + getDylibSuffix()) {
+                return rex::importNativeModule(env, modPath, defaultContext);
+            }
+        }
+
+        return importExternPackage(env, modPath);
     }
 
 }

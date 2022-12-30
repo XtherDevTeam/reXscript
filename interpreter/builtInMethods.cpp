@@ -366,7 +366,7 @@ namespace rex {
             args[0] = args[0].getRef();
 
         value::cxtObject defCxt;
-        if (auto it = in->moduleCxt->members.find(L"rexPackage"); it != in->moduleCxt->members.end()) {
+        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
             defCxt.insert(*it);
         }
 
@@ -379,7 +379,7 @@ namespace rex {
             args[0] = args[0].getRef();
 
         value::cxtObject defCxt;
-        if (auto it = in->moduleCxt->members.find(L"rexPackage"); it != in->moduleCxt->members.end()) {
+        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
             defCxt.insert(*it);
         }
 
@@ -400,20 +400,11 @@ namespace rex {
             args[0] = args[0].getRef();
 
         value::cxtObject defCxt;
-        if (auto it = in->moduleCxt->members.find(L"rexPackage"); it != in->moduleCxt->members.end()) {
+        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
             defCxt.insert(*it);
         }
 
-        std::filesystem::path p(wstring2string(args[0].getStr()));
-        if (p.has_extension()) {
-            if (string2wstring(p.extension()) == L".rex") {
-                return rex::importExternModule(in->env, args[0].getStr(), defCxt);
-            } else if (string2wstring(p.extension()) == L"." + getDylibSuffix()) {
-                return rex::importNativeModule(in->env, args[0].getStr(), defCxt);
-            }
-        }
-
-        return importExternPackage(in->env, args[0].getStr());
+        return importEx(in->env, args[0].getStr(), defCxt);
     }
 
     nativeFn(globalMethods::format, interpreter, args, passThisPtr) {

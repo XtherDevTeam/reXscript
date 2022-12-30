@@ -5,17 +5,13 @@ Yet another programming language.
 ## Usage
 
 ```bash
-Usage: rex [--help] [--version] [--shell] [--args VAR...] [--generate-ffi] file
+Usage: rex [--help] [-m module] [file] args
 
-Positional arguments:
-  file          	specify the file to be executed [default: ""]
-
-Optional arguments:
-  -h, --help    	shows help message and exits 
-  -v, --version 	prints version information and exits 
-  --shell       	open interactive shell 
-  --args        	specify the arguments to pass to the reXscript program [nargs=1..1145141919] 
-  --generate-ffi	specify the FFI config file 
+Optional arguments: 
+  -m                execute the specify module 
+  --generate-ffi	specify the FFI config file
+  file          	specify the file to be executed
+  args              the arguments pass to reXscript as `rexArgs`
 ```
 
 ## Build
@@ -54,14 +50,3 @@ include(${REX_SRC_DIR}/rex.cmake)
 # add ${REX_SRC} to your target
 # e.g. add_executable(rex exec/main.cpp ${REX_SRC})
 ```
-
-## Third-party projects
-
-We used some third-party opensource projects in reXscript's developing.
-
-Here is a list of them.
-
-Format: `[projectName (author) (license)](link) purpose`
-
-- [argparse (p-ranav) (MIT License)](https://github.com/p-ranav/argparse) for arguments parsing
-  for charset conversation between std::string and std::wstring 
