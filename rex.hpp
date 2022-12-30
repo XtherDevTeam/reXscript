@@ -25,7 +25,8 @@ namespace rex {
      * @param path The path to the module file to import
      * @return A pointer to the module context object
      */
-    managedPtr<value> importExternModule(const managedPtr<environment> &env, const vstr &path);
+    managedPtr <value>
+    importExternModule(const managedPtr <environment> &env, const vstr &path, const value::cxtObject &defaultContext);
 
     /**
      * @brief Import a native module
@@ -33,7 +34,8 @@ namespace rex {
      * @param path The path to the native module file to import
      * @return A pointer to the module context object
      */
-    managedPtr<value> importNativeModule(const managedPtr<environment> &env, const vstr &path);
+    managedPtr <value>
+    importNativeModule(const managedPtr <environment> &env, const vstr &path, const value::cxtObject &defaultContext);
 
     /**
      * @brief Import an external reXscript package
@@ -49,7 +51,8 @@ namespace rex {
      * @param path The path to the module file to import
      * @return A pointer to the module context object
      */
-    managedPtr<value> importExternModuleEx(const managedPtr<environment> &env, const vstr &fullPath);
+    managedPtr <value>
+    importExternModuleEx(const managedPtr <environment> &env, const vstr &fullPath, const value::cxtObject defaultContext);
 
     /**
      * @brief Import a native module without importPathPrefix
@@ -57,7 +60,8 @@ namespace rex {
      * @param path The path to the native module file to import
      * @return A pointer to the module context object
      */
-    managedPtr<value> importNativeModuleEx(const managedPtr<environment> &env, const vstr &fullPath);
+    managedPtr <value> importNativeModuleEx(const managedPtr <environment> &env, const vstr &fullPath,
+                                            const value::cxtObject &defaultContext);
 
     /**
      * @brief Import an external package without importPathPrefix

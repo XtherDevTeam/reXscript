@@ -37,7 +37,7 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
 }
 
 void loadFile(rex::managedPtr<rex::environment> &env, const rex::vstr &path) {
-    auto moduleCxt = rex::importExternModule(env, path);
+    auto moduleCxt = rex::importExternModule(env, path, <#initializer#>);
 }
 
 void ffiGenerator(const rex::vstr &path) {

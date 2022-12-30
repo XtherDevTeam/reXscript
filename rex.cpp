@@ -26,7 +26,8 @@ namespace rex {
         return env;
     }
 
-    managedPtr<value> importExternModule(const managedPtr<environment> &env, const vstr &path) {
+    managedPtr <value>
+    importExternModule(const managedPtr <environment> &env, const vstr &path, const value::cxtObject &defaultContext) {
         // 获取 importPrefixPath 向量
         if (auto it = env->globalCxt->members.find(L"importPrefixPath"); it == env->globalCxt->members.end()) {
             throw signalException(interpreter::makeErr(L"referenceError", L"importPrefixPath not found"));
@@ -41,7 +42,7 @@ namespace rex {
                 fullPath = path::getRealpath(fullPath);
 
                 try {
-                    return importExternModuleEx(env, fullPath);
+                    return importExternModuleEx(env, fullPath, defaultContext);
                 } catch (rex::signalException &e) {
                     if (e.get().members[L"errName"]->getStr() == L"importError")
                         continue;
@@ -53,7 +54,8 @@ namespace rex {
         }
     }
 
-    managedPtr<value> importNativeModule(const managedPtr<environment> &env, const vstr &path) {
+    managedPtr <value>
+    importNativeModule(const managedPtr <environment> &env, const vstr &path, const value::cxtObject &defaultContext) {
         // Thanks for AI's help
         // 获取 importPrefixPath 向量
         if (auto it = env->globalCxt->members.find(L"importPrefixPath"); it == env->globalCxt->members.end()) {
@@ -69,7 +71,7 @@ namespace rex {
                 fullPath = path::getRealpath(fullPath);
 
                 try {
-                    return importNativeModuleEx(env, fullPath);
+                    return importNativeModuleEx(env, fullPath, defaultContext);
                 } catch (rex::signalException &e) {
                     if (e.get().members[L"errName"]->getStr() == L"importError")
                         continue;
@@ -109,13 +111,14 @@ namespace rex {
         }
     }
 
-    managedPtr<value> importExternModuleEx(const managedPtr<environment> &env, const vstr &fullPath) {
+    managedPtr <value>
+    importExternModuleEx(const managedPtr <environment> &env, const vstr &fullPath, const value::cxtObject defaultContext) {
         if (auto it = env->globalCxt->members.find(fullPath); it != env->globalCxt->members.end()) {
             return it->second;
         } else {
             std::ifstream f(wstring2string(fullPath), std::ios::in);
             if (f.is_open()) {
-                auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
+                auto moduleCxt = rex::managePtr(rex::value{defaultContext});
                 env->globalCxt->members[fullPath] = moduleCxt;
                 moduleCxt->members[L"__path__"] = managePtr(
                         value{fullPath, rex::stringMethods::getMethodsCxt()});
@@ -147,7 +150,8 @@ namespace rex {
         }
     }
 
-    managedPtr<value> importNativeModuleEx(const managedPtr<environment> &env, const vstr &fullPath) {
+    managedPtr <value> importNativeModuleEx(const managedPtr <environment> &env, const vstr &fullPath,
+                                            const value::cxtObject &defaultContext) {
         if (auto it = env->globalCxt->members.find(fullPath); it != env->globalCxt->members.end()) {
             return it->second;
         } else {
@@ -156,7 +160,7 @@ namespace rex {
                 throw signalException(
                         interpreter::makeErr(L"importError", L"Cannot open file: file not exist or damaged"));
 
-            rex::managedPtr<rex::value> moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
+            rex::managedPtr<rex::value> moduleCxt = rex::managePtr(rex::value{defaultContext});
             env->globalCxt->members[fullPath] = moduleCxt;
             moduleCxt->members[L"__path__"] = managePtr(
                     value{fullPath, rex::stringMethods::getMethodsCxt()});
@@ -182,9 +186,10 @@ namespace rex {
                 env->globalCxt->members[pkgDirPath] = moduleCxt;
                 moduleCxt->members[L"__path__"] = managePtr(
                         value{pkgDirPath + L"/packageLoader.rex", rex::stringMethods::getMethodsCxt()});
-                moduleCxt->members[L"rexPackage"] = managePtr(
-                        value{pkgDirPath, rex::stringMethods::getMethodsCxt()});
+                moduleCxt->members[L"rexPackage"] = managePtr(value{pkgDirPath, rex::stringMethods::getMethodsCxt()});
+
                 rex::managedPtr<rex::interpreter> interpreter = managePtr(rex::interpreter{env, moduleCxt});
+
                 interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{(rex::vint) 0});
 
                 f.seekg(0, std::ios::end);
