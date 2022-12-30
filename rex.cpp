@@ -207,6 +207,9 @@ namespace rex {
                     interpreter->interpret(i);
                 }
 
+                if (auto vit = moduleCxt->members.find(L"rexModInit"); vit != moduleCxt->members.end()) {
+                    interpreter->invokeFunc(vit->second, {}, {});
+                }
                 return moduleCxt;
             } else {
                 throw signalException(
