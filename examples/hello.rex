@@ -146,21 +146,25 @@ let socket_test = func() {
 };
 
 let hash_test = func() {
-    print("114514 -> ", hash(114514), "\n");
-    print("true -> ", hash(true), "\n");
-    print("WDNMD -> ", hash("WDNMD"), "\n");
-    print("114.514 -> ", hash(114.514), "\n");
     let mapping = hashMap();
     mapping.insert("Nihao", 114514);
     mapping.insert(true, "Root Cui AK IOI");
+    print("Mapping view: \n");
     forEach (i in mapping) {
+        // 0 is the hashed value, 1 is the key, 2 is the value
         print(i[0], " ", i[1], " ", i[2], "\n");
+    }
+    print("rexIndex() Test: ", mapping[true], " ", mapping["Nihao"], "\n");
+    print("remove() Test: \n");
+    mapping.remove(true);
+    forEach (i in mapping.keys()) {
+        print(i, "\n");
     }
     return 0;
 };
 
 let linked_list_test = func() {
-    let list = linkedListMethods(1, 2, 2, 3, 3, 3, 4, 4, 4, 4);
+    let list = linkedList(1, 2, 2, 3, 3, 3, 4, 4, 4, 4);
     print("Origin: ", list, "\n");
     list.remove(2);
     list.removeAll(3);

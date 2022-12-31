@@ -714,7 +714,7 @@ namespace rex {
     value::cxtObject linkedListMethods::iterator::getMethodsCxt(value::linkedListObject &container) {
         value::cxtObject result;
         result[L"container"] = managePtr(value{container, linkedListMethods::getMethodsCxt()});
-        result[L"cur"] = managePtr(value{container.begin()});
+        result[L"cur"] = managePtr(value{result[L"container"]->getLinkedList().begin()});
         result[L"next"] = managePtr(value{(value::nativeFuncPtr) next});
         return result;
     }
@@ -771,9 +771,10 @@ namespace rex {
         auto hashedKey = (vsize) (globalMethods::hash(interpreter, {k}, {}).basicValue.unknown);
         passThisPtr->members[L"kvPairs"]->getLinkedList().emplace_back(managePtr(value{value::vecObject{
                 managePtr(value{(unknownPtr) hashedKey}), managePtr(k), managePtr(v)}, vecMethods::getMethodsCxt()}));
-        auto kvPair = passThisPtr->members[L"kvPairs"]->getLinkedList().end()--;
+        auto kvPair = passThisPtr->members[L"kvPairs"]->getLinkedList().end();
+        kvPair--;
         auto &bucket = passThisPtr->members[L"hashT"]->getVec()[hashedKey % hashTSize];
-        if (bucket->kind == value::vKind::vNull) {
+        if (!bucket) {
             bucket = managePtr(value{value::linkedListObject{}, linkedListMethods::getMethodsCxt()});
         }
         bucket->getLinkedList().push_back(managePtr(value{kvPair}));
@@ -788,7 +789,7 @@ namespace rex {
             auto &bucket = (**passThisPtr->members[L"hashT"]->linkedListIterObj)->getVec()[
                     (vsize) (kvPair->getVec()[0]->basicValue.unknown) %
                     newSize];
-            if (bucket->kind == value::vKind::vNull) {
+            if (!bucket) {
                 bucket = managePtr(value{value::linkedListObject{}, linkedListMethods::getMethodsCxt()});
             }
 
@@ -806,8 +807,8 @@ namespace rex {
         for (auto it = bucket->getLinkedList().begin(); it != bucket->getLinkedList().end(); ++it) {
             auto &kvPair = **(*it)->linkedListIterObj;
             if (in->opEqual(*kvPair->getVec()[1], key).getBool()) {
-                bucket->getLinkedList().erase(it);
                 passThisPtr->members[L"kvPairs"]->getLinkedList().erase(*(*it)->linkedListIterObj);
+                bucket->getLinkedList().erase(it);
                 break;
             }
         }
@@ -830,13 +831,13 @@ namespace rex {
     }
 
     nativeFn(hashMapMethods::rexIter, interpreter, args, passThisPtr) {
-        return {iterator::getMethodsCxt(passThisPtr->getLinkedList())};
+        return {iterator::getMethodsCxt(passThisPtr->members[L"kvPairs"]->getLinkedList())};
     }
 
     value::cxtObject hashMapMethods::iterator::getMethodsCxt(value::linkedListObject &container) {
         value::cxtObject result;
         result[L"container"] = managePtr(value{container, linkedListMethods::getMethodsCxt()});
-        result[L"cur"] = managePtr(value{container.begin()});
+        result[L"cur"] = managePtr(value{result[L"container"]->getLinkedList().begin()});
         result[L"next"] = managePtr(value{(value::nativeFuncPtr) next});
         return result;
     }
@@ -855,13 +856,17 @@ namespace rex {
     }
 
     nativeFn(hashMapMethods::keys, interpreter, args, passThisPtr) {
-        return {iterator::getMethodsCxt(passThisPtr->getLinkedList())};
+        value::vecObject vec;
+        for (auto &i: passThisPtr->members[L"kvPairs"]->getLinkedList()) {
+            vec.push_back(i->getVec()[1]);
+        }
+        return {vec, vecMethods::getMethodsCxt()};
     }
 
     value::cxtObject hashMapMethods::keysIterator::getMethodsCxt(value::linkedListObject &container) {
         value::cxtObject result;
         result[L"container"] = managePtr(value{container, linkedListMethods::getMethodsCxt()});
-        result[L"cur"] = managePtr(value{container.begin()});
+        result[L"cur"] = managePtr(value{result[L"container"]->getLinkedList().begin()});
         result[L"next"] = managePtr(value{(value::nativeFuncPtr) next});
         return result;
     }

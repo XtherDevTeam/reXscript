@@ -10,7 +10,7 @@
 以及一些方法: 
 
 - `insert(k, v)` 会插入一对键值到 `hashMap`。
-- `erase(k)` 会删除键为 `k` 的键值。
+- `remove(k)` 会删除键为 `k` 的键值。
 - `rexIndex(k)` 会返回键为 `k` 的 `value` 的引用。
 - `keys()` 会返回一个包含了 `rexIter` 方法的数据结构，用于遍历整个 `hashMap` 结构的键。
 - `rexIter()` 会返回一个用于遍历 `hashMap` 中 `kvPairs` 的迭代器。
