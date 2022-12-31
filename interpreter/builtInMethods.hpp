@@ -100,13 +100,13 @@ namespace rex {
         value::cxtObject getMethodsCxt();
     }
 
-    namespace linkedList {
+    namespace linkedListMethods {
         namespace iterator {
             using iteratorT = value::linkedListObject::iterator;
 
             nativeFn(next, interpreter, args, passThisPtr);
 
-            value::cxtObject getMethodsCxt(const value::linkedListObject &container);
+            value::cxtObject getMethodsCxt(value::linkedListObject &container);
         }
 
         nativeFn(append, interpreter, args, passThisPtr);
@@ -122,7 +122,7 @@ namespace rex {
         nativeFn(rexIter, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
-    };
+    }
 
     namespace globalMethods {
         namespace charsetsMethods {
@@ -153,6 +153,8 @@ namespace rex {
 
         nativeFn(linkedList, interpreter, args, passThisPtr);
 
+        nativeFn(hashMap, interpreter, args, passThisPtr);
+
         value::cxtObject getMethodsCxt();
     }
 
@@ -166,6 +168,34 @@ namespace rex {
         value::cxtObject getMethodsCxt();
 
         value getThreadingModule();
+    }
+
+    namespace hashMapMethods {
+        namespace iterator {
+            nativeFn(next, interpreter, args, passThisPtr);
+
+            value::cxtObject getMethodsCxt(value::linkedListObject &container);
+        }
+
+        namespace keysIterator {
+            nativeFn(next, interpreter, args, passThisPtr);
+
+            value::cxtObject getMethodsCxt(value::linkedListObject &container);
+        }
+
+        nativeFn(insert, interpreter, args, passThisPtr);
+
+        nativeFn(realloc, interpreter, args, passThisPtr);
+
+        nativeFn(remove, interpreter, args, passThisPtr);
+
+        nativeFn(rexIndex, interpreter, args, passThisPtr);
+
+        nativeFn(keys, interpreter, args, passThisPtr);
+
+        nativeFn(rexIter, interpreter, args, passThisPtr);
+
+        value::cxtObject getMethodsCxt(vint defaultHashTSize = 256);
     }
 }
 

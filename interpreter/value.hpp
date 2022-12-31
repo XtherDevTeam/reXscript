@@ -50,6 +50,7 @@ namespace rex {
             vNativeFuncPtr,
             vRef,
             vLinkedList,
+            vLinkedListIter,
         } kind;
 
         union vValue {
@@ -78,6 +79,7 @@ namespace rex {
         managedPtr<lambdaObject> lambdaObj;
         managedPtr<nativeFuncPtr> nativeFuncObj;
         managedPtr<linkedListObject> linkedListObj;
+        managedPtr<linkedListObject::iterator> linkedListIterObj;
 
         // members
         cxtObject members;
@@ -118,6 +120,8 @@ namespace rex {
         value(const vecObject &v, cxtObject members);
 
         value(const linkedListObject &v, cxtObject members);
+
+        value(const linkedListObject::iterator &v);
 
         value(cxtObject members);
 

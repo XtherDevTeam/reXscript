@@ -32,3 +32,10 @@
 - 重分配
 
 在 `kvPairs.length() > 2 * hashT.length()` 的时候，`hashMap` 会自动重分配 `hashT`，调整容量为 `kvPairs.length()`，重新对所有键的 `hash` 进行取模，然后放入新的单元格。
+
+### 特殊情况的处理
+
+- 懒分配
+
+一般情况下，分配 `hashT` 的时候并不会立即初始化所有的桶为链表，在执行插入操作的时候，当发现指定 `bucket` 没有被分配时，会自动初始化该 `bucket` 为 `linkedList` 并插入键值对到指定 `linkedList` 中。
+

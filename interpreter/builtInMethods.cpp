@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "performance-unnecessary-value-param"
 //
 // Created by XIaokang00010 on 2022/12/3.
 //
@@ -319,6 +321,7 @@ namespace rex {
         result[L"format"] = managePtr(value{(value::nativeFuncPtr) format});
         result[L"hash"] = managePtr(value{(value::nativeFuncPtr) hash});
         result[L"linkedList"] = managePtr(value{(value::nativeFuncPtr) linkedList});
+        result[L"hashMap"] = managePtr(value{(value::nativeFuncPtr) hashMap});
 
         result[L"threading"] = managePtr(threadingMethods::getThreadingModule());
         result[L"importPrefixPath"] = managePtr(value{value::vecObject{
@@ -656,7 +659,7 @@ namespace rex {
         return {res};
     }
 
-    value::cxtObject linkedList::getMethodsCxt() {
+    value::cxtObject linkedListMethods::getMethodsCxt() {
         value::cxtObject result;
         result[L"append"] = managePtr(value{(value::nativeFuncPtr) append});
         result[L"pop"] = managePtr(value{(value::nativeFuncPtr) pop});
@@ -666,17 +669,17 @@ namespace rex {
         return result;
     }
 
-    nativeFn(linkedList::append, interpreter, args, passThisPtr) {
+    nativeFn(linkedListMethods::append, interpreter, args, passThisPtr) {
         passThisPtr->getLinkedList().push_back(args[0].isRef() ? args[0].refObj : managePtr(args[0]));
         return {};
     }
 
-    nativeFn(linkedList::pop, interpreter, args, passThisPtr) {
+    nativeFn(linkedListMethods::pop, interpreter, args, passThisPtr) {
         passThisPtr->getLinkedList().pop_back();
         return {};
     }
 
-    nativeFn(linkedList::remove, interpreter, args, passThisPtr) {
+    nativeFn(linkedListMethods::remove, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
         value lhs = args[0].isRef() ? args[0].getRef() : args[0];
         for (auto it = passThisPtr->getLinkedList().begin(); it != passThisPtr->getLinkedList().end();) {
@@ -691,7 +694,7 @@ namespace rex {
         return passThisPtr;
     }
 
-    nativeFn(linkedList::removeAll, interpreter, args, passThisPtr) {
+    nativeFn(linkedListMethods::removeAll, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
         value lhs = args[0].isRef() ? args[0].getRef() : args[0];
         for (auto it = passThisPtr->getLinkedList().begin(); it != passThisPtr->getLinkedList().end();) {
@@ -704,24 +707,23 @@ namespace rex {
         return passThisPtr;
     }
 
-    nativeFn(linkedList::rexIter, interpreter, args, passThisPtr) {
+    nativeFn(linkedListMethods::rexIter, interpreter, args, passThisPtr) {
         return {iterator::getMethodsCxt(passThisPtr->getLinkedList())};
     }
 
-    value::cxtObject linkedList::iterator::getMethodsCxt(const value::linkedListObject &container) {
+    value::cxtObject linkedListMethods::iterator::getMethodsCxt(value::linkedListObject &container) {
         value::cxtObject result;
-        result[L"container"] = managePtr(value{container, linkedList::getMethodsCxt()});
-        result[L"cur"] = managePtr(value{(unknownPtr) new iteratorT(result[L"container"]->getLinkedList().begin())});
+        result[L"container"] = managePtr(value{container, linkedListMethods::getMethodsCxt()});
+        result[L"cur"] = managePtr(value{container.begin()});
         result[L"next"] = managePtr(value{(value::nativeFuncPtr) next});
         return result;
     }
 
-    nativeFn(linkedList::iterator::next, interpreter, args, passThisPtr) {
+    nativeFn(linkedListMethods::iterator::next, interpreter, args, passThisPtr) {
         auto &container = passThisPtr->members[L"container"]->getLinkedList();
-        auto &iter = (unsafePtr<iteratorT> &) passThisPtr->members[L"cur"]->basicValue.unknown;
+        auto &iter = passThisPtr->members[L"cur"]->linkedListIterObj;
         auto &element = **iter;
         if (*iter == container.end()) {
-            delete iter;
             throw signalBreak();
         }
         (*iter)++;
@@ -730,7 +732,7 @@ namespace rex {
     }
 
     nativeFn(globalMethods::linkedList, interpreter, args, passThisPtr) {
-        value result{value::linkedListObject{}, linkedList::getMethodsCxt()};
+        value result{value::linkedListObject{}, linkedListMethods::getMethodsCxt()};
         if (args.size() == 1) {
             for (auto &i: args[0].getVec()) {
                 result.getLinkedList().push_back(i);
@@ -742,4 +744,143 @@ namespace rex {
         }
         return result;
     }
+
+    value::cxtObject hashMapMethods::getMethodsCxt(vint defaultHashTSize) {
+        value::cxtObject result{};
+        // Methods
+        result[L"insert"] = managePtr(value{value::nativeFuncPtr{insert}});
+        result[L"realloc"] = managePtr(value{value::nativeFuncPtr{realloc}});
+        result[L"remove"] = managePtr(value{value::nativeFuncPtr{remove}});
+        result[L"rexIndex"] = managePtr(value{value::nativeFuncPtr{rexIndex}});
+        result[L"keys"] = managePtr(value{value::nativeFuncPtr{keys}});
+        result[L"rexIter"] = managePtr(value{value::nativeFuncPtr{rexIter}});
+        // Members
+        result[L"kvPairs"] = managePtr(value{value::linkedListObject{}, linkedListMethods::getMethodsCxt()});
+        result[L"hashT"] = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
+        result[L"hashT"]->getVec().resize(defaultHashTSize);
+        return result;
+    }
+
+    nativeFn(hashMapMethods::insert, interpreter, args, passThisPtr) {
+        auto hashTSize = passThisPtr->members[L"hashT"]->getVec().size();
+        if (passThisPtr->members[L"kvPairs"]->getLinkedList().size() + 1 >= 2 * hashTSize) {
+            realloc(interpreter, {(vint) (2 * hashTSize)}, passThisPtr);
+        }
+        auto &k = args[0].isRef() ? args[0].getRef() : args[0];
+        auto &v = args[1].isRef() ? args[1].getRef() : args[1];
+        auto hashedKey = (vsize) (globalMethods::hash(interpreter, {k}, {}).basicValue.unknown);
+        passThisPtr->members[L"kvPairs"]->getLinkedList().emplace_back(managePtr(value{value::vecObject{
+                managePtr(value{(unknownPtr) hashedKey}), managePtr(k), managePtr(v)}, vecMethods::getMethodsCxt()}));
+        auto kvPair = passThisPtr->members[L"kvPairs"]->getLinkedList().end()--;
+        auto &bucket = passThisPtr->members[L"hashT"]->getVec()[hashedKey % hashTSize];
+        if (bucket->kind == value::vKind::vNull) {
+            bucket = managePtr(value{value::linkedListObject{}, linkedListMethods::getMethodsCxt()});
+        }
+        bucket->getLinkedList().push_back(managePtr(value{kvPair}));
+        return passThisPtr;
+    }
+
+    nativeFn(hashMapMethods::realloc, interpreter, args, passThisPtr) {
+        auto &newSize = args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt();
+        passThisPtr->members[L"hashT"]->getVec().clear();
+        passThisPtr->members[L"hashT"]->getVec().resize(newSize);
+        for (auto &kvPair: passThisPtr->members[L"kvPairs"]->getLinkedList()) {
+            auto &bucket = (**passThisPtr->members[L"hashT"]->linkedListIterObj)->getVec()[
+                    (vsize) (kvPair->getVec()[0]->basicValue.unknown) %
+                    newSize];
+            if (bucket->kind == value::vKind::vNull) {
+                bucket = managePtr(value{value::linkedListObject{}, linkedListMethods::getMethodsCxt()});
+            }
+
+            bucket->getLinkedList().push_back(managePtr(value{kvPair}));
+        }
+        return passThisPtr;
+    }
+
+    nativeFn(hashMapMethods::remove, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        auto &key = args[0].isRef() ? args[0].getRef() : args[0];
+        auto hashedKey = (vsize) (globalMethods::hash(interpreter, {key}, {}).basicValue.unknown);
+        auto &bucket = passThisPtr->members[L"hashT"]->getVec()[
+                hashedKey % passThisPtr->members[L"hashT"]->getVec().size()];
+        for (auto it = bucket->getLinkedList().begin(); it != bucket->getLinkedList().end(); ++it) {
+            auto &kvPair = **(*it)->linkedListIterObj;
+            if (in->opEqual(*kvPair->getVec()[1], key).getBool()) {
+                bucket->getLinkedList().erase(it);
+                passThisPtr->members[L"kvPairs"]->getLinkedList().erase(*(*it)->linkedListIterObj);
+                break;
+            }
+        }
+        return passThisPtr;
+    }
+
+    nativeFn(hashMapMethods::rexIndex, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        auto &key = args[0].isRef() ? args[0].getRef() : args[0];
+        auto hashedKey = (vsize) (globalMethods::hash(interpreter, {key}, {}).basicValue.unknown);
+        auto &bucket = passThisPtr->members[L"hashT"]->getVec()[
+                hashedKey % passThisPtr->members[L"hashT"]->getVec().size()];
+        for (auto it = bucket->getLinkedList().begin(); it != bucket->getLinkedList().end(); ++it) {
+            auto &kvPair = **(*it)->linkedListIterObj;
+            if (in->opEqual(*kvPair->getVec()[1], key).getBool()) {
+                return kvPair->getVec()[2];
+            }
+        }
+        throw signalException(interpreter::makeErr(L"mappingError", L"undefined key: " + vstr{key}));
+    }
+
+    nativeFn(hashMapMethods::rexIter, interpreter, args, passThisPtr) {
+        return {iterator::getMethodsCxt(passThisPtr->getLinkedList())};
+    }
+
+    value::cxtObject hashMapMethods::iterator::getMethodsCxt(value::linkedListObject &container) {
+        value::cxtObject result;
+        result[L"container"] = managePtr(value{container, linkedListMethods::getMethodsCxt()});
+        result[L"cur"] = managePtr(value{container.begin()});
+        result[L"next"] = managePtr(value{(value::nativeFuncPtr) next});
+        return result;
+    }
+
+    // iterate over all kvPairs
+    nativeFn(hashMapMethods::iterator::next, interpreter, args, passThisPtr) {
+        auto &container = passThisPtr->members[L"container"]->getLinkedList();
+        auto &iter = passThisPtr->members[L"cur"]->linkedListIterObj;
+        auto &element = **iter;
+        if (*iter == container.end()) {
+            throw signalBreak();
+        }
+        (*iter)++;
+
+        return element->isRef() ? element->refObj : *element;
+    }
+
+    nativeFn(hashMapMethods::keys, interpreter, args, passThisPtr) {
+        return {iterator::getMethodsCxt(passThisPtr->getLinkedList())};
+    }
+
+    value::cxtObject hashMapMethods::keysIterator::getMethodsCxt(value::linkedListObject &container) {
+        value::cxtObject result;
+        result[L"container"] = managePtr(value{container, linkedListMethods::getMethodsCxt()});
+        result[L"cur"] = managePtr(value{container.begin()});
+        result[L"next"] = managePtr(value{(value::nativeFuncPtr) next});
+        return result;
+    }
+
+    // iterate over all kvPairs and get the keys
+    nativeFn(hashMapMethods::keysIterator::next, interpreter, args, passThisPtr) {
+        auto &container = passThisPtr->members[L"container"]->getLinkedList();
+        auto &iter = passThisPtr->members[L"cur"]->linkedListIterObj;
+        auto &element = **iter;
+        if (*iter == container.end()) {
+            throw signalBreak();
+        }
+        (*iter)++;
+
+        return *element->getVec()[1];
+    }
+
+    nativeFn(globalMethods::hashMap, interpreter, args, passThisPtr) {
+        return {hashMapMethods::getMethodsCxt()};
+    }
 }
+#pragma clang diagnostic pop

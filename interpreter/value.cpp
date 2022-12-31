@@ -43,6 +43,10 @@ namespace rex {
             case vKind::vNativeFuncPtr:
             case vKind::vRef:
                 break;
+            case vKind::vLinkedListIter: {
+                dest.linkedListIterObj = managePtr(*linkedListIterObj);
+                break;
+            }
             case vKind::vBytes: {
                 dest.bytesObj = managePtr(*bytesObj);
                 break;
@@ -208,7 +212,7 @@ namespace rex {
             }
             case vKind::vVec: {
                 ss << L"[";
-                for (auto &i : getVec()) {
+                for (auto &i: getVec()) {
                     ss << (vstr) {*i} << L",";
                 }
                 if (!getVec().empty())
@@ -218,7 +222,7 @@ namespace rex {
             }
             case vKind::vLinkedList: {
                 ss << L"[";
-                for (auto &i : getLinkedList()) {
+                for (auto &i: getLinkedList()) {
                     ss << (vstr) {*i} << L",";
                 }
                 if (!getLinkedList().empty())
@@ -244,6 +248,9 @@ namespace rex {
             case vKind::vNativeFuncPtr:
                 ss << L"<nativeFn addr=" << &nativeFuncObj << ">";
                 break;
+            case vKind::vLinkedListIter:
+                ss << L"<linkedListIter addr=" << &linkedListIterObj << ">";
+                break;
             case vKind::vRef:
                 ss << (vstr) {getRef()};
                 break;
@@ -258,7 +265,8 @@ namespace rex {
 
     }
 
-    value::value(const vbytes &v, value::cxtObject members) : kind(vKind::vBytes), bytesObj(managePtr(v)), members(std::move(members)) {
+    value::value(const vbytes &v, value::cxtObject members) : kind(vKind::vBytes), bytesObj(managePtr(v)),
+                                                              members(std::move(members)) {
 
     }
 
@@ -276,7 +284,9 @@ namespace rex {
             throw rexException(L"NullPointerException: linkedListObj == nullptr");
     }
 
-    value::value(const value::linkedListObject &v, value::cxtObject members) : kind(vKind::vLinkedList), linkedListObj(managePtr(v)), members(std::move(members)) {
+    value::value(const value::linkedListObject &v, value::cxtObject members) : kind(vKind::vLinkedList),
+                                                                               linkedListObj(managePtr(v)),
+                                                                               members(std::move(members)) {
 
     }
 
@@ -299,4 +309,6 @@ namespace rex {
     value::vValue::vValue(unknownPtr unknown) : unknown(unknown) {
 
     }
+
+    value::value(const linkedListObject::iterator &v) : kind(vKind::vLinkedListIter), linkedListIterObj(managePtr(v)) {}
 } // rex
