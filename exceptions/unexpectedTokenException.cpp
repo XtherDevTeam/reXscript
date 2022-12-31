@@ -8,5 +8,5 @@
 
 namespace rex {
     unexpectedTokenException::unexpectedTokenException(vsize line, vsize col, vchar ch) : rexException(
-            buildErrorMessage(line, col, vstr(L"Unexpected token: ") + ch)) {}
+            buildErrorMessage(line, col, vstr(L"Unexpected token: ") + std::to_wstring(ch))) {}
 } // rex

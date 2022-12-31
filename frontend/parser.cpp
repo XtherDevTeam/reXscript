@@ -550,27 +550,27 @@ namespace rex {
         AST base = {AST::treeKind::blockStmt, (vec<AST>) {}};
         AST stmt = parseStmts();
         while (stmt) {
-            switch (stmt.kind) {
-                case AST::treeKind::ifStmt:
-                case AST::treeKind::ifElseStmt:
-                case AST::treeKind::whileStmt:
-                case AST::treeKind::forStmt:
-                case AST::treeKind::rangeBasedForStmt:
-                case AST::treeKind::blockStmt:
-                    break;
-                default: {
-                    if (lex.curToken.kind != lexer::token::tokenKind::semicolon) {
+            if (lex.curToken.kind != lexer::token::tokenKind::semicolon) {
+                switch (stmt.kind) {
+                    case AST::treeKind::ifStmt:
+                    case AST::treeKind::ifElseStmt:
+                    case AST::treeKind::whileStmt:
+                    case AST::treeKind::forStmt:
+                    case AST::treeKind::rangeBasedForStmt:
+                    case AST::treeKind::blockStmt:
+                        break;
+                    default: {
                         throw parserException(lex.line, lex.col, L"expected `;` after statements");
                     }
-                    lex.scan();
-                    break;
                 }
+            } else {
+                lex.scan();
             }
             base.child.push_back(stmt);
             stmt = parseStmts();
         }
         if (lex.curToken.kind != lexer::token::tokenKind::rightBraces) {
-            return makeNotMatch();
+            throw parserException(lex.line, lex.col, L"expected `}` after statements");
         }
         lex.scan();
         return base;
@@ -729,9 +729,10 @@ namespace rex {
 
         if (lex.curToken.kind != lexer::token::tokenKind::kElse)
             return {AST::treeKind::ifStmt, (vec<AST>) {condition, stmt}};
+        lex.scan();
 
         AST elseStmt = parseStmts();
-        if (!stmt)
+        if (!elseStmt)
             throw parserException(lex.line, lex.col, L"expected statements after `else`");
 
         return {AST::treeKind::ifElseStmt, {condition, stmt, elseStmt}};
@@ -827,21 +828,21 @@ namespace rex {
         AST base = {AST::treeKind::blockStmt, (vec<AST>) {}};
         AST stmt = parseStmts();
         while (stmt) {
-            switch (stmt.kind) {
-                case AST::treeKind::ifStmt:
-                case AST::treeKind::ifElseStmt:
-                case AST::treeKind::whileStmt:
-                case AST::treeKind::forStmt:
-                case AST::treeKind::rangeBasedForStmt:
-                case AST::treeKind::blockStmt:
-                    break;
-                default: {
-                    if (lex.curToken.kind != lexer::token::tokenKind::semicolon) {
+            if (lex.curToken.kind != lexer::token::tokenKind::semicolon) {
+                switch (stmt.kind) {
+                    case AST::treeKind::ifStmt:
+                    case AST::treeKind::ifElseStmt:
+                    case AST::treeKind::whileStmt:
+                    case AST::treeKind::forStmt:
+                    case AST::treeKind::rangeBasedForStmt:
+                    case AST::treeKind::blockStmt:
+                        break;
+                    default: {
                         throw parserException(lex.line, lex.col, L"expected `;` after statements");
                     }
-                    lex.scan();
-                    break;
                 }
+            } else {
+                lex.scan();
             }
             base.child.push_back(stmt);
             stmt = parseStmts();

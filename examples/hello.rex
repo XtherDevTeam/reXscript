@@ -123,6 +123,28 @@ let sqlite_test = func() {
     return 0;
 };
 
+let socket_test = func() {
+    let net = require("../../rexStdlib/dist/libstd.dylib").net;
+    let socket = net.socket();
+    let ip = net.resolve("www.baidu.com");
+    print(ip, "\n");
+    socket.connect(net.resolve("www.baidu.com"), 80);
+    socket.send("GET / HTTP/1.1\r\nHost: www.baidu.com\r\nConnection: close\r\n\r\n".encode("ansi"));
+    let buf = "".encode("ansi");
+    while (true) {
+        let temp = socket.recv(1024);
+        print("RCVD: ", temp.length(), "\n");
+        if (temp.length() > 0) {
+            buf.concat(temp);
+        } else {
+            break;
+        }
+    }
+    print(buf.decode("utf-8"));
+    socket.close();
+    return 0;
+};
+
 let args_test = func() {
     forEach (i in rexArgs) {
         print(*i, "\n");
@@ -143,6 +165,7 @@ let main_test = func() {
     str_test();
     sqlite_test();
     args_test();
+    socket_test();
     return 0;
 };
 

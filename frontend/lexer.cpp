@@ -78,12 +78,14 @@ namespace rex {
             return curToken = leftBracesStart();
         } else if (curCh == L'}') {
             return curToken = rightBracesStart();
-        } else if (curCh == '&') {
+        } else if (curCh == L'&') {
             return curToken = andStart();
-        } else if (curCh == '|') {
+        } else if (curCh == L'|') {
             return curToken = orStart();
-        } else if (curCh == '^') {
+        } else if (curCh == L'^') {
             return curToken = xorStart();
+        } else if (curCh == L'\0') {
+            return curToken = {line, col, token::tokenKind::eof, false};
         } else {
             throw unexpectedTokenException(line, col, curCh);
         }
