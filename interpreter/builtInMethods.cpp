@@ -10,7 +10,6 @@
 #include "exceptions/signalException.hpp"
 #include "share/share.hpp"
 #include "exceptions/signalBreak.hpp"
-#include "exceptions/rexException.hpp"
 
 namespace rex {
     value::cxtObject stringMethods::getMethodsCxt() {
@@ -286,6 +285,29 @@ namespace rex {
         return {};
     }
 
+    nativeFn(globalMethods::hash, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        value &element = args[0].isRef() ? args[0].getRef() : args[0];
+        switch (element.kind) {
+            case value::vKind::vInt:
+                return (unknownPtr) std::hash<vint>()(element.getInt());
+            case value::vKind::vDeci:
+                return (unknownPtr) std::hash<vdeci>()(element.getDeci());
+            case value::vKind::vBool:
+                return (unknownPtr) std::hash<vbool>()(element.getBool());
+            case value::vKind::vStr:
+                return (unknownPtr) std::hash<vstr>()(element.getStr());
+            case value::vKind::vBytes:
+                return (unknownPtr) std::hash<vbytes>()(element.getBytes());
+            default:
+                if (auto it = element.members.find(L"rexHash"); it != element.members.end()) {
+                    return in->invokeFunc(it->second, {}, args[0].isRef() ? args[0].refObj : managePtr(args[0]));
+                } else {
+                    throw signalException(interpreter::makeErr(L"hashError", L"`rexHash` not implemented"));
+                }
+        }
+    }
+
     value::cxtObject globalMethods::getMethodsCxt() {
         value::cxtObject result;
         result[L"input"] = managePtr(value{(value::nativeFuncPtr) input});
@@ -295,6 +317,9 @@ namespace rex {
         result[L"requirePackage"] = managePtr(value{(value::nativeFuncPtr) rexRequirePackage});
         result[L"require"] = managePtr(value{(value::nativeFuncPtr) rexRequire});
         result[L"format"] = managePtr(value{(value::nativeFuncPtr) format});
+        result[L"hash"] = managePtr(value{(value::nativeFuncPtr) hash});
+        result[L"linkedList"] = managePtr(value{(value::nativeFuncPtr) linkedList});
+
         result[L"threading"] = managePtr(threadingMethods::getThreadingModule());
         result[L"importPrefixPath"] = managePtr(value{value::vecObject{
                 managePtr(value{L"", stringMethods::getMethodsCxt()})
@@ -629,5 +654,92 @@ namespace rex {
         auto res = container[index]->isRef() ? container[index]->refObj : container[index];
         index++;
         return {res};
+    }
+
+    value::cxtObject linkedList::getMethodsCxt() {
+        value::cxtObject result;
+        result[L"append"] = managePtr(value{(value::nativeFuncPtr) append});
+        result[L"pop"] = managePtr(value{(value::nativeFuncPtr) pop});
+        result[L"remove"] = managePtr(value{(value::nativeFuncPtr) remove});
+        result[L"removeAll"] = managePtr(value{(value::nativeFuncPtr) removeAll});
+        result[L"rexIter"] = managePtr(value{(value::nativeFuncPtr) rexIter});
+        return result;
+    }
+
+    nativeFn(linkedList::append, interpreter, args, passThisPtr) {
+        passThisPtr->getLinkedList().push_back(args[0].isRef() ? args[0].refObj : managePtr(args[0]));
+        return {};
+    }
+
+    nativeFn(linkedList::pop, interpreter, args, passThisPtr) {
+        passThisPtr->getLinkedList().pop_back();
+        return {};
+    }
+
+    nativeFn(linkedList::remove, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        value lhs = args[0].isRef() ? args[0].getRef() : args[0];
+        for (auto it = passThisPtr->getLinkedList().begin(); it != passThisPtr->getLinkedList().end();) {
+            if (in->opEqual(lhs, **it).getBool()) {
+                passThisPtr->getLinkedList().erase(it);
+                break;
+            } else {
+                it++;
+            }
+        }
+
+        return passThisPtr;
+    }
+
+    nativeFn(linkedList::removeAll, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        value lhs = args[0].isRef() ? args[0].getRef() : args[0];
+        for (auto it = passThisPtr->getLinkedList().begin(); it != passThisPtr->getLinkedList().end();) {
+            if (in->opEqual(lhs, **it).getBool())
+                it = passThisPtr->getLinkedList().erase(it);
+            else
+                it++;
+        }
+
+        return passThisPtr;
+    }
+
+    nativeFn(linkedList::rexIter, interpreter, args, passThisPtr) {
+        return {iterator::getMethodsCxt(passThisPtr->getLinkedList())};
+    }
+
+    value::cxtObject linkedList::iterator::getMethodsCxt(const value::linkedListObject &container) {
+        value::cxtObject result;
+        result[L"container"] = managePtr(value{container, linkedList::getMethodsCxt()});
+        result[L"cur"] = managePtr(value{(unknownPtr) new iteratorT(result[L"container"]->getLinkedList().begin())});
+        result[L"next"] = managePtr(value{(value::nativeFuncPtr) next});
+        return result;
+    }
+
+    nativeFn(linkedList::iterator::next, interpreter, args, passThisPtr) {
+        auto &container = passThisPtr->members[L"container"]->getLinkedList();
+        auto &iter = (unsafePtr<iteratorT> &) passThisPtr->members[L"cur"]->basicValue.unknown;
+        auto &element = **iter;
+        if (*iter == container.end()) {
+            delete iter;
+            throw signalBreak();
+        }
+        (*iter)++;
+
+        return element->isRef() ? element->refObj : *element;
+    }
+
+    nativeFn(globalMethods::linkedList, interpreter, args, passThisPtr) {
+        value result{value::linkedListObject{}, linkedList::getMethodsCxt()};
+        if (args.size() == 1) {
+            for (auto &i: args[0].getVec()) {
+                result.getLinkedList().push_back(i);
+            }
+        } else {
+            for (auto &i: args) {
+                result.getLinkedList().push_back(i.isRef() ? i.refObj : managePtr(i));
+            }
+        }
+        return result;
     }
 }

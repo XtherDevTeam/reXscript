@@ -294,7 +294,7 @@ namespace rex {
                             throw signalException(
                                     makeErr(
                                             L"internalError",
-                                            L"undefined identifier: `" + target.child[1].leaf.strVal + L"`"));
+                                            L"undefined identifier: `" + target.child[1].child[0].leaf.strVal + L"`"));
                         }
                     }
                     case AST::treeKind::invokingExpression: {

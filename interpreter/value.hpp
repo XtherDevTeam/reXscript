@@ -5,12 +5,14 @@
 #ifndef REXSCRIPT_VALUE_HPP
 #define REXSCRIPT_VALUE_HPP
 
+#include <list>
 #include "frontend/ast.hpp"
 #include "share/share.hpp"
 
 namespace rex {
     class value {
     public:
+        using linkedListObject = std::list<managedPtr<value>>;
         using vecObject = vec<managedPtr<value>>;
         using cxtObject = map<vstr, managedPtr<value>>;
         using nativeFuncPtr = std::function<value(void *, vec<value>, const managedPtr<value> &)>;
@@ -47,6 +49,7 @@ namespace rex {
             vLambda,
             vNativeFuncPtr,
             vRef,
+            vLinkedList,
         } kind;
 
         union vValue {
@@ -74,6 +77,7 @@ namespace rex {
         managedPtr<funcObject> funcObj;
         managedPtr<lambdaObject> lambdaObj;
         managedPtr<nativeFuncPtr> nativeFuncObj;
+        managedPtr<linkedListObject> linkedListObj;
 
         // members
         cxtObject members;
@@ -97,6 +101,8 @@ namespace rex {
 
         lambdaObject &getLambda();
 
+        linkedListObject &getLinkedList();
+
         vstr &getStr();
 
         vbytes &getBytes();
@@ -110,6 +116,8 @@ namespace rex {
         value(const vbytes &v, cxtObject members);
 
         value(const vecObject &v, cxtObject members);
+
+        value(const linkedListObject &v, cxtObject members);
 
         value(cxtObject members);
 

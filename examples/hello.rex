@@ -140,9 +140,29 @@ let socket_test = func() {
             break;
         }
     }
-    print(buf.decode("utf-8"));
+    print(buf.decode("utf-8"), "\n");
     socket.close();
     return 0;
+};
+
+let hash_test = func() {
+    print("114514 -> ", hash(114514), "\n");
+    print("true -> ", hash(true), "\n");
+    print("WDNMD -> ", hash("WDNMD"), "\n");
+    print("114.514 -> ", hash(114.514), "\n");
+    return 0;
+};
+
+let linked_list_test = func() {
+    let list = linkedList(1, 2, 2, 3, 3, 3, 4, 4, 4, 4);
+    print("Origin: ", list, "\n");
+    list.remove(2);
+    list.removeAll(3);
+    print("Travese: ", "\n");
+    forEach (i in list) {
+        print(i, " ");
+    }
+    print("\n");
 };
 
 let args_test = func() {
@@ -166,6 +186,8 @@ let main_test = func() {
     sqlite_test();
     args_test();
     socket_test();
+    hash_test();
+    linked_list_test();
     return 0;
 };
 

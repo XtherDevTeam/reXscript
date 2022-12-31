@@ -65,7 +65,7 @@ namespace rex {
             nativeFn(next, interpreter, args, passThisPtr);
 
             value::cxtObject getMethodsCxt(const value::vecObject &container);
-        };
+        }
 
         nativeFn(append, interpreter, args, passThisPtr);
 
@@ -98,6 +98,30 @@ namespace rex {
         nativeFn(concat, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
+    }
+
+    namespace linkedList {
+        namespace iterator {
+            using iteratorT = value::linkedListObject::iterator;
+
+            nativeFn(next, interpreter, args, passThisPtr);
+
+            value::cxtObject getMethodsCxt(const value::linkedListObject &container);
+        }
+
+        nativeFn(append, interpreter, args, passThisPtr);
+
+        nativeFn(pop, interpreter, args, passThisPtr);
+
+        // O(n)
+        nativeFn(remove, interpreter, args, passThisPtr);
+
+        // O(n)
+        nativeFn(removeAll, interpreter, args, passThisPtr);
+
+        nativeFn(rexIter, interpreter, args, passThisPtr);
+
+        value::cxtObject getMethodsCxt();
     };
 
     namespace globalMethods {
@@ -124,6 +148,10 @@ namespace rex {
         nativeFn(rexRequire, interpreter, args, passThisPtr);
 
         nativeFn(format, interpreter, args, passThisPtr);
+
+        nativeFn(hash, interpreter, args, passThisPtr);
+
+        nativeFn(linkedList, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }

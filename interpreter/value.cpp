@@ -58,6 +58,13 @@ namespace rex {
                 }
                 break;
             }
+            case vKind::vLinkedList: {
+                dest.linkedListObj = managePtr(*linkedListObj);
+                for (auto &i: *dest.linkedListObj) {
+                    i = managePtr(*i);
+                }
+                break;
+            }
             case vKind::vFunc: {
                 dest.funcObj = managePtr(*funcObj);
                 break;
@@ -201,10 +208,20 @@ namespace rex {
             }
             case vKind::vVec: {
                 ss << L"[";
-                for (vsize i = 0; i < getVec().size(); i++) {
-                    ss << (vstr) {*(getVec()[i])} << L",";
+                for (auto &i : getVec()) {
+                    ss << (vstr) {*i} << L",";
                 }
                 if (!getVec().empty())
+                    ss.seekp(-1, ss.cur);
+                ss << L"]";
+                break;
+            }
+            case vKind::vLinkedList: {
+                ss << L"[";
+                for (auto &i : getLinkedList()) {
+                    ss << (vstr) {*i} << L",";
+                }
+                if (!getLinkedList().empty())
                     ss.seekp(-1, ss.cur);
                 ss << L"]";
                 break;
@@ -250,6 +267,17 @@ namespace rex {
             return *bytesObj;
         else
             throw rexException(L"NullPointerException: bytesObj == nullptr");
+    }
+
+    value::linkedListObject &value::getLinkedList() {
+        if (linkedListObj)
+            return *linkedListObj;
+        else
+            throw rexException(L"NullPointerException: linkedListObj == nullptr");
+    }
+
+    value::value(const value::linkedListObject &v, value::cxtObject members) : kind(vKind::vLinkedList), linkedListObj(managePtr(v)), members(std::move(members)) {
+
     }
 
     value::vValue::vValue() : vInt(0) {
