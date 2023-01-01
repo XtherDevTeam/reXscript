@@ -65,7 +65,7 @@ namespace rex {
         if (args[0].isRef())
             args[0] = args[0].getRef();
         value result{value::vecObject{}, rex::vecMethods::getMethodsCxt()};
-        rex::split(passThisPtr->getStr(), args[0].getStr(), [&](const vstr &r) {
+        rex::split(passThisPtr->getStr(), args[0].getStr(), [&](const vstr &r, vsize _) {
             result.getVec().push_back(managePtr(value{r, getMethodsCxt()}));
         });
         return result;

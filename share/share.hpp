@@ -109,13 +109,14 @@ namespace rex {
     split(const std::basic_string<T> &s, const std::basic_string<T> &delim, cbT callback) {
         size_t last = 0;
         size_t index = s.find_first_of(delim, last);
+        size_t idx{0};
         while (index != std::basic_string<T>::npos) {
-            callback(s.substr(last, index - last));
+            callback(s.substr(last, index - last), idx++);
             last = index + 1;
             index = s.find_first_of(delim, last);
         }
         if (index - last > 0) {
-            callback(s.substr(last, index - last));
+            callback(s.substr(last, index - last), idx);
         }
     }
 
