@@ -253,6 +253,24 @@ namespace rex {
                 func.moduleCxt = stack.empty() ? moduleCxt : stack.back().moduleCxt;
                 return {func};
             }
+            case AST::treeKind::functionDefStmt: {
+                value::funcObject func;
+                for (auto &i: target.child[1].child) {
+                    func.argsName.push_back(i.leaf.strVal);
+                }
+                func.code = target.child[2];
+                func.moduleCxt = stack.empty() ? moduleCxt : stack.back().moduleCxt;
+                if (!stack.empty()) {
+                    stack.back().localCxt.back()[target.child[0].leaf.strVal] = managePtr(
+                            value{func});
+                } else if (moduleCxt) {
+                    moduleCxt->members[target.child[0].leaf.strVal] = managePtr(value{func});
+                } else {
+                    env->globalCxt->members[target.child[0].leaf.strVal] = managePtr(
+                            value{func});
+                }
+                return {};
+            }
             case AST::treeKind::memberExpression: {
                 value val = interpret(target.child[0]);
                 value &l = val.isRef() ? val.getRef() : val;

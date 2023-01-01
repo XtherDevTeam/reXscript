@@ -48,6 +48,7 @@ namespace rex {
             breakStmt,                  // like break
             tryCatchStmt,               // try {...} catch as e {...}
             throwStmt,                  // throw sth
+            functionDefStmt,            // func balahbalah(args) {...}
             operators,                  // like +, -, *, /
         } kind;
 

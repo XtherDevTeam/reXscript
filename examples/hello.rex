@@ -1,6 +1,6 @@
-let add = func (a, b) {
+func add(a, b) {
     return a + b;
-};
+}
 
 let lambda_test = func () {
     let a = 114, b = 514;
@@ -145,6 +145,20 @@ let socket_test = func() {
     return 0;
 };
 
+let http_test = func() {
+    let net = require("../../rexStdlib/dist").net;
+
+    let urls = [
+        "https://www.xiaokang00010.top/a/b.html?arg=RootCuiAKIOI",
+        "http://root.cui.ak.ioi"
+    ];
+    forEach (url in urls) {
+        let parsed_url = net.http.parseUrl(url);
+        print(url, " -> ", parsed_url, "\n");
+    }
+    return 0;
+};
+
 let hash_test = func() {
     let mapping = hashMap();
     mapping.insert(114.514, 1919810);
@@ -209,6 +223,7 @@ let main_test = func() {
     socket_test();
     hash_test();
     linked_list_test();
+    http_test();
     return 0;
 };
 

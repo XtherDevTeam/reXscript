@@ -558,6 +558,7 @@ namespace rex {
                     case AST::treeKind::forStmt:
                     case AST::treeKind::rangeBasedForStmt:
                     case AST::treeKind::blockStmt:
+                    case AST::treeKind::functionDefStmt:
                         break;
                     default: {
                         throw parserException(lex.line, lex.col, L"expected `;` after statements");
@@ -772,6 +773,10 @@ namespace rex {
     AST parser::parseStmts() {
         AST result;
 
+        result = parseFunctionDefStmt();
+        if (result)
+            return result;
+
         result = parseTryCatchStmt();
         if (result)
             return result;
@@ -836,6 +841,7 @@ namespace rex {
                     case AST::treeKind::forStmt:
                     case AST::treeKind::rangeBasedForStmt:
                     case AST::treeKind::blockStmt:
+                    case AST::treeKind::functionDefStmt:
                         break;
                     default: {
                         throw parserException(lex.line, lex.col, L"expected `;` after statements");
@@ -881,5 +887,41 @@ namespace rex {
         if (!expr)
             throw parserException(lex.line, lex.col, L"expected LvalueExpression after `throw`");
         return {AST::treeKind::throwStmt, {expr}};
+    }
+
+    AST parser::parseFunctionDefStmt() {
+        if (lex.curToken.kind != lexer::token::tokenKind::kFunc)
+            return makeNotMatch();
+        lex.scan();
+
+        if (lex.curToken.kind != lexer::token::tokenKind::identifier)
+            throw parserException(lex.line, lex.col, L"expected an identifier");
+        AST name = {AST::treeKind::identifier, lex.curToken};
+        lex.scan();
+
+        if (lex.curToken.kind != lexer::token::tokenKind::leftParentheses)
+            throw parserException(lex.line, lex.col, L"expected a '(' to open a Arguments node");
+        lex.scan();
+
+        AST argumentsNode = {AST::treeKind::arguments, (vec<AST>) {}};
+        AST temp = parseIdentifier();
+        while (temp) {
+            argumentsNode.child.push_back(temp);
+            if (lex.curToken.kind != lexer::token::tokenKind::comma) {
+                break;
+            }
+            lex.scan();
+            temp = parseIdentifier();
+        }
+
+        if (lex.curToken.kind != lexer::token::tokenKind::rightParentheses)
+            throw parserException(lex.line, lex.col, L"expected a ')' to close a Arguments node");
+        lex.scan();
+
+        AST blockNode = parseBlockStmt();
+        if (!blockNode)
+            throw parserException(lex.line, lex.col, L"expected a code block");
+
+        return {AST::treeKind::functionDefStmt, (vec<AST>) {name, argumentsNode, blockNode}};
     }
 } // rex
