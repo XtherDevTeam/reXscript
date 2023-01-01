@@ -53,7 +53,7 @@ namespace rex {
      */
     managedPtr<value>
     importExternModuleEx(const managedPtr<environment> &env, const vstr &fullPath,
-                         const value::cxtObject defaultContext);
+                         const value::cxtObject& defaultContext);
 
     /**
      * @brief Import a native module without importPathPrefix

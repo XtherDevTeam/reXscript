@@ -16,7 +16,7 @@ namespace rex {
         auto str = rex::string2wstring(cstr == nullptr ? "" : cstr);
         managedPtr<value> rexPackagesPath = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
         if (!str.empty()) {
-            split(str, vstr{L";"}, [&](const vstr &i) {
+            split(str, vstr{L";"}, [&](const vstr &i, vsize) {
                 rexPackagesPath->getVec().push_back(
                         managePtr(value{i, rex::stringMethods::getMethodsCxt()}));
             });
@@ -112,7 +112,7 @@ namespace rex {
     }
 
     managedPtr <value>
-    importExternModuleEx(const managedPtr <environment> &env, const vstr &fullPath, const value::cxtObject defaultContext) {
+    importExternModuleEx(const managedPtr <environment> &env, const vstr &fullPath, const value::cxtObject& defaultContext) {
         if (auto it = env->globalCxt->members.find(fullPath); it != env->globalCxt->members.end()) {
             return it->second;
         } else {
