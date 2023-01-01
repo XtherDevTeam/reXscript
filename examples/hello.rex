@@ -147,18 +147,29 @@ let socket_test = func() {
 
 let hash_test = func() {
     let mapping = hashMap();
+    mapping.insert(114.514, 1919810);
+    mapping.insert("我是傻逼", 1919810);
     mapping.insert("Nihao", 114514);
-    mapping.insert(true, "Root Cui AK IOI");
+    mapping.insert(true, "RootCui AK IOI");
     print("Mapping view: \n");
     forEach (i in mapping) {
         // 0 is the hashed value, 1 is the key, 2 is the value
         print(i[0], " ", i[1], " ", i[2], "\n");
     }
     print("rexIndex() Test: ", mapping[true], " ", mapping["Nihao"], "\n");
+    print("rexClone() Test: \n");
+    let mappingN = *mapping;
+
     print("remove() Test: \n");
     mapping.remove(true);
-    forEach (i in mapping.keys()) {
-        print(i, "\n");
+    forEach (i in mapping) {
+        // 0 is the hashed value, 1 is the key, 2 is the value
+        print(i[0], " ", i[1], " ", i[2], "\n");
+    }
+    print("============\n");
+    forEach (i in mappingN) {
+        // 0 is the hashed value, 1 is the key, 2 is the value
+        print(i[0], " ", i[1], " ", i[2], "\n");
     }
     return 0;
 };

@@ -58,14 +58,22 @@ namespace rex {
             case vKind::vVec: {
                 dest.vecObj = managePtr(*vecObj);
                 for (auto &i: *dest.vecObj) {
-                    i = managePtr(*i);
+                    if (i) {
+                        managedPtr<value> temp = managePtr(value{});
+                        i->deepCopy(*temp);
+                        i = temp;
+                    }
                 }
                 break;
             }
             case vKind::vLinkedList: {
                 dest.linkedListObj = managePtr(*linkedListObj);
                 for (auto &i: *dest.linkedListObj) {
-                    i = managePtr(*i);
+                    if (i) {
+                        managedPtr<value> temp = managePtr(value{});
+                        i->deepCopy(*temp);
+                        i = temp;
+                    }
                 }
                 break;
             }
@@ -80,7 +88,11 @@ namespace rex {
             }
         }
         for (auto &i: dest.members) {
-            i.second = managePtr(*i.second);
+            if (i.second) {
+                managedPtr<value> temp = managePtr(value{});
+                i.second->deepCopy(*temp);
+                i.second = temp;
+            }
         }
     }
 

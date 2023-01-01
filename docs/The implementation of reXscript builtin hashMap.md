@@ -13,6 +13,7 @@
 - `remove(k)` 会删除键为 `k` 的键值。
 - `rexIndex(k)` 会返回键为 `k` 的 `value` 的引用。
 - `keys()` 会返回一个包含了 `rexIter` 方法的数据结构，用于遍历整个 `hashMap` 结构的键。
+- `rexClone()` 重写 `reXscript` 默认的深拷贝方法
 - `rexIter()` 会返回一个用于遍历 `hashMap` 中 `kvPairs` 的迭代器。
 
 ### 原理
@@ -39,3 +40,6 @@
 
 一般情况下，分配 `hashT` 的时候并不会立即初始化所有的桶为链表，在执行插入操作的时候，当发现指定 `bucket` 没有被分配时，会自动初始化该 `bucket` 为 `linkedList` 并插入键值对到指定 `linkedList` 中。
 
+- 深拷贝
+
+由于实现需要，`hashMap` 的 `bucket` 存放的是 `kvPair` 的迭代器。当 `reXscript` 默认的 `deepCopy` 动作发生时，会导致迭代器的容器不是拷贝后的容器，因此，我们重写了 `reXscript` 内置的 `deepCopy` 方法，在 `deepCopy` 发生时，系统会调用 `hashMap` 实现的 `rexClone` 方法而不是系统默认的 `deepCopy` 方法。

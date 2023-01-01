@@ -754,6 +754,7 @@ namespace rex {
         result[L"rexIndex"] = managePtr(value{value::nativeFuncPtr{rexIndex}});
         result[L"keys"] = managePtr(value{value::nativeFuncPtr{keys}});
         result[L"rexIter"] = managePtr(value{value::nativeFuncPtr{rexIter}});
+        result[L"rexClone"] = managePtr(value{value::nativeFuncPtr{rexClone}});
         // Members
         result[L"kvPairs"] = managePtr(value{value::linkedListObject{}, linkedListMethods::getMethodsCxt()});
         result[L"hashT"] = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
@@ -785,15 +786,16 @@ namespace rex {
         auto &newSize = args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt();
         passThisPtr->members[L"hashT"]->getVec().clear();
         passThisPtr->members[L"hashT"]->getVec().resize(newSize);
-        for (auto &kvPair: passThisPtr->members[L"kvPairs"]->getLinkedList()) {
-            auto &bucket = (**passThisPtr->members[L"hashT"]->linkedListIterObj)->getVec()[
+        for (auto it = passThisPtr->members[L"kvPairs"]->getLinkedList().begin(); it != passThisPtr->members[L"kvPairs"]->getLinkedList().end(); it++) {
+            auto &kvPair = *it;
+            auto &bucket = passThisPtr->members[L"hashT"]->getVec()[
                     (vsize) (kvPair->getVec()[0]->basicValue.unknown) %
                     newSize];
             if (!bucket) {
                 bucket = managePtr(value{value::linkedListObject{}, linkedListMethods::getMethodsCxt()});
             }
 
-            bucket->getLinkedList().push_back(managePtr(value{kvPair}));
+            bucket->getLinkedList().push_back(managePtr(value{it}));
         }
         return passThisPtr;
     }
@@ -882,6 +884,13 @@ namespace rex {
         (*iter)++;
 
         return *element->getVec()[1];
+    }
+
+    nativeFn(hashMapMethods::rexClone, interpreter, args, passThisPtr) {
+        managedPtr<value> result = managePtr(value{});
+        passThisPtr->deepCopy(*result);
+        realloc(interpreter, {(unknownPtr) passThisPtr->members[L"hashT"]->getVec().size()}, result);
+        return result;
     }
 
     nativeFn(globalMethods::hashMap, interpreter, args, passThisPtr) {

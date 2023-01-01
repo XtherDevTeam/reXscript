@@ -386,7 +386,14 @@ namespace rex {
                     }
                     case lexer::token::tokenKind::asterisk: {
                         value dest;
-                        r.deepCopy(dest);
+                        if (auto it = r.members.find(L"rexClone"); it != r.members.end()) {
+                            if(auto dst = invokeFunc(it->second, {}, rhs.isRef() ? rhs.refObj : managePtr(rhs)); dst.isRef())
+                                dest = *dst.refObj;
+                            else
+                                dest = dst;
+                        } else {
+                            r.deepCopy(dest);
+                        }
                         return dest;
                     }
                     default: {

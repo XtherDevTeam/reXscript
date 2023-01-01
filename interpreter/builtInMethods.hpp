@@ -195,6 +195,8 @@ namespace rex {
 
         nativeFn(rexIter, interpreter, args, passThisPtr);
 
+        nativeFn(rexClone, interpreter, args, passThisPtr);
+
         value::cxtObject getMethodsCxt(vint defaultHashTSize = 256);
     }
 }
