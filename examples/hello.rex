@@ -15,13 +15,13 @@ let lambda_test = func () {
 
 let str_test = func () {
     let str = "    Root Cui AK IOI       ";
-    print("Original string: ", *str, "\n");
+    print("Original string: ", str, "\n");
     str = str.trim();
-    print("After str.trim(): ", *str, "\n");
+    print("After str.trim(): ", str, "\n");
     print("str.split(): ", "\n");
     let split_result = str.split(" ");
     forEach (i in split_result) {
-        print(*i, "\n");
+        print(i, "\n");
     }
     return 0;
 };
@@ -29,13 +29,13 @@ let str_test = func () {
 let thread_test = func() {
     let lam = lambda () -> () {
         for (let i = 0;i < 5;++i) {
-            print("Konnichiha, sekai! Thread is ", *thread_id, "\n");
+            print("Konnichiha, sekai! Thread is ", thread_id, "\n");
         }
         return 114514;
     };
     let th_id = threading.start(lam);
     let res = threading.wait(th_id);
-    print("This is thread ", *thread_id, ", thread result: ", *res, "\n");
+    print("This is thread ", thread_id, ", thread result: ", res, "\n");
     return 0;
 };
 
@@ -59,7 +59,7 @@ let rexstd_test = func() {
 
     file = std.fs.open("1/a/test.txt", "r");
     let content = file.read(file.length).decode("utf-8");
-    print(*content, "\n");
+    print(content, "\n");
     print("Is EOF: ", file.eof(), "\n");
     file.close();
 
@@ -90,13 +90,13 @@ let iter_test = func() {
         }
     };
     forEach (i in data) {
-        print(*i, " ");
+        print(i, " ");
     }
     print("\n");
     print("Vec object iterator test:\n");
     let vec = ["this is a string", false, 0, -114.514, "Root Cui AK IOI"];
     forEach (i in vec) {
-        print(*i, "\n");
+        print(i, "\n");
     }
     return 0;
 };
@@ -147,15 +147,9 @@ let socket_test = func() {
 
 let http_test = func() {
     let net = require("../../rexStdlib/dist").net;
-
-    let urls = [
-        "https://www.xiaokang00010.top/a/b.html?arg=RootCuiAKIOI",
-        "http://root.cui.ak.ioi"
-    ];
-    forEach (url in urls) {
-        let parsed_url = net.http.parseUrl(url);
-        print(url, " -> ", parsed_url, "\n");
-    }
+    let response = net.http.open("GET", "http://www.bing.com").recvHeaders().recv();
+    print(response.headers, "\n");
+    print(response.body, "\n");
     return 0;
 };
 
@@ -202,27 +196,38 @@ let linked_list_test = func() {
 
 let args_test = func() {
     forEach (i in rexArgs) {
-        print(*i, "\n");
+        print(i, "\n");
     }
 };
 
+let json_test = func() {
+    let json = require("../../rexStdlib/dist").json;
+    let jsonStr = 
+        '
+        114514
+        ';
+    print(jsonStr, "\n");
+    print(json.loads(jsonStr), "\n");
+};
+
 let main_test = func() {
-    let s = {a: 1, b: 2};
-    print(*s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
-    print([1,2,3] == [1,2,3], " ", [1,2,3] == [1,2,4], "\n");
-    print(" ".join("RootCui", "AK", "IOI!"), "\n");
-    print(*([].append("RootCui", "AK", "IOI!")), "\n");
-    print(lambda_test());
-    thread_test();
-    charsets_test();
-    rexstd_test();
-    iter_test();
-    str_test();
-    sqlite_test();
-    args_test();
-    socket_test();
-    hash_test();
-    linked_list_test();
+    // let s = {a: 1, b: 2};
+    // print(s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
+    // print([1,2,3] == [1,2,3], " ", [1,2,3] == [1,2,4], "\n");
+    // print(" ".join("RootCui", "AK", "IOI!"), "\n");
+    // print([].append("RootCui", "AK", "IOI!"), "\n");
+    // print(lambda_test());
+    // thread_test();
+    // charsets_test();
+    // rexstd_test();
+    // iter_test();
+    // str_test();
+    // sqlite_test();
+    // args_test();
+    // socket_test();
+    // hash_test();
+    // linked_list_test();
+    // json_test();
     http_test();
     return 0;
 };

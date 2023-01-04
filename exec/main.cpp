@@ -23,6 +23,8 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
         std::string buf;
         std::cout << "input> ";
         std::getline(std::cin, buf);
+        if (buf.empty())
+            continue;
         std::wstring code;
         code = std::move(rex::string2wstring(buf));
         std::wistringstream ss(code);
@@ -65,6 +67,7 @@ int main(int argc, const char **argv) {
 
     if (argc == 1) {
         interactiveShell(env);
+        return 0;
     }
 
     try {
