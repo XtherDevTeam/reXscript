@@ -244,6 +244,18 @@ namespace rex {
         return {string2wstring(s), rex::stringMethods::getMethodsCxt()};
     }
 
+    nativeFn(globalMethods::stringify, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        auto &v = args[0].isRef() ? args[0].getRef() : args[0];
+        value result = {L"", stringMethods::getMethodsCxt()};
+        if (auto it = v.members.find(L"rexStr"); v.kind == value::vKind::vObject and it != v.members.end()) {
+            result.getStr() += in->invokeFunc(it->second, {}, managePtr(v)).getStr();
+        } else {
+            result.getStr() += v;
+        }
+        return result;
+    }
+
     nativeFn(globalMethods::print, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
         for (auto &item: args) {
@@ -261,19 +273,6 @@ namespace rex {
                 case value::vKind::vStr:
                     std::cout << wstring2string(i.getStr());
                     break;
-                case value::vKind::vBytes: {
-                    std::ios::fmtflags f(std::cout.flags());
-                    for (auto &c: i.getBytes()) {
-                        if (isprint(c)) {
-                            std::cout << c;
-                        } else {
-                            std::cout << "\\x" << std::hex << std::setw(2) << std::setfill('0')
-                                      << static_cast<int>((unsigned char) c);
-                        }
-                    }
-                    std::cout.flags(f);
-                    break;
-                }
                 default:
                     if (auto it = i.members.find(L"rexStr"); it != i.members.end()) {
                         std::cout << wstring2string(
@@ -310,6 +309,15 @@ namespace rex {
         }
     }
 
+    nativeFn(globalMethods::objectIterate, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        auto callback = args[1].isRef() ? args[1].refObj : managePtr(args[1]);
+        for (auto &i: args[0].isRef() ? args[0].getRef().members : args[0].members) {
+            in->invokeFunc(callback, {{i.first, stringMethods::getMethodsCxt()}, i.second}, {});
+        }
+        return {};
+    }
+
     value::cxtObject globalMethods::getMethodsCxt() {
         value::cxtObject result;
         result[L"input"] = managePtr(value{(value::nativeFuncPtr) input});
@@ -322,6 +330,8 @@ namespace rex {
         result[L"hash"] = managePtr(value{(value::nativeFuncPtr) hash});
         result[L"linkedList"] = managePtr(value{(value::nativeFuncPtr) linkedList});
         result[L"hashMap"] = managePtr(value{(value::nativeFuncPtr) hashMap});
+        result[L"stringify"] = managePtr(value{(value::nativeFuncPtr) stringify});
+        result[L"objectIterate"] = managePtr(value{(value::nativeFuncPtr) objectIterate});
 
         result[L"threading"] = managePtr(threadingMethods::getThreadingModule());
         result[L"importPrefixPath"] = managePtr(value{value::vecObject{
@@ -755,11 +765,26 @@ namespace rex {
         result[L"keys"] = managePtr(value{value::nativeFuncPtr{keys}});
         result[L"rexIter"] = managePtr(value{value::nativeFuncPtr{rexIter}});
         result[L"rexClone"] = managePtr(value{value::nativeFuncPtr{rexClone}});
+        result[L"rexStr"] = managePtr(value{value::nativeFuncPtr{rexStr}});
         // Members
         result[L"kvPairs"] = managePtr(value{value::linkedListObject{}, linkedListMethods::getMethodsCxt()});
         result[L"hashT"] = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
         result[L"hashT"]->getVec().resize(defaultHashTSize);
         return result;
+    }
+
+    nativeFn(hashMapMethods::rexStr, interpreter, args, passThisPtr) {
+        auto &container = passThisPtr->members[L"kvPairs"]->getLinkedList();
+        std::wstringstream wss;
+        wss << L'{';
+        for (auto &i: container) {
+            wss << globalMethods::stringify(interpreter, {*i->getVec()[1]}, {}).getStr()
+                << L": " << globalMethods::stringify(interpreter, {*i->getVec()[2]}, {}).getStr() << L',';
+        }
+        if (!container.empty())
+            wss.seekp(-1, wss.cur);
+        wss << L'}';
+        return {wss.str(), stringMethods::getMethodsCxt()};
     }
 
     nativeFn(hashMapMethods::insert, interpreter, args, passThisPtr) {
@@ -786,7 +811,8 @@ namespace rex {
         auto &newSize = args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt();
         passThisPtr->members[L"hashT"]->getVec().clear();
         passThisPtr->members[L"hashT"]->getVec().resize(newSize);
-        for (auto it = passThisPtr->members[L"kvPairs"]->getLinkedList().begin(); it != passThisPtr->members[L"kvPairs"]->getLinkedList().end(); it++) {
+        for (auto it = passThisPtr->members[L"kvPairs"]->getLinkedList().begin();
+             it != passThisPtr->members[L"kvPairs"]->getLinkedList().end(); it++) {
             auto &kvPair = *it;
             auto &bucket = passThisPtr->members[L"hashT"]->getVec()[
                     (vsize) (kvPair->getVec()[0]->basicValue.unknown) %

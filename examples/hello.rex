@@ -147,7 +147,7 @@ let socket_test = func() {
 
 let http_test = func() {
     let net = require("../../rexStdlib/dist").net;
-    let response = net.http.open("GET", "http://www.bing.com").recvHeaders().recv();
+    let response = net.http.open("GET", "https://www.bing.com").recv();
     print(response.headers, "\n");
     print(response.body, "\n");
     return 0;
@@ -210,25 +210,35 @@ let json_test = func() {
     print(json.loads(jsonStr), "\n");
 };
 
+let object_iterate_test = func() {
+    let s = {a: 1, b: 2, c: [].append("RootCui", "AK", "IOI!"), d: " ".join("RootCui", "AK", "IOI!")};
+    print("objectIterate: \n");
+    objectIterate(s, lambda () -> (k, v) {
+        print(k, ": ", v, "\n");
+    });
+    return 0;
+};
+
 let main_test = func() {
-    // let s = {a: 1, b: 2};
-    // print(s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
-    // print([1,2,3] == [1,2,3], " ", [1,2,3] == [1,2,4], "\n");
-    // print(" ".join("RootCui", "AK", "IOI!"), "\n");
-    // print([].append("RootCui", "AK", "IOI!"), "\n");
-    // print(lambda_test());
-    // thread_test();
-    // charsets_test();
-    // rexstd_test();
-    // iter_test();
-    // str_test();
-    // sqlite_test();
-    // args_test();
-    // socket_test();
-    // hash_test();
-    // linked_list_test();
-    // json_test();
+    let s = {a: 1, b: 2};
+    print(s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
+    print([1,2,3] == [1,2,3], " ", [1,2,3] == [1,2,4], "\n");
+    print(" ".join("RootCui", "AK", "IOI!"), "\n");
+    print([].append("RootCui", "AK", "IOI!"), "\n");
+    print(lambda_test());
+    thread_test();
+    charsets_test();
+    rexstd_test();
+    iter_test();
+    str_test();
+    sqlite_test();
+    args_test();
+    socket_test();
+    hash_test();
+    linked_list_test();
+    json_test();
     http_test();
+    object_iterate_test();
     return 0;
 };
 

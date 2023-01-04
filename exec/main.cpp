@@ -1,6 +1,7 @@
 #include <iostream>
 #include "exceptions/parserException.hpp"
 #include "exceptions/signalException.hpp"
+#include <interpreter/builtInMethods.hpp>
 #include <rex.hpp>
 #include <ffi/ffi.hpp>
 
@@ -33,8 +34,9 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
         rex::parser parser{lexer};
         rex::AST ast = parser.parseStmts();
         try {
-            rex::value result = interpreter->interpret(ast);
-            std::cout << "output> " << rex::wstring2string(result) << std::endl;
+            rex::value result = rex::globalMethods::stringify(
+                    (void *) interpreter.get(), {interpreter->interpret(ast)}, {});
+            std::cout << "output> " << rex::wstring2string(result.getStr()) << std::endl;
         } catch (rex::signalException &e) {
             std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
         } catch (rex::parserException &e) {
@@ -55,8 +57,8 @@ void ffiGenerator(const rex::vstr &path) {
     std::cout << rex::wstring2string(f.generateHeader()) << std::endl;
 }
 
-void getArgs(const rex::managedPtr<rex::environment> &env, int argc, const char **argv, const char** pos) {
-    for (const char *i = *pos; pos < argv +  argc; pos++, i = *pos) {
+void getArgs(const rex::managedPtr<rex::environment> &env, int argc, const char **argv, const char **pos) {
+    for (const char *i = *pos; pos < argv + argc; pos++, i = *pos) {
         env->globalCxt->members[L"rexArgs"]->getVec().push_back(rex::managePtr(
                 rex::value{rex::string2wstring(i), rex::stringMethods::getMethodsCxt()}));
     }

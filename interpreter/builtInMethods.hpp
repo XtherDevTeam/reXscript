@@ -139,6 +139,8 @@ namespace rex {
 
         nativeFn(print, interpreter, args, passThisPtr);
 
+        nativeFn(stringify, interpreter, args, passThisPtr);
+
         nativeFn(rexRequireMod, interpreter, args, passThisPtr);
 
         nativeFn(rexRequireNativeMod, interpreter, args, passThisPtr);
@@ -154,6 +156,8 @@ namespace rex {
         nativeFn(linkedList, interpreter, args, passThisPtr);
 
         nativeFn(hashMap, interpreter, args, passThisPtr);
+
+        nativeFn(objectIterate, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }
@@ -196,6 +200,8 @@ namespace rex {
         nativeFn(rexIter, interpreter, args, passThisPtr);
 
         nativeFn(rexClone, interpreter, args, passThisPtr);
+
+        nativeFn(rexStr, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt(vint defaultHashTSize = 256);
     }
