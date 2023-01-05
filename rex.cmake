@@ -5,6 +5,7 @@ if (DEFINED REX_IMPORT_AS_LIB)
             ${REX_SRC_DIR}/interpreter/*.cpp
             ${REX_SRC_DIR}/pass/*.cpp
             ${REX_SRC_DIR}/share/*.cpp
+            ${REX_SRC_DIR}/share/whereami/*.cpp
             ${REX_SRC_DIR}/exceptions/*.cpp
             ${REX_SRC_DIR}/ffi/*.cpp
             ${REX_SRC_DIR}/*.cpp)
