@@ -166,6 +166,7 @@ namespace rex {
                 return {cxt};
             }
             case AST::treeKind::identifier: {
+                auto &curModCxt = stack.empty() ? moduleCxt : stack.back().moduleCxt;
                 // 优先从栈中查找
                 if (!stack.empty()) {
                     for (auto it = stack.back().localCxt.rbegin();
@@ -181,8 +182,8 @@ namespace rex {
                     // 在当前Module Context中查找
                     return {vit->second->isRef() ? vit->second->refObj : vit->second};
                 }
-                if (auto vit = moduleCxt->members.find(target.leaf.strVal);
-                        vit != moduleCxt->members.end()) {
+                if (auto vit = curModCxt->members.find(target.leaf.strVal);
+                        vit != curModCxt->members.end()) {
                     // 在当前Module Context中查找
                     return {vit->second->isRef() ? vit->second->refObj : vit->second};
                 }

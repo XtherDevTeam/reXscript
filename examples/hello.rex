@@ -219,6 +219,15 @@ let object_iterate_test = func() {
     return 0;
 };
 
+let module_cxt_test = func() {
+    let mod = require("../examples/test.rex");
+    for (let i = 0;i < 100;++i) {
+        mod.fucker();
+    }
+    print("草泥马:", mod.fuck, "\n");
+    return 0;
+};
+
 let main_test = func() {
     let s = {a: 1, b: 2};
     print(s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
@@ -239,6 +248,7 @@ let main_test = func() {
     json_test();
     http_test();
     object_iterate_test();
+    module_cxt_test();
     return 0;
 };
 
