@@ -323,4 +323,37 @@ namespace rex {
     }
 
     value::value(const linkedListObject::iterator &v) : kind(vKind::vLinkedListIter), linkedListIterObj(managePtr(v)) {}
+
+    vstr value::getKind() {
+        switch (kind) {
+            case vKind::vNull:
+                return L"null";
+            case vKind::vInt:
+                return L"int";
+            case vKind::vDeci:
+                return L"deci";
+            case vKind::vBool:
+                return L"bool";
+            case vKind::vStr:
+                return L"str";
+            case vKind::vBytes:
+                return L"bytes";
+            case vKind::vVec:
+                return L"vec";
+            case vKind::vObject:
+                return L"object";
+            case vKind::vFunc:
+                return L"func";
+            case vKind::vLambda:
+                return L"lambda";
+            case vKind::vNativeFuncPtr:
+                return L"nativeFuncPtr";
+            case vKind::vRef:
+                return getRef().getKind();
+            case vKind::vLinkedList:
+                return L"linkedList";
+            case vKind::vLinkedListIter:
+                return L"linkedListIter";
+        }
+    }
 } // rex

@@ -309,6 +309,10 @@ namespace rex {
         }
     }
 
+    nativeFn(globalMethods::type, interpreter, args, passThisPtr) {
+        return {args[0].getKind(), stringMethods::getMethodsCxt()};
+    }
+
     nativeFn(globalMethods::objectIterate, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
         auto callback = args[1].isRef() ? args[1].refObj : managePtr(args[1]);
@@ -332,6 +336,7 @@ namespace rex {
         result[L"hashMap"] = managePtr(value{(value::nativeFuncPtr) hashMap});
         result[L"stringify"] = managePtr(value{(value::nativeFuncPtr) stringify});
         result[L"objectIterate"] = managePtr(value{(value::nativeFuncPtr) objectIterate});
+        result[L"type"] = managePtr(value{(value::nativeFuncPtr) type});
 
         result[L"threading"] = managePtr(threadingMethods::getThreadingModule());
         result[L"importPrefixPath"] = managePtr(value{value::vecObject{

@@ -159,6 +159,8 @@ namespace rex {
 
         nativeFn(objectIterate, interpreter, args, passThisPtr);
 
+        nativeFn(type, interpreter, args, passThisPtr);
+
         value::cxtObject getMethodsCxt();
     }
 

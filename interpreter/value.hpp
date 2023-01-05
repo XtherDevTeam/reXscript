@@ -142,6 +142,8 @@ namespace rex {
         value(unknownPtr unk);
 
         value();
+
+        vstr getKind();
     };
 
 #define valueKindComparator(x, y) ((vsize)((vsize)(x) << 16) | (vsize)(y))
