@@ -18,7 +18,7 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
     env->globalCxt->members[L"__local__"] = moduleCxt;
     auto interpreter = rex::managePtr(rex::interpreter{env, moduleCxt});
     interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{(rex::vint) 0});
-    interpreter->stack.emplace_back();
+    interpreter->stack.push_back({moduleCxt, {}});
     interpreter->stack.back().pushLocalCxt({});
     while (std::cin) {
         std::string buf;
