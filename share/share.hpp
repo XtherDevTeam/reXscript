@@ -138,6 +138,8 @@ namespace rex {
     vstr getDylibSuffix();
 
     vbytes getPrintableBytes(const vbytes &src);
+
+    vbytes getRexExecPath();
 }
 
 #endif //REXSCRIPT_SHARE_HPP

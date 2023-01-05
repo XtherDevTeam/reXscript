@@ -9,6 +9,7 @@ file(GLOB REX_SRC
         interpreter/*.cpp
         pass/*.cpp
         share/*.cpp
+        share/whereami/*.cpp
         exceptions/*.cpp
         ffi/*.cpp
         *.cpp)

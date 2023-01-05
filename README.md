@@ -50,3 +50,9 @@ include(${REX_SRC_DIR}/rex.cmake)
 # add ${REX_SRC} to your target
 # e.g. add_executable(rex exec/main.cpp ${REX_SRC})
 ```
+
+# Third-party softwares
+
+We used some third-party open source softwares to build the whole reXscript project, here is a list of them.
+
+- [whereami](https://github.com/gpakosz/whereami) MIT License

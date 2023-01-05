@@ -3,6 +3,7 @@
 //
 
 #include <share/share.hpp>
+#include "share/whereami/whereami.h"
 
 std::string rex::wstring2string(const std::wstring &str) {
     vbytes ret{};
@@ -100,6 +101,17 @@ rex::vbytes rex::getPrintableBytes(const rex::vbytes &src) {
         }
     }
     return ss.str();
+}
+
+rex::vbytes rex::getRexExecPath() {
+    std::string path;
+    int length, dirnameLength;
+
+    length = wai_getExecutablePath(nullptr, 0, &dirnameLength);
+    path.resize(length + 1);
+    wai_getExecutablePath(path.data(), length, &dirnameLength);
+    path[length] = '\0';
+    return path.substr(0, path.rfind(std::filesystem::path::preferred_separator));
 }
 
 void rex::path::join(rex::vstr &a, const rex::vstr &b) {
