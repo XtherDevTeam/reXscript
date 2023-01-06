@@ -359,11 +359,13 @@ namespace rex {
     }
 
     value::~value() {
-        if (auto it = members.find(L"finalize"); it != members.end()) {
-            if (it->second->basicValue.vInt != 0x114514ccf) {
-                auto in = managePtr(interpreter{rexEnvironmentInstance, {}});
-                it->second->basicValue.vInt = 0x114514ccf;
-                in->invokeFunc(it->second, {}, managePtr(*this));
+        if (kind == vKind::vObject) {
+            if (auto it = members.find(L"finalize"); it != members.end()) {
+                if (it->second->basicValue.vInt != 0x114514ccf) {
+                    auto in = managePtr(interpreter{rexEnvironmentInstance, {}});
+                    it->second->basicValue.vInt = 0x114514ccf;
+                    in->invokeFunc(it->second, {}, managePtr(*this));
+                }
             }
         }
     }
