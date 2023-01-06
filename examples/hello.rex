@@ -228,6 +228,16 @@ let module_cxt_test = func() {
     return 0;
 };
 
+let finalize_test = func() {
+    let obj = {
+        finalize: lambda () -> () {
+            print("I got destructed!\n");
+            return null;
+        }
+    };
+    return obj;
+};
+
 let main_test = func() {
     let s = {a: 1, b: 2};
     print(s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
@@ -249,6 +259,7 @@ let main_test = func() {
     http_test();
     object_iterate_test();
     module_cxt_test();
+    finalize_test();
     return 0;
 };
 

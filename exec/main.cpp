@@ -65,10 +65,10 @@ void getArgs(const rex::managedPtr<rex::environment> &env, int argc, const char 
 }
 
 int main(int argc, const char **argv) {
-    auto env = rex::getRexEnvironment();
+    rex::rexEnvironmentInstance = rex::getRexEnvironment();
 
     if (argc == 1) {
-        interactiveShell(env);
+        interactiveShell(rex::rexEnvironmentInstance);
         return 0;
     }
 
@@ -76,16 +76,16 @@ int main(int argc, const char **argv) {
         const char **current = argv + 1;
         if (rex::vbytes{*current} == "-m") {
             rex::vstr modPath = rex::string2wstring(*(++current));
-            getArgs(env, argc, argv, ++current);
-            rex::importEx(env, modPath, {});
+            getArgs(rex::rexEnvironmentInstance, argc, argv, ++current);
+            rex::importEx(rex::rexEnvironmentInstance, modPath, {});
         } else if (rex::vbytes{*current} == "--generate-ffi") {
             ffiGenerator(rex::string2wstring(*(++current)));
         } else if (rex::vbytes{*current} == "--help") {
             std::cout << helpMsg << std::endl;
         } else {
             rex::vstr file = rex::string2wstring(*current);
-            getArgs(env, argc, argv, ++current);
-            loadFile(env, file);
+            getArgs(rex::rexEnvironmentInstance, argc, argv, ++current);
+            loadFile(rex::rexEnvironmentInstance, file);
         }
         return 0;
     } catch (rex::signalException &e) {

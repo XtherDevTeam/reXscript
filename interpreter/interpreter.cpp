@@ -14,6 +14,8 @@
 #include "exceptions/rexException.hpp"
 
 namespace rex {
+    managedPtr<environment> rexEnvironmentInstance = managePtr(environment{});
+
     void environment::stackFrame::pushLocalCxt(const value::cxtObject &cxt) {
         localCxt.push_back(cxt);
     }
@@ -406,7 +408,8 @@ namespace rex {
                     case lexer::token::tokenKind::asterisk: {
                         value dest;
                         if (auto it = r.members.find(L"rexClone"); it != r.members.end()) {
-                            if(auto dst = invokeFunc(it->second, {}, rhs.isRef() ? rhs.refObj : managePtr(rhs)); dst.isRef())
+                            if (auto dst = invokeFunc(it->second, {},
+                                                      rhs.isRef() ? rhs.refObj : managePtr(rhs)); dst.isRef())
                                 dest = *dst.refObj;
                             else
                                 dest = dst;
@@ -1432,13 +1435,14 @@ namespace rex {
             auto res = it->invokeFunc(func, args, passThisPtr);
             env->threadPool[tid].setResult(managePtr(res.isRef() ? res.getRef() : res));
         } catch (rex::signalException &e) {
-            std::cerr << "Uncaught exception in thread " << tid <<  "> " << rex::wstring2string((rex::value) e.get()) << std::endl;
+            std::cerr << "Uncaught exception in thread " << tid << "> " << rex::wstring2string((rex::value) e.get())
+                      << std::endl;
             throw;
         } catch (rex::rexException &e) {
-            std::cerr << "Uncaught exception in thread " << tid <<  "> " << e.what() << std::endl;
+            std::cerr << "Uncaught exception in thread " << tid << "> " << e.what() << std::endl;
             throw;
         } catch (std::exception &e) {
-            std::cerr << "Uncaught exception in thread " << tid <<  "> " << e.what() << std::endl;
+            std::cerr << "Uncaught exception in thread " << tid << "> " << e.what() << std::endl;
             throw;
         }
         env->threadPool[tid].setResult(managePtr(value{}));

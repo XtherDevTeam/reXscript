@@ -115,9 +115,11 @@ namespace rex {
 
     };
 
+    extern managedPtr<environment> rexEnvironmentInstance;
+
     /**
- * @brief The interpreter class for reXscript
- */
+     * @brief The interpreter class for reXscript
+     */
     class interpreter {
     public:
         /**

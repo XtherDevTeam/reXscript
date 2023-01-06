@@ -8,6 +8,7 @@
 #include <utility>
 #include <iomanip>
 #include "exceptions/rexException.hpp"
+#include <rex.hpp>
 
 namespace rex {
     value::funcObject::funcObject() : argsName(), code() {
@@ -177,11 +178,11 @@ namespace rex {
     }
 
     value::value(const value::nativeFuncPtr &v) :
-            kind(vKind::vNativeFuncPtr), members(), nativeFuncObj(new(nativeFuncPtr){v}) {
+            kind(vKind::vNativeFuncPtr), basicValue(), members(), nativeFuncObj(new(nativeFuncPtr){v}) {
 
     }
 
-    value::value(const managedPtr<value> &v) : kind(vKind::vRef), refObj(v), members() {
+    value::value(const managedPtr<value> &v) : kind(vKind::vRef), basicValue(), refObj(v), members() {
 
     }
 
@@ -354,6 +355,16 @@ namespace rex {
                 return L"linkedList";
             case vKind::vLinkedListIter:
                 return L"linkedListIter";
+        }
+    }
+
+    value::~value() {
+        if (auto it = members.find(L"finalize"); it != members.end()) {
+            if (it->second->basicValue.vInt != 0x114514ccf) {
+                auto in = managePtr(interpreter{rexEnvironmentInstance, {}});
+                it->second->basicValue.vInt = 0x114514ccf;
+                in->invokeFunc(it->second, {}, managePtr(*this));
+            }
         }
     }
 } // rex
