@@ -12,6 +12,18 @@
 namespace rex {
 
     struct environment {
+        struct runtimeSourceFileMsg {
+            vstr file;
+            vsize line;
+            vsize col;
+
+            operator vstr();
+        };
+
+        static runtimeSourceFileMsg dumpRuntimeSourceFileMsg(const value::funcObject &func);
+
+        static runtimeSourceFileMsg dumpRuntimeSourceFileMsg(const value::lambdaObject &lambda);
+
         /**
          * @brief Represents a stack frame for a function call
          */
@@ -25,6 +37,8 @@ namespace rex {
              * A new local variable context is pushed into this list whenever a new code block is entered
              */
             vec<value::cxtObject> localCxt;
+
+            runtimeSourceFileMsg sourceMsg;
 
             /**
              * @brief Pushes a new local variable context into the local variable context list
@@ -49,9 +63,11 @@ namespace rex {
              */
             void backToLocalCxt(vsize idx);
 
-            stackFrame();
+            stackFrame(runtimeSourceFileMsg msg);
 
-            stackFrame(managedPtr<value> &moduleCxt, const vec<value::cxtObject> &localCxt);
+            stackFrame(runtimeSourceFileMsg msg, managedPtr<value> &moduleCxt, const vec<value::cxtObject> &localCxt);
+
+            operator vstr();
         };
 
         /**
@@ -169,6 +185,8 @@ namespace rex {
 
         // @brief Invoke a function with the given arguments and `this` pointer.
         value invokeFunc(managedPtr<value> func, const vec<value> &args, const managedPtr<value> &passThisPtr);
+
+        vstr getBacktrace();
 
         value opAdd(value &a, value &b);
 

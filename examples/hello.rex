@@ -120,6 +120,7 @@ let sqlite_test = func() {
     forEach (i in rows) {
         print(i["scores"].decode("ansi"), "\n");
     }
+    throw 114514;
     return 0;
 };
 
@@ -238,6 +239,25 @@ let finalize_test = func() {
     return obj;
 };
 
+let zip_test = func () {
+    let zip = require("../../rexStdlib/dist").zip;
+    let archive = zip.open("test.zip", zip.ZIP_DEFAULT_COMPRESSION_LEVEL, zip.M_WRITE);
+    let entry = archive.entry("a.txt");
+    entry.write("你好，世界！Hello, World!こんにちは、世界！".encode("utf-8"));
+    entry.close();
+    
+    archive.close();
+
+    let archive = zip.open("test.zip", 0, zip.M_READ);
+    let entry = archive.entry("a.txt");
+    let result = entry.read();
+    print(result.decode("utf-8"), "\n");
+    entry.close();
+
+    archive.close();
+    return 0;
+};
+
 let main_test = func() {
     let s = {a: 1, b: 2};
     print(s, "\n", s.a, "\n", s.b, "\n", s["a"], "\n", s["b"], "\n");
@@ -259,6 +279,7 @@ let main_test = func() {
     http_test();
     object_iterate_test();
     module_cxt_test();
+    zip_test();
     finalize_test();
     return 0;
 };

@@ -51,6 +51,7 @@ namespace rex {
             lex.returnState();
             return makeNotMatch();
         }
+        vsize astLine = base.leaf.line, astColumn = base.leaf.col;
         while (lex.curToken.kind == lexer::token::tokenKind::leftBracket or
                lex.curToken.kind == lexer::token::tokenKind::leftParentheses) {
             switch (lex.curToken.kind) {
@@ -60,7 +61,7 @@ namespace rex {
                     if (subscript) {
                         if (lex.curToken.kind == lexer::token::tokenKind::rightBracket) {
                             lex.scan();
-                            base = {AST::treeKind::subscriptExpression, (vec<AST>) {base, subscript}};
+                            base = {AST::treeKind::subscriptExpression, astLine, astColumn, (vec<AST>) {base, subscript}};
                         } else {
                             throw parserException(lex.line, lex.col, L"expected a ']' to close a subscript");
                         }
@@ -73,7 +74,7 @@ namespace rex {
                 case lexer::token::tokenKind::leftParentheses: {
                     AST arg = parseArguments();
                     if (arg) {
-                        base = {AST::treeKind::invokingExpression, (vec<AST>) {base, arg}};
+                        base = {AST::treeKind::invokingExpression, astLine, astColumn, (vec<AST>) {base, arg}};
                     } else {
                         throw parserException(lex.line, lex.col,
                                               L"cannot match a Arguments node for subscriptExpression");
@@ -94,7 +95,7 @@ namespace rex {
             return makeNotMatch();
         }
         lex.scan();
-        AST base = {AST::treeKind::listLiteral, (vec<AST>) {}}, current = parseLvalueExpression();
+        AST base = {AST::treeKind::listLiteral, lex.line, lex.col, (vec<AST>) {}}, current = parseLvalueExpression();
         while (current) {
             base.child.push_back(current);
             if (lex.curToken.kind != lexer::token::tokenKind::comma)
@@ -118,7 +119,7 @@ namespace rex {
             return makeNotMatch();
         }
         lex.scan();
-        AST base = {AST::treeKind::objectLiteral, (vec<AST>) {}};
+        AST base = {AST::treeKind::objectLiteral, lex.line, lex.col, (vec<AST>) {}};
         while (true) {
             if (lex.curToken.kind != lexer::token::tokenKind::identifier and
                 lex.curToken.kind != lexer::token::tokenKind::string) {
@@ -134,7 +135,7 @@ namespace rex {
             if (!right) {
                 throw parserException(lex.line, lex.col, L"expected a lvalue expression");
             }
-            base.child.push_back((AST) {AST::treeKind::memberPair, (vec<AST>) {left, right}});
+            base.child.push_back((AST) {AST::treeKind::memberPair, lex.line, lex.col, (vec<AST>) {left, right}});
             if (lex.curToken.kind != lexer::token::tokenKind::comma) {
                 break;
             }
@@ -153,7 +154,7 @@ namespace rex {
         }
         lex.scan();
 
-        AST base = {AST::treeKind::arguments, (vec<AST>) {}};
+        AST base = {AST::treeKind::arguments, lex.line, lex.col, (vec<AST>) {}};
         AST current = parseLvalueExpression();
         while (current) {
             base.child.push_back(current);
@@ -177,7 +178,7 @@ namespace rex {
             throw parserException(lex.line, lex.col, L"expected a '(' to open a Arguments node");
         lex.scan();
 
-        AST passVarsBase = {AST::treeKind::arguments, (vec<AST>) {}};
+        AST passVarsBase = {AST::treeKind::arguments, lex.line, lex.col, (vec<AST>) {}};
         AST temp = parseIdentifier();
         while (temp) {
             passVarsBase.child.push_back(temp);
@@ -200,7 +201,7 @@ namespace rex {
             throw parserException(lex.line, lex.col, L"expected a '(' to open a Arguments node");
         lex.scan();
 
-        AST argumentsNode = {AST::treeKind::arguments, (vec<AST>) {}};
+        AST argumentsNode = {AST::treeKind::arguments, lex.line, lex.col, (vec<AST>) {}};
         temp = parseIdentifier();
         while (temp) {
             argumentsNode.child.push_back(temp);
@@ -222,7 +223,7 @@ namespace rex {
         if (!blockNode)
             throw parserException(lex.line, lex.col, L"expected a code block");
 
-        return {AST::treeKind::lambdaDefinition, (vec<AST>) {passVarsBase, argumentsNode, blockNode}};
+        return {AST::treeKind::lambdaDefinition, lex.line, lex.col, (vec<AST>) {passVarsBase, argumentsNode, blockNode}};
     }
 
     AST parser::parseFunctionDefinition() {
@@ -234,7 +235,7 @@ namespace rex {
             throw parserException(lex.line, lex.col, L"expected a '(' to open a Arguments node");
         lex.scan();
 
-        AST argumentsNode = {AST::treeKind::arguments, (vec<AST>) {}};
+        AST argumentsNode = {AST::treeKind::arguments, lex.line, lex.col, (vec<AST>) {}};
         AST temp = parseIdentifier();
         while (temp) {
             argumentsNode.child.push_back(temp);
@@ -253,7 +254,7 @@ namespace rex {
         if (!blockNode)
             throw parserException(lex.line, lex.col, L"expected a code block");
 
-        return {AST::treeKind::functionDefinition, (vec<AST>) {argumentsNode, blockNode}};
+        return {AST::treeKind::functionDefinition, lex.line, lex.col, (vec<AST>) {argumentsNode, blockNode}};
     }
 
     AST parser::parseMemberExpression() {
@@ -267,7 +268,7 @@ namespace rex {
         if (!vRhs)
             throw parserException(lex.line, lex.col, L"expected a right-hand-side node after `.`");
         while (lex.curToken.kind == lexer::token::tokenKind::dot) {
-            vLhs = {AST::treeKind::memberExpression, {vLhs, vRhs}};
+            vLhs = {AST::treeKind::memberExpression, lex.line, lex.col, {vLhs, vRhs}};
             lex.scan();
             vRhs = parseSubscriptExpression();
             if (!vRhs) {
@@ -275,7 +276,7 @@ namespace rex {
             }
         }
         if (vRhs)
-            vLhs = {AST::treeKind::memberExpression, {vLhs, vRhs}};
+            vLhs = {AST::treeKind::memberExpression, lex.line, lex.col, {vLhs, vRhs}};
         return vLhs;
     }
 
@@ -336,7 +337,7 @@ namespace rex {
             }
 
             lex.dropState();
-            return {AST::treeKind::uniqueExpression, (vec<AST>) {vOperator, vItem}};
+            return {AST::treeKind::uniqueExpression, lex.line, lex.col, (vec<AST>) {vOperator, vItem}};
         } else {
             AST vItem = parseMemberExpression();
             if (!vItem) {
@@ -365,7 +366,7 @@ namespace rex {
                lex.curToken.kind == lexer::token::tokenKind::slash or
                lex.curToken.kind == lexer::token::tokenKind::percentSign) {
             vOp = (AST) {AST::treeKind::operators, lex.curToken};
-            vLhs = {AST::treeKind::multiplicationExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::multiplicationExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
             lex.scan();
             vRhs = parseUniqueExpression();
             if (!vRhs) {
@@ -373,7 +374,7 @@ namespace rex {
             }
         }
         if (vRhs)
-            vLhs = {AST::treeKind::multiplicationExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::multiplicationExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
@@ -388,7 +389,7 @@ namespace rex {
         AST vRhs = parseMultiplicationExpression();
         while (lex.curToken.kind == lexer::token::tokenKind::plus or
                lex.curToken.kind == lexer::token::tokenKind::minus) {
-            vLhs = {AST::treeKind::additionExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::additionExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
             vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
             vRhs = parseMultiplicationExpression();
@@ -397,7 +398,7 @@ namespace rex {
             }
         }
         if (vRhs)
-            vLhs = {AST::treeKind::additionExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::additionExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
@@ -413,7 +414,7 @@ namespace rex {
         AST vRhs = parseAdditionExpression();
         while (lex.curToken.kind == lexer::token::tokenKind::binaryShiftLeft or
                lex.curToken.kind == lexer::token::tokenKind::binaryShiftRight) {
-            vLhs = {AST::treeKind::binaryShiftExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::binaryShiftExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
             vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
             vRhs = parseAdditionExpression();
@@ -422,7 +423,7 @@ namespace rex {
             }
         }
         if (vRhs)
-            vLhs = {AST::treeKind::binaryShiftExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::binaryShiftExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
@@ -446,7 +447,7 @@ namespace rex {
                lex.curToken.kind == lexer::token::tokenKind::lessEqual or
                lex.curToken.kind == lexer::token::tokenKind::greaterThan or
                lex.curToken.kind == lexer::token::tokenKind::lessThan) {
-            vLhs = {AST::treeKind::logicEqualExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::logicEqualExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
             vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
             vRhs = parseBinaryShiftExpression();
@@ -455,7 +456,7 @@ namespace rex {
             }
         }
         if (vRhs)
-            vLhs = {AST::treeKind::logicEqualExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::logicEqualExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
@@ -473,7 +474,7 @@ namespace rex {
         while (lex.curToken.kind == lexer::token::tokenKind::binaryAnd or
                lex.curToken.kind == lexer::token::tokenKind::binaryOr or
                lex.curToken.kind == lexer::token::tokenKind::binaryXor) {
-            vLhs = {AST::treeKind::binaryExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::binaryExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
             vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
             vRhs = parseLogicEqualExpression();
@@ -482,7 +483,7 @@ namespace rex {
             }
         }
         if (vRhs)
-            vLhs = {AST::treeKind::binaryExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::binaryExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
@@ -498,7 +499,7 @@ namespace rex {
         AST vRhs = parseBinaryExpression();
         while (lex.curToken.kind == lexer::token::tokenKind::logicAnd or
                lex.curToken.kind == lexer::token::tokenKind::logicOr) {
-            vLhs = {AST::treeKind::logicAndExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::logicAndExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
             vOp = {AST::treeKind::operators, lex.curToken};
             lex.scan();
             vRhs = parseBinaryExpression();
@@ -507,7 +508,7 @@ namespace rex {
             }
         }
         if (vRhs)
-            vLhs = {AST::treeKind::logicAndExpression, {vLhs, vOp, vRhs}};
+            vLhs = {AST::treeKind::logicAndExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
         return vLhs;
     }
 
@@ -539,7 +540,7 @@ namespace rex {
         }
 
         lex.dropState();
-        return {AST::treeKind::assignmentExpression, {vLhs, vOp, vRhs}};
+        return {AST::treeKind::assignmentExpression, lex.line, lex.col, {vLhs, vOp, vRhs}};
     }
 
     AST parser::parseBlockStmt() {
@@ -547,7 +548,7 @@ namespace rex {
             return makeNotMatch();
         }
         lex.scan();
-        AST base = {AST::treeKind::blockStmt, (vec<AST>) {}};
+        AST base = {AST::treeKind::blockStmt, lex.line, lex.col, (vec<AST>) {}};
         AST stmt = parseStmts();
         while (stmt) {
             if (lex.curToken.kind != lexer::token::tokenKind::semicolon) {
@@ -582,7 +583,7 @@ namespace rex {
             return makeNotMatch();
         }
         lex.scan();
-        AST base{AST::treeKind::letStmt, (vec<AST>) {}};
+        AST base{AST::treeKind::letStmt, lex.line, lex.col, (vec<AST>) {}};
         AST lhs, rhs;
         while (true) {
             lhs = parseIdentifier();
@@ -599,7 +600,7 @@ namespace rex {
                 throw parserException(lex.line, lex.col, L"expected `=`");
             }
 
-            base.child.push_back((AST) {AST::treeKind::letAssignmentPair, (vec<AST>) {lhs, rhs}});
+            base.child.push_back((AST) {AST::treeKind::letAssignmentPair, lex.line, lex.col, (vec<AST>) {lhs, rhs}});
 
             if (lex.curToken.kind != lexer::token::tokenKind::comma)
                 break;
@@ -630,7 +631,7 @@ namespace rex {
         if (!stmt)
             throw parserException(lex.line, lex.col, L"expected statements after `)`");
 
-        return {AST::treeKind::whileStmt, (vec<AST>) {condition, stmt}};
+        return {AST::treeKind::whileStmt, lex.line, lex.col, (vec<AST>) {condition, stmt}};
     }
 
     AST parser::parseForStmt() {
@@ -671,7 +672,7 @@ namespace rex {
         if (!stmt)
             throw parserException(lex.line, lex.col, L"expected a statement after the `)`");
 
-        return {AST::treeKind::forStmt, {initializationStmt, condition, updateStmt, stmt}};
+        return {AST::treeKind::forStmt, lex.line, lex.col, {initializationStmt, condition, updateStmt, stmt}};
     }
 
     AST parser::parseRangeBasedForStmt() {
@@ -704,7 +705,7 @@ namespace rex {
         if (!stmt)
             throw parserException(lex.line, lex.col, L"expected statements after `)`");
 
-        return {AST::treeKind::rangeBasedForStmt, {identifier, expression, stmt}};
+        return {AST::treeKind::rangeBasedForStmt, lex.line, lex.col, {identifier, expression, stmt}};
     }
 
     AST parser::parseIfStmt() {
@@ -729,14 +730,14 @@ namespace rex {
             throw parserException(lex.line, lex.col, L"expected statements after `)`");
 
         if (lex.curToken.kind != lexer::token::tokenKind::kElse)
-            return {AST::treeKind::ifStmt, (vec<AST>) {condition, stmt}};
+            return {AST::treeKind::ifStmt, lex.line, lex.col, (vec<AST>) {condition, stmt}};
         lex.scan();
 
         AST elseStmt = parseStmts();
         if (!elseStmt)
             throw parserException(lex.line, lex.col, L"expected statements after `else`");
 
-        return {AST::treeKind::ifElseStmt, {condition, stmt, elseStmt}};
+        return {AST::treeKind::ifElseStmt, lex.line, lex.col, {condition, stmt, elseStmt}};
     }
 
     AST parser::parseReturnStmt() {
@@ -749,7 +750,7 @@ namespace rex {
         if (!result)
             throw parserException(lex.line, lex.col, L"expected LvalueExpressions after `return`");
 
-        return {AST::treeKind::returnStmt, (vec<AST>) {result}};
+        return {AST::treeKind::returnStmt, lex.line, lex.col, (vec<AST>) {result}};
     }
 
     AST parser::parseContinueStmt() {
@@ -830,7 +831,7 @@ namespace rex {
     }
 
     AST parser::parseFile() {
-        AST base = {AST::treeKind::blockStmt, (vec<AST>) {}};
+        AST base = {AST::treeKind::blockStmt, lex.line, lex.col, (vec<AST>) {}};
         AST stmt = parseStmts();
         while (stmt) {
             if (lex.curToken.kind != lexer::token::tokenKind::semicolon) {
@@ -876,7 +877,7 @@ namespace rex {
         AST catchBlock = parseBlockStmt();
         if (!catchBlock)
             throw parserException(lex.line, lex.col, L"expected blockStmt after identifier");
-        return {AST::treeKind::tryCatchStmt, {tryBlock, catchId, catchBlock}};
+        return {AST::treeKind::tryCatchStmt, lex.line, lex.col, {tryBlock, catchId, catchBlock}};
     }
 
     AST parser::parseThrowStmt() {
@@ -886,7 +887,7 @@ namespace rex {
         AST expr = parseLvalueExpression();
         if (!expr)
             throw parserException(lex.line, lex.col, L"expected LvalueExpression after `throw`");
-        return {AST::treeKind::throwStmt, {expr}};
+        return {AST::treeKind::throwStmt, lex.line, lex.col, {expr}};
     }
 
     AST parser::parseFunctionDefStmt() {
@@ -903,7 +904,7 @@ namespace rex {
             throw parserException(lex.line, lex.col, L"expected a '(' to open a Arguments node");
         lex.scan();
 
-        AST argumentsNode = {AST::treeKind::arguments, (vec<AST>) {}};
+        AST argumentsNode = {AST::treeKind::arguments, lex.line, lex.col, (vec<AST>) {}};
         AST temp = parseIdentifier();
         while (temp) {
             argumentsNode.child.push_back(temp);
@@ -922,6 +923,6 @@ namespace rex {
         if (!blockNode)
             throw parserException(lex.line, lex.col, L"expected a code block");
 
-        return {AST::treeKind::functionDefStmt, (vec<AST>) {name, argumentsNode, blockNode}};
+        return {AST::treeKind::functionDefStmt, lex.line, lex.col, (vec<AST>) {name, argumentsNode, blockNode}};
     }
 } // rex

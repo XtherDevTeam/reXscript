@@ -13,13 +13,17 @@ const char *helpMsg = "Usage: rex [--help] [-m module] [file] args\n"
                       "  file          \tspecify the file to be executed\n"
                       "  args              the arguments pass to reXscript as `rexArgs`";
 
-void interactiveShell(rex::managedPtr<rex::environment> &env) {
-    auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
-    env->globalCxt->members[L"__local__"] = moduleCxt;
-    auto interpreter = rex::managePtr(rex::interpreter{env, moduleCxt});
+void interactiveShell(rex::managedPtr<rex::interpreter> &interpreter) {
+    using namespace rex;
+    auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{
+            {L"__path__", managePtr(value{L"<stdin>", stringMethods::getMethodsCxt()})}
+    }});
+
+    interpreter->env->globalCxt->members[L"__local__"] = moduleCxt;
     interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{(rex::vint) 0});
-    interpreter->stack.push_back({moduleCxt, {}});
+    interpreter->stack.push_back({{L"<stdin>", 0, 0}, moduleCxt, {}});
     interpreter->stack.back().pushLocalCxt({});
+
     while (std::cin) {
         std::string buf;
         std::cout << "input> ";
@@ -39,16 +43,19 @@ void interactiveShell(rex::managedPtr<rex::environment> &env) {
             std::cout << "output> " << rex::wstring2string(result.getStr()) << std::endl;
         } catch (rex::signalException &e) {
             std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
+            std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
         } catch (rex::parserException &e) {
             std::cerr << "error> " << e.what() << std::endl;
+            std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
         } catch (std::exception &e) {
             std::cerr << "error> " << e.what() << std::endl;
+            std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
         }
     }
 }
 
-void loadFile(rex::managedPtr<rex::environment> &env, const rex::vstr &path) {
-    auto moduleCxt = rex::importExternModule(env, path, {});
+void loadFile(rex::managedPtr<rex::interpreter> &interpreter, const rex::vstr &path) {
+    auto moduleCxt = rex::importEx(interpreter.get(), path);
 }
 
 void ffiGenerator(const rex::vstr &path) {
@@ -67,33 +74,26 @@ void getArgs(const rex::managedPtr<rex::environment> &env, int argc, const char 
 int main(int argc, const char **argv) {
     rex::rexEnvironmentInstance = rex::getRexEnvironment();
 
+    auto interpreter = rex::managePtr(rex::interpreter{rex::rexEnvironmentInstance, rex::managePtr(rex::value{rex::value::cxtObject{}})});
+
     if (argc == 1) {
-        interactiveShell(rex::rexEnvironmentInstance);
+        interactiveShell(interpreter);
         return 0;
     }
 
-    try {
-        const char **current = argv + 1;
-        if (rex::vbytes{*current} == "-m") {
-            rex::vstr modPath = rex::string2wstring(*(++current));
-            getArgs(rex::rexEnvironmentInstance, argc, argv, ++current);
-            rex::importEx(rex::rexEnvironmentInstance, modPath, {});
-        } else if (rex::vbytes{*current} == "--generate-ffi") {
-            ffiGenerator(rex::string2wstring(*(++current)));
-        } else if (rex::vbytes{*current} == "--help") {
-            std::cout << helpMsg << std::endl;
-        } else {
-            rex::vstr file = rex::string2wstring(*current);
-            getArgs(rex::rexEnvironmentInstance, argc, argv, ++current);
-            loadFile(rex::rexEnvironmentInstance, file);
-        }
-        return 0;
-    } catch (rex::signalException &e) {
-        std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
-    } catch (rex::rexException &e) {
-        std::cerr << "error> " << e.what() << std::endl;
-    } catch (std::exception &e) {
-        std::cerr << "error> " << e.what() << std::endl;
+    const char **current = argv + 1;
+    if (rex::vbytes{*current} == "-m") {
+        rex::vstr modPath = rex::string2wstring(*(++current));
+        getArgs(rex::rexEnvironmentInstance, argc, argv, ++current);
+        rex::importEx(interpreter.get(), modPath);
+    } else if (rex::vbytes{*current} == "--generate-ffi") {
+        ffiGenerator(rex::string2wstring(*(++current)));
+    } else if (rex::vbytes{*current} == "--help") {
+        std::cout << helpMsg << std::endl;
+    } else {
+        rex::vstr file = rex::string2wstring(*current);
+        getArgs(rex::rexEnvironmentInstance, argc, argv, ++current);
+        loadFile(interpreter, file);
     }
     return 0;
 }

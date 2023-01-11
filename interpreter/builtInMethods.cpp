@@ -415,7 +415,7 @@ namespace rex {
             defCxt.insert(*it);
         }
 
-        return rex::importExternModule(in->env, args[0].getStr(), defCxt);
+        return rex::importExternModule(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::rexRequireNativeMod, interpreter, args, passThisPtr) {
@@ -428,7 +428,7 @@ namespace rex {
             defCxt.insert(*it);
         }
 
-        return rex::importNativeModule(in->env, args[0].getStr(), defCxt);
+        return rex::importNativeModule(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::rexRequirePackage, interpreter, args, passThisPtr) {
@@ -436,7 +436,7 @@ namespace rex {
         if (args[0].isRef())
             args[0] = args[0].getRef();
 
-        return rex::importExternPackage(in->env, args[0].getStr());
+        return rex::importExternPackage(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::rexRequire, interpreter, args, passThisPtr) {
@@ -444,12 +444,7 @@ namespace rex {
         if (args[0].isRef())
             args[0] = args[0].getRef();
 
-        value::cxtObject defCxt;
-        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
-            defCxt.insert(*it);
-        }
-
-        return importEx(in->env, args[0].getStr(), defCxt);
+        return importEx(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::format, interpreter, args, passThisPtr) {

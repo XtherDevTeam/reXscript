@@ -9,7 +9,7 @@ namespace rex {
 
     }
 
-    AST::AST(AST::treeKind k, vec<AST> c) : kind(k), leaf(), child(std::move(c)) {
+    AST::AST(AST::treeKind k, vsize line, vsize column, vec<AST> c) : kind(k), leaf(line, column, lexer::token::tokenKind::eof), child(std::move(c)) {
 
     }
 

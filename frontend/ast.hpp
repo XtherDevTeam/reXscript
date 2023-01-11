@@ -60,7 +60,7 @@ namespace rex {
 
         AST(treeKind k, lexer::token l);
 
-        AST(treeKind k, vec<AST> c);
+        AST(treeKind k, vsize line, vsize column, vec<AST> c);
 
         operator bool();
     };

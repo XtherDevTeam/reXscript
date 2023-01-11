@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <utility>
 #include "interpreter.hpp"
 #include "exceptions/signalReturn.hpp"
 #include "builtInMethods.hpp"
@@ -24,12 +25,14 @@ namespace rex {
         localCxt.pop_back();
     }
 
-    environment::stackFrame::stackFrame() : moduleCxt(nullptr), localCxt() {
+    environment::stackFrame::stackFrame(runtimeSourceFileMsg msg) : sourceMsg(std::move(msg)), moduleCxt(nullptr),
+                                                                    localCxt() {
 
     }
 
-    environment::stackFrame::stackFrame(managedPtr<value> &moduleCxt, const vec<value::cxtObject> &localCxt) :
-            moduleCxt(moduleCxt), localCxt(localCxt) {
+    environment::stackFrame::stackFrame(runtimeSourceFileMsg msg, managedPtr<value> &moduleCxt,
+                                        const vec<value::cxtObject> &localCxt) :
+            sourceMsg(std::move(msg)), moduleCxt(moduleCxt), localCxt(localCxt) {
 
     }
 
@@ -40,6 +43,10 @@ namespace rex {
     void environment::stackFrame::backToLocalCxt(vsize idx) {
         while (localCxt.size() > idx)
             localCxt.pop_back();
+    }
+
+    environment::stackFrame::operator vstr() {
+        return L"stack frame at " + (vstr) sourceMsg;
     }
 
     environment::thread::thread() : th(), result() {
@@ -73,7 +80,7 @@ namespace rex {
         try {
             switch (func->kind) {
                 case value::vKind::vFunc: {
-                    stack.push_back({func->getFunc().moduleCxt, {}});
+                    stack.push_back({env->dumpRuntimeSourceFileMsg(func->getFunc()), func->getFunc().moduleCxt, {}});
                     stack.back().pushLocalCxt({});
 
                     if (passThisPtr)
@@ -91,7 +98,8 @@ namespace rex {
                     return {};
                 }
                 case value::vKind::vLambda: {
-                    stack.push_back({func->getLambda().func.moduleCxt, {}});
+                    stack.push_back(
+                            {env->dumpRuntimeSourceFileMsg(func->getLambda()), func->getLambda().func.moduleCxt, {}});
                     stack.back().pushLocalCxt({});
 
                     stack.back().localCxt.back()[L"outer"] = func->getLambda().outerCxt;
@@ -1415,6 +1423,15 @@ namespace rex {
         }
     }
 
+    vstr interpreter::getBacktrace() {
+        vstr result;
+        vsize count{0};
+        for (auto i = stack.rbegin(); i != stack.rend(); i++) {
+            result += L"#" + std::to_wstring(count++) + L" " + (vstr) *i + L"\n";
+        }
+        return result;
+    }
+
     vint spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
                      const vec<value> &args,
                      const managedPtr<value> &passThisPtr) {
@@ -1437,12 +1454,15 @@ namespace rex {
         } catch (rex::signalException &e) {
             std::cerr << "Uncaught exception in thread " << tid << "> " << rex::wstring2string((rex::value) e.get())
                       << std::endl;
+            std::cerr << wstring2string(it->getBacktrace()) << std::endl;
             throw;
         } catch (rex::rexException &e) {
             std::cerr << "Uncaught exception in thread " << tid << "> " << e.what() << std::endl;
+            std::cerr << wstring2string(it->getBacktrace()) << std::endl;
             throw;
         } catch (std::exception &e) {
             std::cerr << "Uncaught exception in thread " << tid << "> " << e.what() << std::endl;
+            std::cerr << wstring2string(it->getBacktrace()) << std::endl;
             throw;
         }
         env->threadPool[tid].setResult(managePtr(value{}));
@@ -1453,5 +1473,18 @@ namespace rex {
         value res = env->threadPool[id].getResult();
         env->threadPool.erase(id);
         return res;
+    }
+
+    environment::runtimeSourceFileMsg environment::dumpRuntimeSourceFileMsg(const value::funcObject &func) {
+        return {func.moduleCxt->members[L"__path__"]->getStr(), func.code.leaf.line, func.code.leaf.col};
+    }
+
+    environment::runtimeSourceFileMsg environment::dumpRuntimeSourceFileMsg(const value::lambdaObject &lambda) {
+        return {lambda.func.moduleCxt->members[L"__path__"]->getStr(), lambda.func.code.leaf.line,
+                lambda.func.code.leaf.col};
+    }
+
+    environment::runtimeSourceFileMsg::operator vstr() {
+        return L"near " + file + L" line " + std::to_wstring(line) + L" column " + std::to_wstring(col);
     }
 } // rex
