@@ -7,7 +7,6 @@ file(GLOB REX_SRC
         frontend/*.cpp
         backend/*.cpp
         interpreter/*.cpp
-        pass/*.cpp
         share/*.cpp
         share/whereami/*.cpp
         exceptions/*.cpp
