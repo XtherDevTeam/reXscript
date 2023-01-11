@@ -75,18 +75,11 @@ jobs:
           path: ${{github.workspace}}/cmake-build-release
 
   build-docs:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Configure doxygen
-        run: brew install doxygen graphviz; mkdir doxygen
-
-      - name: Build
-        run: doxygen ./Doxyfile
-
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
+      - uses: DenverCoder1/doxygen-github-pages-action@v1.2.0
         with:
-          name: docs
-          path: ${{github.workspace}}/doxygen
+          github_token: ${{ secrets.GH_TOKEN }}
+          branch: gh-pages
+          folder: doxygen/html
+          config_file: Doxyfile
