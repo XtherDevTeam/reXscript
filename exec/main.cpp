@@ -55,7 +55,18 @@ void interactiveShell(rex::managedPtr<rex::interpreter> &interpreter) {
 }
 
 void loadFile(rex::managedPtr<rex::interpreter> &interpreter, const rex::vstr &path) {
-    auto moduleCxt = rex::importEx(interpreter.get(), path);
+    try {
+        auto moduleCxt = rex::importEx(interpreter.get(), path);
+    } catch (rex::signalException &e) {
+        std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
+        std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+    } catch (rex::parserException &e) {
+        std::cerr << "error> " << e.what() << std::endl;
+        std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+    } catch (std::exception &e) {
+        std::cerr << "error> " << e.what() << std::endl;
+        std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+    }
 }
 
 void ffiGenerator(const rex::vstr &path) {
@@ -74,7 +85,8 @@ void getArgs(const rex::managedPtr<rex::environment> &env, int argc, const char 
 int main(int argc, const char **argv) {
     rex::rexEnvironmentInstance = rex::getRexEnvironment();
 
-    auto interpreter = rex::managePtr(rex::interpreter{rex::rexEnvironmentInstance, rex::managePtr(rex::value{rex::value::cxtObject{}})});
+    auto interpreter = rex::managePtr(
+            rex::interpreter{rex::rexEnvironmentInstance, rex::managePtr(rex::value{rex::value::cxtObject{}})});
 
     if (argc == 1) {
         interactiveShell(interpreter);

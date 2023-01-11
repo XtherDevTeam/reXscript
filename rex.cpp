@@ -217,12 +217,12 @@ namespace rex {
         std::filesystem::path p(wstring2string(modPath));
         if (p.has_extension()) {
             if (string2wstring(p.extension()) == L".rex") {
-                rex::importExternModule(interpreter, modPath);
+                moduleCxt = rex::importExternModule(interpreter, modPath);
             } else if (string2wstring(p.extension()) == L"." + getDylibSuffix()) {
-                rex::importNativeModule(interpreter, modPath);
+                moduleCxt = rex::importNativeModule(interpreter, modPath);
             }
         } else {
-            importExternPackage(interpreter, modPath);
+            moduleCxt = importExternPackage(interpreter, modPath);
         }
         interpreter->moduleCxt = oldModCxt;
 
