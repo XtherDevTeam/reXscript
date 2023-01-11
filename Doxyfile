@@ -5,6 +5,8 @@ PROJECT_NUMBER         = "dev"
 PROJECT_BRIEF          = "Yet another programming language"
 # 程序文档输出目录
 OUTPUT_DIRECTORY       = doxygen
+
+USE_MDFILE_AS_MAINPAGE = README.md
  
 # 程序文档输入目录 
 INPUT                  = ./frontend         \
