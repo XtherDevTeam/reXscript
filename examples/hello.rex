@@ -213,8 +213,8 @@ let json_test = func() {
 
 let object_iterate_test = func() {
     let s = {a: 1, b: 2, c: [].append("RootCui", "AK", "IOI!"), d: " ".join("RootCui", "AK", "IOI!")};
-    print("objectIterate: \n");
-    objectIterate(s, lambda () -> (k, v) {
+    print("iter.map: \n");
+    iter.map(s, lambda () -> (k, v) {
         print(k, ": ", v, "\n");
     });
     return 0;

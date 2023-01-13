@@ -157,8 +157,6 @@ namespace rex {
 
         nativeFn(hashMap, interpreter, args, passThisPtr);
 
-        nativeFn(objectIterate, interpreter, args, passThisPtr);
-
         nativeFn(type, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
@@ -206,6 +204,16 @@ namespace rex {
         nativeFn(rexStr, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt(vint defaultHashTSize = 256);
+    }
+
+    namespace iterMethods {
+        nativeFn(forEach, interpreter, args, passThisPtr);
+
+        nativeFn(collect, interpreter, args, passThisPtr);
+
+        nativeFn(map, interpreter, args, passThisPtr);
+
+        value::cxtObject getMethodsCxt();
     }
 }
 
