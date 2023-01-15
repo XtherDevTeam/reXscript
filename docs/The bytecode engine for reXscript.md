@@ -38,6 +38,8 @@
 
   压入 Exception Handler，参数为指向 Handler 的 `pushLocalCxt` 命令的偏移量。
 
+  **NOTE: **异常抛出和原来一致，使用 `signalException` 和二进制接口兼容，`interpret` 方法在循环外部捕获异常。当异常发生时，回退到 `try-catch` 语句的 `stackFrame`，执行 `catch` 块。
+
 - `popExceptionHandler param[T=null]`
 
   弹出当前 `Exception Handler`，在 `Try-block` 结束后被生成。
@@ -49,6 +51,10 @@
 - `ret`
 
   将栈顶的元素作为返回值，退出函数执行。
+
+- `duplicate`
+
+  复制栈顶元素
 
 - `find param[T=gcpString]`
 
@@ -72,7 +78,7 @@
 
   对应原 `interpreter` 的 `opXXX` 系列命令。取出指定数量的值进行计算后将值压入栈
 
-- `assign param[T=gcpString]`
+- `assign`
 
   取出栈顶的值，将其赋值给此时栈顶的值。
 
@@ -96,7 +102,7 @@
 
   压入 `null` 型常量
   
-- `stringNew param[T=gcpString]`
+- `stringNew param[T=uint]`
 
   从常量池中创建 `string` 对象
   
@@ -115,4 +121,15 @@
 - `lambdaNew param[T=int]`
 
   从栈顶获取一个 `funcObject`，作为函数体，再获取指定数量个 `gcpIndex` 作为 `gcpString` 为 `outerArgs` 的标识符。
+  
+- `putName param[T=uint]`
 
+  将一个标识符以值的形式压入栈中
+  
+- `throw param[T=null]`
+
+  将栈顶作为异常值抛出
+
+- `popTop param[T=null]`
+
+  将栈顶元素弹出

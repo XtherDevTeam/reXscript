@@ -28,3 +28,4 @@ endif ()
 
 
 add_executable(rex exec/main.cpp ${REX_SRC})
+add_executable(test exec/test.cpp ${REX_SRC})
