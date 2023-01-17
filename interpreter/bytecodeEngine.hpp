@@ -13,18 +13,6 @@
 
 namespace rex::bytecodeEngine {
     struct environment {
-        struct runtimeSourceFileMsg {
-            vstr file;
-            vsize line;
-            vsize col;
-
-            operator vstr();
-        };
-
-        static runtimeSourceFileMsg dumpRuntimeSourceFileMsg(const value::funcObject &func);
-
-        static runtimeSourceFileMsg dumpRuntimeSourceFileMsg(const value::lambdaObject &lambda);
-
         /**
          * @brief Represents a stack frame for a function call
          */
@@ -39,7 +27,9 @@ namespace rex::bytecodeEngine {
              */
             vec<value::cxtObject> localCxt;
 
-            runtimeSourceFileMsg sourceMsg;
+            codeStruct *currentCodeStruct{};
+
+            uint64_t programCounter{};
 
             /**
              * @brief Pushes a new local variable context into the local variable context list
@@ -64,9 +54,9 @@ namespace rex::bytecodeEngine {
              */
             void backToLocalCxt(vsize idx);
 
-            stackFrame(runtimeSourceFileMsg msg);
+            stackFrame();
 
-            stackFrame(runtimeSourceFileMsg msg, managedPtr<value> &moduleCxt, const vec<value::cxtObject> &localCxt);
+            stackFrame(const managedPtr<value> &moduleCxt, const vec<value::cxtObject> &localCxt, codeStruct *code);
 
             operator vstr();
         };
@@ -129,13 +119,6 @@ namespace rex::bytecodeEngine {
          * @brief A counter for generating unique thread IDs
          */
         vint threadIdCounter{1};
-
-        /**
-         * @brief global executable bytecode structs
-         */
-        vec<managedPtr<codeStruct>> codeStructs;
-
-        uint64_t putCodeStruct(const managedPtr<codeStruct> &v);
     };
 
     extern managedPtr<environment> rexEnvironmentInstance;
@@ -211,6 +194,91 @@ namespace rex::bytecodeEngine {
         void buildStmt(const AST &target);
 
         void buildExpr(const AST &target);
+    };
+
+    class interpreter {
+    public:
+        struct state {
+            uint64_t frame;
+            uint64_t localCxt;
+            uint64_t program;
+            uint64_t evalStack;
+        };
+
+        managedPtr<environment> env;
+        vec<environment::stackFrame> callStack;
+        managedPtr<value> interpreterCxt;
+        managedPtr<value> moduleCxt;
+        vec<value> evalStack;
+        vec<state> exceptionHandlers;
+
+        /**
+         * @brief ABI interface for native functions
+         * @warning THIS FUNCTION WILL BREAK THE SIGNLE-INTERPRET-FUNCTION RULE, ONLY FOR FORIGN INTERFACES
+         */
+        value invokeFunc(const managedPtr<value> &func, const vec<value> &args, const managedPtr<value> &passThisPtr);
+
+        /**
+         * @brief throw error in native functions
+         * @note interpreter will make a wrapper for the exceptions in native functions, and make sure it could be catch by internal exception handler
+         * @warning DO NOT TRY TO CATCH THE EXCEPTION BY YOURSELF, IT WILL BREAK THE STACK FRAMES.
+         * @param err the error to throw
+         */
+        static void throwErr(const value &err);
+
+        static value makeErr(const vstr &errName, const vstr &errMsg);
+
+        void execute(const bytecodeStruct &op);
+
+        void interpret();
+
+        interpreter() = default;
+
+        interpreter(const managedPtr<environment> &env, const managedPtr<value>& interpreterCxt, const managedPtr<value> &moduleCxt);
+
+        void restoreState(const state &s);
+
+        bytecodeModule getBytecodeModule();
+
+        value opAdd(value &a, value &b);
+
+        value opSub(value &a, value &b);
+
+        value opMul(value &a, value &b);
+
+        value opDiv(value &a, value &b);
+
+        value opMod(value &a, value &b);
+
+        value opBinaryShiftLeft(value &a, value &b);
+
+        value opBinaryShiftRight(value &a, value &b);
+
+        value opEqual(value &a, value &b);
+
+        value opNotEqual(value &a, value &b);
+
+        value opGreaterEqual(value &a, value &b);
+
+        value opLessEqual(value &a, value &b);
+
+        value opGreaterThan(value &a, value &b);
+
+        value opLessThan(value &a, value &b);
+
+        value opBinaryOr(value &a, value &b);
+
+        value opBinaryAnd(value &a, value &b);
+
+        value opBinaryXor(value &a, value &b);
+
+        value opLogicAnd(value &a, value &b);
+
+        value opLogicOr(value &a, value &b);
+
+        value opIncrement(value &a);
+
+        value opDecrement(value &a);
     };
 }
 

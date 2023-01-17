@@ -8,14 +8,13 @@
 #include <utility>
 #include <iomanip>
 #include "exceptions/rexException.hpp"
-#include <rex.hpp>
 
 namespace rex {
     value::funcObject::funcObject() : argsName(), code() {
 
     }
 
-    value::funcObject::funcObject(const managedPtr<value> &moduleCxt, const vec<vstr> &argsName, AST code) :
+    value::funcObject::funcObject(const managedPtr<value> &moduleCxt, const vec<vstr> &argsName, managedPtr<bytecodeEngine::codeStruct> code) :
             moduleCxt(moduleCxt), argsName(argsName), code(std::move(code)) {
 
     }
@@ -43,6 +42,7 @@ namespace rex {
             case vKind::vNull:
             case vKind::vNativeFuncPtr:
             case vKind::vRef:
+            case vKind::vBytecodeModule:
                 break;
             case vKind::vLinkedListIter: {
                 dest.linkedListIterObj = managePtr(*linkedListIterObj);
@@ -264,6 +264,9 @@ namespace rex {
             case vKind::vLinkedListIter:
                 ss << L"<linkedListIter addr=" << &linkedListIterObj << ">";
                 break;
+            case vKind::vBytecodeModule:
+                ss << L"<bytecodeModule addr=" << &linkedListIterObj << ">";
+                break;
             case vKind::vRef:
                 ss << (vstr) {getRef()};
                 break;
@@ -355,18 +358,16 @@ namespace rex {
                 return L"linkedList";
             case vKind::vLinkedListIter:
                 return L"linkedListIter";
+            case vKind::vBytecodeModule:
+                return L"bytecodeModule";
         }
     }
 
-    value::~value() {
-        if (kind == vKind::vObject) {
-            if (auto it = members.find(L"finalize"); it != members.end()) {
-                if (it->second->basicValue.vInt != 0x114514ccf) {
-                    auto in = managePtr(interpreter{rexEnvironmentInstance, {}});
-                    it->second->basicValue.vInt = 0x114514ccf;
-                    in->invokeFunc(it->second, {}, managePtr(*this));
-                }
-            }
-        }
+    value::value(const managedPtr<bytecodeEngine::bytecodeModule> &v) : kind(vKind::vBytecodeModule), bytecodeModule(v) {
+
+    }
+
+    bytecodeEngine::bytecodeModule &value::getBytecodeModule() {
+        return *bytecodeModule;
     }
 } // rex

@@ -3,7 +3,7 @@
 //
 
 #include <fstream>
-#include <share/dlfcn.hpp>
+#include "share/dlfcn.hpp"
 #include "rex.hpp"
 #include "exceptions/signalException.hpp"
 #include "exceptions/endOfFileException.hpp"

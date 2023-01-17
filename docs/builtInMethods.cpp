@@ -6,18 +6,15 @@
 
 #include <iostream>
 #include <iomanip>
-#include <thread>
 #include "builtInMethods.hpp"
-#include "interpreter/bytecodeEngine.hpp"
-//#include "rex.hpp"
+#include "interpreter/interpreter.hpp"
+#include "rex.hpp"
 #include "exceptions/signalException.hpp"
 #include "share/share.hpp"
 #include "exceptions/signalBreak.hpp"
 #include "exceptions/signalContinue.hpp"
 
 namespace rex {
-    using namespace bytecodeEngine;
-
     value::cxtObject stringMethods::getMethodsCxt() {
         value::cxtObject result;
         result[L"substr"] = managePtr(value{(value::nativeFuncPtr) substr});
@@ -52,7 +49,8 @@ namespace rex {
                 return {passThisPtr->getStr().substr(args[0].getInt(), args[1].getInt()), getMethodsCxt()};
             }
             default: {
-                bytecodeEngine::interpreter::throwErr(rex::interpreter::makeErr(L"argumentsError", L"substr() expected one or two arguments"));
+                throw rex::signalException(
+                        rex::interpreter::makeErr(L"argumentsError", L"substr() expected one or two arguments"));
             }
         }
     }
@@ -307,7 +305,7 @@ namespace rex {
                 if (auto it = element.members.find(L"rexHash"); it != element.members.end()) {
                     return in->invokeFunc(it->second, {}, args[0].isRef() ? args[0].refObj : managePtr(args[0]));
                 } else {
-                    bytecodeEngine::interpreter::throwErr(interpreter::makeErr(L"hashError", L"`rexHash` not implemented"));
+                    throw signalException(interpreter::makeErr(L"hashError", L"`rexHash` not implemented"));
                 }
         }
     }
@@ -400,45 +398,45 @@ namespace rex {
     }
 
     nativeFn(globalMethods::rexRequireMod, interpreter, args, passThisPtr) {
-//        auto *in = (rex::interpreter *) interpreter;
-//        if (args[0].isRef())
-//            args[0] = args[0].getRef();
-//
-//        value::cxtObject defCxt;
-//        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
-//            defCxt.insert(*it);
-//        }
-//
-//        return rex::importExternModule(in, args[0].getStr());
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        value::cxtObject defCxt;
+        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
+            defCxt.insert(*it);
+        }
+
+        return rex::importExternModule(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::rexRequireNativeMod, interpreter, args, passThisPtr) {
-//        auto *in = (rex::interpreter *) interpreter;
-//        if (args[0].isRef())
-//            args[0] = args[0].getRef();
-//
-//        value::cxtObject defCxt;
-//        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
-//            defCxt.insert(*it);
-//        }
-//
-//        return rex::importNativeModule(in, args[0].getStr());
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        value::cxtObject defCxt;
+        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
+            defCxt.insert(*it);
+        }
+
+        return rex::importNativeModule(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::rexRequirePackage, interpreter, args, passThisPtr) {
-//        auto *in = (rex::interpreter *) interpreter;
-//        if (args[0].isRef())
-//            args[0] = args[0].getRef();
-//
-//        return rex::importExternPackage(in, args[0].getStr());
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        return rex::importExternPackage(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::rexRequire, interpreter, args, passThisPtr) {
-//        auto *in = (rex::interpreter *) interpreter;
-//        if (args[0].isRef())
-//            args[0] = args[0].getRef();
-//
-//        return importEx(in, args[0].getStr());
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        return importEx(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::format, interpreter, args, passThisPtr) {
@@ -499,10 +497,10 @@ namespace rex {
                             }
                         }
                         if (*ch != L'}')
-                            bytecodeEngine::interpreter::throwErr(
+                            throw signalException(
                                     interpreter::makeErr(L"formatError", L"expected `}` after the formatter tag"));
                     } else {
-                        bytecodeEngine::interpreter::throwErr(interpreter::makeErr(L"formatError", L"invalid formatter tag"));
+                        throw signalException(interpreter::makeErr(L"formatError", L"invalid formatter tag"));
                     }
                 }
             } else {
@@ -567,19 +565,19 @@ namespace rex {
     }
 
     nativeFn(threadingMethods::start, interpreter, args, passThisPtr) {
-//        auto in = static_cast<rex::interpreter *>(interpreter);
-//        vec<value> thArgs;
-//        for (vint i = 1; i < args.size(); i++) {
-//            value temp;
-//            args[i].deepCopy(temp);
-//            thArgs.push_back(temp);
-//        }
-//        return {spawnThread(in->env, in->moduleCxt, args[0].isRef() ? args[0].refObj : managePtr(args[0]), thArgs)};
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        vec<value> thArgs;
+        for (vint i = 1; i < args.size(); i++) {
+            value temp;
+            args[i].deepCopy(temp);
+            thArgs.push_back(temp);
+        }
+        return {spawnThread(in->env, in->moduleCxt, args[0].isRef() ? args[0].refObj : managePtr(args[0]), thArgs)};
     }
 
     nativeFn(threadingMethods::wait, interpreter, args, passThisPtr) {
-//        auto in = static_cast<rex::interpreter *>(interpreter);
-//        return waitForThread(in->env, args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt());
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        return waitForThread(in->env, args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt());
     }
 
     nativeFn(threadingMethods::sleep, interpreter, args, passThisPtr) {
@@ -851,7 +849,7 @@ namespace rex {
                 return kvPair->getVec()[2];
             }
         }
-        bytecodeEngine::interpreter::throwErr(interpreter::makeErr(L"mappingError", L"undefined key: " + vstr{key}));
+        throw signalException(interpreter::makeErr(L"mappingError", L"undefined key: " + vstr{key}));
     }
 
     nativeFn(hashMapMethods::rexIter, interpreter, args, passThisPtr) {
@@ -937,90 +935,90 @@ namespace rex {
     }
 
     nativeFn(iterMethods::collect, interpreter, args, passThisPtr) {
-//        auto in = static_cast<rex::interpreter *>(interpreter);
-//
-//        std::shared_ptr<value> obj = args[0].isRef() ? args[0].refObj : managePtr(args[0]);
-//
-//        std::shared_ptr<value> rexIter;
-//        if (auto it = obj->members.find(L"rexIter"); it != obj->members.end()) {
-//            rexIter = it->second;
-//        } else {
-//            throw signalException(interpreter::makeErr(L"internalError", L"undefined identifier: `rexIter`"));
-//        }
-//
-//        std::shared_ptr<value> rIter = managePtr(in->invokeFunc(rexIter, {}, obj));
-//        if (rIter->isRef())
-//            rIter = rIter->refObj;
-//
-//        auto cxtIdx = in->stack.back().getCurLocalCxtIdx();
-//
-//        std::shared_ptr<value> itNext;
-//
-//        if (auto it = rIter->members.find(L"next"); it != rIter->members.end())
-//            itNext = it->second;
-//        else
-//            throw signalException(interpreter::makeErr(L"internalError", L"undefined identifier: `next`"));
-//
-//        value result{value::vecObject{}, vecMethods::getMethodsCxt()};
-//
-//        while (true) {
-//            try {
-//                if (auto val = in->invokeFunc(itNext, {}, rIter); val.isRef())
-//                    result.getVec().push_back(val.refObj);
-//                else
-//                    result.getVec().push_back(managePtr(val));
-//            } catch (const signalBreak &e) {
-//                in->backToStackIdx(cxtIdx);
-//                break;
-//            }
-//        }
-//
-//        return result;
+        auto in = static_cast<rex::interpreter *>(interpreter);
+
+        std::shared_ptr<value> obj = args[0].isRef() ? args[0].refObj : managePtr(args[0]);
+
+        std::shared_ptr<value> rexIter;
+        if (auto it = obj->members.find(L"rexIter"); it != obj->members.end()) {
+            rexIter = it->second;
+        } else {
+            throw signalException(interpreter::makeErr(L"internalError", L"undefined identifier: `rexIter`"));
+        }
+
+        std::shared_ptr<value> rIter = managePtr(in->invokeFunc(rexIter, {}, obj));
+        if (rIter->isRef())
+            rIter = rIter->refObj;
+
+        auto cxtIdx = in->stack.back().getCurLocalCxtIdx();
+
+        std::shared_ptr<value> itNext;
+
+        if (auto it = rIter->members.find(L"next"); it != rIter->members.end())
+            itNext = it->second;
+        else
+            throw signalException(interpreter::makeErr(L"internalError", L"undefined identifier: `next`"));
+
+        value result{value::vecObject{}, vecMethods::getMethodsCxt()};
+
+        while (true) {
+            try {
+                if (auto val = in->invokeFunc(itNext, {}, rIter); val.isRef())
+                    result.getVec().push_back(val.refObj);
+                else
+                    result.getVec().push_back(managePtr(val));
+            } catch (const signalBreak &e) {
+                in->backToStackIdx(cxtIdx);
+                break;
+            }
+        }
+
+        return result;
     }
 
     nativeFn(iterMethods::forEach, interpreter, args, passThisPtr) {
-//        auto in = static_cast<rex::interpreter *>(interpreter);
-//
-//        auto obj = args[0].isRef() ? args[0].refObj : managePtr(args[0]);
-//        auto callback = args[1].isRef() ? args[1].refObj : managePtr(args[1]);
-//
-//        std::shared_ptr<value> rexIter;
-//        if (auto it = obj->members.find(L"rexIter"); it != obj->members.end()) {
-//            rexIter = it->second;
-//        } else {
-//            throw signalException(interpreter::makeErr(L"internalError", L"undefined identifier: `rexIter`"));
-//        }
-//
-//        std::shared_ptr<value> rIter = managePtr(in->invokeFunc(rexIter, {}, obj));
-//        if (rIter->isRef())
-//            rIter = rIter->refObj;
-//
-//        auto cxtIdx = in->stack.back().getCurLocalCxtIdx();
-//
-//        managedPtr<value> itNext, itVal;
-//
-//        if (auto it = rIter->members.find(L"next"); it != rIter->members.end())
-//            itNext = it->second;
-//        else
-//            throw signalException(interpreter::makeErr(L"internalError", L"undefined identifier: `next`"));
-//
-//        value result{value::vecObject{}, vecMethods::getMethodsCxt()};
-//
-//        while (true) {
-//            try {
-//                if (auto val = in->invokeFunc(itNext, {}, rIter); val.isRef())
-//                    itVal = val.refObj;
-//                else
-//                    itVal = managePtr(val);
-//            } catch (const signalBreak &e) {
-//                in->backToStackIdx(cxtIdx);
-//                break;
-//            }
-//
-//            in->invokeFunc(callback, {itVal}, {});
-//        }
-//
-//        return result;
+        auto in = static_cast<rex::interpreter *>(interpreter);
+
+        auto obj = args[0].isRef() ? args[0].refObj : managePtr(args[0]);
+        auto callback = args[1].isRef() ? args[1].refObj : managePtr(args[1]);
+
+        std::shared_ptr<value> rexIter;
+        if (auto it = obj->members.find(L"rexIter"); it != obj->members.end()) {
+            rexIter = it->second;
+        } else {
+            throw signalException(interpreter::makeErr(L"internalError", L"undefined identifier: `rexIter`"));
+        }
+
+        std::shared_ptr<value> rIter = managePtr(in->invokeFunc(rexIter, {}, obj));
+        if (rIter->isRef())
+            rIter = rIter->refObj;
+
+        auto cxtIdx = in->stack.back().getCurLocalCxtIdx();
+
+        managedPtr<value> itNext, itVal;
+
+        if (auto it = rIter->members.find(L"next"); it != rIter->members.end())
+            itNext = it->second;
+        else
+            throw signalException(interpreter::makeErr(L"internalError", L"undefined identifier: `next`"));
+
+        value result{value::vecObject{}, vecMethods::getMethodsCxt()};
+
+        while (true) {
+            try {
+                if (auto val = in->invokeFunc(itNext, {}, rIter); val.isRef())
+                    itVal = val.refObj;
+                else
+                    itVal = managePtr(val);
+            } catch (const signalBreak &e) {
+                in->backToStackIdx(cxtIdx);
+                break;
+            }
+
+            in->invokeFunc(callback, {itVal}, {});
+        }
+
+        return result;
     }
 }
 #pragma clang diagnostic pop

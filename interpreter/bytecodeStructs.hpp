@@ -90,7 +90,17 @@ namespace rex::bytecodeEngine {
         operator vstr();
     };
 
+    struct runtimeSourceFileMsg {
+        vstr file;
+        vsize line;
+        vsize col;
+
+        operator vstr();
+    };
+
     struct codeStruct {
+        runtimeSourceFileMsg msg;
+
         vec<bytecodeStruct> code;   // code array
         vec<vstr> names;            // names from local and extern
         vec<vstr> stringConsts;     // string constants
@@ -105,7 +115,7 @@ namespace rex::bytecodeEngine {
     struct bytecodeModule {
         uint64_t entryBlock;
 
-        vec<codeStruct> codeStructs;
+        vec<managedPtr<codeStruct>> codeStructs;
 
         uint64_t putCodeStruct(const codeStruct &v);
     };

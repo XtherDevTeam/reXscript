@@ -31,7 +31,7 @@ namespace rex::bytecodeEngine {
             return (uint64_t) (it - stringConsts.begin());
         } else {
             stringConsts.push_back(v);
-            return names.size() - 1;
+            return stringConsts.size() - 1;
         }
     }
 
@@ -48,25 +48,28 @@ namespace rex::bytecodeEngine {
         uint64_t index;
         std::wstringstream ss;
         ss << L"Bytecode:" << std::endl;
-        for (auto &i : code) {
-            ss << "\t" << (vstr) i << std::endl;
+        for (auto &i: code) {
+            ss << "\t" << (vstr)
+            i << std::endl;
         }
         ss << L"\nNames:" << std::endl;
-        index = 0 ;
-        for (auto &i : names) {
+        index = 0;
+        for (auto &i: names) {
             ss << "\t[" << index << "] = " << i << std::endl;
+            index++;
         }
         ss << L"\nStrings:" << std::endl;
-        index = 0 ;
-        for (auto &i : stringConsts) {
+        index = 0;
+        for (auto &i: stringConsts) {
             ss << "\t[" << index << "] = " << std::quoted(i) << std::endl;
+            index++;
         }
         ss << std::endl;
         return ss.str();
     }
 
     uint64_t bytecodeModule::putCodeStruct(const codeStruct &v) {
-        codeStructs.push_back(v);
+        codeStructs.push_back(managePtr(v));
         return codeStructs.size() - 1;
     }
 
@@ -245,5 +248,9 @@ namespace rex::bytecodeEngine {
                 break;
         }
         return ss.str();
+    }
+
+    runtimeSourceFileMsg::operator vstr() {
+        return L"at " + file + L" near line " + std::to_wstring(line) + L" column " + std::to_wstring(col);
     }
 }

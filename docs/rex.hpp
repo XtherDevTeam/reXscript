@@ -6,10 +6,10 @@
 #define REXSCRIPT_REX_HPP
 
 #include <iostream>
-#include <frontend/ast.hpp>
-#include <frontend/parser.hpp>
+#include "frontend/ast.hpp"
+#include "frontend/parser.hpp"
 #include "interpreter/value.hpp"
-#include "interpreter/builtInMethods.hpp"
+#include "docs/builtInMethods.hpp"
 #include "interpreter/interpreter.hpp"
 
 namespace rex {

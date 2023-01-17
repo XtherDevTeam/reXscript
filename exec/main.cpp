@@ -1,8 +1,8 @@
 #include <iostream>
 #include "exceptions/parserException.hpp"
 #include "exceptions/signalException.hpp"
-#include <interpreter/builtInMethods.hpp>
-#include <rex.hpp>
+#include "docs/builtInMethods.hpp"
+#include "docs/rex.hpp"
 #include <ffi/ffi.hpp>
 
 const char *helpMsg = "Usage: rex [--help] [-m module] [file] args\n"

@@ -8,6 +8,7 @@
 #include <list>
 #include "frontend/ast.hpp"
 #include "share/share.hpp"
+#include "bytecodeStructs.hpp"
 
 namespace rex {
     class value {
@@ -20,11 +21,11 @@ namespace rex {
         struct funcObject {
             managedPtr<value> moduleCxt;
             vec<vstr> argsName;
-            AST code;
+            managedPtr<bytecodeEngine::codeStruct> code;
 
             funcObject();
 
-            funcObject(const managedPtr<value> &moduleCxt, const vec<vstr> &argsName, AST code);
+            funcObject(const managedPtr<value> &moduleCxt, const vec<vstr> &argsName, managedPtr<bytecodeEngine::codeStruct> code);
         };
 
         struct lambdaObject {
@@ -51,6 +52,7 @@ namespace rex {
             vRef,
             vLinkedList,
             vLinkedListIter,
+            vBytecodeModule,
         } kind;
 
         union vValue {
@@ -80,6 +82,7 @@ namespace rex {
         managedPtr<nativeFuncPtr> nativeFuncObj;
         managedPtr<linkedListObject> linkedListObj;
         managedPtr<linkedListObject::iterator> linkedListIterObj;
+        managedPtr<bytecodeEngine::bytecodeModule> bytecodeModule;
 
         // members
         cxtObject members;
@@ -105,6 +108,8 @@ namespace rex {
 
         linkedListObject &getLinkedList();
 
+        bytecodeEngine::bytecodeModule &getBytecodeModule();
+
         vstr &getStr();
 
         vbytes &getBytes();
@@ -122,6 +127,8 @@ namespace rex {
         value(const linkedListObject &v, cxtObject members);
 
         value(const linkedListObject::iterator &v);
+
+        value(const managedPtr<bytecodeEngine::bytecodeModule> &v);
 
         value(cxtObject members);
 
@@ -144,8 +151,6 @@ namespace rex {
         value();
 
         vstr getKind();
-
-        ~value();
     };
 
 #define valueKindComparator(x, y) ((vsize)((vsize)(x) << 16) | (vsize)(y))
