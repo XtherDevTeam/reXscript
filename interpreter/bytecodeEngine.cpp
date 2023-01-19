@@ -6,6 +6,7 @@
 #include "exceptions/signalException.hpp"
 #include "builtInMethods.hpp"
 
+#include <iostream>
 #include <utility>
 
 namespace rex::bytecodeEngine {
@@ -1175,7 +1176,7 @@ namespace rex::bytecodeEngine {
                 return ptr;
             }
             default: {
-                if (auto it = a.members.find(L"rexAddAssign"); it != a.members.end())
+                if (auto it = ptr->members.find(L"rexAddAssign"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
                     throwErr(makeErr(L"typeError", L"unsupported operation"));
@@ -1203,7 +1204,7 @@ namespace rex::bytecodeEngine {
                 return ptr;
             }
             default: {
-                if (auto it = a.members.find(L"rexSubAssign"); it != a.members.end())
+                if (auto it = ptr->members.find(L"rexSubAssign"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
                     throwErr(makeErr(L"typeError", L"unsupported operation"));
@@ -1231,7 +1232,7 @@ namespace rex::bytecodeEngine {
                 return ptr;
             }
             default: {
-                if (auto it = a.members.find(L"rexMulAssign"); it != a.members.end())
+                if (auto it = ptr->members.find(L"rexMulAssign"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
                     throwErr(makeErr(L"typeError", L"unsupported operation"));
@@ -1259,7 +1260,7 @@ namespace rex::bytecodeEngine {
                 return ptr;
             }
             default: {
-                if (auto it = a.members.find(L"rexDivAssign"); it != a.members.end())
+                if (auto it = ptr->members.find(L"rexDivAssign"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
                     throwErr(makeErr(L"typeError", L"unsupported operation"));
@@ -1275,7 +1276,7 @@ namespace rex::bytecodeEngine {
                 return ptr;
             }
             default: {
-                if (auto it = a.members.find(L"rexModAssign"); it != a.members.end())
+                if (auto it = ptr->members.find(L"rexModAssign"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
                     throwErr(makeErr(L"typeError", L"unsupported operation"));
@@ -1290,7 +1291,7 @@ namespace rex::bytecodeEngine {
                 return ptr->getVec()[a.getInt()];
             case value::vKind::vObject:
             default:
-                if (auto it = a.members.find(L"rexIndex"); it != a.members.end())
+                if (auto it = ptr->members.find(L"rexIndex"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
                     return (*ptr)[a.getStr()];
@@ -1380,7 +1381,8 @@ namespace rex::bytecodeEngine {
         callStack.back().programCounter = s.program;
     }
 
-    void interpreter::execute(const bytecodeStruct &op) {
+    void interpreter::execute(bytecodeStruct &op) {
+        std::cout << wstring2string(op) << std::endl;
         switch (op.opcode) {
             case bytecodeStruct::opCode::pushLocalCxt:
                 callStack.back().localCxt.emplace_back();
@@ -1400,6 +1402,7 @@ namespace rex::bytecodeEngine {
                     evalStack.pop_back();
                 } else {
                     evalStack.pop_back();
+                    nextOp;
                 }
                 break;
             }
@@ -1409,6 +1412,7 @@ namespace rex::bytecodeEngine {
                     evalStack.pop_back();
                 } else {
                     evalStack.pop_back();
+                    nextOp;
                 }
                 break;
             }
@@ -1454,24 +1458,22 @@ namespace rex::bytecodeEngine {
                     if (auto it = iter->find(str); it != iter->end()) {
                         evalStack.emplace_back(it->second);
                         nextOp;
-                        break;
+                        return;
                     }
                 }
                 if (auto it = callStack.back().moduleCxt->members.find(str);
                         it != callStack.back().moduleCxt->members.end()) {
                     evalStack.emplace_back(it->second);
                     nextOp;
-                    break;
-                }
-                if (auto it = interpreterCxt->members.find(str); it != interpreterCxt->members.end()) {
+                    return;
+                } else if (it = interpreterCxt->members.find(str); it != interpreterCxt->members.end()) {
                     evalStack.emplace_back(it->second);
                     nextOp;
-                    break;
-                }
-                if (auto it = env->globalCxt->members.find(str); it != env->globalCxt->members.end()) {
+                    return;
+                } else if (it = env->globalCxt->members.find(str); it != env->globalCxt->members.end()) {
                     evalStack.emplace_back(it->second);
                     nextOp;
-                    break;
+                    return;
                 }
                 // TODO: ERR
                 nextOp;
@@ -1844,9 +1846,15 @@ namespace rex::bytecodeEngine {
             }
             case bytecodeStruct::opCode::deepCopy: {
                 value dest;
-                (evalStack.back().isRef() ? evalStack.back().getRef() : evalStack.back()).deepCopy(dest);
-                evalStack.pop_back();
-                evalStack.push_back(dest);
+                value &src = eleGetRef(evalStack.back());
+                if (auto it = src.members.find(L"rexClone"); it != src.members.end()) {
+                    dest = invokeFunc(it->second, {}, eleRefObj(evalStack.back()));
+                    evalStack.push_back(eleGetRef(dest));
+                } else {
+                    src.deepCopy(dest);
+                    evalStack.pop_back();
+                    evalStack.push_back(dest);
+                }
                 nextOp;
                 break;
             }
@@ -1941,5 +1949,9 @@ namespace rex::bytecodeEngine {
     value interpreter::invokeNativeFn(const managedPtr<value> &func, const vec<value> &args,
                                       const managedPtr<value> &passThisPtr) {
         return (*func->nativeFuncObj)((void *) this, args, passThisPtr);
+    }
+
+    value interpreter::makeIt(const managedPtr<value> &left, bool isEnd) {
+        return {vec<managedPtr<value>>{left, managePtr(value{isEnd})}, vecMethods::getMethodsCxt()};
     }
 }

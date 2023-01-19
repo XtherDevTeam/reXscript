@@ -228,7 +228,9 @@ namespace rex::bytecodeEngine {
 
         static value makeErr(const vstr &errName, const vstr &errMsg);
 
-        void execute(const bytecodeStruct &op);
+        static value makeIt(const managedPtr<value> &left, bool isEnd);
+
+        void execute(bytecodeStruct &op);
 
         void interpret();
 

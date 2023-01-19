@@ -36,6 +36,7 @@ void dis() {
         cb.buildStmt(ast);
 
         interpreter.callStack.back().currentCodeStruct = &cs;
+        interpreter.callStack.back().programCounter = 0;
         std::cout << rex::wstring2string(cs) << std::endl;
 
         interpreter.interpret();

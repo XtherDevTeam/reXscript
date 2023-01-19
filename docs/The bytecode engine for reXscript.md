@@ -133,3 +133,41 @@
 - `popTop param[T=null]`
 
   将栈顶元素弹出
+
+```js
+let iterable = {
+  rexIter: func () {
+    return {
+  	  cur: 0,
+			end: 100,
+  		next: func() {
+        if (this.cur == this.end) {
+          return [this.cur, true];
+        } else {
+          ++this.cur;
+          return [this.cur, false];
+        }
+      }
+		};
+  }
+};
+forEach(i in iterable) {
+  print(i);
+}
+----------------------
+intConst 3
+intConst 2
+intConst 1
+arrayNew 3
+createOrAssign arr
+find arr
+forEach <end-addr>
+pushLocalCxt
+createOrAssign i
+find i
+find print
+invoke 1
+popLocalCxt
+
+```
+
