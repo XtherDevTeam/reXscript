@@ -7,9 +7,16 @@
 #include <frontend/parser.hpp>
 #include <interpreter/bytecodeStructs.hpp>
 #include <interpreter/bytecodeEngine.hpp>
+#include <interpreter/builtInMethods.hpp>
 
 void dis() {
-    rex::bytecodeEngine::bytecodeModule bm;
+    auto bm = rex::managePtr(rex::bytecodeEngine::bytecodeModule{});
+    auto mod = rex::managePtr(rex::value{});
+    mod->members[L"__code__"] = rex::managePtr(rex::value{bm});
+    rex::bytecodeEngine::rexEnvironmentInstance->globalCxt = rex::managePtr(
+            rex::value{rex::globalMethods::getMethodsCxt()});
+    rex::bytecodeEngine::interpreter interpreter{rex::bytecodeEngine::rexEnvironmentInstance,
+                                                 rex::managePtr(rex::value{}), mod};
     while (std::cin) {
         std::string buf;
         std::cout << "input> ";
@@ -25,13 +32,17 @@ void dis() {
         rex::AST ast = parser.parseStmts();
 
         rex::bytecodeEngine::codeStruct cs;
-        rex::bytecodeEngine::codeBuilder cb(bm, cs);
+        rex::bytecodeEngine::codeBuilder cb(*bm, cs);
         cb.buildStmt(ast);
+
+        interpreter.callStack.back().currentCodeStruct = &cs;
         std::cout << rex::wstring2string(cs) << std::endl;
+
+        interpreter.interpret();
     }
 }
 
-int main () {
+int main() {
     dis();
     return 0;
 }

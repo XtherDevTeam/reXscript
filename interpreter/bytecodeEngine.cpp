@@ -104,10 +104,10 @@ namespace rex::bytecodeEngine {
     }
 
     void codeBuilder::buildInvokeExpr(const AST &target) {
-        buildExpr(target.child[0]);
         std::for_each(target.child[1].child.rbegin(), target.child[1].child.rend(), [&](const AST &ast) {
             buildExpr(ast);
         });
+        buildExpr(target.child[0]);
         currentBlock.code.push_back({bytecodeStruct::opCode::invoke, {(uint64_t) target.child[1].child.size()}});
     }
 
@@ -173,15 +173,15 @@ namespace rex::bytecodeEngine {
                 currentBlock.code.push_back({bytecodeStruct::opCode::index, {}});
                 break;
             case AST::treeKind::invokingExpression:
-                currentBlock.code.push_back({bytecodeStruct::opCode::duplicate, {}});
-                currentBlock.code.push_back({bytecodeStruct::opCode::findAttr,
-                                             {currentBlock.putNames(target.child[1].child[0].leaf.strVal)}});
-
                 std::for_each(
                         target.child[1].child[1].child.rbegin(), target.child[1].child[1].child.rend(),
                         [&](const AST &ast) {
                             buildExpr(ast);
                         });
+                currentBlock.code.push_back(
+                        {bytecodeStruct::opCode::duplicate, {(uint64_t) target.child[1].child[1].child.size()}});
+                currentBlock.code.push_back({bytecodeStruct::opCode::findAttr,
+                                             {currentBlock.putNames(target.child[1].child[0].leaf.strVal)}});
                 currentBlock.code.push_back(
                         {bytecodeStruct::opCode::invokeMethod, {(uint64_t) target.child[1].child[1].child.size()}});
                 break;
@@ -497,6 +497,9 @@ namespace rex::bytecodeEngine {
     }
 
     void codeBuilder::buildStmt(const AST &target) {
+        if (currentBlock.msg.line == -1)
+            currentBlock.msg.line = target.leaf.line, currentBlock.msg.col = target.leaf.col;
+
         switch (target.kind) {
             case AST::treeKind::identifier:
             case AST::treeKind::subscriptExpression:
@@ -621,7 +624,7 @@ namespace rex::bytecodeEngine {
     interpreter::interpreter(const managedPtr<environment> &env, const managedPtr<value> &interpreterCxt,
                              const managedPtr<value> &moduleCxt) :
             env(env), interpreterCxt(interpreterCxt), moduleCxt(moduleCxt) {
-        callStack.push_back({moduleCxt, {}, nullptr});
+        callStack.push_back({moduleCxt, {{}}, nullptr});
     }
 
 
@@ -1090,24 +1093,208 @@ namespace rex::bytecodeEngine {
         return {};
     }
 
-    value interpreter::opIncrement(value &a) {
-        switch (a.kind) {
+    value interpreter::opIncrement(const managedPtr<value> &ptr) {
+        switch (ptr->kind) {
             case value::vKind::vInt: {
-                a.getInt()++;
-                return a;
+                ptr->getInt()++;
+                return ptr;
             }
             case value::vKind::vDeci: {
-                a.getDeci()++;
-                return a;
+                ptr->getDeci()++;
+                return ptr;
             }
-            case value::vKind::vObject: {
-
+            default: {
+                if (auto it = ptr->members.find(L"rexIncrement"); it != ptr->members.end())
+                    return invokeFunc(it->second, {}, ptr);
+                else
+                    throwErr(makeErr(L"typeError", L"unsupported operation"));
             }
         }
+        return {};
     }
 
-    value interpreter::opDecrement(value &a) {
-        return value();
+    value interpreter::opDecrement(const managedPtr<value> &ptr) {
+        switch (ptr->kind) {
+            case value::vKind::vInt: {
+                ptr->getInt()--;
+                return ptr;
+            }
+            case value::vKind::vDeci: {
+                ptr->getDeci()--;
+                return ptr;
+            }
+            default: {
+                if (auto it = ptr->members.find(L"rexDecrement"); it != ptr->members.end())
+                    return invokeFunc(it->second, {}, ptr);
+                else
+                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+        return {};
+    }
+
+    value interpreter::opNegate(value &a) {
+        switch (a.kind) {
+            case value::vKind::vInt:
+                return -a.getInt();
+            case value::vKind::vDeci:
+                return -a.getDeci();
+            case value::vKind::vBool:
+                return !a.getBool();
+            default: {
+                if (auto it = a.members.find(L"rexNegate"); it != a.members.end())
+                    return invokeFunc(it->second, {}, managePtr(a));
+                else
+                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+        return {};
+    }
+
+    value interpreter::opAssign(const managedPtr<value> &ptr, value &a) {
+        *ptr = a;
+        return ptr;
+    }
+
+    value interpreter::opAddAssign(const managedPtr<value> &ptr, value &a) {
+        switch (valueKindComparator(ptr->kind, a.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt): {
+                ptr->getInt() += a.getInt();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci): {
+                ptr->getInt() += (vint) a.getDeci();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt): {
+                ptr->getDeci() += (vdeci) a.getInt();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci): {
+                ptr->getDeci() += a.getDeci();
+                return ptr;
+            }
+            default: {
+                if (auto it = a.members.find(L"rexAddAssign"); it != a.members.end())
+                    return invokeFunc(it->second, {a}, ptr);
+                else
+                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+        return {};
+    }
+
+    value interpreter::opSubAssign(const managedPtr<value> &ptr, value &a) {
+        switch (valueKindComparator(ptr->kind, a.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt): {
+                ptr->getInt() -= a.getInt();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci): {
+                ptr->getInt() -= (vint) a.getDeci();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt): {
+                ptr->getDeci() -= (vdeci) a.getInt();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci): {
+                ptr->getDeci() -= a.getDeci();
+                return ptr;
+            }
+            default: {
+                if (auto it = a.members.find(L"rexSubAssign"); it != a.members.end())
+                    return invokeFunc(it->second, {a}, ptr);
+                else
+                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+        return {};
+    }
+
+    value interpreter::opMulAssign(const managedPtr<value> &ptr, value &a) {
+        switch (valueKindComparator(ptr->kind, a.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt): {
+                ptr->getInt() *= a.getInt();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci): {
+                ptr->getInt() *= (vint) a.getDeci();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt): {
+                ptr->getDeci() *= (vdeci) a.getInt();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci): {
+                ptr->getDeci() *= a.getDeci();
+                return ptr;
+            }
+            default: {
+                if (auto it = a.members.find(L"rexMulAssign"); it != a.members.end())
+                    return invokeFunc(it->second, {a}, ptr);
+                else
+                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+        return {};
+    }
+
+    value interpreter::opDivAssign(const managedPtr<value> &ptr, value &a) {
+        switch (valueKindComparator(ptr->kind, a.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt): {
+                ptr->getInt() /= a.getInt();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vInt, value::vKind::vDeci): {
+                ptr->getInt() /= (vint) a.getDeci();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vInt): {
+                ptr->getDeci() /= (vdeci) a.getInt();
+                return ptr;
+            }
+            case valueKindComparator(value::vKind::vDeci, value::vKind::vDeci): {
+                ptr->getDeci() /= a.getDeci();
+                return ptr;
+            }
+            default: {
+                if (auto it = a.members.find(L"rexDivAssign"); it != a.members.end())
+                    return invokeFunc(it->second, {a}, ptr);
+                else
+                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+        return {};
+    }
+
+    value interpreter::opModAssign(const managedPtr<value> &ptr, value &a) {
+        switch (valueKindComparator(ptr->kind, a.kind)) {
+            case valueKindComparator(value::vKind::vInt, value::vKind::vInt): {
+                ptr->getInt() %= a.getInt();
+                return ptr;
+            }
+            default: {
+                if (auto it = a.members.find(L"rexModAssign"); it != a.members.end())
+                    return invokeFunc(it->second, {a}, ptr);
+                else
+                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+            }
+        }
+        return {};
+    }
+
+    value interpreter::opIndex(const managedPtr<value> &ptr, value &a) {
+        switch (ptr->kind) {
+            case value::vKind::vVec:
+                return ptr->getVec()[a.getInt()];
+            case value::vKind::vObject:
+            default:
+                if (auto it = a.members.find(L"rexIndex"); it != a.members.end())
+                    return invokeFunc(it->second, {a}, ptr);
+                else
+                    return (*ptr)[a.getStr()];
+        }
     }
 
     value interpreter::makeErr(const vstr &errName, const vstr &errMsg) {
@@ -1137,9 +1324,53 @@ namespace rex::bytecodeEngine {
         throw signalException(err);
     }
 
-    value interpreter::invokeFunc(const managedPtr<value> &func, const vec<value> &args,
-                                  const managedPtr<value> &passThisPtr) {
-        return {};
+    value interpreter::invokeFunc(managedPtr<value> func, const vec<value> &args,
+                                  managedPtr<value> passThisPtr) {
+        begin:
+        switch (func->kind) {
+            case value::vKind::vLambda: {
+                if (passThisPtr)
+                    evalStack.emplace_back(passThisPtr);
+
+                std::for_each(args.rbegin(), args.rend(), [&](const auto &ele) {
+                    evalStack.push_back(ele);
+                });
+
+                if (passThisPtr)
+                    prepareForLambdaMethodInvoke(func, args.size());
+                else
+                    prepareForLambdaInvoke(func, args.size());
+
+                interpret();
+
+                value ele = evalStack.back();
+                evalStack.pop_back();
+                return ele;
+            }
+            case value::vKind::vFunc: {
+                if (passThisPtr)
+                    evalStack.emplace_back(passThisPtr);
+
+                std::for_each(args.rbegin(), args.rend(), [&](const auto &ele) {
+                    evalStack.push_back(ele);
+                });
+
+                if (passThisPtr)
+                    prepareForMethodInvoke(func, args.size());
+                else
+                    prepareForFuncInvoke(func, args.size());
+
+                interpret();
+
+                value ele = evalStack.back();
+                evalStack.pop_back();
+                return ele;
+            }
+            case value::vKind::vNativeFuncPtr:
+                return invokeNativeFn(func, args, passThisPtr);
+            default:
+                return {};
+        }
     }
 
     void interpreter::restoreState(const interpreter::state &s) {
@@ -1153,9 +1384,11 @@ namespace rex::bytecodeEngine {
         switch (op.opcode) {
             case bytecodeStruct::opCode::pushLocalCxt:
                 callStack.back().localCxt.emplace_back();
+                nextOp;
                 break;
             case bytecodeStruct::opCode::popLocalCxt:
                 callStack.back().localCxt.pop_back();
+                nextOp;
                 break;
             case bytecodeStruct::opCode::jump: {
                 callStack.back().programCounter += op.opargs.intv;
@@ -1183,117 +1416,372 @@ namespace rex::bytecodeEngine {
                 exceptionHandlers.push_back(
                         {(uint64_t) callStack.size(), (uint64_t) callStack.back().localCxt.size(),
                          (uint64_t) (callStack.back().programCounter + op.opargs.intv), (uint64_t) evalStack.size()});
+                nextOp;
                 break;
             case bytecodeStruct::opCode::popExceptionHandler:
                 exceptionHandlers.pop_back();
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::invoke:
+            case bytecodeStruct::opCode::invoke: {
+                managedPtr<value> func = eleRefObj(evalStack.back());
+                evalStack.pop_back();
+
+                switch (func->kind) {
+                    case value::vKind::vLambda:
+                        prepareForLambdaInvoke(func, op.opargs.indexv);
+                        interpret();
+                        break;
+                    case value::vKind::vFunc:
+                        prepareForFuncInvoke(func, op.opargs.indexv);
+                        interpret();
+                        break;
+                    case value::vKind::vNativeFuncPtr:
+                        evalStack.push_back(invokeNativeFn(func, op.opargs.indexv));
+                        break;
+                    default:
+                        break;
+                }
+                nextOp;
                 break;
+            }
             case bytecodeStruct::opCode::ret: {
                 callStack.pop_back();
-                break;
+                return;
             }
             case bytecodeStruct::opCode::find: {
                 vstr &str = callStack.back().currentCodeStruct->names[op.opargs.indexv];
                 for (auto iter = callStack.back().localCxt.begin(); iter != callStack.back().localCxt.end(); iter++) {
                     if (auto it = iter->find(str); it != iter->end()) {
-                        // TODO: do sth
+                        evalStack.emplace_back(it->second);
+                        nextOp;
+                        break;
                     }
                 }
                 if (auto it = callStack.back().moduleCxt->members.find(str);
                         it != callStack.back().moduleCxt->members.end()) {
-                    // TODO: do sth
+                    evalStack.emplace_back(it->second);
+                    nextOp;
+                    break;
                 }
                 if (auto it = interpreterCxt->members.find(str); it != interpreterCxt->members.end()) {
-                    // TODO: do sth
+                    evalStack.emplace_back(it->second);
+                    nextOp;
+                    break;
                 }
+                if (auto it = env->globalCxt->members.find(str); it != env->globalCxt->members.end()) {
+                    evalStack.emplace_back(it->second);
+                    nextOp;
+                    break;
+                }
+                // TODO: ERR
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::findAttr: {
                 vstr &str = callStack.back().currentCodeStruct->names[op.opargs.indexv];
                 value &back = evalStack.back().isRef() ? evalStack.back().getRef() : evalStack.back();
                 if (auto it = back.members.find(str); it != back.members.end()) {
-                    // TODO: do sth
+                    auto fk = it->second;
+                    evalStack.pop_back();
+                    evalStack.emplace_back(fk);
+                    nextOp;
+                    break;
                 }
+                // TODO: ERR
+                nextOp;
                 break;
             }
-            case bytecodeStruct::opCode::index:
+            case bytecodeStruct::opCode::index: {
+                value &&r = opIndex(eleRefObj(evalStack[evalStack.size() - 2]),
+                                    eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::invokeMethod:
+            }
+            case bytecodeStruct::opCode::invokeMethod: {
+                managedPtr<value> func = eleRefObj(evalStack.back());
+                evalStack.pop_back();
+
+                switch (func->kind) {
+                    case value::vKind::vLambda:
+                        prepareForLambdaMethodInvoke(func, op.opargs.indexv);
+                        interpret();
+                        break;
+                    case value::vKind::vFunc:
+                        prepareForMethodInvoke(func, op.opargs.indexv);
+                        interpret();
+                        break;
+                    case value::vKind::vNativeFuncPtr:
+                        evalStack.push_back(invokeNativeMethod(func, op.opargs.indexv));
+                        break;
+                    default:
+                        break;
+                }
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opIncrement:
+            }
+            case bytecodeStruct::opCode::opIncrement: {
+                value &&r = opIncrement(eleRefObj(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opDecrement:
+            }
+            case bytecodeStruct::opCode::opDecrement: {
+                value &&r = opDecrement(eleRefObj(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opNegate:
+            }
+            case bytecodeStruct::opCode::opNegate: {
+                value &&r = opNegate(eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opAdd:
+            }
+            case bytecodeStruct::opCode::opAdd: {
+                value &&r = opAdd(eleGetRef(evalStack[evalStack.size() - 2]),
+                                  eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opSub:
+            }
+            case bytecodeStruct::opCode::opSub: {
+                value &&r = opSub(eleGetRef(evalStack[evalStack.size() - 2]),
+                                  eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opMul:
+            }
+            case bytecodeStruct::opCode::opMul: {
+                value &&r = opMul(eleGetRef(evalStack[evalStack.size() - 2]),
+                                  eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opDiv:
+            }
+            case bytecodeStruct::opCode::opDiv: {
+                value &&r = opDiv(eleGetRef(evalStack[evalStack.size() - 2]),
+                                  eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opMod:
+            }
+            case bytecodeStruct::opCode::opMod: {
+                value &&r = opMod(eleGetRef(evalStack[evalStack.size() - 2]),
+                                  eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opBinaryShiftLeft:
+            }
+            case bytecodeStruct::opCode::opBinaryShiftLeft: {
+                value &&r = opBinaryShiftLeft(eleGetRef(evalStack[evalStack.size() - 2]),
+                                              eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opBinaryShiftRight:
+            }
+            case bytecodeStruct::opCode::opBinaryShiftRight: {
+                value &&r = opBinaryShiftRight(eleGetRef(evalStack[evalStack.size() - 2]),
+                                               eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opEqual:
+            }
+            case bytecodeStruct::opCode::opEqual: {
+                value &&r = opEqual(eleGetRef(evalStack[evalStack.size() - 2]),
+                                    eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opNotEqual:
+            }
+            case bytecodeStruct::opCode::opNotEqual: {
+                value &&r = opNotEqual(eleGetRef(evalStack[evalStack.size() - 2]),
+                                       eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opGreaterEqual:
+            }
+            case bytecodeStruct::opCode::opGreaterEqual: {
+                value &&r = opGreaterEqual(eleGetRef(evalStack[evalStack.size() - 2]),
+                                           eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opLessEqual:
+            }
+            case bytecodeStruct::opCode::opLessEqual: {
+                value &&r = opLessEqual(eleGetRef(evalStack[evalStack.size() - 2]),
+                                        eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opGreaterThan:
+            }
+            case bytecodeStruct::opCode::opGreaterThan: {
+                value &&r = opGreaterThan(eleGetRef(evalStack[evalStack.size() - 2]),
+                                          eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opLessThan:
+            }
+            case bytecodeStruct::opCode::opLessThan: {
+                value &&r = opLessThan(eleGetRef(evalStack[evalStack.size() - 2]),
+                                       eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opBinaryOr:
+            }
+            case bytecodeStruct::opCode::opBinaryOr: {
+                value &&r = opBinaryOr(eleGetRef(evalStack[evalStack.size() - 2]),
+                                       eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opBinaryAnd:
+            }
+            case bytecodeStruct::opCode::opBinaryAnd: {
+                value &&r = opBinaryAnd(eleGetRef(evalStack[evalStack.size() - 2]),
+                                        eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opBinaryXor:
+            }
+            case bytecodeStruct::opCode::opBinaryXor: {
+                value &&r = opBinaryXor(eleGetRef(evalStack[evalStack.size() - 2]),
+                                        eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opLogicAnd:
+            }
+            case bytecodeStruct::opCode::opLogicAnd: {
+                value &&r = opLogicAnd(eleGetRef(evalStack[evalStack.size() - 2]),
+                                       eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::opLogicOr:
+            }
+            case bytecodeStruct::opCode::opLogicOr: {
+                value &&r = opLogicOr(eleGetRef(evalStack[evalStack.size() - 2]),
+                                      eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::assign:
+            }
+            case bytecodeStruct::opCode::assign: {
+                value &&r = opAssign(eleRefObj(evalStack[evalStack.size() - 2]),
+                                     eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::addAssign:
+            }
+            case bytecodeStruct::opCode::addAssign: {
+                value &&r = opAddAssign(eleRefObj(evalStack[evalStack.size() - 2]),
+                                        eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::subAssign:
+            }
+            case bytecodeStruct::opCode::subAssign: {
+                value &&r = opSubAssign(eleRefObj(evalStack[evalStack.size() - 2]),
+                                        eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::mulAssign:
+            }
+            case bytecodeStruct::opCode::mulAssign: {
+                value &&r = opMulAssign(eleRefObj(evalStack[evalStack.size() - 2]),
+                                        eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::divAssign:
+            }
+            case bytecodeStruct::opCode::divAssign: {
+                value &&r = opDivAssign(eleRefObj(evalStack[evalStack.size() - 2]),
+                                        eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
-            case bytecodeStruct::opCode::modAssign:
+            }
+            case bytecodeStruct::opCode::modAssign: {
+                value &&r = opModAssign(eleRefObj(evalStack[evalStack.size() - 2]),
+                                        eleGetRef(evalStack[evalStack.size() - 1]));
+                evalStack.pop_back();
+                evalStack.pop_back();
+                evalStack.push_back(r);
+                nextOp;
                 break;
+            }
             case bytecodeStruct::opCode::intConst: {
                 evalStack.emplace_back(op.opargs.intv);
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::deciConst: {
                 evalStack.emplace_back(op.opargs.deciv);
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::boolConst: {
                 evalStack.emplace_back(op.opargs.boolv);
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::nullConst: {
                 evalStack.emplace_back();
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::stringNew: {
                 evalStack.emplace_back(callStack.back().currentCodeStruct->stringConsts[op.opargs.indexv],
                                        stringMethods::getMethodsCxt());
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::arrayNew: {
@@ -1304,6 +1792,7 @@ namespace rex::bytecodeEngine {
                     evalStack.pop_back();
                 }
                 evalStack.emplace_back(object, vecMethods::getMethodsCxt());
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::objectNew: {
@@ -1316,6 +1805,7 @@ namespace rex::bytecodeEngine {
                     object[callStack.back().currentCodeStruct->stringConsts[(uint64_t) evalStack.back().basicValue.unknown]] = v;
                 }
                 evalStack.emplace_back(object);
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::funcNew: {
@@ -1330,6 +1820,7 @@ namespace rex::bytecodeEngine {
                     evalStack.pop_back();
                 }
                 evalStack.emplace_back(object);
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::lambdaNew: {
@@ -1338,14 +1829,17 @@ namespace rex::bytecodeEngine {
                 evalStack.pop_back();
                 object.outerCxt = managePtr(evalStack.back());
                 evalStack.pop_back();
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::putIndex: {
                 evalStack.emplace_back((unknownPtr) op.opargs.indexv);
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::duplicate: {
-                evalStack.push_back(evalStack.back());
+                evalStack.push_back(evalStack[evalStack.size() - 1 - op.opargs.indexv]);
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::deepCopy: {
@@ -1353,11 +1847,13 @@ namespace rex::bytecodeEngine {
                 (evalStack.back().isRef() ? evalStack.back().getRef() : evalStack.back()).deepCopy(dest);
                 evalStack.pop_back();
                 evalStack.push_back(dest);
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::createOrAssign: {
                 callStack.back().localCxt.back()[callStack.back().currentCodeStruct->names[op.opargs.indexv]] =
                         evalStack.back().isRef() ? evalStack.back().refObj : managePtr(evalStack.back());
+                nextOp;
                 break;
             }
             case bytecodeStruct::opCode::opThrow: {
@@ -1366,6 +1862,7 @@ namespace rex::bytecodeEngine {
             }
             case bytecodeStruct::opCode::popTop: {
                 evalStack.pop_back();
+                nextOp;
                 break;
             }
             default:
@@ -1375,5 +1872,74 @@ namespace rex::bytecodeEngine {
 
     bytecodeModule interpreter::getBytecodeModule() {
         return callStack.back().moduleCxt->members[L"__code__"]->getBytecodeModule();
+    }
+
+    void interpreter::prepareForFuncInvoke(const managedPtr<value> &func, uint64_t argc) {
+        callStack.push_back({func->getFunc().moduleCxt, {{}}, func->getFunc().code.get()});
+        for (auto &i: func->getFunc().argsName) {
+            callStack.back().localCxt.back()[i] = managePtr(evalStack.back());
+            evalStack.pop_back();
+        }
+    }
+
+    void interpreter::prepareForMethodInvoke(const managedPtr<value> &func, uint64_t argc) {
+        callStack.push_back({func->getFunc().moduleCxt, {{}}, func->getFunc().code.get()});
+        for (auto &i: func->getFunc().argsName) {
+            callStack.back().localCxt.back()[i] = managePtr(evalStack.back());
+            evalStack.pop_back();
+        }
+        callStack.back().localCxt.back()[L"this"] = managePtr(evalStack.back());
+        evalStack.pop_back();
+    }
+
+    void interpreter::prepareForLambdaInvoke(const managedPtr<value> &func, uint64_t argc) {
+        callStack.push_back({func->getLambda().func.moduleCxt, {{}}, func->getLambda().func.code.get()});
+        for (auto &i: func->getLambda().func.argsName) {
+            callStack.back().localCxt.back()[i] = managePtr(evalStack.back());
+            evalStack.pop_back();
+        }
+        callStack.back().localCxt.back()[L"outer"] = func->getLambda().outerCxt;
+    }
+
+    void interpreter::prepareForLambdaMethodInvoke(const managedPtr<value> &func, uint64_t argc) {
+        callStack.push_back({func->getLambda().func.moduleCxt, {{}}, func->getLambda().func.code.get()});
+        for (auto &i: func->getLambda().func.argsName) {
+            callStack.back().localCxt.back()[i] = managePtr(evalStack.back());
+            evalStack.pop_back();
+        }
+        callStack.back().localCxt.back()[L"this"] = managePtr(evalStack.back());
+        evalStack.pop_back();
+
+        callStack.back().localCxt.back()[L"outer"] = func->getLambda().outerCxt;
+    }
+
+    value interpreter::invokeNativeFn(const managedPtr<value> &func, uint64_t argc) {
+        vec<value> args;
+        managedPtr<value> passThisPtr;
+        while (argc--) {
+            args.push_back(evalStack.back());
+            evalStack.pop_back();
+        }
+
+        return invokeNativeFn(func, args, passThisPtr);
+    }
+
+    value
+    interpreter::invokeNativeMethod(const managedPtr<value> &func, uint64_t argc) {
+        vec<value> args;
+        managedPtr<value> passThisPtr;
+        while (argc--) {
+            args.push_back(evalStack.back());
+            evalStack.pop_back();
+        }
+        passThisPtr = eleRefObj(evalStack.back());
+        evalStack.pop_back();
+
+        return invokeNativeFn(func, args, passThisPtr);
+    }
+
+    value interpreter::invokeNativeFn(const managedPtr<value> &func, const vec<value> &args,
+                                      const managedPtr<value> &passThisPtr) {
+        return (*func->nativeFuncObj)((void *) this, args, passThisPtr);
     }
 }

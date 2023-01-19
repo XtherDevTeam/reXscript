@@ -224,13 +224,13 @@ namespace rex::bytecodeEngine {
                 ss << "funcNew " << opargs.indexv;
                 break;
             case opCode::lambdaNew:
-                ss << "lambdaNew " << opargs.indexv;
+                ss << "lambdaNew";
                 break;
             case opCode::putIndex:
                 ss << "putIndex " << opargs.indexv;
                 break;
             case opCode::duplicate:
-                ss << "duplicate";
+                ss << "duplicate " << opargs.indexv;
                 break;
             case opCode::deepCopy:
                 ss << "deepCopy";

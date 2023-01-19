@@ -9,7 +9,7 @@
 
 namespace rex::bytecodeEngine {
     struct bytecodeStruct {
-        enum class opCode : int64_t {
+        enum class opCode : uint8_t {
             unknown,
             pushLocalCxt,
             popLocalCxt,
@@ -92,8 +92,8 @@ namespace rex::bytecodeEngine {
 
     struct runtimeSourceFileMsg {
         vstr file;
-        vsize line;
-        vsize col;
+        vsize line{static_cast<vsize>(-1)};
+        vsize col{static_cast<vsize>(-1)};
 
         operator vstr();
     };

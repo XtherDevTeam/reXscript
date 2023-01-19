@@ -216,7 +216,7 @@ namespace rex::bytecodeEngine {
          * @brief ABI interface for native functions
          * @warning THIS FUNCTION WILL BREAK THE SIGNLE-INTERPRET-FUNCTION RULE, ONLY FOR FORIGN INTERFACES
          */
-        value invokeFunc(const managedPtr<value> &func, const vec<value> &args, const managedPtr<value> &passThisPtr);
+        value invokeFunc(managedPtr <value> func, const vec<value> &args, managedPtr <value> passThisPtr);
 
         /**
          * @brief throw error in native functions
@@ -239,6 +239,25 @@ namespace rex::bytecodeEngine {
         void restoreState(const state &s);
 
         bytecodeModule getBytecodeModule();
+
+        /**
+         * @brief prepare for the function call stack frame
+         * @param func the function body
+         */
+        void prepareForFuncInvoke(const managedPtr<value> &func, uint64_t argc);
+
+        void prepareForMethodInvoke(const managedPtr<value> &func, uint64_t argc);
+
+        void prepareForLambdaInvoke(const managedPtr<value> &func, uint64_t argc);
+
+        void prepareForLambdaMethodInvoke(const managedPtr<value> &func, uint64_t argc);
+
+        value invokeNativeFn(const managedPtr <value> &func, uint64_t argc);
+
+        value invokeNativeFn(const managedPtr <value> &func, const vec <value> &args,
+                             const managedPtr <value> &passThisPtr);
+
+        value invokeNativeMethod(const managedPtr <value> &func, uint64_t argc);
 
         value opAdd(value &a, value &b);
 
@@ -276,10 +295,32 @@ namespace rex::bytecodeEngine {
 
         value opLogicOr(value &a, value &b);
 
-        value opIncrement(value &a);
+        value opIncrement(const managedPtr <value> &ptr);
 
-        value opDecrement(value &a);
+        value opDecrement(const managedPtr <value> &ptr);
+
+        value opNegate(value &a);
+
+        value opAssign(const managedPtr <value> &ptr, value &a);
+
+        value opAddAssign(const managedPtr <value> &ptr, value &a);
+
+        value opSubAssign(const managedPtr <value> &ptr, value &a);
+
+        value opMulAssign(const managedPtr <value> &ptr, value &a);
+
+        value opDivAssign(const managedPtr <value> &ptr, value &a);
+
+        value opModAssign(const managedPtr <value> &ptr, value &a);
+
+        value opIndex(const managedPtr <value> &ptr, value &a);
     };
+
+#define eleGetRef(ele) (ele.isRef() ? ele.getRef() : ele)
+
+#define eleRefObj(ele) (ele.isRef() ? ele.refObj : rex::managePtr(ele))
+
+#define nextOp (callStack.back().programCounter++)
 }
 
 #endif //REXSCRIPT_BYTECODEENGINE_HPP
