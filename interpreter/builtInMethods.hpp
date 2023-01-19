@@ -205,16 +205,6 @@ namespace rex {
 
         value::cxtObject getMethodsCxt(vint defaultHashTSize = 256);
     }
-
-    namespace iterMethods {
-        nativeFn(forEach, interpreter, args, passThisPtr);
-
-        nativeFn(collect, interpreter, args, passThisPtr);
-
-        nativeFn(map, interpreter, args, passThisPtr);
-
-        value::cxtObject getMethodsCxt();
-    }
 }
 
 #endif //REXSCRIPT_BUILTINMETHODS_HPP

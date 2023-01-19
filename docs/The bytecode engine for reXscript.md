@@ -133,6 +133,10 @@
 - `popTop param[T=null]`
 
   将栈顶元素弹出
+  
+- `forEach param[T=uint]`
+
+  控制迭代的流程，详细见下例。
 
 ```js
 let iterable = {
@@ -160,6 +164,7 @@ intConst 2
 intConst 1
 arrayNew 3
 createOrAssign arr
+pushLocalCxt
 find arr
 forEach <end-addr>
 pushLocalCxt
@@ -168,6 +173,6 @@ find i
 find print
 invoke 1
 popLocalCxt
-
+pushLocalCxt
 ```
 

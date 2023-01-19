@@ -244,6 +244,9 @@ namespace rex::bytecodeEngine {
             case opCode::popTop:
                 ss << "popTop";
                 break;
+            case opCode::forEach:
+                ss << "forEach " << opargs.intv;
+                break;
             default:
                 break;
         }

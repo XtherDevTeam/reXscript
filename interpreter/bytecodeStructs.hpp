@@ -68,6 +68,7 @@ namespace rex::bytecodeEngine {
             fakeOpContinue,
             opThrow,
             popTop,
+            forEach,
         } opcode{};
 
         union opArgs {

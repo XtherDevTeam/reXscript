@@ -381,9 +381,9 @@ namespace rex::bytecodeEngine {
         uint64_t curIdx = 0;
         std::for_each(currentBlock.code.begin(), currentBlock.code.end(), [&](auto &i) {
             if (i.opcode == bytecodeStruct::opCode::fakeOpBreak)
-                i = {bytecodeStruct::opCode::jump, (vint) (end - curIdx)};
+                i = {bytecodeStruct::opCode::jump, (vint) (end - curIdx)}; // pop the block
             if (i.opcode == bytecodeStruct::opCode::fakeOpContinue)
-                i = {bytecodeStruct::opCode::jump, (vint) (jumpBack - curIdx)};
+                i = {bytecodeStruct::opCode::jump, (vint) (jumpBack - curIdx)}; // pop the block
             curIdx++;
         });
     }
@@ -420,7 +420,36 @@ namespace rex::bytecodeEngine {
     }
 
     void codeBuilder::buildForEachStmt(const AST &target) {
-        // leave it empty
+        currentBlock.code.push_back({bytecodeStruct::opCode::pushLocalCxt, {}});
+        buildExpr(target.child[1]);
+        currentBlock.code.push_back({bytecodeStruct::opCode::duplicate, {}});
+        currentBlock.code.push_back({bytecodeStruct::opCode::findAttr, {currentBlock.putNames(L"rexIter")}});
+        currentBlock.code.push_back({bytecodeStruct::opCode::invokeMethod, {(uint64_t) 0}});
+
+        uint64_t forEach = getNextCur();
+        currentBlock.code.push_back({bytecodeStruct::opCode::forEach, {}});
+        currentBlock.code.push_back(
+                {bytecodeStruct::opCode::createOrAssign, {currentBlock.putNames(target.child[0].leaf.strVal)}});
+        buildStmt(target.child[2]);
+        // end of block
+        uint64_t jumpBack = getNextCur();
+        currentBlock.code.push_back({bytecodeStruct::opCode::jump, {(vint) 114514}});
+        uint64_t end = getNextCur();
+        currentBlock.code.push_back({bytecodeStruct::opCode::popLocalCxt, {}});
+        currentBlock.code.push_back({bytecodeStruct::opCode::popTop, {}});
+        // fill address
+        currentBlock.code[forEach].opargs = (vint) (end - forEach);
+        currentBlock.code[jumpBack].opargs = (vint) (forEach - jumpBack);
+
+        // replace fake op
+        uint64_t curIdx = 0;
+        for (auto &i: currentBlock.code) {
+            if (i.opcode == bytecodeStruct::opCode::fakeOpBreak)
+                i = {bytecodeStruct::opCode::jump, (vint) (end - curIdx)};
+            if (i.opcode == bytecodeStruct::opCode::fakeOpContinue)
+                i = {bytecodeStruct::opCode::jump, (vint) (jumpBack - curIdx)};
+            curIdx++;
+        }
     }
 
     void codeBuilder::buildIfStmt(const AST &target) {
@@ -453,10 +482,12 @@ namespace rex::bytecodeEngine {
     }
 
     void codeBuilder::buildContinueStmt(const AST &target) {
+        currentBlock.code.push_back({bytecodeStruct::opCode::popLocalCxt, {}});
         currentBlock.code.push_back({bytecodeStruct::opCode::fakeOpContinue, {}});
     }
 
     void codeBuilder::buildBreakStmt(const AST &target) {
+        currentBlock.code.push_back({bytecodeStruct::opCode::popLocalCxt, {}});
         currentBlock.code.push_back({bytecodeStruct::opCode::fakeOpBreak, {}});
     }
 
@@ -1325,9 +1356,8 @@ namespace rex::bytecodeEngine {
         throw signalException(err);
     }
 
-    value interpreter::invokeFunc(managedPtr<value> func, const vec<value> &args,
-                                  managedPtr<value> passThisPtr) {
-        begin:
+    value interpreter::invokeFunc(const managedPtr<value> &func, const vec<value> &args,
+                                  const managedPtr<value> &passThisPtr) {
         switch (func->kind) {
             case value::vKind::vLambda: {
                 if (passThisPtr)
@@ -1382,7 +1412,7 @@ namespace rex::bytecodeEngine {
     }
 
     void interpreter::execute(bytecodeStruct &op) {
-        std::cout << wstring2string(op) << std::endl;
+//        std::cout << wstring2string(op) << std::endl;
         switch (op.opcode) {
             case bytecodeStruct::opCode::pushLocalCxt:
                 callStack.back().localCxt.emplace_back();
@@ -1861,6 +1891,7 @@ namespace rex::bytecodeEngine {
             case bytecodeStruct::opCode::createOrAssign: {
                 callStack.back().localCxt.back()[callStack.back().currentCodeStruct->names[op.opargs.indexv]] =
                         evalStack.back().isRef() ? evalStack.back().refObj : managePtr(evalStack.back());
+                evalStack.pop_back();
                 nextOp;
                 break;
             }
@@ -1872,6 +1903,24 @@ namespace rex::bytecodeEngine {
                 evalStack.pop_back();
                 nextOp;
                 break;
+            }
+            case bytecodeStruct::opCode::forEach: {
+                value &real = eleGetRef(evalStack.back());
+                if (auto it = real.members.find(L"next"); it != real.members.end()) {
+                    auto &&next = invokeFunc(it->second, {}, eleRefObj(evalStack.back()));
+                    if (next.getVec()[1]->getBool()) {
+                        callStack.back().programCounter += op.opargs.intv;
+                        break;
+                    } else {
+                        evalStack.emplace_back(next.getVec()[0]);
+                        nextOp;
+                        break;
+                    }
+                } else {
+                    // TODO: ERR
+                    nextOp;
+                    break;
+                }
             }
             default:
                 break;

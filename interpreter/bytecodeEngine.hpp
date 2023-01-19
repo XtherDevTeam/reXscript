@@ -216,7 +216,7 @@ namespace rex::bytecodeEngine {
          * @brief ABI interface for native functions
          * @warning THIS FUNCTION WILL BREAK THE SIGNLE-INTERPRET-FUNCTION RULE, ONLY FOR FORIGN INTERFACES
          */
-        value invokeFunc(managedPtr <value> func, const vec<value> &args, managedPtr <value> passThisPtr);
+        value invokeFunc(const managedPtr <value>& func, const vec<value> &args, const managedPtr <value>& passThisPtr);
 
         /**
          * @brief throw error in native functions
