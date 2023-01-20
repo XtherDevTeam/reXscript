@@ -13,6 +13,7 @@
 #include <utility>
 #include <thread>
 #include <frontend/parser.hpp>
+#include <share/dlfcn.hpp>
 
 namespace rex::bytecodeEngine {
     managedPtr<environment> rexEnvironmentInstance = managePtr(environment{});
@@ -85,6 +86,135 @@ namespace rex::bytecodeEngine {
         value res = env->threadPool[id].getResult();
         env->threadPool.erase(id);
         return res;
+    }
+
+    managedPtr<value> requireModule(const managedPtr<interpreter> &in, vstr &path) {
+        auto &&bytecodeMod = compile(path);
+        auto newModCxt = managePtr(value{value::cxtObject{}});
+        newModCxt->members[L"__path__"] = managePtr(
+                value{path, rex::stringMethods::getMethodsCxt()});
+        // create an interpreter which inherits interpreterCxt from the old interpreter
+        auto newIn = managePtr(interpreter{in->env, in->interpreterCxt, newModCxt});
+        newIn->callStack.back().currentCodeStruct = bytecodeMod.codeStructs[bytecodeMod.entryBlock].get();
+        newIn->interpret();
+
+        newIn->env->globalCxt->members[path] = newModCxt;
+        return newModCxt;
+    }
+
+    managedPtr<value> requireModuleWithPath(const managedPtr<interpreter> &in, vstr &path) {
+        managedPtr<value> result;
+        forEachRexModulesPath(in, [&](const vstr &prefix) {
+            vstr fullpath = prefix;
+            path::join(fullpath, path);
+            fullpath = path::getRealpath(fullpath);
+            try {
+                result = requireModule(in, fullpath);
+                return true;
+            } catch (importError &e) {
+                return false;
+            }
+        });
+        if (result) {
+            return result;
+        } else {
+            throw importError(L"Cannot open file: " + path);
+        }
+    }
+
+    managedPtr<value> requireNativeModule(const managedPtr<interpreter> &in, vstr &path) {
+        void *handle = dlopen(wstring2string(path).c_str(), RTLD_LAZY);
+        if (!handle)
+            throw importError(L"Cannot open file: file not exist or damaged");
+
+        auto newModCxt = managePtr(value{value::cxtObject{}});
+        // create an interpreter which inherits interpreterCxt from the old interpreter
+        auto newIn = managePtr(interpreter{in->env, in->interpreterCxt, newModCxt});
+
+        newModCxt->members[L"__path__"] = managePtr(
+                value{path, rex::stringMethods::getMethodsCxt()});
+        newModCxt->members[L"__handle__"] = managePtr(value{(unknownPtr) handle});
+
+        using funcPtr = void(const managedPtr<environment> &, const managedPtr<value> &);
+
+        std::function<funcPtr> rexModInit = (funcPtr *) (dlsym(handle, "rexModInit"));
+
+        rexModInit(newIn->env, newModCxt);
+
+        newIn->env->globalCxt->members[path] = newModCxt;
+        return newModCxt;
+    }
+
+    managedPtr<value> requireNativeModuleWithPath(const managedPtr<interpreter> &in, vstr &path) {
+        managedPtr<value> result;
+        forEachRexModulesPath(in, [&](const vstr &prefix) {
+            vstr fullpath = prefix;
+            path::join(fullpath, path);
+            fullpath = path::getRealpath(fullpath);
+            try {
+                result = requireNativeModule(in, fullpath);
+                return true;
+            } catch (importError &e) {
+                return false;
+            }
+        });
+        if (result) {
+            return result;
+        } else {
+            throw importError(L"Cannot open file: " + path);
+        }
+    }
+
+    managedPtr<value> requirePackage(const managedPtr<interpreter> &in, vstr &path) {
+        auto &&packageLoader = compile(path + L"/packageLoader.rex");
+        auto newModCxt = managePtr(value{value::cxtObject{}});
+        auto newInterpreterCxt = managePtr(*in->interpreterCxt);
+        newInterpreterCxt->members[L"rexPkgRoot"] = managePtr(value{path, stringMethods::getMethodsCxt()});
+
+        newModCxt->members[L"__path__"] = managePtr(
+                value{path, rex::stringMethods::getMethodsCxt()});
+        // create an interpreter which inherits interpreterCxt from the old interpreter
+        auto newIn = managePtr(interpreter{in->env, newInterpreterCxt, newModCxt});
+        newIn->callStack.back().currentCodeStruct = packageLoader.codeStructs[packageLoader.entryBlock].get();
+        newIn->interpret();
+
+        newIn->env->globalCxt->members[path] = newModCxt;
+        return newModCxt;
+    }
+
+    managedPtr<value> requirePackageWithPath(const managedPtr<interpreter> &in, vstr &path) {
+        managedPtr<value> result;
+        forEachRexModulesPath(in, [&](const vstr &prefix) {
+            vstr fullpath = prefix;
+            path::join(fullpath, path);
+            fullpath = path::getRealpath(fullpath);
+            try {
+                result = requirePackage(in, fullpath);
+                return true;
+            } catch (importError &e) {
+                return false;
+            }
+        });
+        if (result) {
+            return result;
+        } else {
+            throw importError(L"Cannot load package: " + path);
+        }
+    }
+
+    managedPtr<value> require(const managedPtr<interpreter> &in, vstr &path) {
+        std::filesystem::path p(wstring2string(path));
+        if (p.has_extension()) {
+            if (string2wstring(p.extension()) == L".rex") {
+                return requireModuleWithPath(in, path);
+            } else if (string2wstring(p.extension()) == L"." + getDylibSuffix()) {
+                return requireNativeModuleWithPath(in, path);
+            } else {
+                throw importError(L"Unknown file suffix: " + path);
+            }
+        } else {
+            return requirePackageWithPath(in, path);
+        }
     }
 
     void environment::stackFrame::pushLocalCxt(const value::cxtObject &cxt) {
@@ -1960,9 +2090,15 @@ namespace rex::bytecodeEngine {
                 break;
             }
             case bytecodeStruct::opCode::createOrAssign: {
-                callStack.back().localCxt.back()[callStack.back().currentCodeStruct->names[op.opargs.indexv]] =
-                        evalStack.back().isRef() ? evalStack.back().refObj : managePtr(evalStack.back());
-                evalStack.pop_back();
+                if (callStack.size() > 1) {
+                    callStack.back().localCxt.back()[callStack.back().currentCodeStruct->names[op.opargs.indexv]] =
+                            eleRefObj(evalStack.back());
+                    evalStack.pop_back();
+                } else {
+                    moduleCxt->members[callStack.back().currentCodeStruct->names[op.opargs.indexv]] =
+                            eleRefObj(evalStack.back());
+                    evalStack.pop_back();
+                }
                 nextOp;
                 break;
             }
@@ -2070,7 +2206,7 @@ namespace rex::bytecodeEngine {
     }
 
     value interpreter::makeIt(const managedPtr<value> &left, bool isEnd) {
-        return {vec < managedPtr < value >> {left, managePtr(value{isEnd})}, vecMethods::getMethodsCxt()};
+        return {vec<managedPtr<value >>{left, managePtr(value{isEnd})}, vecMethods::getMethodsCxt()};
     }
 
     vstr interpreter::getBacktrace() {
@@ -2080,6 +2216,5 @@ namespace rex::bytecodeEngine {
             result += L"#" + std::to_wstring(count++) + L" " + (vstr) *i + L"\n";
         }
         return result;
-
     }
 }
