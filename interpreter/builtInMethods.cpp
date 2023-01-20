@@ -569,21 +569,19 @@ namespace rex {
     }
 
     nativeFn(threadingMethods::start, interpreter, args, passThisPtr) {
-//        auto in = static_cast<rex::interpreter *>(interpreter);
-//        vec<value> thArgs;
-//        for (vint i = 1; i < args.size(); i++) {
-//            value temp;
-//            args[i].deepCopy(temp);
-//            thArgs.push_back(temp);
-//        }
-//        return {spawnThread(in->env, in->moduleCxt, args[0].isRef() ? args[0].refObj : managePtr(args[0]), thArgs)};
-        return {};
+        auto in = static_cast<rex::bytecodeEngine::interpreter *>(interpreter);
+        vec<value> thArgs;
+        for (vint i = 1; i < args.size(); i++) {
+            value temp;
+            args[i].deepCopy(temp);
+            thArgs.push_back(temp);
+        }
+        return {spawnThread(in->env, in->moduleCxt, args[0].isRef() ? args[0].refObj : managePtr(args[0]), thArgs)};
     }
 
     nativeFn(threadingMethods::wait, interpreter, args, passThisPtr) {
-//        auto in = static_cast<rex::interpreter *>(interpreter);
-//        return waitForThread(in->env, args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt());
-        return {};
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        return waitForThread(in->env, args[0].isRef() ? args[0].getRef().getInt() : args[0].getInt());
     }
 
     nativeFn(threadingMethods::sleep, interpreter, args, passThisPtr) {

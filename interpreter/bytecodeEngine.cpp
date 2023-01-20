@@ -5,12 +5,87 @@
 #include "bytecodeEngine.hpp"
 #include "exceptions/signalException.hpp"
 #include "builtInMethods.hpp"
+#include "exceptions/importError.hpp"
+#include "exceptions/vmPanic.hpp"
 
+#include <fstream>
 #include <iostream>
 #include <utility>
+#include <thread>
+#include <frontend/parser.hpp>
 
 namespace rex::bytecodeEngine {
     managedPtr<environment> rexEnvironmentInstance = managePtr(environment{});
+
+    bytecodeModule compile(const vstr &filepath) {
+        bytecodeModule result;
+        uint64_t entryBlock = result.putCodeStruct({});
+        std::ifstream f(wstring2string(filepath), std::ios::in);
+        if (f.is_open()) {
+            f.seekg(0, std::ios::end);
+            long fileLen = f.tellg();
+            vbytes buf(fileLen, vbyte{});
+            f.seekg(0, std::ios::beg);
+            f.read(buf.data(), fileLen);
+            std::wstringstream ss(string2wstring(buf));
+            buf.clear();
+
+            rex::lexer lexer{ss};
+            rex::parser parser{lexer};
+            rex::AST ast = parser.parseFile();
+            bytecodeEngine::codeBuilder builder(result, *result.codeStructs[entryBlock]);
+            for (auto &i: ast.child) {
+                builder.buildStmt(i);
+            }
+            result.entryBlock = entryBlock;
+            for (auto &i: result.codeStructs) {
+                i->msg.file = filepath;
+            }
+            return result;
+        } else {
+            throw importError(L"Cannot open file: file not exist or damaged");
+        }
+    }
+
+    vint spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
+                     const vec<value> &args, const managedPtr<value> &passThisPtr) {
+        vint id{env->threadIdCounter++};
+        env->threadPool[id].setTh(
+                std::make_shared<std::thread>(rexThreadWrapper, env, id, cxt, func, args, passThisPtr));
+        return id;
+    }
+
+    void rexThreadWrapper(managedPtr<environment> env, vint tid, managedPtr<value> cxt, managedPtr<value> func,
+                          vec<value> args, managedPtr<value> passThisPtr) {
+        auto it = managePtr(interpreter{env, managePtr(value{value::cxtObject{}}), cxt});
+
+        it->interpreterCxt->members[L"thread_id"] = managePtr(value{tid});
+        try {
+            auto res = it->invokeFunc(func, args, passThisPtr);
+            env->threadPool[tid].setResult(managePtr(res.isRef() ? res.getRef() : res));
+        } catch (rex::signalException &e) {
+            std::cerr << "Uncaught exception in thread " << tid << ": " << rex::wstring2string((rex::value) e.get())
+                      << std::endl;
+            std::cerr << wstring2string(it->getBacktrace()) << std::endl;
+            throw;
+        } catch (rex::rexException &e) {
+            std::cerr << "Uncaught exception in thread " << tid << ": " << e.what() << std::endl;
+            std::cerr << wstring2string(it->getBacktrace()) << std::endl;
+            throw;
+        } catch (std::exception &e) {
+            std::cerr << "Uncaught exception in thread " << tid << ": " << e.what() << std::endl;
+            std::cerr << wstring2string(it->getBacktrace()) << std::endl;
+            throw;
+        }
+        env->threadPool[tid].setResult(managePtr(value{}));
+    }
+
+    value waitForThread(const managedPtr<environment> &env, vint id) {
+        env->threadPool[id].getTh()->join();
+        value res = env->threadPool[id].getResult();
+        env->threadPool.erase(id);
+        return res;
+    }
 
     void environment::stackFrame::pushLocalCxt(const value::cxtObject &cxt) {
         localCxt.push_back(cxt);
@@ -684,7 +759,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexAdd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -714,7 +789,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexSub"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -744,7 +819,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexMul"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -774,7 +849,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexDiv"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -794,7 +869,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexAdd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -814,7 +889,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexBinaryShiftLeft"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -834,7 +909,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexBinaryShiftLeft"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -864,7 +939,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -894,7 +969,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexNotEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -924,7 +999,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexGreaterEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -954,7 +1029,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexLessEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -984,7 +1059,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexGreaterThan"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1014,7 +1089,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexLessThan"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1034,7 +1109,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexBinaryOr"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1054,7 +1129,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexBinaryAnd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1074,7 +1149,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexBinaryXor"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1094,7 +1169,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexLogicAnd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1119,7 +1194,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexLogicOr"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1139,7 +1214,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = ptr->members.find(L"rexIncrement"); it != ptr->members.end())
                     return invokeFunc(it->second, {}, ptr);
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1159,7 +1234,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = ptr->members.find(L"rexDecrement"); it != ptr->members.end())
                     return invokeFunc(it->second, {}, ptr);
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1177,7 +1252,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = a.members.find(L"rexNegate"); it != a.members.end())
                     return invokeFunc(it->second, {}, managePtr(a));
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1210,7 +1285,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = ptr->members.find(L"rexAddAssign"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1238,7 +1313,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = ptr->members.find(L"rexSubAssign"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1266,7 +1341,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = ptr->members.find(L"rexMulAssign"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1294,7 +1369,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = ptr->members.find(L"rexDivAssign"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1310,7 +1385,7 @@ namespace rex::bytecodeEngine {
                 if (auto it = ptr->members.find(L"rexModAssign"); it != ptr->members.end())
                     return invokeFunc(it->second, {a}, ptr);
                 else
-                    throwErr(makeErr(L"typeError", L"unsupported operation"));
+                    throw vmPanic(L"typeError: unsupported operation");
             }
         }
         return {};
@@ -1415,11 +1490,11 @@ namespace rex::bytecodeEngine {
 //        std::cout << wstring2string(op) << std::endl;
         switch (op.opcode) {
             case bytecodeStruct::opCode::pushLocalCxt:
-                callStack.back().localCxt.emplace_back();
+                callStack.back().pushLocalCxt({});
                 nextOp;
                 break;
             case bytecodeStruct::opCode::popLocalCxt:
-                callStack.back().localCxt.pop_back();
+                callStack.back().popLocalCxt();
                 nextOp;
                 break;
             case bytecodeStruct::opCode::jump: {
@@ -1505,9 +1580,7 @@ namespace rex::bytecodeEngine {
                     nextOp;
                     return;
                 }
-                // TODO: ERR
-                nextOp;
-                break;
+                throw vmPanic(L"undefined identifier: " + str);
             }
             case bytecodeStruct::opCode::findAttr: {
                 vstr &str = callStack.back().currentCodeStruct->names[op.opargs.indexv];
@@ -1519,9 +1592,7 @@ namespace rex::bytecodeEngine {
                     nextOp;
                     break;
                 }
-                // TODO: ERR
-                nextOp;
-                break;
+                throw vmPanic(L"undefined attr: " + str);
             }
             case bytecodeStruct::opCode::index: {
                 value &&r = opIndex(eleRefObj(evalStack[evalStack.size() - 2]),
@@ -1917,9 +1988,7 @@ namespace rex::bytecodeEngine {
                         break;
                     }
                 } else {
-                    // TODO: ERR
-                    nextOp;
-                    break;
+                    throw vmPanic(L"not an iteratable object");
                 }
             }
             default:
@@ -2001,6 +2070,16 @@ namespace rex::bytecodeEngine {
     }
 
     value interpreter::makeIt(const managedPtr<value> &left, bool isEnd) {
-        return {vec<managedPtr<value>>{left, managePtr(value{isEnd})}, vecMethods::getMethodsCxt()};
+        return {vec < managedPtr < value >> {left, managePtr(value{isEnd})}, vecMethods::getMethodsCxt()};
+    }
+
+    vstr interpreter::getBacktrace() {
+        vstr result;
+        vsize count{0};
+        for (auto i = callStack.rbegin(); i != callStack.rend(); i++) {
+            result += L"#" + std::to_wstring(count++) + L" " + (vstr) *i + L"\n";
+        }
+        return result;
+
     }
 }

@@ -216,7 +216,7 @@ namespace rex::bytecodeEngine {
          * @brief ABI interface for native functions
          * @warning THIS FUNCTION WILL BREAK THE SIGNLE-INTERPRET-FUNCTION RULE, ONLY FOR FORIGN INTERFACES
          */
-        value invokeFunc(const managedPtr <value>& func, const vec<value> &args, const managedPtr <value>& passThisPtr);
+        value invokeFunc(const managedPtr<value> &func, const vec<value> &args, const managedPtr<value> &passThisPtr);
 
         /**
          * @brief throw error in native functions
@@ -236,7 +236,10 @@ namespace rex::bytecodeEngine {
 
         interpreter() = default;
 
-        interpreter(const managedPtr<environment> &env, const managedPtr<value>& interpreterCxt, const managedPtr<value> &moduleCxt);
+        interpreter(const managedPtr<environment> &env, const managedPtr<value> &interpreterCxt,
+                    const managedPtr<value> &moduleCxt);
+
+        vstr getBacktrace();
 
         void restoreState(const state &s);
 
@@ -254,12 +257,12 @@ namespace rex::bytecodeEngine {
 
         void prepareForLambdaMethodInvoke(const managedPtr<value> &func, uint64_t argc);
 
-        value invokeNativeFn(const managedPtr <value> &func, uint64_t argc);
+        value invokeNativeFn(const managedPtr<value> &func, uint64_t argc);
 
-        value invokeNativeFn(const managedPtr <value> &func, const vec <value> &args,
-                             const managedPtr <value> &passThisPtr);
+        value invokeNativeFn(const managedPtr<value> &func, const vec<value> &args,
+                             const managedPtr<value> &passThisPtr);
 
-        value invokeNativeMethod(const managedPtr <value> &func, uint64_t argc);
+        value invokeNativeMethod(const managedPtr<value> &func, uint64_t argc);
 
         value opAdd(value &a, value &b);
 
@@ -297,26 +300,72 @@ namespace rex::bytecodeEngine {
 
         value opLogicOr(value &a, value &b);
 
-        value opIncrement(const managedPtr <value> &ptr);
+        value opIncrement(const managedPtr<value> &ptr);
 
-        value opDecrement(const managedPtr <value> &ptr);
+        value opDecrement(const managedPtr<value> &ptr);
 
         value opNegate(value &a);
 
-        value opAssign(const managedPtr <value> &ptr, value &a);
+        value opAssign(const managedPtr<value> &ptr, value &a);
 
-        value opAddAssign(const managedPtr <value> &ptr, value &a);
+        value opAddAssign(const managedPtr<value> &ptr, value &a);
 
-        value opSubAssign(const managedPtr <value> &ptr, value &a);
+        value opSubAssign(const managedPtr<value> &ptr, value &a);
 
-        value opMulAssign(const managedPtr <value> &ptr, value &a);
+        value opMulAssign(const managedPtr<value> &ptr, value &a);
 
-        value opDivAssign(const managedPtr <value> &ptr, value &a);
+        value opDivAssign(const managedPtr<value> &ptr, value &a);
 
-        value opModAssign(const managedPtr <value> &ptr, value &a);
+        value opModAssign(const managedPtr<value> &ptr, value &a);
 
-        value opIndex(const managedPtr <value> &ptr, value &a);
+        value opIndex(const managedPtr<value> &ptr, value &a);
     };
+
+    /**
+     * @brief compile file
+     * @param filepath
+     * @return the bytecode module
+     */
+    bytecodeModule compile(const vstr &filepath);
+
+    /**
+     * @brief Wrapper function for starting a new thread. This function is passed as a parameter to std::thread's constructor.
+     *
+     * @param env The environment in which the new thread will be executed.
+     * @param tid The ID of the new thread.
+     * @param cxt The context object in which the new thread will be executed.
+     * @param func The function object to be called in the new thread.
+     * @param args The arguments to be passed to the function object.
+     * @param passThisPtr The object to be passed as the this pointer to the function object.
+     */
+    void
+    rexThreadWrapper(managedPtr<environment> env, vint tid, managedPtr<value> cxt, managedPtr<value> func,
+                     vec<value> args,
+                     managedPtr<value> passThisPtr = nullptr);
+
+    /**
+     * @brief Spawns a new thread and returns its ID.
+     *
+     * @param env The environment in which the new thread will be executed.
+     * @param cxt The context object in which the new thread will be executed.
+     * @param func The function object to be called in the new thread.
+     * @param args The arguments to be passed to the function object.
+     * @param passThisPtr The object to be passed as the this pointer to the function object.
+     *
+     * @return The ID of the new thread.
+     */
+    vint spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,
+                     const vec<value> &args, const managedPtr<value> &passThisPtr = nullptr);
+
+    /**
+     * @brief Waits for the thread with the specified ID to finish execution and returns the result.
+     *
+     * @param env The environment in which the thread is being executed.
+     * @param id The ID of the thread to wait for.
+     *
+     * @return The result of the thread.
+     */
+    value waitForThread(const managedPtr<environment> &env, vint id);
 
 #define eleGetRef(ele) (ele.isRef() ? ele.getRef() : ele)
 
