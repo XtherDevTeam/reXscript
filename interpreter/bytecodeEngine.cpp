@@ -1987,7 +1987,6 @@ namespace rex::bytecodeEngine {
                                         eleGetRef(evalStack[evalStack.size() - 1]));
                 evalStack.pop_back();
                 evalStack.pop_back();
-                evalStack.push_back(r);
                 nextOp;
                 break;
             }
@@ -1996,7 +1995,6 @@ namespace rex::bytecodeEngine {
                                         eleGetRef(evalStack[evalStack.size() - 1]));
                 evalStack.pop_back();
                 evalStack.pop_back();
-                evalStack.push_back(r);
                 nextOp;
                 break;
             }
@@ -2005,7 +2003,6 @@ namespace rex::bytecodeEngine {
                                         eleGetRef(evalStack[evalStack.size() - 1]));
                 evalStack.pop_back();
                 evalStack.pop_back();
-                evalStack.push_back(r);
                 nextOp;
                 break;
             }
@@ -2014,7 +2011,6 @@ namespace rex::bytecodeEngine {
                                         eleGetRef(evalStack[evalStack.size() - 1]));
                 evalStack.pop_back();
                 evalStack.pop_back();
-                evalStack.push_back(r);
                 nextOp;
                 break;
             }
@@ -2023,7 +2019,6 @@ namespace rex::bytecodeEngine {
                                         eleGetRef(evalStack[evalStack.size() - 1]));
                 evalStack.pop_back();
                 evalStack.pop_back();
-                evalStack.push_back(r);
                 nextOp;
                 break;
             }
