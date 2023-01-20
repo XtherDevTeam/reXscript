@@ -2,6 +2,20 @@
 
 Yet another programming language.
 
+**NOTICE**: The VM version of reXscript will be merged to master branch when the port works of std is done. Please make sure you code could work correctly in new version.
+
+Here are the changes in new version:
+
+1. The result of iterators' `next()` method:
+    
+    Here is the format of result: `[value, isEnd]`
+
+    From this version on, `next()` method should return `[null, true]` when iterate is done, otherwise return `[value, false]`.
+
+2. Changes on native ABI
+
+    If you are a native module developer, change `rex::environment` `rex::interpreter` etc. to `rex::bytecodeEngine::[balahbalah]`. And, use `throwErr` instead of throwing a `signalException`     
+
 ## Usage
 
 ```bash
