@@ -15,8 +15,7 @@ void dis() {
     mod->members[L"__code__"] = rex::managePtr(rex::value{bm});
     rex::bytecodeEngine::rexEnvironmentInstance->globalCxt = rex::managePtr(
             rex::value{rex::globalMethods::getMethodsCxt()});
-    rex::bytecodeEngine::interpreter interpreter{rex::bytecodeEngine::rexEnvironmentInstance,
-                                                 rex::managePtr(rex::value{}), mod};
+    rex::bytecodeEngine::interpreter interpreter{rex::bytecodeEngine::rexEnvironmentInstance, {}, mod};
     while (std::cin) {
         std::string buf;
         std::cout << "input> ";

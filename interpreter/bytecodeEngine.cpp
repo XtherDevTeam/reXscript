@@ -58,9 +58,9 @@ namespace rex::bytecodeEngine {
 
     void rexThreadWrapper(managedPtr<environment> env, vint tid, managedPtr<value> cxt, managedPtr<value> func,
                           vec<value> args, managedPtr<value> passThisPtr) {
-        auto it = managePtr(interpreter{env, managePtr(value{value::cxtObject{}}), cxt});
+        auto it = managePtr(interpreter{env, {}, cxt});
 
-        it->interpreterCxt->members[L"thread_id"] = managePtr(value{tid});
+        it->interpreterCxt[L"thread_id"] = managePtr(value{tid});
         try {
             auto res = it->invokeFunc(func, args, passThisPtr);
             env->threadPool[tid].setResult(managePtr(res.isRef() ? res.getRef() : res));
@@ -88,21 +88,22 @@ namespace rex::bytecodeEngine {
         return res;
     }
 
-    managedPtr<value> requireModule(const managedPtr<interpreter> &in, vstr &path) {
-        auto &&bytecodeMod = compile(path);
+    managedPtr<value> requireModule(interpreter *in, const vstr &path) {
+        auto &&bytecodeMod = managePtr(compile(path));
         auto newModCxt = managePtr(value{value::cxtObject{}});
         newModCxt->members[L"__path__"] = managePtr(
                 value{path, rex::stringMethods::getMethodsCxt()});
+        newModCxt->members[L"__code__"] = managePtr(value{bytecodeMod});
         // create an interpreter which inherits interpreterCxt from the old interpreter
         auto newIn = managePtr(interpreter{in->env, in->interpreterCxt, newModCxt});
-        newIn->callStack.back().currentCodeStruct = bytecodeMod.codeStructs[bytecodeMod.entryBlock].get();
+        newIn->callStack.back().currentCodeStruct = bytecodeMod->codeStructs[bytecodeMod->entryBlock].get();
         newIn->interpret();
 
         newIn->env->globalCxt->members[path] = newModCxt;
         return newModCxt;
     }
 
-    managedPtr<value> requireModuleWithPath(const managedPtr<interpreter> &in, vstr &path) {
+    managedPtr<value> requireModuleWithPath(interpreter *in, const vstr &path) {
         managedPtr<value> result;
         forEachRexModulesPath(in, [&](const vstr &prefix) {
             vstr fullpath = prefix;
@@ -122,7 +123,7 @@ namespace rex::bytecodeEngine {
         }
     }
 
-    managedPtr<value> requireNativeModule(const managedPtr<interpreter> &in, vstr &path) {
+    managedPtr<value> requireNativeModule(interpreter *in, const vstr &path) {
         void *handle = dlopen(wstring2string(path).c_str(), RTLD_LAZY);
         if (!handle)
             throw importError(L"Cannot open file: file not exist or damaged");
@@ -145,7 +146,7 @@ namespace rex::bytecodeEngine {
         return newModCxt;
     }
 
-    managedPtr<value> requireNativeModuleWithPath(const managedPtr<interpreter> &in, vstr &path) {
+    managedPtr<value> requireNativeModuleWithPath(interpreter *in, const vstr &path) {
         managedPtr<value> result;
         forEachRexModulesPath(in, [&](const vstr &prefix) {
             vstr fullpath = prefix;
@@ -165,24 +166,25 @@ namespace rex::bytecodeEngine {
         }
     }
 
-    managedPtr<value> requirePackage(const managedPtr<interpreter> &in, vstr &path) {
-        auto &&packageLoader = compile(path + L"/packageLoader.rex");
+    managedPtr<value> requirePackage(interpreter *in, const vstr &path) {
+        auto &&packageLoader = managePtr(compile(path + L"/packageLoader.rex"));
         auto newModCxt = managePtr(value{value::cxtObject{}});
-        auto newInterpreterCxt = managePtr(*in->interpreterCxt);
-        newInterpreterCxt->members[L"rexPkgRoot"] = managePtr(value{path, stringMethods::getMethodsCxt()});
+        auto newInterpreterCxt = in->interpreterCxt;
+        newInterpreterCxt[L"rexPkgRoot"] = managePtr(value{path, stringMethods::getMethodsCxt()});
 
         newModCxt->members[L"__path__"] = managePtr(
                 value{path, rex::stringMethods::getMethodsCxt()});
+        newModCxt->members[L"__code__"] = managePtr(value{packageLoader});
         // create an interpreter which inherits interpreterCxt from the old interpreter
         auto newIn = managePtr(interpreter{in->env, newInterpreterCxt, newModCxt});
-        newIn->callStack.back().currentCodeStruct = packageLoader.codeStructs[packageLoader.entryBlock].get();
+        newIn->callStack.back().currentCodeStruct = packageLoader->codeStructs[packageLoader->entryBlock].get();
         newIn->interpret();
 
         newIn->env->globalCxt->members[path] = newModCxt;
         return newModCxt;
     }
 
-    managedPtr<value> requirePackageWithPath(const managedPtr<interpreter> &in, vstr &path) {
+    managedPtr<value> requirePackageWithPath(interpreter *in, const vstr &path) {
         managedPtr<value> result;
         forEachRexModulesPath(in, [&](const vstr &prefix) {
             vstr fullpath = prefix;
@@ -202,7 +204,7 @@ namespace rex::bytecodeEngine {
         }
     }
 
-    managedPtr<value> require(const managedPtr<interpreter> &in, vstr &path) {
+    managedPtr<value> requireWithPath(interpreter *in, const vstr &path) {
         std::filesystem::path p(wstring2string(path));
         if (p.has_extension()) {
             if (string2wstring(p.extension()) == L".rex") {
@@ -214,6 +216,41 @@ namespace rex::bytecodeEngine {
             }
         } else {
             return requirePackageWithPath(in, path);
+        }
+    }
+
+    managedPtr<environment> getRexEnvironment() {
+        auto env = rex::managePtr(environment{managePtr(value{globalMethods::getMethodsCxt()})});
+        auto cstr = std::getenv("rexModulesPath");
+        auto str = rex::string2wstring(cstr == nullptr ? "" : cstr);
+        managedPtr<value> rexModulesPath = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
+        if (!str.empty()) {
+            split(str, vstr{L";"}, [&](const vstr &i, vsize) {
+                rexModulesPath->getVec().push_back(
+                        managePtr(value{i, rex::stringMethods::getMethodsCxt()}));
+            });
+        }
+        rexModulesPath->getVec().push_back(managePtr(value{L"./modules", stringMethods::getMethodsCxt()}));
+        rexModulesPath->getVec().push_back(managePtr(value{string2wstring(getRexExecPath()) + L"/modules", stringMethods::getMethodsCxt()}));
+        rexModulesPath->getVec().push_back(managePtr(value{L"", stringMethods::getMethodsCxt()}));
+
+        env->globalCxt->members[L"rexModulesPath"] = rexModulesPath;
+        env->globalCxt->members[L"rexArgs"] = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
+        return env;
+    }
+
+    managedPtr<value> require(interpreter *in, const vstr &path) {
+        std::filesystem::path p(wstring2string(path));
+        if (p.has_extension()) {
+            if (string2wstring(p.extension()) == L".rex") {
+                return requireModule(in, path);
+            } else if (string2wstring(p.extension()) == L"." + getDylibSuffix()) {
+                return requireNativeModule(in, path);
+            } else {
+                throw importError(L"Unknown file suffix: " + path);
+            }
+        } else {
+            return requirePackage(in, path);
         }
     }
 
@@ -858,9 +895,9 @@ namespace rex::bytecodeEngine {
         }
     }
 
-    interpreter::interpreter(const managedPtr<environment> &env, const managedPtr<value> &interpreterCxt,
+    interpreter::interpreter(const managedPtr<environment> &env, value::cxtObject interpreterCxt,
                              const managedPtr<value> &moduleCxt) :
-            env(env), interpreterCxt(interpreterCxt), moduleCxt(moduleCxt) {
+            env(env), interpreterCxt(std::move(interpreterCxt)), moduleCxt(moduleCxt) {
         callStack.push_back({moduleCxt, {{}}, nullptr});
     }
 
@@ -1701,7 +1738,7 @@ namespace rex::bytecodeEngine {
                     evalStack.emplace_back(it->second);
                     nextOp;
                     return;
-                } else if (it = interpreterCxt->members.find(str); it != interpreterCxt->members.end()) {
+                } else if (it = interpreterCxt.find(str); it != interpreterCxt.end()) {
                     evalStack.emplace_back(it->second);
                     nextOp;
                     return;
@@ -1942,7 +1979,6 @@ namespace rex::bytecodeEngine {
                                      eleGetRef(evalStack[evalStack.size() - 1]));
                 evalStack.pop_back();
                 evalStack.pop_back();
-                evalStack.push_back(r);
                 nextOp;
                 break;
             }

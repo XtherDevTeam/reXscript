@@ -49,7 +49,8 @@ namespace rex {
                 return {passThisPtr->getStr().substr(args[0].getInt(), args[1].getInt()), getMethodsCxt()};
             }
             default: {
-                bytecodeEngine::interpreter::throwErr(rex::interpreter::makeErr(L"argumentsError", L"substr() expected one or two arguments"));
+                bytecodeEngine::interpreter::throwErr(
+                        rex::interpreter::makeErr(L"argumentsError", L"substr() expected one or two arguments"));
             }
         }
         return {};
@@ -305,7 +306,8 @@ namespace rex {
                 if (auto it = element.members.find(L"rexHash"); it != element.members.end()) {
                     return in->invokeFunc(it->second, {}, args[0].isRef() ? args[0].refObj : managePtr(args[0]));
                 } else {
-                    bytecodeEngine::interpreter::throwErr(interpreter::makeErr(L"hashError", L"`rexHash` not implemented"));
+                    bytecodeEngine::interpreter::throwErr(
+                            interpreter::makeErr(L"hashError", L"`rexHash` not implemented"));
                 }
         }
         return {};
@@ -398,49 +400,45 @@ namespace rex {
     }
 
     nativeFn(globalMethods::rexRequireMod, interpreter, args, passThisPtr) {
-//        auto *in = (rex::interpreter *) interpreter;
-//        if (args[0].isRef())
-//            args[0] = args[0].getRef();
-//
-//        value::cxtObject defCxt;
-//        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
-//            defCxt.insert(*it);
-//        }
-//
-//        return rex::importExternModule(in, args[0].getStr());
-        return {};
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        value::cxtObject defCxt;
+        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
+            defCxt.insert(*it);
+        }
+
+        return rex::bytecodeEngine::requireModule(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::rexRequireNativeMod, interpreter, args, passThisPtr) {
-//        auto *in = (rex::interpreter *) interpreter;
-//        if (args[0].isRef())
-//            args[0] = args[0].getRef();
-//
-//        value::cxtObject defCxt;
-//        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
-//            defCxt.insert(*it);
-//        }
-//
-//        return rex::importNativeModule(in, args[0].getStr());
-        return {};
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        value::cxtObject defCxt;
+        if (auto it = in->moduleCxt->members.find(L"rexPkgRoot"); it != in->moduleCxt->members.end()) {
+            defCxt.insert(*it);
+        }
+
+        return rex::bytecodeEngine::requireNativeModuleWithPath(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::rexRequirePackage, interpreter, args, passThisPtr) {
-//        auto *in = (rex::interpreter *) interpreter;
-//        if (args[0].isRef())
-//            args[0] = args[0].getRef();
-//
-//        return rex::importExternPackage(in, args[0].getStr());
-        return {};
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        return rex::bytecodeEngine::requireModuleWithPath(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::rexRequire, interpreter, args, passThisPtr) {
-//        auto *in = (rex::interpreter *) interpreter;
-//        if (args[0].isRef())
-//            args[0] = args[0].getRef();
-//
-//        return importEx(in, args[0].getStr());
-        return {};
+        auto *in = (rex::interpreter *) interpreter;
+        if (args[0].isRef())
+            args[0] = args[0].getRef();
+
+        return rex::bytecodeEngine::requireWithPath(in, args[0].getStr());
     }
 
     nativeFn(globalMethods::format, interpreter, args, passThisPtr) {
@@ -504,7 +502,8 @@ namespace rex {
                             bytecodeEngine::interpreter::throwErr(
                                     interpreter::makeErr(L"formatError", L"expected `}` after the formatter tag"));
                     } else {
-                        bytecodeEngine::interpreter::throwErr(interpreter::makeErr(L"formatError", L"invalid formatter tag"));
+                        bytecodeEngine::interpreter::throwErr(
+                                interpreter::makeErr(L"formatError", L"invalid formatter tag"));
                     }
                 }
             } else {
@@ -889,27 +888,6 @@ namespace rex {
             vec.push_back(i->getVec()[1]);
         }
         return {vec, vecMethods::getMethodsCxt()};
-    }
-
-    value::cxtObject hashMapMethods::keysIterator::getMethodsCxt(value::linkedListObject &container) {
-        value::cxtObject result;
-        result[L"container"] = managePtr(value{container, linkedListMethods::getMethodsCxt()});
-        result[L"cur"] = managePtr(value{result[L"container"]->getLinkedList().begin()});
-        result[L"next"] = managePtr(value{(value::nativeFuncPtr) next});
-        return result;
-    }
-
-    // iterate over all kvPairs and get the keys
-    nativeFn(hashMapMethods::keysIterator::next, interpreter, args, passThisPtr) {
-        auto &container = passThisPtr->members[L"container"]->getLinkedList();
-        auto &iter = passThisPtr->members[L"cur"]->linkedListIterObj;
-        auto &element = **iter;
-        if (*iter == container.end()) {
-            return interpreter::makeIt({}, true);
-        }
-        (*iter)++;
-
-        return interpreter::makeIt(element->getVec()[1], false);
     }
 
     nativeFn(hashMapMethods::rexClone, interpreter, args, passThisPtr) {

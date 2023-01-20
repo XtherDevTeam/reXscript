@@ -207,7 +207,7 @@ namespace rex::bytecodeEngine {
 
         managedPtr<environment> env;
         vec<environment::stackFrame> callStack;
-        managedPtr<value> interpreterCxt;
+        value::cxtObject interpreterCxt;
         managedPtr<value> moduleCxt;
         vec<value> evalStack;
         vec<state> exceptionHandlers;
@@ -236,7 +236,7 @@ namespace rex::bytecodeEngine {
 
         interpreter() = default;
 
-        interpreter(const managedPtr<environment> &env, const managedPtr<value> &interpreterCxt,
+        interpreter(const managedPtr<environment> &env, value::cxtObject interpreterCxt,
                     const managedPtr<value> &moduleCxt);
 
         vstr getBacktrace();
@@ -368,28 +368,32 @@ namespace rex::bytecodeEngine {
     value waitForThread(const managedPtr<environment> &env, vint id);
 
     template<typename F>
-    void forEachRexModulesPath(const managedPtr<interpreter> &in, F callback) {
+    void forEachRexModulesPath(interpreter *in, F callback) {
         if (auto it = in->env->globalCxt->members.find(L"rexModulesPath");
                 it != in->env->globalCxt->members.end()) {
-            if(callback(it->second->getStr())) {
+            if (callback(it->second->getStr())) {
                 return;
             }
         }
     }
 
-    managedPtr<value> requireModule(const managedPtr<interpreter> &in, vstr &path);
+    managedPtr<value> requireModule(interpreter *in, const vstr &path);
 
-    managedPtr<value> requireModuleWithPath(const managedPtr<interpreter> &in, vstr &path);
+    managedPtr<value> requireModuleWithPath(interpreter *in, const vstr &path);
 
-    managedPtr<value> requireNativeModule(const managedPtr<interpreter> &in, vstr &path);
+    managedPtr<value> requireNativeModule(interpreter *in, const vstr &path);
 
-    managedPtr<value> requireNativeModuleWithPath(const managedPtr<interpreter> &in, vstr &path);
+    managedPtr<value> requireNativeModuleWithPath(interpreter *in, const vstr &path);
 
-    managedPtr<value> requirePackage(const managedPtr<interpreter> &in, vstr &path);
+    managedPtr<value> requirePackage(interpreter *in, const vstr &path);
 
-    managedPtr<value> requirePackageWithPath(const managedPtr<interpreter> &in, vstr &path);
+    managedPtr<value> requirePackageWithPath(interpreter *in, const vstr &path);
 
-    managedPtr<value> require(const managedPtr<interpreter> &in, vstr &path);
+    managedPtr<value> require(interpreter *in, const vstr &path);
+
+    managedPtr<value> requireWithPath(interpreter *in, const vstr &path);
+
+    managedPtr<environment> getRexEnvironment();
 
 #define eleGetRef(ele) (ele.isRef() ? ele.getRef() : ele)
 

@@ -331,11 +331,6 @@ namespace rex {
         result[L"type"] = managePtr(value{(value::nativeFuncPtr) type});
 
         result[L"threading"] = managePtr(threadingMethods::getThreadingModule());
-        result[L"importPrefixPath"] = managePtr(value{value::vecObject{
-                managePtr(value{L"./modules", stringMethods::getMethodsCxt()}),
-                managePtr(value{string2wstring(getRexExecPath()) + L"/modules", stringMethods::getMethodsCxt()}),
-                managePtr(value{L"", stringMethods::getMethodsCxt()}),
-        }, rex::vecMethods::getMethodsCxt()});
 
         result[L"rexPlatform"] = managePtr(value{getOSName(), stringMethods::getMethodsCxt()});
         result[L"rexArch"] = managePtr(value{getCPUArch(), stringMethods::getMethodsCxt()});

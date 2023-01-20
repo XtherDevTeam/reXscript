@@ -181,12 +181,6 @@ namespace rex {
             value::cxtObject getMethodsCxt(value::linkedListObject &container);
         }
 
-        namespace keysIterator {
-            nativeFn(next, interpreter, args, passThisPtr);
-
-            value::cxtObject getMethodsCxt(value::linkedListObject &container);
-        }
-
         nativeFn(insert, interpreter, args, passThisPtr);
 
         nativeFn(realloc, interpreter, args, passThisPtr);
