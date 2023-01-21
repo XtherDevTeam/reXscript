@@ -1,8 +1,4 @@
 <map id="makeErr" name="makeErr">
-<area shape="rect" id="node1" title=" " alt="" coords="401,81,477,108"/>
-<area shape="rect" id="node2" href="$namespacerex.html#af7b0ff6d7e0bdac9e1677cd34516b573" title="Import an external reXscript module." alt="" coords="167,5,351,32"/>
-<area shape="rect" id="node4" href="$namespacerex.html#a1f7b3196951c22bb1be5672084253fd8" title="Import an external reXscript package." alt="" coords="164,56,353,83"/>
-<area shape="rect" id="node5" href="$namespacerex.html#a1b67fc3ffe91c180017ec662ffdcb1f3" title="Import a native module." alt="" coords="166,107,351,133"/>
-<area shape="rect" id="node6" href="$namespacerex.html#a7fd10a489e0221c3e82914793970967a" title=" " alt="" coords="205,157,313,184"/>
-<area shape="rect" id="node3" href="$namespacerex.html#ab0283358247156cd39ec572b09405020" title=" " alt="" coords="5,56,116,83"/>
+<area shape="rect" id="node1" title=" " alt="" coords="161,5,237,32"/>
+<area shape="rect" id="node2" href="$namespacerex.html#a5c9a3d1d34106ee64130778255883b5f" title=" " alt="" coords="5,5,113,32"/>
 </map>

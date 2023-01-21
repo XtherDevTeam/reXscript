@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['nativefn_1215',['nativeFn',['../share_8hpp.html#ae51b9f22c379d85a5ba21f90480458ba',1,'share.hpp']]],
-  ['nextop_1216',['nextOp',['../bytecodeEngine_8hpp.html#adb32b9c2039a1ceb27f6dc4d97a54ba2',1,'bytecodeEngine.hpp']]]
+  ['nativefn_1180',['nativeFn',['../share_8hpp.html#ae51b9f22c379d85a5ba21f90480458ba',1,'share.hpp']]],
+  ['nextop_1181',['nextOp',['../bytecodeEngine_8hpp.html#adb32b9c2039a1ceb27f6dc4d97a54ba2',1,'bytecodeEngine.hpp']]]
 ];

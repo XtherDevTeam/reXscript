@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['dec_97',['dec',['../structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b',1,'rex::formatterTagInfo::dec()'],['../structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b',1,'rex::formatterTagInfo::dec()'],['../structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b',1,'rex::formatterTagInfo::dec()'],['../structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b',1,'rex::formatterTagInfo::dec()']]],
+  ['dec_97',['dec',['../structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b',1,'rex::formatterTagInfo']]],
   ['deciconst_98',['deciConst',['../structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a90e0c9d3562f4b0764b38f5c560a86ffa226fd092d816ba60ba35ff1eed71f5f3',1,'rex::bytecodeEngine::bytecodeStruct']]],
   ['decimal_99',['decimal',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32abdaa3c20a3e3851599514f7c6be5f62f',1,'rex::lexer::token']]],
   ['deciv_100',['deciv',['../unionrex_1_1bytecodeEngine_1_1bytecodeStruct_1_1opArgs.html#aee9bb1fb120b6dbd400e64e17899c6b6',1,'rex::bytecodeEngine::bytecodeStruct::opArgs']]],
@@ -11,7 +11,7 @@ var searchData=
   ['divassign_105',['divAssign',['../structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a90e0c9d3562f4b0764b38f5c560a86ffaa177c7482160fe447cf7e4366f9ff196',1,'rex::bytecodeEngine::bytecodeStruct']]],
   ['divisionassignment_106',['divisionAssignment',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a95da522d005dab6fff2c0e2f6d1ce400',1,'rex::lexer::token']]],
   ['dlfcn_2ehpp_107',['dlfcn.hpp',['../dlfcn_8hpp.html',1,'']]],
-  ['dollar_108',['dollar',['../structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34',1,'rex::formatterTagInfo::dollar()'],['../structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34',1,'rex::formatterTagInfo::dollar()'],['../structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34',1,'rex::formatterTagInfo::dollar()'],['../structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34',1,'rex::formatterTagInfo::dollar()']]],
+  ['dollar_108',['dollar',['../structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34',1,'rex::formatterTagInfo']]],
   ['dot_109',['dot',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a69eb76c88557a8211cbfc9beda5fc062',1,'rex::lexer::token']]],
   ['dotstart_110',['dotStart',['../classrex_1_1lexer.html#abf725ee1f51a1341d5be290f9d7114c6',1,'rex::lexer']]],
   ['dropstate_111',['dropState',['../classrex_1_1lexer.html#afdc95fadf606bf742c2b0b549c09b1df',1,'rex::lexer']]],

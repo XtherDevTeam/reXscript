@@ -4,7 +4,7 @@
 <area shape="rect" id="node3" href="$parser_8hpp.html" title=" " alt="" coords="103,155,252,181"/>
 <area shape="rect" id="node18" href="$bytecodeStructs_8hpp.html" title=" " alt="" coords="599,229,827,256"/>
 <area shape="rect" id="node19" href="$bytecodeEngine_8hpp.html" title=" " alt="" coords="209,80,436,107"/>
-<area shape="rect" id="node22" href="$interpreter_2builtInMethods_8hpp.html" title=" " alt="" coords="461,80,681,107"/>
+<area shape="rect" id="node22" href="$builtInMethods_8hpp.html" title=" " alt="" coords="461,80,681,107"/>
 <area shape="rect" id="node4" href="$lexer_8hpp.html" title=" " alt="" coords="111,304,251,331"/>
 <area shape="rect" id="node17" href="$ast_8hpp.html" title=" " alt="" coords="327,229,457,256"/>
 <area shape="rect" id="node5" href="$share_8hpp.html" title=" " alt="" coords="354,379,481,405"/>

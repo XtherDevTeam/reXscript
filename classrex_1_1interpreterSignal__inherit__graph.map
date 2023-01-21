@@ -1,8 +1,5 @@
 <map id="interpreterSignal" name="interpreterSignal">
-<area shape="rect" id="node1" title=" " alt="" coords="196,80,327,107"/>
-<area shape="rect" id="node3" href="$classrex_1_1signalBreak.html" title=" " alt="" coords="5,155,104,181"/>
-<area shape="rect" id="node4" href="$classrex_1_1signalContinue.html" title=" " alt="" coords="129,155,247,181"/>
-<area shape="rect" id="node5" href="$classrex_1_1signalException.html" title=" " alt="" coords="272,155,397,181"/>
-<area shape="rect" id="node6" href="$classrex_1_1signalReturn.html" title=" " alt="" coords="421,155,525,181"/>
-<area shape="rect" id="node2" title=" " alt="" coords="218,5,305,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,80,136,107"/>
+<area shape="rect" id="node3" href="$classrex_1_1signalException.html" title=" " alt="" coords="8,155,133,181"/>
+<area shape="rect" id="node2" title=" " alt="" coords="27,5,114,32"/>
 </map>

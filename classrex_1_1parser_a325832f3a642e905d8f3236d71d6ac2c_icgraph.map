@@ -1,49 +1,44 @@
 <map id="parseSubscriptExpression" name="parseSubscriptExpression">
-<area shape="rect" id="node1" title=" " alt="" coords="3892,639,4081,665"/>
-<area shape="rect" id="node2" href="$classrex_1_1parser.html#a4df40a97ea9c3b9f4eac1151be0d2b15" title=" " alt="" coords="3661,461,3844,488"/>
-<area shape="rect" id="node9" href="$classrex_1_1parser.html#ae9db634e6b32b9a001404595b529537e" title=" " alt="" coords="639,512,748,539"/>
-<area shape="rect" id="node3" href="$classrex_1_1parser.html#a7a5674e6fc5d0787f4d0c851d4cf09a8" title=" " alt="" coords="1517,5,1724,32"/>
-<area shape="rect" id="node34" href="$classrex_1_1parser.html#ad1f8599fc6fc1457b5d3cf257b204195" title=" " alt="" coords="3439,411,3613,437"/>
-<area shape="rect" id="node4" href="$classrex_1_1parser.html#a95aa529c855ac7e731302ced3f8837ee" title=" " alt="" coords="1351,208,1447,235"/>
-<area shape="rect" id="node5" href="$main_8cpp.html#a971fd9a77229487fe88d3529a8465bd2" title=" " alt="" coords="177,72,301,99"/>
-<area shape="rect" id="node7" href="$classrex_1_1parser.html#a0566e01595e9753ecd7e815953606315" title=" " alt="" coords="1122,309,1247,336"/>
-<area shape="rect" id="node13" href="$classrex_1_1parser.html#a4ecf6a0b9b8e17a2b650894055950fc1" title=" " alt="" coords="1144,157,1225,184"/>
-<area shape="rect" id="node30" href="$classrex_1_1parser.html#a0b028847baafe999d8f8934a5cf2e060" title=" " alt="" coords="1130,5,1239,32"/>
-<area shape="rect" id="node31" href="$classrex_1_1parser.html#a578262f470655050242cbfce410bd21c" title=" " alt="" coords="1135,56,1234,83"/>
-<area shape="rect" id="node32" href="$classrex_1_1parser.html#aee0115acad72fbf76ce211808232c329" title=" " alt="" coords="1089,360,1280,387"/>
-<area shape="rect" id="node33" href="$classrex_1_1parser.html#a083c7a41312736cf6ca189a1169da846" title=" " alt="" coords="1121,411,1248,437"/>
-<area shape="rect" id="node6" href="$main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="32,153,87,180"/>
-<area shape="rect" id="node8" href="$classrex_1_1parser.html#a3b9e097ea15a1945c9f717a282cedf82" title=" " alt="" coords="853,411,1024,437"/>
-<area shape="rect" id="node10" href="$classrex_1_1parser.html#a9c76278eb78a78e6afaab57311ae4136" title=" " alt="" coords="851,360,1027,387"/>
-<area shape="rect" id="node11" href="$classrex_1_1parser.html#acb5f81ae47c3c7611f7fb742724fad76" title=" " alt="" coords="855,259,1022,285"/>
-<area shape="rect" id="node12" href="$classrex_1_1parser.html#abb268fcf0caffc79fa43a7807e732f9f" title=" " alt="" coords="866,309,1011,336"/>
-<area shape="rect" id="node14" href="$namespacerex_1_1bytecodeEngine.html#afc7a7bd5b3ae71d3026f85caf00db39b" title="compile file" alt="" coords="861,193,1016,234"/>
-<area shape="rect" id="node25" href="$namespacerex.html#a3c3dc3f1101b4152e151ea2e39899161" title="Import an external reXscript module without importPathPrefix." alt="" coords="839,91,1039,117"/>
-<area shape="rect" id="node28" href="$namespacerex.html#a9cf3631271ab28b8fc4e7fbda3276d79" title="Import an external package without importPathPrefix." alt="" coords="836,141,1041,168"/>
-<area shape="rect" id="node15" href="$namespacerex_1_1bytecodeEngine.html#a022c3e8bdaafed18e74e2dcc933aac2a" title=" " alt="" coords="616,262,771,303"/>
-<area shape="rect" id="node23" href="$namespacerex_1_1bytecodeEngine.html#a8c1365ae28942d838201cd9852cd5e34" title=" " alt="" coords="616,193,771,234"/>
-<area shape="rect" id="node16" href="$namespacerex.html#ab2096a9feb63ab81b53ac42b04bf537a" title=" " alt="" coords="403,273,511,300"/>
-<area shape="rect" id="node17" href="$namespacerex_1_1bytecodeEngine.html#a491aa4dafae71a48c31a3624413368ec" title=" " alt="" coords="380,207,535,249"/>
-<area shape="rect" id="node19" href="$namespacerex_1_1bytecodeEngine.html#aa0343214d46d92e632e23829d00fbec7" title=" " alt="" coords="366,325,549,366"/>
-<area shape="rect" id="node18" href="$main_8cpp.html#aeabdeec86d614c88db697bbb3bd744f3" title=" " alt="" coords="202,153,275,180"/>
-<area shape="rect" id="node20" href="$namespacerex.html#ac530381b6131c06d13f9021bd586494e" title=" " alt="" coords="185,332,293,359"/>
-<area shape="rect" id="node21" href="$namespacerex_1_1bytecodeEngine.html#a2ec88f38a6e4390ca02a1774f6cb8820" title=" " alt="" coords="161,205,316,246"/>
-<area shape="rect" id="node22" href="$namespacerex.html#ac2b8b8d5b24bebfe101ef09da980e41f" title=" " alt="" coords="5,212,113,239"/>
-<area shape="rect" id="node24" href="$namespacerex_1_1bytecodeEngine.html#a779d88c859079599c713d1ccfbe83d0a" title=" " alt="" coords="364,142,551,183"/>
-<area shape="rect" id="node26" href="$namespacerex.html#af7b0ff6d7e0bdac9e1677cd34516b573" title="Import an external reXscript module." alt="" coords="601,91,785,117"/>
-<area shape="rect" id="node27" href="$namespacerex.html#ab0283358247156cd39ec572b09405020" title=" " alt="" coords="402,91,513,117"/>
-<area shape="rect" id="node29" href="$namespacerex.html#a1f7b3196951c22bb1be5672084253fd8" title="Import an external reXscript package." alt="" coords="599,141,788,168"/>
-<area shape="rect" id="node35" href="$classrex_1_1parser.html#a055e0e8d0bdc322956569b038a0e1782" title=" " alt="" coords="3172,385,3391,412"/>
-<area shape="rect" id="node36" href="$classrex_1_1parser.html#a56eee581311209122e2c99b6dca94136" title=" " alt="" coords="2941,372,3124,399"/>
-<area shape="rect" id="node37" href="$classrex_1_1parser.html#a177dafbb7b558c201fef2581115783ab" title=" " alt="" coords="2693,365,2893,392"/>
-<area shape="rect" id="node38" href="$classrex_1_1parser.html#af90d76f6daad5ef6c8313a7d64ca0471" title=" " alt="" coords="2447,363,2645,389"/>
-<area shape="rect" id="node39" href="$classrex_1_1parser.html#a744506ed1eee33eb33f958ee9e123f2b" title=" " alt="" coords="2228,361,2399,388"/>
-<area shape="rect" id="node40" href="$classrex_1_1parser.html#a3f806ca49bebc6924b9f24d7b8d3abe9" title=" " alt="" coords="1992,360,2180,387"/>
-<area shape="rect" id="node41" href="$classrex_1_1parser.html#a36b936bf85bfe97fa711c783762dd2b6" title=" " alt="" coords="1772,360,1944,387"/>
-<area shape="rect" id="node42" href="$classrex_1_1parser.html#ad68796cc48075e3b2f4dc37b2a187532" title=" " alt="" coords="1556,664,1685,691"/>
-<area shape="rect" id="node43" href="$classrex_1_1parser.html#a27fa7c3ceb5d9a050e2006560398752b" title=" " alt="" coords="1566,259,1675,285"/>
-<area shape="rect" id="node44" href="$classrex_1_1parser.html#a2f86291ff7d4c5cfbff97cfa2bd8e09b" title=" " alt="" coords="1337,512,1460,539"/>
-<area shape="rect" id="node45" href="$classrex_1_1parser.html#a747e37d20cf4a6c6dc6a87ebdfe59931" title=" " alt="" coords="1328,563,1469,589"/>
-<area shape="rect" id="node46" href="$classrex_1_1parser.html#a7da0465a8a26469798e4a27360bd449d" title=" " alt="" coords="1555,309,1687,336"/>
-<area shape="rect" id="node47" href="$classrex_1_1parser.html#a9eab1f2cf178b469b738464385098144" title=" " alt="" coords="1556,157,1685,184"/>
+<area shape="rect" id="node1" title=" " alt="" coords="3828,639,4017,665"/>
+<area shape="rect" id="node2" href="$classrex_1_1parser.html#a4df40a97ea9c3b9f4eac1151be0d2b15" title=" " alt="" coords="3597,537,3780,564"/>
+<area shape="rect" id="node9" href="$classrex_1_1parser.html#ae9db634e6b32b9a001404595b529537e" title=" " alt="" coords="621,512,731,539"/>
+<area shape="rect" id="node3" href="$classrex_1_1parser.html#a7a5674e6fc5d0787f4d0c851d4cf09a8" title=" " alt="" coords="1453,5,1660,32"/>
+<area shape="rect" id="node29" href="$classrex_1_1parser.html#ad1f8599fc6fc1457b5d3cf257b204195" title=" " alt="" coords="3375,436,3549,463"/>
+<area shape="rect" id="node4" href="$classrex_1_1parser.html#a95aa529c855ac7e731302ced3f8837ee" title=" " alt="" coords="1287,208,1383,235"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a971fd9a77229487fe88d3529a8465bd2" title=" " alt="" coords="614,84,738,111"/>
+<area shape="rect" id="node7" href="$classrex_1_1parser.html#a0566e01595e9753ecd7e815953606315" title=" " alt="" coords="1058,208,1183,235"/>
+<area shape="rect" id="node13" href="$classrex_1_1parser.html#a4ecf6a0b9b8e17a2b650894055950fc1" title=" " alt="" coords="1080,157,1161,184"/>
+<area shape="rect" id="node25" href="$classrex_1_1parser.html#a0b028847baafe999d8f8934a5cf2e060" title=" " alt="" coords="1066,5,1175,32"/>
+<area shape="rect" id="node26" href="$classrex_1_1parser.html#a578262f470655050242cbfce410bd21c" title=" " alt="" coords="1071,56,1170,83"/>
+<area shape="rect" id="node27" href="$classrex_1_1parser.html#aee0115acad72fbf76ce211808232c329" title=" " alt="" coords="1025,360,1216,387"/>
+<area shape="rect" id="node28" href="$classrex_1_1parser.html#a083c7a41312736cf6ca189a1169da846" title=" " alt="" coords="1057,411,1184,437"/>
+<area shape="rect" id="node6" href="$main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="32,163,87,189"/>
+<area shape="rect" id="node8" href="$classrex_1_1parser.html#a3b9e097ea15a1945c9f717a282cedf82" title=" " alt="" coords="804,267,975,293"/>
+<area shape="rect" id="node10" href="$classrex_1_1parser.html#a9c76278eb78a78e6afaab57311ae4136" title=" " alt="" coords="801,216,977,243"/>
+<area shape="rect" id="node11" href="$classrex_1_1parser.html#acb5f81ae47c3c7611f7fb742724fad76" title=" " alt="" coords="806,317,973,344"/>
+<area shape="rect" id="node12" href="$classrex_1_1parser.html#abb268fcf0caffc79fa43a7807e732f9f" title=" " alt="" coords="817,368,962,395"/>
+<area shape="rect" id="node14" href="$namespacerex_1_1bytecodeEngine.html#afc7a7bd5b3ae71d3026f85caf00db39b" title="compile file" alt="" coords="812,150,967,191"/>
+<area shape="rect" id="node15" href="$namespacerex_1_1bytecodeEngine.html#a022c3e8bdaafed18e74e2dcc933aac2a" title=" " alt="" coords="599,245,753,286"/>
+<area shape="rect" id="node23" href="$namespacerex_1_1bytecodeEngine.html#a8c1365ae28942d838201cd9852cd5e34" title=" " alt="" coords="599,150,753,191"/>
+<area shape="rect" id="node16" href="$namespacerex.html#a9f637228b2585d8a99fb4b9507664163" title=" " alt="" coords="403,259,511,285"/>
+<area shape="rect" id="node17" href="$namespacerex_1_1bytecodeEngine.html#a491aa4dafae71a48c31a3624413368ec" title=" " alt="" coords="380,193,535,234"/>
+<area shape="rect" id="node19" href="$namespacerex_1_1bytecodeEngine.html#aa0343214d46d92e632e23829d00fbec7" title=" " alt="" coords="366,310,549,351"/>
+<area shape="rect" id="node18" href="$main_8cpp.html#aeabdeec86d614c88db697bbb3bd744f3" title=" " alt="" coords="202,163,275,189"/>
+<area shape="rect" id="node20" href="$namespacerex.html#aa734c413ae4283de3200df42127d883e" title=" " alt="" coords="185,317,293,344"/>
+<area shape="rect" id="node21" href="$namespacerex_1_1bytecodeEngine.html#a2ec88f38a6e4390ca02a1774f6cb8820" title=" " alt="" coords="161,214,316,255"/>
+<area shape="rect" id="node22" href="$namespacerex.html#a728069e054d88b5a10fff12927c4dbfc" title=" " alt="" coords="5,221,113,248"/>
+<area shape="rect" id="node24" href="$namespacerex_1_1bytecodeEngine.html#a779d88c859079599c713d1ccfbe83d0a" title=" " alt="" coords="364,127,551,169"/>
+<area shape="rect" id="node30" href="$classrex_1_1parser.html#a055e0e8d0bdc322956569b038a0e1782" title=" " alt="" coords="3108,399,3327,425"/>
+<area shape="rect" id="node31" href="$classrex_1_1parser.html#a56eee581311209122e2c99b6dca94136" title=" " alt="" coords="2877,380,3060,407"/>
+<area shape="rect" id="node32" href="$classrex_1_1parser.html#a177dafbb7b558c201fef2581115783ab" title=" " alt="" coords="2629,371,2829,397"/>
+<area shape="rect" id="node33" href="$classrex_1_1parser.html#af90d76f6daad5ef6c8313a7d64ca0471" title=" " alt="" coords="2383,368,2581,395"/>
+<area shape="rect" id="node34" href="$classrex_1_1parser.html#a744506ed1eee33eb33f958ee9e123f2b" title=" " alt="" coords="2164,367,2335,393"/>
+<area shape="rect" id="node35" href="$classrex_1_1parser.html#a3f806ca49bebc6924b9f24d7b8d3abe9" title=" " alt="" coords="1928,361,2116,388"/>
+<area shape="rect" id="node36" href="$classrex_1_1parser.html#a36b936bf85bfe97fa711c783762dd2b6" title=" " alt="" coords="1708,360,1880,387"/>
+<area shape="rect" id="node37" href="$classrex_1_1parser.html#ad68796cc48075e3b2f4dc37b2a187532" title=" " alt="" coords="1492,664,1621,691"/>
+<area shape="rect" id="node38" href="$classrex_1_1parser.html#a27fa7c3ceb5d9a050e2006560398752b" title=" " alt="" coords="1502,259,1611,285"/>
+<area shape="rect" id="node39" href="$classrex_1_1parser.html#a2f86291ff7d4c5cfbff97cfa2bd8e09b" title=" " alt="" coords="1273,512,1396,539"/>
+<area shape="rect" id="node40" href="$classrex_1_1parser.html#a747e37d20cf4a6c6dc6a87ebdfe59931" title=" " alt="" coords="1264,563,1405,589"/>
+<area shape="rect" id="node41" href="$classrex_1_1parser.html#a7da0465a8a26469798e4a27360bd449d" title=" " alt="" coords="1491,309,1623,336"/>
+<area shape="rect" id="node42" href="$classrex_1_1parser.html#a9eab1f2cf178b469b738464385098144" title=" " alt="" coords="1492,157,1621,184"/>
 </map>
