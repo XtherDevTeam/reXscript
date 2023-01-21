@@ -8,13 +8,14 @@ var searchData=
   ['deepcopy_102',['deepCopy',['../classrex_1_1value.html#acb9ec73522d69531a4a1a1fe791af542',1,'rex::value::deepCopy()'],['../structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a90e0c9d3562f4b0764b38f5c560a86ffae80fa44530d27416e532bd6f278450e4',1,'rex::bytecodeEngine::bytecodeStruct::deepCopy()']]],
   ['digitstart_103',['digitStart',['../classrex_1_1lexer.html#a7a91c62a65e18e31a082b16ff0f1a039',1,'rex::lexer']]],
   ['dis_104',['dis',['../test_8cpp.html#a653615cb319064e821f311ebc34e5753',1,'test.cpp']]],
-  ['divassign_105',['divAssign',['../structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a90e0c9d3562f4b0764b38f5c560a86ffaa177c7482160fe447cf7e4366f9ff196',1,'rex::bytecodeEngine::bytecodeStruct']]],
-  ['divisionassignment_106',['divisionAssignment',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a95da522d005dab6fff2c0e2f6d1ce400',1,'rex::lexer::token']]],
-  ['dlfcn_2ehpp_107',['dlfcn.hpp',['../dlfcn_8hpp.html',1,'']]],
-  ['dollar_108',['dollar',['../structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34',1,'rex::formatterTagInfo']]],
-  ['dot_109',['dot',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a69eb76c88557a8211cbfc9beda5fc062',1,'rex::lexer::token']]],
-  ['dotstart_110',['dotStart',['../classrex_1_1lexer.html#abf725ee1f51a1341d5be290f9d7114c6',1,'rex::lexer']]],
-  ['dropstate_111',['dropState',['../classrex_1_1lexer.html#afdc95fadf606bf742c2b0b549c09b1df',1,'rex::lexer']]],
-  ['duplicate_112',['duplicate',['../structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a90e0c9d3562f4b0764b38f5c560a86ffa24f1b0a79473250c195c7fb84e393392',1,'rex::bytecodeEngine::bytecodeStruct']]],
-  ['dylibsuffix_113',['dylibSuffix',['../share_8hpp.html#a21ec0f1e0ad4109b7711e9f0ad88800e',1,'share.hpp']]]
+  ['disasm_105',['disasm',['../main_8cpp.html#a1056374be377b57182acb0e52b54863e',1,'main.cpp']]],
+  ['divassign_106',['divAssign',['../structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a90e0c9d3562f4b0764b38f5c560a86ffaa177c7482160fe447cf7e4366f9ff196',1,'rex::bytecodeEngine::bytecodeStruct']]],
+  ['divisionassignment_107',['divisionAssignment',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a95da522d005dab6fff2c0e2f6d1ce400',1,'rex::lexer::token']]],
+  ['dlfcn_2ehpp_108',['dlfcn.hpp',['../dlfcn_8hpp.html',1,'']]],
+  ['dollar_109',['dollar',['../structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34',1,'rex::formatterTagInfo']]],
+  ['dot_110',['dot',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a69eb76c88557a8211cbfc9beda5fc062',1,'rex::lexer::token']]],
+  ['dotstart_111',['dotStart',['../classrex_1_1lexer.html#abf725ee1f51a1341d5be290f9d7114c6',1,'rex::lexer']]],
+  ['dropstate_112',['dropState',['../classrex_1_1lexer.html#afdc95fadf606bf742c2b0b549c09b1df',1,'rex::lexer']]],
+  ['duplicate_113',['duplicate',['../structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a90e0c9d3562f4b0764b38f5c560a86ffa24f1b0a79473250c195c7fb84e393392',1,'rex::bytecodeEngine::bytecodeStruct']]],
+  ['dylibsuffix_114',['dylibSuffix',['../share_8hpp.html#a21ec0f1e0ad4109b7711e9f0ad88800e',1,'share.hpp']]]
 ];
