@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['sep_765',['sep',['../namespacerex_1_1path.html#ac5fe6708ffa3c201cdf52ebe56a66453',1,'rex::path']]],
-  ['sourcemsg_766',['sourceMsg',['../structrex_1_1environment_1_1stackFrame.html#ad351c22ef7614f3b777b0e490208e96e',1,'rex::environment::stackFrame']]],
-  ['stack_767',['stack',['../classrex_1_1interpreter.html#ac3ccbe3a9afa977d46c2e10ce7b63756',1,'rex::interpreter']]],
-  ['states_768',['states',['../classrex_1_1lexer.html#a053b39b9ba4728509957ae887a1ab7ca',1,'rex::lexer']]],
-  ['stream_769',['stream',['../classrex_1_1lexer.html#acb49ed8925ef1e24d89832356d532950',1,'rex::lexer']]],
-  ['strobj_770',['strObj',['../classrex_1_1value.html#aea6e084d099b6ab25431042559e24557',1,'rex::value']]],
-  ['strval_771',['strVal',['../structrex_1_1lexer_1_1token.html#ad912bf04ba13afa43d8aabf7d668f09e',1,'rex::lexer::token']]]
+  ['refobj_990',['refObj',['../classrex_1_1value.html#a45c6c4541a6c3527f1057229fe1b1e03',1,'rex::value']]],
+  ['result_991',['result',['../classrex_1_1bytecodeEngine_1_1environment_1_1thread.html#a4b3cad66d77cf4f52d826946ea3fbfb0',1,'rex::bytecodeEngine::environment::thread']]],
+  ['resulttype_992',['resultType',['../structrex_1_1ffi_1_1ffiDescriptor_1_1ffiExport.html#ab1cade7fca8226a44a12eb21b8f7f0c6',1,'rex::ffi::ffiDescriptor::ffiExport']]],
+  ['rexenvironmentinstance_993',['rexEnvironmentInstance',['../namespacerex_1_1bytecodeEngine.html#aeb3b689cb0ceb12eb23b7078deeda0cd',1,'rex::bytecodeEngine']]],
+  ['rextotype_994',['rexToType',['../structrex_1_1ffi_1_1ffiDescriptor_1_1ffiType.html#ae1c2f8c693de384d822267778f929c7b',1,'rex::ffi::ffiDescriptor::ffiType']]]
 ];

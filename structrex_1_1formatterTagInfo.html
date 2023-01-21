@@ -77,7 +77,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="builtInMethods_8hpp_source.html">builtInMethods.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="interpreter_2builtInMethods_8hpp_source.html">builtInMethods.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -88,12 +88,51 @@ Public Types</h2></td></tr>
 , <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a124887daf0e1c00d9d6ec3a29745c5e2">vBool</a>
 , <br />
 &#160;&#160;<a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34">dollar</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4ace6b01bc9aded7e1392cefbdee24f927">vStr</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a531c3ec52b103729c42103d7ef4f4dd8">vInt</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a8180bf8e28cab7cc097846d9658dd7d0">vDeci</a>
+, <br />
+&#160;&#160;<a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a124887daf0e1c00d9d6ec3a29745c5e2">vBool</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34">dollar</a>
 <br />
  }</td></tr>
 <tr class="separator:a000db0e097076ab71bb6653bfe4ce9e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82f02fce88f5e639917438ad58b2e3a7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7">tagBase</a> : vint { <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb">hex</a> = 16
+<tr class="memitem:a82f02fce88f5e639917438ad58b2e3a7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7">tagBase</a> : vint { <br />
+&#160;&#160;<a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb">hex</a> = 16
 , <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b">dec</a> = 10
 , <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1cdbdf89f2d1bd3dd9e698b2b320cb86">oct</a> = 8
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb">hex</a> = 16
+, <br />
+&#160;&#160;<a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b">dec</a> = 10
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1cdbdf89f2d1bd3dd9e698b2b320cb86">oct</a> = 8
+<br />
+ }</td></tr>
+<tr class="separator:a82f02fce88f5e639917438ad58b2e3a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a000db0e097076ab71bb6653bfe4ce9e4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4">tagKind</a> : vint { <br />
+&#160;&#160;<a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4ace6b01bc9aded7e1392cefbdee24f927">vStr</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a531c3ec52b103729c42103d7ef4f4dd8">vInt</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a8180bf8e28cab7cc097846d9658dd7d0">vDeci</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a124887daf0e1c00d9d6ec3a29745c5e2">vBool</a>
+, <br />
+&#160;&#160;<a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34">dollar</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4ace6b01bc9aded7e1392cefbdee24f927">vStr</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a531c3ec52b103729c42103d7ef4f4dd8">vInt</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a8180bf8e28cab7cc097846d9658dd7d0">vDeci</a>
+, <br />
+&#160;&#160;<a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a124887daf0e1c00d9d6ec3a29745c5e2">vBool</a>
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34">dollar</a>
+<br />
+ }</td></tr>
+<tr class="separator:a000db0e097076ab71bb6653bfe4ce9e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82f02fce88f5e639917438ad58b2e3a7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7">tagBase</a> : vint { <br />
+&#160;&#160;<a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb">hex</a> = 16
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b">dec</a> = 10
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1cdbdf89f2d1bd3dd9e698b2b320cb86">oct</a> = 8
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb">hex</a> = 16
+, <br />
+&#160;&#160;<a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b">dec</a> = 10
+, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1cdbdf89f2d1bd3dd9e698b2b320cb86">oct</a> = 8
+<br />
  }</td></tr>
 <tr class="separator:a82f02fce88f5e639917438ad58b2e3a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -103,6 +142,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a635d5174d5350c2d208df67cd59155e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed42c1cd14ecf9a8a0ac58625bbdaf82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacerex.html#a3c992c074696a070d1d9b4896e8fcc89">vchar</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrex_1_1formatterTagInfo.html#aed42c1cd14ecf9a8a0ac58625bbdaf82">parse</a> (<a class="el" href="namespacerex.html#a3c992c074696a070d1d9b4896e8fcc89">vchar</a> *str)</td></tr>
 <tr class="separator:aed42c1cd14ecf9a8a0ac58625bbdaf82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a635d5174d5350c2d208df67cd59155e5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrex_1_1formatterTagInfo.html#a635d5174d5350c2d208df67cd59155e5">formatterTagInfo</a> ()</td></tr>
+<tr class="separator:a635d5174d5350c2d208df67cd59155e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57c427bfb1273e2a5409b38ffe157f38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacerex.html#a3c992c074696a070d1d9b4896e8fcc89">vchar</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrex_1_1formatterTagInfo.html#a57c427bfb1273e2a5409b38ffe157f38">parse</a> (<a class="el" href="namespacerex.html#a3c992c074696a070d1d9b4896e8fcc89">vchar</a> *str)</td></tr>
+<tr class="separator:a57c427bfb1273e2a5409b38ffe157f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -115,10 +158,10 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="builtInMethods_8hpp_source.html#l00011">11</a> of file <a class="el" href="builtInMethods_8hpp_source.html">builtInMethods.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_2builtInMethods_8hpp_source.html#l00011">11</a> of file <a class="el" href="interpreter_2builtInMethods_8hpp_source.html">builtInMethods.hpp</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a82f02fce88f5e639917438ad58b2e3a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82f02fce88f5e639917438ad58b2e3a7">&#9670;&nbsp;</a></span>tagBase</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a82f02fce88f5e639917438ad58b2e3a7">&#9670;&nbsp;</a></span>tagBase <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -140,14 +183,49 @@ Public Attributes</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb"></a>hex&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b"></a>dec&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7a1cdbdf89f2d1bd3dd9e698b2b320cb86"></a>oct&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb"></a>hex&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b"></a>dec&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7a1cdbdf89f2d1bd3dd9e698b2b320cb86"></a>oct&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="builtInMethods_8hpp_source.html#l00019">19</a> of file <a class="el" href="builtInMethods_8hpp_source.html">builtInMethods.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="docs_2builtInMethods_8hpp_source.html#l00019">19</a> of file <a class="el" href="docs_2builtInMethods_8hpp_source.html">builtInMethods.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a82f02fce88f5e639917438ad58b2e3a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82f02fce88f5e639917438ad58b2e3a7">&#9670;&nbsp;</a></span>tagBase <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7">tagBase</a> : <a class="el" href="namespacerex.html#a91e35600ff7fd12c87d08f6bcdb4071e">vint</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb"></a>hex&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b"></a>dec&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7a1cdbdf89f2d1bd3dd9e698b2b320cb86"></a>oct&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb"></a>hex&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b"></a>dec&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a82f02fce88f5e639917438ad58b2e3a7a1cdbdf89f2d1bd3dd9e698b2b320cb86"></a>oct&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="interpreter_2builtInMethods_8hpp_source.html#l00019">19</a> of file <a class="el" href="interpreter_2builtInMethods_8hpp_source.html">builtInMethods.hpp</a>.</p>
 
 </div>
 </div>
 <a id="a000db0e097076ab71bb6653bfe4ce9e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a000db0e097076ab71bb6653bfe4ce9e4">&#9670;&nbsp;</a></span>tagKind</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a000db0e097076ab71bb6653bfe4ce9e4">&#9670;&nbsp;</a></span>tagKind <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,15 +249,56 @@ Public Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a8180bf8e28cab7cc097846d9658dd7d0"></a>vDeci&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a124887daf0e1c00d9d6ec3a29745c5e2"></a>vBool&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34"></a>dollar&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4ace6b01bc9aded7e1392cefbdee24f927"></a>vStr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a531c3ec52b103729c42103d7ef4f4dd8"></a>vInt&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a8180bf8e28cab7cc097846d9658dd7d0"></a>vDeci&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a124887daf0e1c00d9d6ec3a29745c5e2"></a>vBool&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34"></a>dollar&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="builtInMethods_8hpp_source.html#l00012">12</a> of file <a class="el" href="builtInMethods_8hpp_source.html">builtInMethods.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="docs_2builtInMethods_8hpp_source.html#l00012">12</a> of file <a class="el" href="docs_2builtInMethods_8hpp_source.html">builtInMethods.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a000db0e097076ab71bb6653bfe4ce9e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a000db0e097076ab71bb6653bfe4ce9e4">&#9670;&nbsp;</a></span>tagKind <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4">tagKind</a> : <a class="el" href="namespacerex.html#a91e35600ff7fd12c87d08f6bcdb4071e">vint</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4ace6b01bc9aded7e1392cefbdee24f927"></a>vStr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a531c3ec52b103729c42103d7ef4f4dd8"></a>vInt&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a8180bf8e28cab7cc097846d9658dd7d0"></a>vDeci&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a124887daf0e1c00d9d6ec3a29745c5e2"></a>vBool&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34"></a>dollar&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4ace6b01bc9aded7e1392cefbdee24f927"></a>vStr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a531c3ec52b103729c42103d7ef4f4dd8"></a>vInt&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a8180bf8e28cab7cc097846d9658dd7d0"></a>vDeci&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a124887daf0e1c00d9d6ec3a29745c5e2"></a>vBool&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34"></a>dollar&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="interpreter_2builtInMethods_8hpp_source.html#l00012">12</a> of file <a class="el" href="interpreter_2builtInMethods_8hpp_source.html">builtInMethods.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a635d5174d5350c2d208df67cd59155e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a635d5174d5350c2d208df67cd59155e5">&#9670;&nbsp;</a></span>formatterTagInfo()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a635d5174d5350c2d208df67cd59155e5">&#9670;&nbsp;</a></span>formatterTagInfo() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,13 +312,48 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="builtInMethods_8cpp_source.html#l00522">522</a> of file <a class="el" href="builtInMethods_8cpp_source.html">builtInMethods.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_2builtInMethods_8cpp_source.html#l00517">517</a> of file <a class="el" href="interpreter_2builtInMethods_8cpp_source.html">builtInMethods.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a635d5174d5350c2d208df67cd59155e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a635d5174d5350c2d208df67cd59155e5">&#9670;&nbsp;</a></span>formatterTagInfo() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structrex_1_1formatterTagInfo.html">formatterTagInfo</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a57c427bfb1273e2a5409b38ffe157f38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57c427bfb1273e2a5409b38ffe157f38">&#9670;&nbsp;</a></span>parse() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacerex.html#a3c992c074696a070d1d9b4896e8fcc89">vchar</a>* parse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacerex.html#a3c992c074696a070d1d9b4896e8fcc89">vchar</a> *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aed42c1cd14ecf9a8a0ac58625bbdaf82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed42c1cd14ecf9a8a0ac58625bbdaf82">&#9670;&nbsp;</a></span>parse()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aed42c1cd14ecf9a8a0ac58625bbdaf82">&#9670;&nbsp;</a></span>parse() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -214,18 +368,18 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="builtInMethods_8cpp_source.html#l00527">527</a> of file <a class="el" href="builtInMethods_8cpp_source.html">builtInMethods.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_2builtInMethods_8cpp_source.html#l00522">522</a> of file <a class="el" href="interpreter_2builtInMethods_8cpp_source.html">builtInMethods.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="structrex_1_1formatterTagInfo.html#a092aa34e93868f07ec97e6b28e2a4da2">formatterTagInfo::base</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b">formatterTagInfo::dec</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34">formatterTagInfo::dollar</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb">formatterTagInfo::hex</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a5f1f6d7e8498b557a1c3f9bad6098557">formatterTagInfo::kind</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1cdbdf89f2d1bd3dd9e698b2b320cb86">formatterTagInfo::oct</a>, <a class="el" href="builtInMethods_8hpp_source.html#l00024">formatterTagInfo::precision</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a124887daf0e1c00d9d6ec3a29745c5e2">formatterTagInfo::vBool</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a8180bf8e28cab7cc097846d9658dd7d0">formatterTagInfo::vDeci</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a531c3ec52b103729c42103d7ef4f4dd8">formatterTagInfo::vInt</a>, and <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4ace6b01bc9aded7e1392cefbdee24f927">formatterTagInfo::vStr</a>.</p>
+<p class="reference">References <a class="el" href="structrex_1_1formatterTagInfo.html#a092aa34e93868f07ec97e6b28e2a4da2">formatterTagInfo::base</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1feea25ecb958229287f885aebe7c49b">formatterTagInfo::dec</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a33c381af2d1e41fe40556f1663244b34">formatterTagInfo::dollar</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7ab8d1b43eae73587ba56baef574709ecb">formatterTagInfo::hex</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a5f1f6d7e8498b557a1c3f9bad6098557">formatterTagInfo::kind</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7a1cdbdf89f2d1bd3dd9e698b2b320cb86">formatterTagInfo::oct</a>, <a class="el" href="interpreter_2builtInMethods_8hpp_source.html#l00024">formatterTagInfo::precision</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a124887daf0e1c00d9d6ec3a29745c5e2">formatterTagInfo::vBool</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a8180bf8e28cab7cc097846d9658dd7d0">formatterTagInfo::vDeci</a>, <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4a531c3ec52b103729c42103d7ef4f4dd8">formatterTagInfo::vInt</a>, and <a class="el" href="structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4ace6b01bc9aded7e1392cefbdee24f927">formatterTagInfo::vStr</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="builtInMethods_8cpp_source.html#l00450">rex::nativeFn()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="interpreter_2builtInMethods_8cpp_source.html#l00444">rex::nativeFn()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="structrex_1_1formatterTagInfo_aed42c1cd14ecf9a8a0ac58625bbdaf82_icgraph.png" border="0" usemap="#astructrex_1_1formatterTagInfo_aed42c1cd14ecf9a8a0ac58625bbdaf82_icgraph" alt=""/></div>
 <map name="astructrex_1_1formatterTagInfo_aed42c1cd14ecf9a8a0ac58625bbdaf82_icgraph" id="astructrex_1_1formatterTagInfo_aed42c1cd14ecf9a8a0ac58625bbdaf82_icgraph">
 <area shape="rect" title=" " alt="" coords="161,5,220,32"/>
-<area shape="rect" href="namespacerex.html#a0e26faa03255f94c6009f3b263750ed9" title=" " alt="" coords="5,5,113,32"/>
+<area shape="rect" href="namespacerex.html#aee8def8b6a4266bf606a3d8fe9127403" title=" " alt="" coords="5,5,113,32"/>
 </map>
 </div>
 
@@ -244,7 +398,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="builtInMethods_8cpp_source.html#l00450">rex::nativeFn()</a>, and <a class="el" href="builtInMethods_8cpp_source.html#l00527">formatterTagInfo::parse()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="interpreter_2builtInMethods_8cpp_source.html#l00444">rex::nativeFn()</a>, and <a class="el" href="interpreter_2builtInMethods_8cpp_source.html#l00522">formatterTagInfo::parse()</a>.</p>
 
 </div>
 </div>
@@ -260,7 +414,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="builtInMethods_8cpp_source.html#l00450">rex::nativeFn()</a>, and <a class="el" href="builtInMethods_8cpp_source.html#l00527">formatterTagInfo::parse()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="interpreter_2builtInMethods_8cpp_source.html#l00444">rex::nativeFn()</a>, and <a class="el" href="interpreter_2builtInMethods_8cpp_source.html#l00522">formatterTagInfo::parse()</a>.</p>
 
 </div>
 </div>
@@ -276,15 +430,15 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="builtInMethods_8hpp_source.html#l00024">24</a> of file <a class="el" href="builtInMethods_8hpp_source.html">builtInMethods.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_2builtInMethods_8hpp_source.html#l00024">24</a> of file <a class="el" href="interpreter_2builtInMethods_8hpp_source.html">builtInMethods.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="builtInMethods_8cpp_source.html#l00450">rex::nativeFn()</a>, and <a class="el" href="builtInMethods_8cpp_source.html#l00527">formatterTagInfo::parse()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="interpreter_2builtInMethods_8cpp_source.html#l00444">rex::nativeFn()</a>, and <a class="el" href="interpreter_2builtInMethods_8cpp_source.html#l00522">formatterTagInfo::parse()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
-<li>interpreter/<a class="el" href="builtInMethods_8hpp_source.html">builtInMethods.hpp</a></li>
-<li>interpreter/<a class="el" href="builtInMethods_8cpp_source.html">builtInMethods.cpp</a></li>
+<li>interpreter/<a class="el" href="interpreter_2builtInMethods_8hpp_source.html">builtInMethods.hpp</a></li>
+<li>interpreter/<a class="el" href="interpreter_2builtInMethods_8cpp_source.html">builtInMethods.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

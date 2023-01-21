@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['semicolon_897',['semicolon',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a77b7e24bb3642a4b9d3081d393785273',1,'rex::lexer::token']]],
-  ['slash_898',['slash',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a9fbbaa4cc515bc46e0c12e82a31df736',1,'rex::lexer::token']]],
-  ['string_899',['string',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32ab45cffe084dd3d20d928bee85e7b0f21',1,'rex::lexer::token']]],
-  ['subscriptexpression_900',['subscriptExpression',['../classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca841f412dd23b05b1e24131b479dd6029',1,'rex::AST']]],
-  ['subtractionassignment_901',['subtractionAssignment',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a24913b1abeac61926c5e25a068f518ac',1,'rex::lexer::token']]]
+  ['rangebasedforstmt_1176',['rangeBasedForStmt',['../classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca1e73f5062b1196dfa9e1c28ade019624',1,'rex::AST']]],
+  ['reminderassignment_1177',['reminderAssignment',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a59b7c4bed8b14a7b4b0a44d1500ddc45',1,'rex::lexer::token']]],
+  ['ret_1178',['ret',['../structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a90e0c9d3562f4b0764b38f5c560a86ffa2cb9df9898e55fd0ad829dc202ddbd1c',1,'rex::bytecodeEngine::bytecodeStruct']]],
+  ['returnstmt_1179',['returnStmt',['../classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca3c7a84e1b19c2e9113b5c40375162070',1,'rex::AST']]],
+  ['rightbraces_1180',['rightBraces',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a8ccce5d2736d410907346cc4e1605b52',1,'rex::lexer::token']]],
+  ['rightbracket_1181',['rightBracket',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32ac7b244209d68f4dd53036c789e7e8aca',1,'rex::lexer::token']]],
+  ['rightparentheses_1182',['rightParentheses',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32ae392b68fd19c9cbab33708f39b821b7c',1,'rex::lexer::token']]]
 ];

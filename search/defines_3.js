@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['operatingsystem_924',['operatingSystem',['../share_8hpp.html#a8dcce2b4f874dc9bc73a104bfcdfbf8a',1,'share.hpp']]]
+  ['nativefn_1215',['nativeFn',['../share_8hpp.html#ae51b9f22c379d85a5ba21f90480458ba',1,'share.hpp']]],
+  ['nextop_1216',['nextOp',['../bytecodeEngine_8hpp.html#adb32b9c2039a1ceb27f6dc4d97a54ba2',1,'bytecodeEngine.hpp']]]
 ];

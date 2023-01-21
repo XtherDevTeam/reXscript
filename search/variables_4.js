@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['fficonsts_732',['ffiConsts',['../structrex_1_1ffi_1_1ffiDescriptor.html#a552f7b55f86ba965dc682db58733661f',1,'rex::ffi::ffiDescriptor']]],
-  ['ffiexports_733',['ffiExports',['../structrex_1_1ffi_1_1ffiDescriptor.html#afa6767c798c72fd42726bdc358767562',1,'rex::ffi::ffiDescriptor']]],
-  ['ffitypes_734',['ffiTypes',['../structrex_1_1ffi_1_1ffiDescriptor.html#a389bdb39929f542d1d2c07af3510eec3',1,'rex::ffi::ffiDescriptor']]],
-  ['file_735',['file',['../structrex_1_1environment_1_1runtimeSourceFileMsg.html#a09c5104aa0413ddc141f8781908afccf',1,'rex::environment::runtimeSourceFileMsg']]],
-  ['func_736',['func',['../structrex_1_1value_1_1lambdaObject.html#a44f382ed5f03012b513205ce14c8c31b',1,'rex::value::lambdaObject']]],
-  ['funcobj_737',['funcObj',['../classrex_1_1value.html#ac79e6e2f19009f1686b29089004ef290',1,'rex::value']]]
+  ['entryblock_949',['entryBlock',['../structrex_1_1bytecodeEngine_1_1bytecodeModule.html#afcdf0121f081055bd89bb692bc96d0cb',1,'rex::bytecodeEngine::bytecodeModule']]],
+  ['env_950',['env',['../classrex_1_1bytecodeEngine_1_1interpreter.html#a5491c9cacf341d99081c9f12e97034d5',1,'rex::bytecodeEngine::interpreter']]],
+  ['evalstack_951',['evalStack',['../structrex_1_1bytecodeEngine_1_1interpreter_1_1state.html#a62ffedfdbf640060e222302edc81db24',1,'rex::bytecodeEngine::interpreter::state::evalStack()'],['../classrex_1_1bytecodeEngine_1_1interpreter.html#a98a65eb21a34ff65c6ad163329e11b8e',1,'rex::bytecodeEngine::interpreter::evalStack()']]],
+  ['exceptionhandlers_952',['exceptionHandlers',['../classrex_1_1bytecodeEngine_1_1interpreter.html#a06ff3920e637ab9aae70129a549754af',1,'rex::bytecodeEngine::interpreter']]]
 ];

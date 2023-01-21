@@ -82,6 +82,12 @@ $(function() {
 <li>basicValue
 : <a class="el" href="classrex_1_1value.html#a3bde47482dfd879e45174d714446dfa8">value</a>
 </li>
+<li>boolv
+: <a class="el" href="unionrex_1_1bytecodeEngine_1_1bytecodeStruct_1_1opArgs.html#a1b80a3537775e1dad0189eeca3719c2f">bytecodeStruct::opArgs</a>
+</li>
+<li>bytecodeModule
+: <a class="el" href="classrex_1_1value.html#acf80510ae12f343f7a306b182184136f">value</a>
+</li>
 <li>bytesObj
 : <a class="el" href="classrex_1_1value.html#a61a2dfe167bea2dc080cf517f692dd1f">value</a>
 </li>
@@ -89,14 +95,21 @@ $(function() {
 
 
 <h3><a id="index_c"></a>- c -</h3><ul>
+<li>callStack
+: <a class="el" href="classrex_1_1bytecodeEngine_1_1interpreter.html#a92a70273f611c2031676b9ed2f9b8255">interpreter</a>
+</li>
 <li>child
 : <a class="el" href="classrex_1_1AST.html#aba39f131496ac427ceeb9b64af9b074d">AST</a>
 </li>
 <li>code
-: <a class="el" href="structrex_1_1value_1_1funcObject.html#a60559ee798c6a4b91271bcb62ac78adb">value::funcObject</a>
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1codeStruct.html#ab6bc96034ecc3142c29897134652a25c">codeStruct</a>
+, <a class="el" href="structrex_1_1value_1_1funcObject.html#ac006e97a96c61ee2e5e2e9ef02dcc198">value::funcObject</a>
+</li>
+<li>codeStructs
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1bytecodeModule.html#a59f940c8a24952af851ddaea350a3e2f">bytecodeModule</a>
 </li>
 <li>col
-: <a class="el" href="structrex_1_1environment_1_1runtimeSourceFileMsg.html#a33c614f08aff23a377abd49191aa1e59">environment::runtimeSourceFileMsg</a>
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1runtimeSourceFileMsg.html#a33c614f08aff23a377abd49191aa1e59">runtimeSourceFileMsg</a>
 , <a class="el" href="classrex_1_1lexer.html#a33c614f08aff23a377abd49191aa1e59">lexer</a>
 , <a class="el" href="structrex_1_1lexer_1_1lexerState.html#a33c614f08aff23a377abd49191aa1e59">lexer::lexerState</a>
 , <a class="el" href="structrex_1_1lexer_1_1token.html#a33c614f08aff23a377abd49191aa1e59">lexer::token</a>
@@ -108,6 +121,12 @@ $(function() {
 : <a class="el" href="classrex_1_1lexer.html#a566dde3506677b761012fd8bf9550f07">lexer</a>
 , <a class="el" href="structrex_1_1lexer_1_1lexerState.html#a566dde3506677b761012fd8bf9550f07">lexer::lexerState</a>
 </li>
+<li>currentBlock
+: <a class="el" href="classrex_1_1bytecodeEngine_1_1codeBuilder.html#a1d320129171a301175fa0b1b850f0956">codeBuilder</a>
+</li>
+<li>currentCodeStruct
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1environment_1_1stackFrame.html#aa0de1d2f4af704089b16af21aaf6cf04">environment::stackFrame</a>
+</li>
 <li>curToken
 : <a class="el" href="classrex_1_1lexer.html#a3c5b49a9b525e2fbc1f1f37bb2574150">lexer</a>
 , <a class="el" href="structrex_1_1lexer_1_1lexerState.html#a3c5b49a9b525e2fbc1f1f37bb2574150">lexer::lexerState</a>
@@ -115,9 +134,26 @@ $(function() {
 </ul>
 
 
+<h3><a id="index_d"></a>- d -</h3><ul>
+<li>deciv
+: <a class="el" href="unionrex_1_1bytecodeEngine_1_1bytecodeStruct_1_1opArgs.html#aee9bb1fb120b6dbd400e64e17899c6b6">bytecodeStruct::opArgs</a>
+</li>
+</ul>
+
+
 <h3><a id="index_e"></a>- e -</h3><ul>
+<li>entryBlock
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1bytecodeModule.html#afcdf0121f081055bd89bb692bc96d0cb">bytecodeModule</a>
+</li>
 <li>env
-: <a class="el" href="classrex_1_1interpreter.html#a5491c9cacf341d99081c9f12e97034d5">interpreter</a>
+: <a class="el" href="classrex_1_1bytecodeEngine_1_1interpreter.html#a5491c9cacf341d99081c9f12e97034d5">interpreter</a>
+</li>
+<li>evalStack
+: <a class="el" href="classrex_1_1bytecodeEngine_1_1interpreter.html#a98a65eb21a34ff65c6ad163329e11b8e">interpreter</a>
+, <a class="el" href="structrex_1_1bytecodeEngine_1_1interpreter_1_1state.html#a62ffedfdbf640060e222302edc81db24">interpreter::state</a>
+</li>
+<li>exceptionHandlers
+: <a class="el" href="classrex_1_1bytecodeEngine_1_1interpreter.html#a06ff3920e637ab9aae70129a549754af">interpreter</a>
 </li>
 </ul>
 
@@ -133,7 +169,10 @@ $(function() {
 : <a class="el" href="structrex_1_1ffi_1_1ffiDescriptor.html#a389bdb39929f542d1d2c07af3510eec3">ffiDescriptor</a>
 </li>
 <li>file
-: <a class="el" href="structrex_1_1environment_1_1runtimeSourceFileMsg.html#a09c5104aa0413ddc141f8781908afccf">environment::runtimeSourceFileMsg</a>
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1runtimeSourceFileMsg.html#a09c5104aa0413ddc141f8781908afccf">runtimeSourceFileMsg</a>
+</li>
+<li>frame
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1interpreter_1_1state.html#a3916a5beca65fd95617477d47d1b9adb">interpreter::state</a>
 </li>
 <li>func
 : <a class="el" href="structrex_1_1value_1_1lambdaObject.html#a44f382ed5f03012b513205ce14c8c31b">value::lambdaObject</a>
@@ -146,7 +185,7 @@ $(function() {
 
 <h3><a id="index_g"></a>- g -</h3><ul>
 <li>globalCxt
-: <a class="el" href="structrex_1_1environment.html#a20a6c65bdf9794011bf4cb7c70208b16">environment</a>
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1environment.html#a20a6c65bdf9794011bf4cb7c70208b16">environment</a>
 </li>
 </ul>
 
@@ -159,8 +198,14 @@ $(function() {
 
 
 <h3><a id="index_i"></a>- i -</h3><ul>
+<li>indexv
+: <a class="el" href="unionrex_1_1bytecodeEngine_1_1bytecodeStruct_1_1opArgs.html#a7220654ed728704ea4b35a44956410ac">bytecodeStruct::opArgs</a>
+</li>
 <li>interpreterCxt
-: <a class="el" href="classrex_1_1interpreter.html#a9f865440f5ff1decf077ec6cd78659e5">interpreter</a>
+: <a class="el" href="classrex_1_1bytecodeEngine_1_1interpreter.html#a9f865440f5ff1decf077ec6cd78659e5">interpreter</a>
+</li>
+<li>intv
+: <a class="el" href="unionrex_1_1bytecodeEngine_1_1bytecodeStruct_1_1opArgs.html#aa465f16c068cc3c3f22f10a8f854c06c">bytecodeStruct::opArgs</a>
 </li>
 </ul>
 
@@ -189,7 +234,7 @@ $(function() {
 : <a class="el" href="structrex_1_1ffi_1_1ffiDescriptor.html#af5ff97bd11ba5453b8dbd66d60ad1fcf">ffiDescriptor</a>
 </li>
 <li>line
-: <a class="el" href="structrex_1_1environment_1_1runtimeSourceFileMsg.html#a1054287995ce1e6f690f7658ff927eeb">environment::runtimeSourceFileMsg</a>
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1runtimeSourceFileMsg.html#a1054287995ce1e6f690f7658ff927eeb">runtimeSourceFileMsg</a>
 , <a class="el" href="structrex_1_1lexer_1_1lexerState.html#a1054287995ce1e6f690f7658ff927eeb">lexer::lexerState</a>
 , <a class="el" href="classrex_1_1lexer.html#a1054287995ce1e6f690f7658ff927eeb">lexer</a>
 , <a class="el" href="structrex_1_1lexer_1_1token.html#a1054287995ce1e6f690f7658ff927eeb">lexer::token</a>
@@ -201,7 +246,8 @@ $(function() {
 : <a class="el" href="classrex_1_1value.html#ab6daa99dc1054490488bbb832c3cec1f">value</a>
 </li>
 <li>localCxt
-: <a class="el" href="structrex_1_1environment_1_1stackFrame.html#a75d052d093d0c17ba1ac3f4761570176">environment::stackFrame</a>
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1environment_1_1stackFrame.html#a75d052d093d0c17ba1ac3f4761570176">environment::stackFrame</a>
+, <a class="el" href="structrex_1_1bytecodeEngine_1_1interpreter_1_1state.html#a75af0ece34d7698e40bc2c3318d6c29d">interpreter::state</a>
 </li>
 </ul>
 
@@ -210,13 +256,17 @@ $(function() {
 <li>members
 : <a class="el" href="classrex_1_1value.html#a3c212d9f260986da9f90f7d5100a5dec">value</a>
 </li>
+<li>mod
+: <a class="el" href="classrex_1_1bytecodeEngine_1_1codeBuilder.html#a6ac2076ac5ce276bc39f1420730aaf3d">codeBuilder</a>
+</li>
 <li>moduleCxt
-: <a class="el" href="structrex_1_1environment_1_1stackFrame.html#a2a0be0b8422f307368e050b8e680356e">environment::stackFrame</a>
-, <a class="el" href="classrex_1_1interpreter.html#a2a0be0b8422f307368e050b8e680356e">interpreter</a>
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1environment_1_1stackFrame.html#a2a0be0b8422f307368e050b8e680356e">environment::stackFrame</a>
+, <a class="el" href="classrex_1_1bytecodeEngine_1_1interpreter.html#a2a0be0b8422f307368e050b8e680356e">interpreter</a>
 , <a class="el" href="structrex_1_1value_1_1funcObject.html#a2a0be0b8422f307368e050b8e680356e">value::funcObject</a>
 </li>
 <li>msg
-: <a class="el" href="classrex_1_1signalException.html#ad710a1e5cc82850f092ff21a9d463010">signalException</a>
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1codeStruct.html#a7d68e8fdb8976e7925a570a1a67de7c6">codeStruct</a>
+, <a class="el" href="classrex_1_1signalException.html#ad710a1e5cc82850f092ff21a9d463010">signalException</a>
 , <a class="el" href="classrex_1_1signalReturn.html#ad710a1e5cc82850f092ff21a9d463010">signalReturn</a>
 </li>
 </ul>
@@ -227,6 +277,9 @@ $(function() {
 : <a class="el" href="structrex_1_1ffi_1_1ffiDescriptor_1_1ffiConsts.html#a46fa7be2548991cadc4f1560f87d9905">ffiDescriptor::ffiConsts</a>
 , <a class="el" href="structrex_1_1ffi_1_1ffiDescriptor_1_1ffiExport.html#a46fa7be2548991cadc4f1560f87d9905">ffiDescriptor::ffiExport</a>
 </li>
+<li>names
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1codeStruct.html#aaf571cb6ac82da590c39f8fc49a79d3e">codeStruct</a>
+</li>
 <li>nativeFuncObj
 : <a class="el" href="classrex_1_1value.html#adff38a53c5bfef08f50f83d6ae742a4a">value</a>
 </li>
@@ -234,6 +287,12 @@ $(function() {
 
 
 <h3><a id="index_o"></a>- o -</h3><ul>
+<li>opargs
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a5dc5acf0c7b89d0cbba11300bd8dbfa7">bytecodeStruct</a>
+</li>
+<li>opcode
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a61d15a49f3fc532bbbbe279917559676">bytecodeStruct</a>
+</li>
 <li>outerCxt
 : <a class="el" href="structrex_1_1value_1_1lambdaObject.html#a86da903fd089db20151a1e1f4bcd272b">value::lambdaObject</a>
 </li>
@@ -250,6 +309,12 @@ $(function() {
 <li>precision
 : <a class="el" href="structrex_1_1formatterTagInfo.html#a2ee1db1d83ec822bc884916120731759">formatterTagInfo</a>
 </li>
+<li>program
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1interpreter_1_1state.html#a85e333a0928e5a56a9ca6d7e07e9478c">interpreter::state</a>
+</li>
+<li>programCounter
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1environment_1_1stackFrame.html#a4a27cc3b976c19477ac42314c58ab7fa">environment::stackFrame</a>
+</li>
 </ul>
 
 
@@ -258,7 +323,7 @@ $(function() {
 : <a class="el" href="classrex_1_1value.html#a45c6c4541a6c3527f1057229fe1b1e03">value</a>
 </li>
 <li>result
-: <a class="el" href="classrex_1_1environment_1_1thread.html#a4b3cad66d77cf4f52d826946ea3fbfb0">environment::thread</a>
+: <a class="el" href="classrex_1_1bytecodeEngine_1_1environment_1_1thread.html#a4b3cad66d77cf4f52d826946ea3fbfb0">environment::thread</a>
 </li>
 <li>resultType
 : <a class="el" href="structrex_1_1ffi_1_1ffiDescriptor_1_1ffiExport.html#ab1cade7fca8226a44a12eb21b8f7f0c6">ffiDescriptor::ffiExport</a>
@@ -270,17 +335,14 @@ $(function() {
 
 
 <h3><a id="index_s"></a>- s -</h3><ul>
-<li>sourceMsg
-: <a class="el" href="structrex_1_1environment_1_1stackFrame.html#ad351c22ef7614f3b777b0e490208e96e">environment::stackFrame</a>
-</li>
-<li>stack
-: <a class="el" href="classrex_1_1interpreter.html#ac3ccbe3a9afa977d46c2e10ce7b63756">interpreter</a>
-</li>
 <li>states
 : <a class="el" href="classrex_1_1lexer.html#a053b39b9ba4728509957ae887a1ab7ca">lexer</a>
 </li>
 <li>stream
 : <a class="el" href="classrex_1_1lexer.html#acb49ed8925ef1e24d89832356d532950">lexer</a>
+</li>
+<li>stringConsts
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1codeStruct.html#a8faf233d1fdd8483317a0572cb87aad8">codeStruct</a>
 </li>
 <li>strObj
 : <a class="el" href="classrex_1_1value.html#aea6e084d099b6ab25431042559e24557">value</a>
@@ -293,13 +355,13 @@ $(function() {
 
 <h3><a id="index_t"></a>- t -</h3><ul>
 <li>th
-: <a class="el" href="classrex_1_1environment_1_1thread.html#a613acfee55147b2483d58a2fd7a1d56f">environment::thread</a>
+: <a class="el" href="classrex_1_1bytecodeEngine_1_1environment_1_1thread.html#a613acfee55147b2483d58a2fd7a1d56f">environment::thread</a>
 </li>
 <li>threadIdCounter
-: <a class="el" href="structrex_1_1environment.html#a44715d228b3892d32c840d44a28b25b3">environment</a>
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1environment.html#a44715d228b3892d32c840d44a28b25b3">environment</a>
 </li>
 <li>threadPool
-: <a class="el" href="structrex_1_1environment.html#a573dac437c3b610e1378117b58c53ca5">environment</a>
+: <a class="el" href="structrex_1_1bytecodeEngine_1_1environment.html#a573dac437c3b610e1378117b58c53ca5">environment</a>
 </li>
 <li>type
 : <a class="el" href="structrex_1_1ffi_1_1ffiDescriptor_1_1ffiConsts.html#a4a321f90603f0ca8e4a603ea2f48bcf5">ffiDescriptor::ffiConsts</a>

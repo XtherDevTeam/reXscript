@@ -1,0 +1,4 @@
+<map id="spawnThread" name="spawnThread">
+<area shape="rect" id="node1" title="Spawns a new thread and returns its ID." alt="" coords="161,5,271,32"/>
+<area shape="rect" id="node2" href="$namespacerex.html#aecc90acb1c17bc0b27ba0ce4bed18ebf" title=" " alt="" coords="5,5,113,32"/>
+</map>

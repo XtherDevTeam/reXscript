@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['helpers_739',['helpers',['../structrex_1_1ffi_1_1ffiDescriptor.html#a6ffcd023603b9600582c6bf5c3b62544',1,'rex::ffi::ffiDescriptor']]],
-  ['helpmsg_740',['helpMsg',['../main_8cpp.html#ae561e4fb4bd9a126479264302e4478c5',1,'main.cpp']]]
+  ['globalcxt_960',['globalCxt',['../structrex_1_1bytecodeEngine_1_1environment.html#a20a6c65bdf9794011bf4cb7c70208b16',1,'rex::bytecodeEngine::environment']]]
 ];
