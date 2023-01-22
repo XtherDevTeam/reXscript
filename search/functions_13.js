@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['waitforthread_719',['waitForThread',['../namespacerex.html#a17c18f55e77e943c21e40d42b5bebe61',1,'rex']]],
-  ['what_720',['what',['../classrex_1_1importError.html#abf843cbb29dec939d0731e491bab6f70',1,'rex::importError::what()'],['../classrex_1_1interpreterSignal.html#abf843cbb29dec939d0731e491bab6f70',1,'rex::interpreterSignal::what()'],['../classrex_1_1rexException.html#abf843cbb29dec939d0731e491bab6f70',1,'rex::rexException::what()']]],
-  ['wstring2string_721',['wstring2string',['../namespacerex.html#aff86e41b811177c724d54ec286768dad',1,'rex']]]
+  ['waitforthread_727',['waitForThread',['../namespacerex.html#a17c18f55e77e943c21e40d42b5bebe61',1,'rex']]],
+  ['what_728',['what',['../classrex_1_1errorInAnotherInterpreter.html#abf843cbb29dec939d0731e491bab6f70',1,'rex::errorInAnotherInterpreter::what()'],['../classrex_1_1importError.html#abf843cbb29dec939d0731e491bab6f70',1,'rex::importError::what()'],['../classrex_1_1interpreterSignal.html#abf843cbb29dec939d0731e491bab6f70',1,'rex::interpreterSignal::what()'],['../classrex_1_1rexException.html#abf843cbb29dec939d0731e491bab6f70',1,'rex::rexException::what()']]],
+  ['wstring2string_729',['wstring2string',['../namespacerex.html#aff86e41b811177c724d54ec286768dad',1,'rex']]]
 ];

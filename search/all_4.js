@@ -7,5 +7,8 @@ var searchData=
   ['environment_64',['environment',['../structrex_1_1environment.html',1,'rex']]],
   ['eof_65',['eof',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a2e51b1ab42e8a4a67f3445174be5191b',1,'rex::lexer::token']]],
   ['equal_66',['equal',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a465289687a70db7aa7217cc240c29f0f',1,'rex::lexer::token']]],
-  ['equalstart_67',['equalStart',['../classrex_1_1lexer.html#a1286bad3868e3bb8c18bb74c945261f1',1,'rex::lexer']]]
+  ['equalstart_67',['equalStart',['../classrex_1_1lexer.html#a1286bad3868e3bb8c18bb74c945261f1',1,'rex::lexer']]],
+  ['errorinanotherinterpreter_68',['errorInAnotherInterpreter',['../classrex_1_1errorInAnotherInterpreter.html#afac721cce548f68037eac8a49463ea93',1,'rex::errorInAnotherInterpreter::errorInAnotherInterpreter()'],['../classrex_1_1errorInAnotherInterpreter.html',1,'errorInAnotherInterpreter']]],
+  ['errorinanotherinterpreter_2ecpp_69',['errorInAnotherInterpreter.cpp',['../errorInAnotherInterpreter_8cpp.html',1,'']]],
+  ['errorinanotherinterpreter_2ehpp_70',['errorInAnotherInterpreter.hpp',['../errorInAnotherInterpreter_8hpp.html',1,'']]]
 ];
