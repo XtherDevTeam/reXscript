@@ -206,25 +206,24 @@ namespace rex {
 
     managedPtr <value>
     importEx(interpreter *interpreter, const vstr &modPath) {
-        auto oldModCxt = interpreter->moduleCxt;
         auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
-        interpreter->moduleCxt = moduleCxt;
+        rex::interpreter newIn(interpreter->env, moduleCxt);
+        newIn.interpreterCxt = interpreter->interpreterCxt;
 
-        if (auto it = oldModCxt->members.find(L"rexPkgRoot"); it != oldModCxt->members.end()) {
+        if (auto it = interpreter->moduleCxt->members.find(L"rexPkgRoot"); it != interpreter->moduleCxt->members.end()) {
             moduleCxt->members.insert(*it);
         }
 
         std::filesystem::path p(wstring2string(modPath));
         if (p.has_extension()) {
             if (string2wstring(p.extension()) == L".rex") {
-                moduleCxt = rex::importExternModule(interpreter, modPath);
+                moduleCxt = rex::importExternModule(&newIn, modPath);
             } else if (string2wstring(p.extension()) == L"." + getDylibSuffix()) {
-                moduleCxt = rex::importNativeModule(interpreter, modPath);
+                moduleCxt = rex::importNativeModule(&newIn, modPath);
             }
         } else {
-            moduleCxt = importExternPackage(interpreter, modPath);
+            moduleCxt = importExternPackage(&newIn, modPath);
         }
-        interpreter->moduleCxt = oldModCxt;
 
         return moduleCxt;
     }

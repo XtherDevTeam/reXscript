@@ -80,10 +80,10 @@ let iter_test = func() {
                 next: func() {
                     let cur = this.cur;
                     if (this.cur > this.container.num) {
-                        break;
+                        return [null, true];
                     }
                     ++this.cur;
-                    return cur;
+                    return [cur, false];
                 }
             };
             return it;

@@ -183,6 +183,8 @@ namespace rex {
         // @brief Create a new error value with the specified error name and message.
         static value makeErr(const vstr &errName, const vstr &errMsg);
 
+        static value makeIt(const managedPtr<value> &v, bool isEnd);
+
         // @brief Invoke a function with the given arguments and `this` pointer.
         value invokeFunc(managedPtr<value> func, const vec<value> &args, const managedPtr<value> &passThisPtr);
 

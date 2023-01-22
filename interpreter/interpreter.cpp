@@ -547,15 +547,11 @@ namespace rex {
                     throw signalException(makeErr(L"internalError", L"undefined identifier: `next`"));
 
                 while (true) {
-                    try {
-                        if (auto val = invokeFunc(itNext, {}, rIter); val.isRef())
-                            itVal = val.refObj;
-                        else
-                            itVal = managePtr(val);
-                    } catch (const signalBreak &e) {
+                    if (auto val = invokeFunc(itNext, {}, rIter); val.getVec()[1]->getBool()) {
                         stack.back().backToLocalCxt(cxtIdx);
                         break;
-                    }
+                    } else
+                        itVal = val.getVec()[0]->isRef() ? val.getVec()[0]->refObj : val.getVec()[0];
 
                     try {
                         interpret(target.child[2]);
@@ -1430,6 +1426,10 @@ namespace rex {
             result += L"#" + std::to_wstring(count++) + L" " + (vstr) *i + L"\n";
         }
         return result;
+    }
+
+    value interpreter::makeIt(const managedPtr<value> &v, bool isEnd) {
+        return {value::vecObject{v, managePtr(value{isEnd})}, vecMethods::getMethodsCxt()};
     }
 
     vint spawnThread(const managedPtr<environment> &env, const managedPtr<value> &cxt, const managedPtr<value> &func,

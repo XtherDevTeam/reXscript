@@ -657,10 +657,10 @@ namespace rex {
                                                             : passThisPtr->members[L"container"]->getVec();
         auto &index = passThisPtr->members[L"cur"]->getInt();
         if (index >= container.size())
-            throw signalBreak();
+            return interpreter::makeIt({}, true);
         auto res = container[index]->isRef() ? container[index]->refObj : container[index];
         index++;
-        return {res};
+        return interpreter::makeIt(res, false);
     }
 
     value::cxtObject linkedListMethods::getMethodsCxt() {
@@ -728,11 +728,11 @@ namespace rex {
         auto &iter = passThisPtr->members[L"cur"]->linkedListIterObj;
         auto &element = **iter;
         if (*iter == container.end()) {
-            throw signalBreak();
+            return interpreter::makeIt({}, true);
         }
         (*iter)++;
 
-        return element->isRef() ? element->refObj : *element;
+        return interpreter::makeIt(element->isRef() ? element->refObj : element, false);
     }
 
     nativeFn(globalMethods::linkedList, interpreter, args, passThisPtr) {
@@ -870,11 +870,11 @@ namespace rex {
         auto &iter = passThisPtr->members[L"cur"]->linkedListIterObj;
         auto &element = **iter;
         if (*iter == container.end()) {
-            throw signalBreak();
+            return interpreter::makeIt({}, true);
         }
         (*iter)++;
 
-        return element->isRef() ? element->refObj : *element;
+        return interpreter::makeIt(element->isRef() ? element->refObj : element, true);
     }
 
     nativeFn(hashMapMethods::keys, interpreter, args, passThisPtr) {
@@ -962,15 +962,11 @@ namespace rex {
         value result{value::vecObject{}, vecMethods::getMethodsCxt()};
 
         while (true) {
-            try {
-                if (auto val = in->invokeFunc(itNext, {}, rIter); val.isRef())
-                    result.getVec().push_back(val.refObj);
-                else
-                    result.getVec().push_back(managePtr(val));
-            } catch (const signalBreak &e) {
-                in->backToStackIdx(cxtIdx);
+            if (auto val = in->invokeFunc(itNext, {}, rIter); val.getVec()[1]->getBool()) {
+                in->stack.back().backToLocalCxt(cxtIdx);
                 break;
-            }
+            } else
+                result.getVec().push_back(val.getVec()[0]->isRef() ? val.getVec()[0]->refObj : val.getVec()[0]);
         }
 
         return result;
@@ -1005,15 +1001,11 @@ namespace rex {
         value result{value::vecObject{}, vecMethods::getMethodsCxt()};
 
         while (true) {
-            try {
-                if (auto val = in->invokeFunc(itNext, {}, rIter); val.isRef())
-                    itVal = val.refObj;
-                else
-                    itVal = managePtr(val);
-            } catch (const signalBreak &e) {
-                in->backToStackIdx(cxtIdx);
+            if (auto val = in->invokeFunc(itNext, {}, rIter); val.getVec()[1]->getBool()) {
+                in->stack.back().backToLocalCxt(cxtIdx);
                 break;
-            }
+            } else
+                itVal = val.getVec()[0]->isRef() ? val.getVec()[0]->refObj : val.getVec()[0];
 
             in->invokeFunc(callback, {itVal}, {});
         }
