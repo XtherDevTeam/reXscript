@@ -1,6 +1,5 @@
 #include <iostream>
-#include "exceptions/parserException.hpp"
-#include "exceptions/signalException.hpp"
+#include "exceptions/errorInAnotherInterpreter.hpp"
 #include <interpreter/builtInMethods.hpp>
 #include <rex.hpp>
 #include <ffi/ffi.hpp>
@@ -41,11 +40,7 @@ void interactiveShell(rex::managedPtr<rex::interpreter> &interpreter) {
             rex::value result = rex::globalMethods::stringify(
                     (void *) interpreter.get(), {interpreter->interpret(ast)}, {});
             std::cout << "output> " << rex::wstring2string(result.getStr()) << std::endl;
-        } catch (rex::signalException &e) {
-            std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
-            std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
-        } catch (rex::parserException &e) {
-            std::cerr << "error> " << e.what() << std::endl;
+        } catch (rex::errorInAnotherInterpreter &e) {
             std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
         } catch (std::exception &e) {
             std::cerr << "error> " << e.what() << std::endl;
@@ -57,11 +52,7 @@ void interactiveShell(rex::managedPtr<rex::interpreter> &interpreter) {
 void loadFile(rex::managedPtr<rex::interpreter> &interpreter, const rex::vstr &path) {
     try {
         auto moduleCxt = rex::importEx(interpreter.get(), path);
-    } catch (rex::signalException &e) {
-        std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
-        std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
-    } catch (rex::parserException &e) {
-        std::cerr << "error> " << e.what() << std::endl;
+    } catch (rex::errorInAnotherInterpreter &e) {
         std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
     } catch (std::exception &e) {
         std::cerr << "error> " << e.what() << std::endl;
@@ -87,6 +78,7 @@ int main(int argc, const char **argv) {
 
     auto interpreter = rex::managePtr(
             rex::interpreter{rex::rexEnvironmentInstance, rex::managePtr(rex::value{rex::value::cxtObject{}})});
+    interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{rex::vint{0}});
 
     if (argc == 1) {
         interactiveShell(interpreter);

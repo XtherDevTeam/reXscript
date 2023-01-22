@@ -8,6 +8,8 @@
 #include "exceptions/signalException.hpp"
 #include "exceptions/endOfFileException.hpp"
 #include "exceptions/importError.hpp"
+#include "exceptions/parserException.hpp"
+#include "exceptions/errorInAnotherInterpreter.hpp"
 
 namespace rex {
 
@@ -27,10 +29,11 @@ namespace rex {
         return env;
     }
 
-    managedPtr <value>
+    managedPtr<value>
     importExternModule(interpreter *interpreter, const vstr &path) {
         // 获取 importPrefixPath 向量
-        if (auto it = interpreter->env->globalCxt->members.find(L"importPrefixPath"); it == interpreter->env->globalCxt->members.end()) {
+        if (auto it = interpreter->env->globalCxt->members.find(L"importPrefixPath"); it ==
+                                                                                      interpreter->env->globalCxt->members.end()) {
             throw signalException(interpreter::makeErr(L"internalError", L"importPrefixPath not found"));
         } else {
             vec<managedPtr<value>> &importPrefixPath = it->second->getVec();
@@ -52,11 +55,12 @@ namespace rex {
         }
     }
 
-    managedPtr <value>
+    managedPtr<value>
     importNativeModule(interpreter *interpreter, const vstr &path) {
         // Thanks for AI's help
         // 获取 importPrefixPath 向量
-        if (auto it = interpreter->env->globalCxt->members.find(L"importPrefixPath"); it == interpreter->env->globalCxt->members.end()) {
+        if (auto it = interpreter->env->globalCxt->members.find(L"importPrefixPath"); it ==
+                                                                                      interpreter->env->globalCxt->members.end()) {
             throw signalException(interpreter::makeErr(L"internalError", L"importPrefixPath not found"));
         } else {
             vec<managedPtr<value>> &importPrefixPath = it->second->getVec();
@@ -81,7 +85,8 @@ namespace rex {
 
     managedPtr<value> importExternPackage(interpreter *interpreter, const vstr &pkgName) {
         // 获取 importPrefixPath 向量
-        if (auto it = interpreter->env->globalCxt->members.find(L"importPrefixPath"); it == interpreter->env->globalCxt->members.end()) {
+        if (auto it = interpreter->env->globalCxt->members.find(L"importPrefixPath"); it ==
+                                                                                      interpreter->env->globalCxt->members.end()) {
             throw signalException(interpreter::makeErr(L"internalError", L"importPrefixPath not found"));
         } else {
             vec<managedPtr<value>> &importPrefixPath = it->second->getVec();
@@ -103,46 +108,49 @@ namespace rex {
         }
     }
 
-    managedPtr <value>
+    managedPtr<value>
     importExternModuleEx(interpreter *interpreter, const vstr &fullPath) {
-        if (auto it = interpreter->env->globalCxt->members.find(fullPath); it != interpreter->env->globalCxt->members.end()) {
+        if (auto it = interpreter->env->globalCxt->members.find(fullPath); it !=
+                                                                           interpreter->env->globalCxt->members.end()) {
             return it->second;
         } else {
-            std::ifstream f(wstring2string(fullPath), std::ios::in);
-            if (f.is_open()) {
-                auto moduleCxt = interpreter->moduleCxt;
+            auto moduleCxt = interpreter->moduleCxt;
 
-                interpreter->env->globalCxt->members[fullPath] = moduleCxt;
-                moduleCxt->members[L"__path__"] = managePtr(
-                        value{fullPath, rex::stringMethods::getMethodsCxt()});
-                interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{(rex::vint) 0});
+            interpreter->env->globalCxt->members[fullPath] = moduleCxt;
+            moduleCxt->members[L"__path__"] = managePtr(
+                    value{fullPath, rex::stringMethods::getMethodsCxt()});
 
-                f.seekg(0, std::ios::end);
-                long fileLen = f.tellg();
-                vbytes buf(fileLen, vbyte{});
-                f.seekg(0, std::ios::beg);
-                f.read(buf.data(), fileLen);
-                std::wstringstream ss(string2wstring(buf));
-                buf.clear();
-
-                rex::lexer lexer{ss};
-                rex::parser parser{lexer};
-                rex::AST ast = parser.parseFile();
+            try {
+                rex::AST ast = getFileAST(fullPath);
                 for (auto &i: ast.child) {
                     interpreter->interpret(i);
                 }
                 if (auto vit = moduleCxt->members.find(L"rexModInit"); vit != moduleCxt->members.end()) {
                     interpreter->invokeFunc(vit->second, {}, {});
                 }
-                return moduleCxt;
-            } else {
-                throw importError(L"Cannot open file: file not exist or damaged");
+            } catch (rex::signalException &e) {
+                std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw errorInAnotherInterpreter();
+            } catch (rex::parserException &e) {
+                std::cerr << "error> " << e.what() << std::endl;
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw errorInAnotherInterpreter();
+            } catch (rex::errorInAnotherInterpreter &e) {
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw;
+            } catch (std::exception &e) {
+                std::cerr << "error> " << e.what() << std::endl;
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw errorInAnotherInterpreter();
             }
+            return moduleCxt;
         }
     }
 
-    managedPtr <value> importNativeModuleEx(interpreter *interpreter, const vstr &fullPath) {
-        if (auto it = interpreter->env->globalCxt->members.find(fullPath); it != interpreter->env->globalCxt->members.end()) {
+    managedPtr<value> importNativeModuleEx(interpreter *interpreter, const vstr &fullPath) {
+        if (auto it = interpreter->env->globalCxt->members.find(fullPath); it !=
+                                                                           interpreter->env->globalCxt->members.end()) {
             return it->second;
         } else {
             void *handle = dlopen(wstring2string(fullPath).c_str(), RTLD_LAZY);
@@ -167,50 +175,54 @@ namespace rex {
     }
 
     managedPtr<value> importExternPackageEx(interpreter *interpreter, const vstr &pkgDirPath) {
-        if (auto it = interpreter->env->globalCxt->members.find(pkgDirPath); it != interpreter->env->globalCxt->members.end()) {
+        if (auto it = interpreter->env->globalCxt->members.find(pkgDirPath); it !=
+                                                                             interpreter->env->globalCxt->members.end()) {
             return it->second;
         } else {
-            std::ifstream f(wstring2string(pkgDirPath + L"/packageLoader.rex"), std::ios::in);
-            if (f.is_open()) {
-                auto moduleCxt = interpreter->moduleCxt;
+            auto moduleCxt = interpreter->moduleCxt;
 
-                interpreter->env->globalCxt->members[pkgDirPath] = moduleCxt;
-                moduleCxt->members[L"__path__"] = managePtr(
-                        value{pkgDirPath + L"/packageLoader.rex", rex::stringMethods::getMethodsCxt()});
-                moduleCxt->members[L"rexPkgRoot"] = managePtr(value{pkgDirPath, rex::stringMethods::getMethodsCxt()});
+            interpreter->env->globalCxt->members[pkgDirPath] = moduleCxt;
+            moduleCxt->members[L"__path__"] = managePtr(
+                    value{pkgDirPath + L"/packageLoader.rex", rex::stringMethods::getMethodsCxt()});
+            moduleCxt->members[L"rexPkgRoot"] = managePtr(value{pkgDirPath, rex::stringMethods::getMethodsCxt()});
 
-                f.seekg(0, std::ios::end);
-                long fileLen = f.tellg();
-                vbytes buf(fileLen, vbyte{});
-                f.seekg(0, std::ios::beg);
-                f.read(buf.data(), fileLen);
-                std::wstringstream ss(string2wstring(buf));
-                buf.clear();
-
-                rex::lexer lexer{ss};
-                rex::parser parser{lexer};
-                rex::AST ast = parser.parseFile();
+            try {
+                rex::AST ast = getFileAST(pkgDirPath + L"/packageLoader.rex");
                 for (auto &i: ast.child) {
                     interpreter->interpret(i);
                 }
-
-                if (auto vit = moduleCxt->members.find(L"rexModInit"); vit != moduleCxt->members.end()) {
-                    interpreter->invokeFunc(vit->second, {}, {});
-                }
-                return moduleCxt;
-            } else {
-                throw importError(L"Cannot open file: file not exist or damaged");
+            } catch (rex::signalException &e) {
+                std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw errorInAnotherInterpreter();
+            } catch (rex::parserException &e) {
+                std::cerr << "error> " << e.what() << std::endl;
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw errorInAnotherInterpreter();
+            } catch (rex::errorInAnotherInterpreter &e) {
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw;
+            } catch (std::exception &e) {
+                std::cerr << "error> " << e.what() << std::endl;
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw errorInAnotherInterpreter();
             }
+
+            if (auto vit = moduleCxt->members.find(L"rexModInit"); vit != moduleCxt->members.end()) {
+                interpreter->invokeFunc(vit->second, {}, {});
+            }
+            return moduleCxt;
         }
     }
 
-    managedPtr <value>
+    managedPtr<value>
     importEx(interpreter *interpreter, const vstr &modPath) {
         auto moduleCxt = rex::managePtr(rex::value{rex::value::cxtObject{}});
         rex::interpreter newIn(interpreter->env, moduleCxt);
         newIn.interpreterCxt = interpreter->interpreterCxt;
 
-        if (auto it = interpreter->moduleCxt->members.find(L"rexPkgRoot"); it != interpreter->moduleCxt->members.end()) {
+        if (auto it = interpreter->moduleCxt->members.find(L"rexPkgRoot"); it !=
+                                                                           interpreter->moduleCxt->members.end()) {
             moduleCxt->members.insert(*it);
         }
 
@@ -226,6 +238,26 @@ namespace rex {
         }
 
         return moduleCxt;
+    }
+
+    AST getFileAST(const vstr &path) {
+        std::ifstream f(wstring2string(path), std::ios::in);
+        if (f.is_open()) {
+            f.seekg(0, std::ios::end);
+            long fileLen = f.tellg();
+            vbytes buf(fileLen, vbyte{});
+            f.seekg(0, std::ios::beg);
+            f.read(buf.data(), fileLen);
+            std::wstringstream ss(string2wstring(buf));
+            buf.clear();
+
+            rex::lexer lexer{ss};
+            rex::parser parser{lexer};
+            rex::AST ast = parser.parseFile();
+            return ast;
+        } else {
+            throw importError(L"Cannot open file: file not exist or damaged");
+        }
     }
 
 }

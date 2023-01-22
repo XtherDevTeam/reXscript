@@ -73,6 +73,8 @@ namespace rex {
 
     managedPtr <value>
     importEx(interpreter *interpreter, const vstr &modPath);
+
+    AST getFileAST(const vstr &path);
 }
 
 #endif //REXSCRIPT_REX_HPP

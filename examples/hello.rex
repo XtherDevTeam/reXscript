@@ -79,7 +79,7 @@ let iter_test = func() {
                 container: this,
                 next: func() {
                     let cur = this.cur;
-                    if (this.cur > this.container.num) {
+                    if (this.cur >= this.container.num) {
                         return [null, true];
                     }
                     ++this.cur;
@@ -120,7 +120,7 @@ let sqlite_test = func() {
     forEach (i in rows) {
         print(i["scores"].decode("ansi"), "\n");
     }
-    throw 114514;
+    // throw 114514;
     return 0;
 };
 
@@ -229,16 +229,6 @@ let module_cxt_test = func() {
     return 0;
 };
 
-let finalize_test = func() {
-    let obj = {
-        finalize: lambda () -> () {
-            print("I got destructed!\n");
-            return null;
-        }
-    };
-    return obj;
-};
-
 let zip_test = func () {
     let zip = require("../../rexStdlib/dist").zip;
     let archive = zip.open("test.zip", zip.ZIP_DEFAULT_COMPRESSION_LEVEL, zip.M_WRITE);
@@ -280,7 +270,6 @@ let main_test = func() {
     object_iterate_test();
     module_cxt_test();
     zip_test();
-    finalize_test();
     return 0;
 };
 
