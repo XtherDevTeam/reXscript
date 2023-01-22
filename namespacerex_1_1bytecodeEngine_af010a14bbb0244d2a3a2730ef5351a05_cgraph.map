@@ -1,8 +1,0 @@
-<map id="rexThreadWrapper" name="rexThreadWrapper">
-<area shape="rect" id="node1" title="Wrapper function for starting a new thread. This function is passed as a parameter to std::thread&#39;s c..." alt="" coords="5,85,148,112"/>
-<area shape="rect" id="node2" href="$classrex_1_1signalException.html#a446888611f82735be77df0a5f2e3e371" title=" " alt="" coords="196,5,379,32"/>
-<area shape="rect" id="node3" href="$namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="226,56,349,83"/>
-<area shape="rect" id="node4" href="$classrex_1_1interpreterSignal.html#abf843cbb29dec939d0731e491bab6f70" title=" " alt="" coords="207,107,367,149"/>
-<area shape="rect" id="node5" href="$namespacerex.html#aff86e41b811177c724d54ec286768dad" title=" " alt="" coords="215,173,359,200"/>
-<area shape="rect" id="node6" href="$classutf8Unicode.html#aff37372afc65f9252f5b28ba15a87f90" title=" " alt="" coords="427,173,629,200"/>
-</map>

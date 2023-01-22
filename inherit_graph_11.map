@@ -1,3 +1,12 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structrex_1_1ffi_1_1ffiDescriptor_1_1ffiExport.html" title=" " alt="" coords="5,5,171,32"/>
+<area shape="rect" id="node1" href="$classrex_1_1signalException.html" title=" " alt="" coords="5,81,131,108"/>
+<area shape="rect" id="node2" href="$classrex_1_1interpreterSignal.html" title=" " alt="" coords="179,81,309,108"/>
+<area shape="rect" id="node6" href="$classrex_1_1rexException.html" title=" " alt="" coords="191,208,297,235"/>
+<area shape="rect" id="node3" href="$classrex_1_1signalBreak.html" title=" " alt="" coords="407,5,506,32"/>
+<area shape="rect" id="node4" href="$classrex_1_1signalContinue.html" title=" " alt="" coords="397,56,516,83"/>
+<area shape="rect" id="node5" href="$classrex_1_1signalReturn.html" title=" " alt="" coords="405,107,509,133"/>
+<area shape="rect" id="node7" href="$classrex_1_1endOfFileException.html" title=" " alt="" coords="383,157,531,184"/>
+<area shape="rect" id="node8" href="$classrex_1_1importError.html" title=" " alt="" coords="409,208,505,235"/>
+<area shape="rect" id="node9" href="$classrex_1_1parserException.html" title=" " alt="" coords="393,259,520,285"/>
+<area shape="rect" id="node10" href="$classrex_1_1unexpectedTokenException.html" title=" " alt="" coords="357,309,556,336"/>
 </map>

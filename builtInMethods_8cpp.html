@@ -76,37 +76,46 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;iomanip&gt;</code><br />
-<code>#include &lt;thread&gt;</code><br />
 <code>#include &quot;<a class="el" href="builtInMethods_8hpp_source.html">builtInMethods.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="bytecodeEngine_8hpp_source.html">interpreter/bytecodeEngine.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="interpreter_8hpp_source.html">interpreter/interpreter.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="rex_8hpp_source.html">rex.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="signalException_8hpp_source.html">exceptions/signalException.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="share_8hpp_source.html">share/share.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="signalBreak_8hpp_source.html">exceptions/signalBreak.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="signalContinue_8hpp_source.html">exceptions/signalContinue.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for builtInMethods.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="builtInMethods_8cpp__incl.png" border="0" usemap="#ainterpreter_2builtInMethods_8cpp" alt=""/></div>
 <map name="ainterpreter_2builtInMethods_8cpp" id="ainterpreter_2builtInMethods_8cpp">
-<area shape="rect" title=" " alt="" coords="137,5,356,32"/>
-<area shape="rect" title=" " alt="" coords="5,80,85,107"/>
-<area shape="rect" title=" " alt="" coords="109,80,184,107"/>
-<area shape="rect" title=" " alt="" coords="120,453,184,480"/>
-<area shape="rect" href="builtInMethods_8hpp.html" title=" " alt="" coords="348,80,495,107"/>
-<area shape="rect" href="share_8hpp.html" title=" " alt="" coords="463,379,590,405"/>
-<area shape="rect" href="bytecodeEngine_8hpp.html" title=" " alt="" coords="537,80,764,107"/>
-<area shape="rect" href="value_8hpp.html" title=" " alt="" coords="386,155,545,181"/>
-<area shape="rect" title=" " alt="" coords="360,229,403,256"/>
-<area shape="rect" href="ast_8hpp.html" title=" " alt="" coords="606,229,735,256"/>
-<area shape="rect" href="bytecodeStructs_8hpp.html" title=" " alt="" coords="427,229,581,256"/>
-<area shape="rect" href="lexer_8hpp.html" title=" " alt="" coords="626,304,707,331"/>
-<area shape="rect" title=" " alt="" coords="920,453,987,480"/>
-<area shape="rect" title=" " alt="" coords="704,528,763,555"/>
-<area shape="rect" href="utfutils_8hpp.html" title=" " alt="" coords="760,453,896,480"/>
-<area shape="rect" title=" " alt="" coords="208,453,259,480"/>
-<area shape="rect" title=" " alt="" coords="283,453,357,480"/>
-<area shape="rect" title=" " alt="" coords="381,453,459,480"/>
-<area shape="rect" title=" " alt="" coords="483,453,570,480"/>
-<area shape="rect" title=" " alt="" coords="595,453,685,480"/>
-<area shape="rect" title=" " alt="" coords="797,528,859,555"/>
-<area shape="rect" title=" " alt="" coords="631,379,703,405"/>
+<area shape="rect" title=" " alt="" coords="573,5,792,32"/>
+<area shape="rect" title=" " alt="" coords="49,155,129,181"/>
+<area shape="rect" title=" " alt="" coords="1244,80,1319,107"/>
+<area shape="rect" href="builtInMethods_8hpp.html" title=" " alt="" coords="305,155,452,181"/>
+<area shape="rect" href="share_8hpp.html" title=" " alt="" coords="311,453,438,480"/>
+<area shape="rect" href="interpreter_8hpp.html" title=" " alt="" coords="527,155,718,181"/>
+<area shape="rect" href="rex_8hpp.html" title=" " alt="" coords="233,80,303,107"/>
+<area shape="rect" href="signalException_8hpp.html" title=" " alt="" coords="417,80,645,107"/>
+<area shape="rect" href="signalBreak_8hpp.html" title=" " alt="" coords="1017,80,1220,107"/>
+<area shape="rect" href="signalContinue_8hpp.html" title=" " alt="" coords="770,80,993,107"/>
+<area shape="rect" href="value_8hpp.html" title=" " alt="" coords="335,229,422,256"/>
+<area shape="rect" title=" " alt="" coords="412,304,455,331"/>
+<area shape="rect" href="ast_8hpp.html" title=" " alt="" coords="157,304,286,331"/>
+<area shape="rect" href="lexer_8hpp.html" title=" " alt="" coords="181,379,262,405"/>
+<area shape="rect" title=" " alt="" coords="5,528,72,555"/>
+<area shape="rect" title=" " alt="" coords="91,603,149,629"/>
+<area shape="rect" href="utfutils_8hpp.html" title=" " alt="" coords="147,528,283,555"/>
+<area shape="rect" title=" " alt="" coords="307,528,357,555"/>
+<area shape="rect" title=" " alt="" coords="381,528,456,555"/>
+<area shape="rect" title=" " alt="" coords="480,528,557,555"/>
+<area shape="rect" title=" " alt="" coords="582,528,669,555"/>
+<area shape="rect" title=" " alt="" coords="693,528,784,555"/>
+<area shape="rect" title=" " alt="" coords="183,603,246,629"/>
+<area shape="rect" title=" " alt="" coords="185,453,257,480"/>
+<area shape="rect" title=" " alt="" coords="591,229,655,256"/>
+<area shape="rect" href="parser_8hpp.html" title=" " alt="" coords="33,229,183,256"/>
+<area shape="rect" href="interpreterSignal_8hpp.html" title=" " alt="" coords="802,155,961,181"/>
+<area shape="rect" title=" " alt="" coords="838,229,925,256"/>
 </map>
 </div>
 </div>
@@ -239,10 +248,18 @@ Functions</h2></td></tr>
 <tr class="separator:a44109bd5f734692320be278607709933"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ca9ed62d75fefa05f652af400eb5f95"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerex.html#a0ca9ed62d75fefa05f652af400eb5f95">nativeFn</a> (hashMapMethods::keys, interpreter, args, passThisPtr)</td></tr>
 <tr class="separator:a0ca9ed62d75fefa05f652af400eb5f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b48c4550a47eba4f32407d625c19278"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerex.html#a5b48c4550a47eba4f32407d625c19278">nativeFn</a> (hashMapMethods::keysIterator::next, interpreter, args, passThisPtr)</td></tr>
+<tr class="separator:a5b48c4550a47eba4f32407d625c19278"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad38195295773c28c955debabebb089ce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerex.html#ad38195295773c28c955debabebb089ce">nativeFn</a> (hashMapMethods::rexClone, interpreter, args, passThisPtr)</td></tr>
 <tr class="separator:ad38195295773c28c955debabebb089ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6f6c8197b30fd33791e9cdcee0ce40e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerex.html#af6f6c8197b30fd33791e9cdcee0ce40e">nativeFn</a> (globalMethods::hashMap, interpreter, args, passThisPtr)</td></tr>
 <tr class="separator:af6f6c8197b30fd33791e9cdcee0ce40e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65301d4945207c4429a237fbf552fc8b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerex.html#a65301d4945207c4429a237fbf552fc8b">nativeFn</a> (iterMethods::map, interpreter, args, passThisPtr)</td></tr>
+<tr class="separator:a65301d4945207c4429a237fbf552fc8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32172f632c531357241ffe1002a138f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerex.html#a32172f632c531357241ffe1002a138f2">nativeFn</a> (iterMethods::collect, interpreter, args, passThisPtr)</td></tr>
+<tr class="separator:a32172f632c531357241ffe1002a138f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e312323377bb01138f5351d34980b2b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerex.html#a2e312323377bb01138f5351d34980b2b">nativeFn</a> (iterMethods::forEach, interpreter, args, passThisPtr)</td></tr>
+<tr class="separator:a2e312323377bb01138f5351d34980b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

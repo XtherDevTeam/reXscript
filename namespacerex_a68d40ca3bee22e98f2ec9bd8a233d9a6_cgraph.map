@@ -1,0 +1,9 @@
+<map id="spawnThread" name="spawnThread">
+<area shape="rect" id="node1" title="Spawns a new thread and returns its ID." alt="" coords="5,85,115,112"/>
+<area shape="rect" id="node2" href="$namespacerex.html#af010a14bbb0244d2a3a2730ef5351a05" title="Wrapper function for starting a new thread. This function is passed as a parameter to std::thread&#39;s c..." alt="" coords="163,85,305,112"/>
+<area shape="rect" id="node3" href="$classrex_1_1signalException.html#a446888611f82735be77df0a5f2e3e371" title=" " alt="" coords="353,5,536,32"/>
+<area shape="rect" id="node4" href="$namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="398,56,491,83"/>
+<area shape="rect" id="node5" href="$classrex_1_1interpreterSignal.html#abf843cbb29dec939d0731e491bab6f70" title=" " alt="" coords="365,107,525,149"/>
+<area shape="rect" id="node6" href="$namespacerex.html#aff86e41b811177c724d54ec286768dad" title=" " alt="" coords="387,173,502,200"/>
+<area shape="rect" id="node7" href="$classutf8Unicode.html#aff37372afc65f9252f5b28ba15a87f90" title=" " alt="" coords="584,173,787,200"/>
+</map>

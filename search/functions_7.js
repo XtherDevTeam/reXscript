@@ -1,12 +1,19 @@
 var searchData=
 [
-  ['importerror_749',['importError',['../classrex_1_1importError.html#ae1d9bd1061f5c7119b425d597b48b70f',1,'rex::importError']]],
-  ['interactiveshell_750',['interactiveShell',['../main_8cpp.html#a971fd9a77229487fe88d3529a8465bd2',1,'main.cpp']]],
-  ['interpret_751',['interpret',['../classrex_1_1bytecodeEngine_1_1interpreter.html#aeec8fb0aa4c6922ab518df077d175f1c',1,'rex::bytecodeEngine::interpreter']]],
-  ['interpreter_752',['interpreter',['../classrex_1_1bytecodeEngine_1_1interpreter.html#ab8024958e1268a1d56a8f08654e633e2',1,'rex::bytecodeEngine::interpreter::interpreter()=default'],['../classrex_1_1bytecodeEngine_1_1interpreter.html#abfc8f5e848d5831a978080bdc843c99b',1,'rex::bytecodeEngine::interpreter::interpreter(const managedPtr&lt; environment &gt; &amp;env, value::cxtObject interpreterCxt, const managedPtr&lt; value &gt; &amp;moduleCxt)']]],
-  ['interpretersignal_753',['interpreterSignal',['../classrex_1_1interpreterSignal.html#a082baed2d0f2227c8369a94ef6a7768f',1,'rex::interpreterSignal']]],
-  ['invokefunc_754',['invokeFunc',['../classrex_1_1bytecodeEngine_1_1interpreter.html#aaaed36eed7cdc64ef5f3df590f194dd3',1,'rex::bytecodeEngine::interpreter']]],
-  ['invokenativefn_755',['invokeNativeFn',['../classrex_1_1bytecodeEngine_1_1interpreter.html#a6dabef8fa10896d461a57a61935f4b57',1,'rex::bytecodeEngine::interpreter::invokeNativeFn(const managedPtr&lt; value &gt; &amp;func, uint64_t argc)'],['../classrex_1_1bytecodeEngine_1_1interpreter.html#aa2a04d5dc4311ada8ee00f1f53d5d69c',1,'rex::bytecodeEngine::interpreter::invokeNativeFn(const managedPtr&lt; value &gt; &amp;func, const vec&lt; value &gt; &amp;args, const managedPtr&lt; value &gt; &amp;passThisPtr)']]],
-  ['invokenativemethod_756',['invokeNativeMethod',['../classrex_1_1bytecodeEngine_1_1interpreter.html#af9e97344f30a5cb3e5cd9f6aeb4f6f24',1,'rex::bytecodeEngine::interpreter']]],
-  ['isref_757',['isRef',['../classrex_1_1value.html#a3912d9fc27f6bfa694452240314fbffb',1,'rex::value']]]
+  ['importerror_594',['importError',['../classrex_1_1importError.html#ae1d9bd1061f5c7119b425d597b48b70f',1,'rex::importError']]],
+  ['importex_595',['importEx',['../namespacerex.html#ab0283358247156cd39ec572b09405020',1,'rex']]],
+  ['importexternmodule_596',['importExternModule',['../namespacerex.html#af7b0ff6d7e0bdac9e1677cd34516b573',1,'rex']]],
+  ['importexternmoduleex_597',['importExternModuleEx',['../namespacerex.html#a3c3dc3f1101b4152e151ea2e39899161',1,'rex']]],
+  ['importexternpackage_598',['importExternPackage',['../namespacerex.html#a1f7b3196951c22bb1be5672084253fd8',1,'rex']]],
+  ['importexternpackageex_599',['importExternPackageEx',['../namespacerex.html#a9cf3631271ab28b8fc4e7fbda3276d79',1,'rex']]],
+  ['importnativemodule_600',['importNativeModule',['../namespacerex.html#a1b67fc3ffe91c180017ec662ffdcb1f3',1,'rex']]],
+  ['importnativemoduleex_601',['importNativeModuleEx',['../namespacerex.html#a3eb5fe5c8b5e594077eddab7069a290b',1,'rex']]],
+  ['interactiveshell_602',['interactiveShell',['../main_8cpp.html#a3d0e53b9bb2f64dc30662c358a48ed63',1,'main.cpp']]],
+  ['interpret_603',['interpret',['../classrex_1_1interpreter.html#aecbc9f89b8967e0da2bdcc6189bf5ace',1,'rex::interpreter']]],
+  ['interpretassignments_604',['interpretAssignments',['../classrex_1_1interpreter.html#a73a1124a930d8519685db7f6c38cd53f',1,'rex::interpreter']]],
+  ['interpreter_605',['interpreter',['../classrex_1_1interpreter.html#a242b704265b14fbec73fb3c37ccb2084',1,'rex::interpreter']]],
+  ['interpretersignal_606',['interpreterSignal',['../classrex_1_1interpreterSignal.html#a082baed2d0f2227c8369a94ef6a7768f',1,'rex::interpreterSignal']]],
+  ['interpretlvalueexpressions_607',['interpretLvalueExpressions',['../classrex_1_1interpreter.html#a744603f79d6d6d08b9673be55815dac1',1,'rex::interpreter']]],
+  ['invokefunc_608',['invokeFunc',['../classrex_1_1interpreter.html#afd2fb832b6264dba60a76bbed18bb3d4',1,'rex::interpreter']]],
+  ['isref_609',['isRef',['../classrex_1_1value.html#a3912d9fc27f6bfa694452240314fbffb',1,'rex::value']]]
 ];

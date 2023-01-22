@@ -1,8 +1,4 @@
 <map id="what" name="what">
-<area shape="rect" id="node1" title=" " alt="" coords="492,71,547,98"/>
-<area shape="rect" id="node2" href="$classrex_1_1errorInAnotherInterpreter.html#abf843cbb29dec939d0731e491bab6f70" title=" " alt="" coords="229,5,444,47"/>
-<area shape="rect" id="node5" href="$classrex_1_1importError.html#abf843cbb29dec939d0731e491bab6f70" title=" " alt="" coords="254,71,419,98"/>
-<area shape="rect" id="node6" href="$classrex_1_1vmPanic.html#abf843cbb29dec939d0731e491bab6f70" title=" " alt="" coords="263,122,410,149"/>
-<area shape="rect" id="node3" href="$main_8cpp.html#aeabdeec86d614c88db697bbb3bd744f3" title=" " alt="" coords="108,13,181,39"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="5,13,60,39"/>
+<area shape="rect" id="node1" title=" " alt="" coords="219,5,273,32"/>
+<area shape="rect" id="node2" href="$classrex_1_1importError.html#abf843cbb29dec939d0731e491bab6f70" title=" " alt="" coords="5,5,171,32"/>
 </map>

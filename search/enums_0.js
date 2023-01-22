@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['opcode_998',['opCode',['../structrex_1_1bytecodeEngine_1_1bytecodeStruct.html#a90e0c9d3562f4b0764b38f5c560a86ff',1,'rex::bytecodeEngine::bytecodeStruct']]]
+  ['tagbase_804',['tagBase',['../structrex_1_1formatterTagInfo.html#a82f02fce88f5e639917438ad58b2e3a7',1,'rex::formatterTagInfo']]],
+  ['tagkind_805',['tagKind',['../structrex_1_1formatterTagInfo.html#a000db0e097076ab71bb6653bfe4ce9e4',1,'rex::formatterTagInfo']]],
+  ['tokenkind_806',['tokenKind',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32',1,'rex::lexer::token']]],
+  ['treekind_807',['treeKind',['../classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949c',1,'rex::AST']]]
 ];

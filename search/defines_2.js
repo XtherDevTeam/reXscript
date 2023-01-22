@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['elegetref_1180',['eleGetRef',['../bytecodeEngine_8hpp.html#ad8c755a6f191b69977fea97a9a662a04',1,'bytecodeEngine.hpp']]],
-  ['elerefobj_1181',['eleRefObj',['../bytecodeEngine_8hpp.html#a33994ada9044de05bfa01ccba1e22754',1,'bytecodeEngine.hpp']]]
+  ['nativefn_925',['nativeFn',['../share_8hpp.html#ae51b9f22c379d85a5ba21f90480458ba',1,'share.hpp']]]
 ];
