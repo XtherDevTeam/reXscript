@@ -144,6 +144,8 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a2399cb0d4a25847903de2a8ff0abee4e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classrex_1_1value.html">value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrex_1_1interpreter.html#a2399cb0d4a25847903de2a8ff0abee4e">makeErr</a> (const <a class="el" href="namespacerex.html#aebee4227a4aae5d92b4471df1f3c9dc7">vstr</a> &amp;errName, const <a class="el" href="namespacerex.html#aebee4227a4aae5d92b4471df1f3c9dc7">vstr</a> &amp;errMsg)</td></tr>
 <tr class="separator:a2399cb0d4a25847903de2a8ff0abee4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b185ffcb61a228c17eaf9b12a51bb5e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classrex_1_1value.html">value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrex_1_1interpreter.html#a1b185ffcb61a228c17eaf9b12a51bb5e">makeIt</a> (const <a class="el" href="namespacerex.html#aae5da518c8111e1443be76b6e6d4d7e6">managedPtr</a>&lt; <a class="el" href="classrex_1_1value.html">value</a> &gt; &amp;v, bool isEnd)</td></tr>
+<tr class="separator:a1b185ffcb61a228c17eaf9b12a51bb5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -229,7 +231,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00890">890</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00886">886</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="interpreter_8cpp_source.html#l00145">interpreter::interpret()</a>.</p>
 <div class="dynheader">
@@ -270,7 +272,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01426">1426</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01422">1422</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00016">interactiveShell()</a>, and <a class="el" href="main_8cpp_source.html#l00057">loadFile()</a>.</p>
 <div class="dynheader">
@@ -305,7 +307,7 @@ Here is the caller graph for this function:</div>
 <p>Get the current index of the stack. </p>
 <dl class="section return"><dt>Returns</dt><dd>The index of the current stack frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00886">886</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00882">882</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="interpreter_8cpp_source.html#l00145">interpreter::interpret()</a>.</p>
 <div class="dynheader">
@@ -349,35 +351,36 @@ Here is the caller graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00145">145</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca4f50d049bf9315bd340185844272d785">AST::additionExpression</a>, <a class="el" href="value_8hpp_source.html#l00022">value::funcObject::argsName</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949caad081f9555c0cab4ff7b0586646070c9">AST::assignmentExpression</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a51e63a3da6425a39aecc045ec45f1ae8">lexer::token::asterisk</a>, <a class="el" href="interpreter_8cpp_source.html#l00890">interpreter::backToStackIdx()</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca0bedefde2d01e0282e6763ffcbe6e9d2">AST::basicLiterals</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#ab2427617be6485e994f7f99f51dd6d58">lexer::token::basicVal</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca215fc16c803c21ea4d93adea41d74354">AST::binaryExpression</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca642d0343e343850b50e50de6e8259c55">AST::binaryShiftExpression</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949cab65b863487d9e36efb4622b8bf5a1e69">AST::blockStmt</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a84e2c64f38f78ba3ea5c905ab5a2da27">lexer::token::boolean</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca32e8984ffa1fe352558fe04cefd9e1ee">AST::breakStmt</a>, <a class="el" href="ast_8hpp_source.html#l00057">AST::child</a>, <a class="el" href="value_8hpp_source.html#l00023">value::funcObject::code</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949caca1678b14e225ea8391eedc3d41f36d4">AST::continueStmt</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32abdaa3c20a3e3851599514f7c6be5f62f">lexer::token::decimal</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a6258cce631b789eccd9479b03b5a9e40">lexer::token::decrementSign</a>, <a class="el" href="value_8cpp_source.html#l00036">value::deepCopy()</a>, <a class="el" href="interpreter_8hpp_source.html#l00154">interpreter::env</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949cac34522e8fb773ea3e6cac8f0149b01ea">AST::forStmt</a>, <a class="el" href="value_8hpp_source.html#l00032">value::lambdaObject::func</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca992ccd9f23b362b7913d81da7cc775e0">AST::functionDefinition</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949cad1a233cb9db6ee2ca0c916eebb37c50f">AST::functionDefStmt</a>, <a class="el" href="signalException_8cpp_source.html#l00014">signalException::get()</a>, <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="interpreter_8cpp_source.html#l00886">interpreter::getCurStackIdx()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="builtInMethods_8cpp_source.html#l00018">rex::stringMethods::getMethodsCxt()</a>, <a class="el" href="builtInMethods_8cpp_source.html#l00154">rex::vecMethods::getMethodsCxt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00196">value::getStr()</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949caf393f3f5e496869a15bc72cbfd56f541">AST::identifier</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca58c927124abea2cda3857290fb8f67c7">AST::ifElseStmt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca91aa50363ade61a0b8b7968513783c65">AST::ifStmt</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a13ee0eb09df761a766580fc5e2b7efe2">lexer::token::incrementSign</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a157db7df530023575515d366c9b672e8">lexer::token::integer</a>, <a class="el" href="interpreter_8cpp_source.html#l00145">interpreter::interpret()</a>, <a class="el" href="interpreter_8cpp_source.html#l00670">interpreter::interpretAssignments()</a>, <a class="el" href="interpreter_8hpp_source.html#l00159">interpreter::interpreterCxt</a>, <a class="el" href="interpreter_8cpp_source.html#l00624">interpreter::interpretLvalueExpressions()</a>, <a class="el" href="interpreter_8cpp_source.html#l00077">interpreter::invokeFunc()</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca96ab0ff0aa53f1dda08143a419e17c65">AST::invokingExpression</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1AST.html#a2cb3af883ceec7544c5dffe75d81ef69">AST::kind</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a1cefeddd27ac9e950db3dc88d1d230ca">lexer::token::kind</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32af2655c2dee87cb9b0646f678a630394b">lexer::token::kNull</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949caa454a80c3fb14c16347e508c66233ca8">AST::lambdaDefinition</a>, <a class="el" href="ast_8hpp_source.html#l00055">AST::leaf</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca84fd711536bc117a59435c47fe022f99">AST::letStmt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca9c3486ee5c5f6263321d6f1d65305217">AST::listLiteral</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca1563593f7d1479fa99a3054794319d55">AST::logicAndExpression</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca50958dfac6c39af2bdc556687da02a7f">AST::logicEqualExpression</a>, <a class="el" href="interpreter_8cpp_source.html#l00138">interpreter::makeErr()</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca9d3aa1d06198eee3bed730765dd709db">AST::memberExpression</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32adabe6e597b70e5760826aea1dcc564f7">lexer::token::minus</a>, <a class="el" href="interpreter_8hpp_source.html#l00149">interpreter::moduleCxt</a>, <a class="el" href="value_8hpp_source.html#l00021">value::funcObject::moduleCxt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca32f44125f9aa2577161e0d63336b2688">AST::multiplicationExpression</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949cacb2095efc252baf8a437d8a12582c633">AST::objectLiteral</a>, <a class="el" href="value_8hpp_source.html#l00031">value::lambdaObject::outerCxt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca1e73f5062b1196dfa9e1c28ade019624">AST::rangeBasedForStmt</a>, <a class="el" href="value_8hpp_source.html#l00074">value::refObj</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca3c7a84e1b19c2e9113b5c40375162070">AST::returnStmt</a>, <a class="el" href="interpreter_8hpp_source.html#l00144">interpreter::stack</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32ab45cffe084dd3d20d928bee85e7b0f21">lexer::token::string</a>, <a class="el" href="value_8hpp_source.html#l00075">value::strObj</a>, <a class="el" href="lexer_8hpp_source.html#l00097">lexer::token::strVal</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca841f412dd23b05b1e24131b479dd6029">AST::subscriptExpression</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca272690f1a3134c11a90f9e15b0eef0c7">AST::throwStmt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca9c7f1419b92e397caf445a6c53793eb9">AST::tryCatchStmt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949cad19b159b2a745c05a5000a27e36406da">AST::uniqueExpression</a>, <a class="el" href="lexer_8hpp_source.html#l00086">lexer::token::vBasicValue::vBool</a>, <a class="el" href="classrex_1_1value.html#a0bc8cf2345e37f1a36b0e85e796dc2d9a124887daf0e1c00d9d6ec3a29745c5e2">value::vBool</a>, <a class="el" href="lexer_8hpp_source.html#l00085">lexer::token::vBasicValue::vDeci</a>, <a class="el" href="classrex_1_1value.html#a0bc8cf2345e37f1a36b0e85e796dc2d9a8180bf8e28cab7cc097846d9658dd7d0">value::vDeci</a>, <a class="el" href="value_8hpp_source.html#l00077">value::vecObj</a>, <a class="el" href="lexer_8hpp_source.html#l00084">lexer::token::vBasicValue::vInt</a>, <a class="el" href="classrex_1_1value.html#a0bc8cf2345e37f1a36b0e85e796dc2d9a531c3ec52b103729c42103d7ef4f4dd8">value::vInt</a>, <a class="el" href="classrex_1_1value.html#a0bc8cf2345e37f1a36b0e85e796dc2d9ace6b01bc9aded7e1392cefbdee24f927">value::vStr</a>, <a class="el" href="classrex_1_1value.html#a0bc8cf2345e37f1a36b0e85e796dc2d9a229beeb97016aa11d3539ec304ac9ac9">value::vVec</a>, and <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949caf95500e8a7762c39754fbf16df53cb7e">AST::whileStmt</a>.</p>
+<p class="reference">References <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca4f50d049bf9315bd340185844272d785">AST::additionExpression</a>, <a class="el" href="value_8hpp_source.html#l00022">value::funcObject::argsName</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949caad081f9555c0cab4ff7b0586646070c9">AST::assignmentExpression</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a51e63a3da6425a39aecc045ec45f1ae8">lexer::token::asterisk</a>, <a class="el" href="interpreter_8cpp_source.html#l00886">interpreter::backToStackIdx()</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca0bedefde2d01e0282e6763ffcbe6e9d2">AST::basicLiterals</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#ab2427617be6485e994f7f99f51dd6d58">lexer::token::basicVal</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca215fc16c803c21ea4d93adea41d74354">AST::binaryExpression</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca642d0343e343850b50e50de6e8259c55">AST::binaryShiftExpression</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949cab65b863487d9e36efb4622b8bf5a1e69">AST::blockStmt</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a84e2c64f38f78ba3ea5c905ab5a2da27">lexer::token::boolean</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca32e8984ffa1fe352558fe04cefd9e1ee">AST::breakStmt</a>, <a class="el" href="ast_8hpp_source.html#l00057">AST::child</a>, <a class="el" href="value_8hpp_source.html#l00023">value::funcObject::code</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949caca1678b14e225ea8391eedc3d41f36d4">AST::continueStmt</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32abdaa3c20a3e3851599514f7c6be5f62f">lexer::token::decimal</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a6258cce631b789eccd9479b03b5a9e40">lexer::token::decrementSign</a>, <a class="el" href="value_8cpp_source.html#l00036">value::deepCopy()</a>, <a class="el" href="interpreter_8hpp_source.html#l00154">interpreter::env</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949cac34522e8fb773ea3e6cac8f0149b01ea">AST::forStmt</a>, <a class="el" href="value_8hpp_source.html#l00032">value::lambdaObject::func</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca992ccd9f23b362b7913d81da7cc775e0">AST::functionDefinition</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949cad1a233cb9db6ee2ca0c916eebb37c50f">AST::functionDefStmt</a>, <a class="el" href="signalException_8cpp_source.html#l00014">signalException::get()</a>, <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="interpreter_8cpp_source.html#l00882">interpreter::getCurStackIdx()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="builtInMethods_8cpp_source.html#l00018">rex::stringMethods::getMethodsCxt()</a>, <a class="el" href="builtInMethods_8cpp_source.html#l00154">rex::vecMethods::getMethodsCxt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00196">value::getStr()</a>, <a class="el" href="value_8cpp_source.html#l00119">value::getVec()</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949caf393f3f5e496869a15bc72cbfd56f541">AST::identifier</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca58c927124abea2cda3857290fb8f67c7">AST::ifElseStmt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca91aa50363ade61a0b8b7968513783c65">AST::ifStmt</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a13ee0eb09df761a766580fc5e2b7efe2">lexer::token::incrementSign</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a157db7df530023575515d366c9b672e8">lexer::token::integer</a>, <a class="el" href="interpreter_8cpp_source.html#l00666">interpreter::interpretAssignments()</a>, <a class="el" href="interpreter_8hpp_source.html#l00159">interpreter::interpreterCxt</a>, <a class="el" href="interpreter_8cpp_source.html#l00620">interpreter::interpretLvalueExpressions()</a>, <a class="el" href="interpreter_8cpp_source.html#l00077">interpreter::invokeFunc()</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca96ab0ff0aa53f1dda08143a419e17c65">AST::invokingExpression</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1AST.html#a2cb3af883ceec7544c5dffe75d81ef69">AST::kind</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a1cefeddd27ac9e950db3dc88d1d230ca">lexer::token::kind</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32af2655c2dee87cb9b0646f678a630394b">lexer::token::kNull</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949caa454a80c3fb14c16347e508c66233ca8">AST::lambdaDefinition</a>, <a class="el" href="ast_8hpp_source.html#l00055">AST::leaf</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca84fd711536bc117a59435c47fe022f99">AST::letStmt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca9c3486ee5c5f6263321d6f1d65305217">AST::listLiteral</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca1563593f7d1479fa99a3054794319d55">AST::logicAndExpression</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca50958dfac6c39af2bdc556687da02a7f">AST::logicEqualExpression</a>, <a class="el" href="interpreter_8cpp_source.html#l00138">interpreter::makeErr()</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca9d3aa1d06198eee3bed730765dd709db">AST::memberExpression</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32adabe6e597b70e5760826aea1dcc564f7">lexer::token::minus</a>, <a class="el" href="interpreter_8hpp_source.html#l00149">interpreter::moduleCxt</a>, <a class="el" href="value_8hpp_source.html#l00021">value::funcObject::moduleCxt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca32f44125f9aa2577161e0d63336b2688">AST::multiplicationExpression</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949cacb2095efc252baf8a437d8a12582c633">AST::objectLiteral</a>, <a class="el" href="value_8hpp_source.html#l00031">value::lambdaObject::outerCxt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca1e73f5062b1196dfa9e1c28ade019624">AST::rangeBasedForStmt</a>, <a class="el" href="value_8hpp_source.html#l00074">value::refObj</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca3c7a84e1b19c2e9113b5c40375162070">AST::returnStmt</a>, <a class="el" href="interpreter_8hpp_source.html#l00144">interpreter::stack</a>, <a class="el" href="structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32ab45cffe084dd3d20d928bee85e7b0f21">lexer::token::string</a>, <a class="el" href="value_8hpp_source.html#l00075">value::strObj</a>, <a class="el" href="lexer_8hpp_source.html#l00097">lexer::token::strVal</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca841f412dd23b05b1e24131b479dd6029">AST::subscriptExpression</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca272690f1a3134c11a90f9e15b0eef0c7">AST::throwStmt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949ca9c7f1419b92e397caf445a6c53793eb9">AST::tryCatchStmt</a>, <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949cad19b159b2a745c05a5000a27e36406da">AST::uniqueExpression</a>, <a class="el" href="lexer_8hpp_source.html#l00086">lexer::token::vBasicValue::vBool</a>, <a class="el" href="classrex_1_1value.html#a0bc8cf2345e37f1a36b0e85e796dc2d9a124887daf0e1c00d9d6ec3a29745c5e2">value::vBool</a>, <a class="el" href="lexer_8hpp_source.html#l00085">lexer::token::vBasicValue::vDeci</a>, <a class="el" href="classrex_1_1value.html#a0bc8cf2345e37f1a36b0e85e796dc2d9a8180bf8e28cab7cc097846d9658dd7d0">value::vDeci</a>, <a class="el" href="value_8hpp_source.html#l00077">value::vecObj</a>, <a class="el" href="lexer_8hpp_source.html#l00084">lexer::token::vBasicValue::vInt</a>, <a class="el" href="classrex_1_1value.html#a0bc8cf2345e37f1a36b0e85e796dc2d9a531c3ec52b103729c42103d7ef4f4dd8">value::vInt</a>, <a class="el" href="classrex_1_1value.html#a0bc8cf2345e37f1a36b0e85e796dc2d9ace6b01bc9aded7e1392cefbdee24f927">value::vStr</a>, <a class="el" href="classrex_1_1value.html#a0bc8cf2345e37f1a36b0e85e796dc2d9a229beeb97016aa11d3539ec304ac9ac9">value::vVec</a>, and <a class="el" href="classrex_1_1AST.html#ab5f521bd7c19e35507ec22468104949caf95500e8a7762c39754fbf16df53cb7e">AST::whileStmt</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rex_8cpp_source.html#l00107">rex::importExternModuleEx()</a>, <a class="el" href="rex_8cpp_source.html#l00169">rex::importExternPackageEx()</a>, <a class="el" href="interpreter_8cpp_source.html#l00145">interpreter::interpret()</a>, and <a class="el" href="interpreter_8cpp_source.html#l00077">interpreter::invokeFunc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rex_8cpp_source.html#l00107">rex::importExternModuleEx()</a>, <a class="el" href="rex_8cpp_source.html#l00169">rex::importExternPackageEx()</a>, and <a class="el" href="interpreter_8cpp_source.html#l00077">interpreter::invokeFunc()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrex_1_1interpreter_aecbc9f89b8967e0da2bdcc6189bf5ace_cgraph.png" border="0" usemap="#aclassrex_1_1interpreter_aecbc9f89b8967e0da2bdcc6189bf5ace_cgraph" alt=""/></div>
 <map name="aclassrex_1_1interpreter_aecbc9f89b8967e0da2bdcc6189bf5ace_cgraph" id="aclassrex_1_1interpreter_aecbc9f89b8967e0da2bdcc6189bf5ace_cgraph">
-<area shape="rect" title=" " alt="" coords="5,436,84,463"/>
+<area shape="rect" title=" " alt="" coords="5,461,84,488"/>
 <area shape="rect" href="classrex_1_1interpreter.html#acb7014997ba5643b460baf956b2f9597" title="Set the current index of the stack." alt="" coords="170,5,293,32"/>
 <area shape="rect" href="classrex_1_1value.html#acb9ec73522d69531a4a1a1fe791af542" title=" " alt="" coords="628,259,788,285"/>
-<area shape="rect" href="namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="875,639,997,665"/>
+<area shape="rect" href="namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="875,689,997,716"/>
 <area shape="rect" href="classrex_1_1signalException.html#a446888611f82735be77df0a5f2e3e371" title=" " alt="" coords="140,157,323,184"/>
 <area shape="rect" href="classrex_1_1value.html#a61e9f72cd13048327562081a87558e3d" title=" " alt="" coords="387,151,533,177"/>
 <area shape="rect" href="classrex_1_1interpreter.html#a471f42024b9f9ae3d9c1d78cc4ec1bb4" title="Get the current index of the stack." alt="" coords="171,259,292,285"/>
 <area shape="rect" href="classrex_1_1value.html#a68afcd2ea072fe98b6e921d7f74c59a5" title=" " alt="" coords="387,245,533,272"/>
 <area shape="rect" href="classrex_1_1value.html#ae3dbb45089f7bece3f5a31d9bf8e2bd5" title=" " alt="" coords="393,335,527,361"/>
-<area shape="rect" href="namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="636,766,780,807"/>
-<area shape="rect" href="namespacerex_1_1vecMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="589,613,827,640"/>
+<area shape="rect" href="namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="636,817,780,858"/>
+<area shape="rect" href="namespacerex_1_1vecMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="589,664,827,691"/>
 <area shape="rect" href="classrex_1_1value.html#a11b6e653dde2aa1dd2d7ffd0541c626c" title=" " alt="" coords="391,399,529,425"/>
 <area shape="rect" href="classrex_1_1value.html#adaaee026ccf8f3b829a16cff67ea5f97" title=" " alt="" coords="164,563,299,589"/>
+<area shape="rect" href="classrex_1_1value.html#aab37eccfe4085f49af4ab1f384fc5beb" title=" " alt="" coords="162,613,301,640"/>
 <area shape="rect" href="classrex_1_1interpreter.html#a73a1124a930d8519685db7f6c38cd53f" title=" " alt="" coords="150,360,313,387"/>
 <area shape="rect" href="classrex_1_1value.html#a3912d9fc27f6bfa694452240314fbffb" title=" " alt="" coords="396,461,524,488"/>
-<area shape="rect" href="classrex_1_1interpreter.html#a744603f79d6d6d08b9673be55815dac1" title=" " alt="" coords="132,715,331,741"/>
-<area shape="rect" href="classrex_1_1interpreter.html#afd2fb832b6264dba60a76bbed18bb3d4" title=" " alt="" coords="184,664,279,691"/>
-<area shape="rect" href="classrex_1_1interpreter.html#a2399cb0d4a25847903de2a8ff0abee4e" title=" " alt="" coords="422,765,498,792"/>
-<area shape="rect" href="namespacerex_1_1path.html#a8aa4377dddca123ce4dd584ba869956e" title=" " alt="" coords="880,748,992,775"/>
+<area shape="rect" href="classrex_1_1interpreter.html#a744603f79d6d6d08b9673be55815dac1" title=" " alt="" coords="132,765,331,792"/>
+<area shape="rect" href="classrex_1_1interpreter.html#afd2fb832b6264dba60a76bbed18bb3d4" title=" " alt="" coords="184,816,279,843"/>
+<area shape="rect" href="classrex_1_1interpreter.html#a2399cb0d4a25847903de2a8ff0abee4e" title=" " alt="" coords="422,715,498,741"/>
+<area shape="rect" href="namespacerex_1_1path.html#a8aa4377dddca123ce4dd584ba869956e" title=" " alt="" coords="880,849,992,876"/>
 <area shape="rect" href="namespacerex.html#a05529a7834f48db0c2717f57a31fc3d6" title=" " alt="" coords="897,799,975,825"/>
-<area shape="rect" href="classrex_1_1signalReturn.html#aff561c103ed430a54212743a4580dbf5" title=" " alt="" coords="379,715,541,741"/>
+<area shape="rect" href="classrex_1_1signalReturn.html#aff561c103ed430a54212743a4580dbf5" title=" " alt="" coords="379,816,541,843"/>
 </map>
 </div>
 <div class="dynheader">
@@ -418,7 +421,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00670">670</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00666">666</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8hpp_source.html#l00057">AST::child</a>, <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="value_8hpp_source.html#l00074">value::refObj</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 
@@ -475,7 +478,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00624">624</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00620">620</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8hpp_source.html#l00057">AST::child</a>.</p>
 
@@ -545,27 +548,28 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrex_1_1interpreter_afd2fb832b6264dba60a76bbed18bb3d4_cgraph.png" border="0" usemap="#aclassrex_1_1interpreter_afd2fb832b6264dba60a76bbed18bb3d4_cgraph" alt=""/></div>
 <map name="aclassrex_1_1interpreter_afd2fb832b6264dba60a76bbed18bb3d4_cgraph" id="aclassrex_1_1interpreter_afd2fb832b6264dba60a76bbed18bb3d4_cgraph">
-<area shape="rect" title=" " alt="" coords="5,107,100,133"/>
+<area shape="rect" title=" " alt="" coords="5,487,100,513"/>
 <area shape="rect" href="classrex_1_1signalReturn.html#aff561c103ed430a54212743a4580dbf5" title=" " alt="" coords="148,5,311,32"/>
-<area shape="rect" href="classrex_1_1interpreter.html#aecbc9f89b8967e0da2bdcc6189bf5ace" title=" " alt="" coords="190,436,269,463"/>
-<area shape="rect" href="namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="891,183,1013,209"/>
-<area shape="rect" href="classrex_1_1interpreter.html#a2399cb0d4a25847903de2a8ff0abee4e" title=" " alt="" coords="420,107,496,133"/>
-<area shape="rect" href="classrex_1_1interpreter.html#acb7014997ba5643b460baf956b2f9597" title="Set the current index of the stack." alt="" coords="397,461,519,488"/>
+<area shape="rect" href="classrex_1_1interpreter.html#aecbc9f89b8967e0da2bdcc6189bf5ace" title=" " alt="" coords="190,487,269,513"/>
+<area shape="rect" href="namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="891,461,1013,488"/>
+<area shape="rect" href="classrex_1_1interpreter.html#a2399cb0d4a25847903de2a8ff0abee4e" title=" " alt="" coords="420,917,496,944"/>
+<area shape="rect" href="classrex_1_1interpreter.html#acb7014997ba5643b460baf956b2f9597" title="Set the current index of the stack." alt="" coords="397,157,519,184"/>
 <area shape="rect" href="classrex_1_1value.html#acb9ec73522d69531a4a1a1fe791af542" title=" " alt="" coords="644,208,804,235"/>
-<area shape="rect" href="classrex_1_1signalException.html#a446888611f82735be77df0a5f2e3e371" title=" " alt="" coords="367,715,549,741"/>
-<area shape="rect" href="classrex_1_1value.html#a61e9f72cd13048327562081a87558e3d" title=" " alt="" coords="651,759,797,785"/>
-<area shape="rect" href="classrex_1_1interpreter.html#a471f42024b9f9ae3d9c1d78cc4ec1bb4" title="Get the current index of the stack." alt="" coords="397,360,519,387"/>
-<area shape="rect" href="classrex_1_1value.html#a68afcd2ea072fe98b6e921d7f74c59a5" title=" " alt="" coords="651,835,797,861"/>
+<area shape="rect" href="classrex_1_1signalException.html#a446888611f82735be77df0a5f2e3e371" title=" " alt="" coords="367,309,549,336"/>
+<area shape="rect" href="classrex_1_1value.html#a61e9f72cd13048327562081a87558e3d" title=" " alt="" coords="651,461,797,488"/>
+<area shape="rect" href="classrex_1_1interpreter.html#a471f42024b9f9ae3d9c1d78cc4ec1bb4" title="Get the current index of the stack." alt="" coords="397,411,519,437"/>
+<area shape="rect" href="classrex_1_1value.html#a68afcd2ea072fe98b6e921d7f74c59a5" title=" " alt="" coords="651,512,797,539"/>
 <area shape="rect" href="classrex_1_1value.html#ae3dbb45089f7bece3f5a31d9bf8e2bd5" title=" " alt="" coords="657,563,791,589"/>
-<area shape="rect" href="namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="652,310,796,351"/>
-<area shape="rect" href="namespacerex_1_1vecMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="605,259,843,285"/>
-<area shape="rect" href="classrex_1_1value.html#a11b6e653dde2aa1dd2d7ffd0541c626c" title=" " alt="" coords="655,639,793,665"/>
-<area shape="rect" href="classrex_1_1value.html#adaaee026ccf8f3b829a16cff67ea5f97" title=" " alt="" coords="391,411,525,437"/>
-<area shape="rect" href="classrex_1_1interpreter.html#a73a1124a930d8519685db7f6c38cd53f" title=" " alt="" coords="377,664,539,691"/>
-<area shape="rect" href="classrex_1_1value.html#a3912d9fc27f6bfa694452240314fbffb" title=" " alt="" coords="660,696,788,723"/>
-<area shape="rect" href="classrex_1_1interpreter.html#a744603f79d6d6d08b9673be55815dac1" title=" " alt="" coords="359,613,557,640"/>
-<area shape="rect" href="namespacerex_1_1path.html#a8aa4377dddca123ce4dd584ba869956e" title=" " alt="" coords="896,343,1008,369"/>
-<area shape="rect" href="namespacerex.html#a05529a7834f48db0c2717f57a31fc3d6" title=" " alt="" coords="913,292,991,319"/>
+<area shape="rect" href="namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="652,859,796,901"/>
+<area shape="rect" href="namespacerex_1_1vecMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="605,664,843,691"/>
+<area shape="rect" href="classrex_1_1value.html#a11b6e653dde2aa1dd2d7ffd0541c626c" title=" " alt="" coords="655,613,793,640"/>
+<area shape="rect" href="classrex_1_1value.html#adaaee026ccf8f3b829a16cff67ea5f97" title=" " alt="" coords="391,715,525,741"/>
+<area shape="rect" href="classrex_1_1value.html#aab37eccfe4085f49af4ab1f384fc5beb" title=" " alt="" coords="389,765,527,792"/>
+<area shape="rect" href="classrex_1_1interpreter.html#a73a1124a930d8519685db7f6c38cd53f" title=" " alt="" coords="377,563,539,589"/>
+<area shape="rect" href="classrex_1_1value.html#a3912d9fc27f6bfa694452240314fbffb" title=" " alt="" coords="660,385,788,412"/>
+<area shape="rect" href="classrex_1_1interpreter.html#a744603f79d6d6d08b9673be55815dac1" title=" " alt="" coords="359,107,557,133"/>
+<area shape="rect" href="namespacerex_1_1path.html#a8aa4377dddca123ce4dd584ba869956e" title=" " alt="" coords="896,892,1008,919"/>
+<area shape="rect" href="namespacerex.html#a05529a7834f48db0c2717f57a31fc3d6" title=" " alt="" coords="913,841,991,868"/>
 </map>
 </div>
 <div class="dynheader">
@@ -646,22 +650,85 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrex_1_1interpreter_a2399cb0d4a25847903de2a8ff0abee4e_icgraph.png" border="0" usemap="#aclassrex_1_1interpreter_a2399cb0d4a25847903de2a8ff0abee4e_icgraph" alt=""/></div>
 <map name="aclassrex_1_1interpreter_a2399cb0d4a25847903de2a8ff0abee4e_icgraph" id="aclassrex_1_1interpreter_a2399cb0d4a25847903de2a8ff0abee4e_icgraph">
-<area shape="rect" title=" " alt="" coords="1303,163,1379,190"/>
-<area shape="rect" href="namespacerex.html#af7b0ff6d7e0bdac9e1677cd34516b573" title="Import an external reXscript module." alt="" coords="425,62,609,88"/>
-<area shape="rect" href="namespacerex.html#a1f7b3196951c22bb1be5672084253fd8" title="Import an external reXscript package." alt="" coords="423,239,612,266"/>
-<area shape="rect" href="namespacerex.html#a1b67fc3ffe91c180017ec662ffdcb1f3" title="Import a native module." alt="" coords="1069,188,1255,215"/>
-<area shape="rect" href="classrex_1_1interpreter.html#aecbc9f89b8967e0da2bdcc6189bf5ace" title=" " alt="" coords="1123,138,1201,164"/>
-<area shape="rect" href="classrex_1_1interpreter.html#afd2fb832b6264dba60a76bbed18bb3d4" title=" " alt="" coords="920,87,1015,114"/>
-<area shape="rect" href="namespacerex.html#a5c9a3d1d34106ee64130778255883b5f" title=" " alt="" coords="1108,340,1216,367"/>
-<area shape="rect" href="namespacerex.html#ab0283358247156cd39ec572b09405020" title=" " alt="" coords="264,188,375,215"/>
-<area shape="rect" href="namespacerex.html#a9f637228b2585d8a99fb4b9507664163" title=" " alt="" coords="265,62,373,88"/>
-<area shape="rect" href="main_8cpp.html#ab7267c7b55370e1e159a714c7f015692" title=" " alt="" coords="125,138,199,164"/>
-<area shape="rect" href="main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="5,163,60,190"/>
-<area shape="rect" href="namespacerex.html#a728069e054d88b5a10fff12927c4dbfc" title=" " alt="" coords="108,239,216,266"/>
-<area shape="rect" href="namespacerex.html#aa734c413ae4283de3200df42127d883e" title=" " alt="" coords="265,239,373,266"/>
-<area shape="rect" href="namespacerex.html#a7fbd33ee5fb3972b722cc8e8c3026ab6" title=" " alt="" coords="913,239,1021,266"/>
-<area shape="rect" href="namespacerex.html#a3c3dc3f1101b4152e151ea2e39899161" title="Import an external reXscript module without importPathPrefix." alt="" coords="663,62,863,88"/>
-<area shape="rect" href="namespacerex.html#a9cf3631271ab28b8fc4e7fbda3276d79" title="Import an external package without importPathPrefix." alt="" coords="660,138,865,164"/>
+<area shape="rect" title=" " alt="" coords="1303,119,1379,146"/>
+<area shape="rect" href="namespacerex.html#af7b0ff6d7e0bdac9e1677cd34516b573" title="Import an external reXscript module." alt="" coords="425,18,609,45"/>
+<area shape="rect" href="namespacerex.html#a1f7b3196951c22bb1be5672084253fd8" title="Import an external reXscript package." alt="" coords="423,195,612,222"/>
+<area shape="rect" href="namespacerex.html#a1b67fc3ffe91c180017ec662ffdcb1f3" title="Import a native module." alt="" coords="1069,145,1255,171"/>
+<area shape="rect" href="classrex_1_1interpreter.html#aecbc9f89b8967e0da2bdcc6189bf5ace" title=" " alt="" coords="1123,94,1201,121"/>
+<area shape="rect" href="classrex_1_1interpreter.html#afd2fb832b6264dba60a76bbed18bb3d4" title=" " alt="" coords="920,43,1015,70"/>
+<area shape="rect" href="namespacerex.html#a5c9a3d1d34106ee64130778255883b5f" title=" " alt="" coords="1108,297,1216,323"/>
+<area shape="rect" href="namespacerex.html#ab0283358247156cd39ec572b09405020" title=" " alt="" coords="264,145,375,171"/>
+<area shape="rect" href="namespacerex.html#a9f637228b2585d8a99fb4b9507664163" title=" " alt="" coords="265,18,373,45"/>
+<area shape="rect" href="main_8cpp.html#ab7267c7b55370e1e159a714c7f015692" title=" " alt="" coords="125,94,199,121"/>
+<area shape="rect" href="main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="5,119,60,146"/>
+<area shape="rect" href="namespacerex.html#a728069e054d88b5a10fff12927c4dbfc" title=" " alt="" coords="108,195,216,222"/>
+<area shape="rect" href="namespacerex.html#aa734c413ae4283de3200df42127d883e" title=" " alt="" coords="265,195,373,222"/>
+<area shape="rect" href="namespacerex.html#a7fbd33ee5fb3972b722cc8e8c3026ab6" title=" " alt="" coords="913,195,1021,222"/>
+<area shape="rect" href="namespacerex.html#a3c3dc3f1101b4152e151ea2e39899161" title="Import an external reXscript module without importPathPrefix." alt="" coords="663,18,863,45"/>
+<area shape="rect" href="namespacerex.html#a9cf3631271ab28b8fc4e7fbda3276d79" title="Import an external package without importPathPrefix." alt="" coords="660,94,865,121"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a1b185ffcb61a228c17eaf9b12a51bb5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b185ffcb61a228c17eaf9b12a51bb5e">&#9670;&nbsp;</a></span>makeIt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classrex_1_1value.html">value</a> makeIt </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacerex.html#aae5da518c8111e1443be76b6e6d4d7e6">managedPtr</a>&lt; <a class="el" href="classrex_1_1value.html">value</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isEnd</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01431">1431</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="builtInMethods_8cpp_source.html#l00018">rex::stringMethods::getMethodsCxt()</a>, and <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="builtInMethods_8cpp_source.html#l00654">rex::nativeFn()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classrex_1_1interpreter_a1b185ffcb61a228c17eaf9b12a51bb5e_cgraph.png" border="0" usemap="#aclassrex_1_1interpreter_a1b185ffcb61a228c17eaf9b12a51bb5e_cgraph" alt=""/></div>
+<map name="aclassrex_1_1interpreter_a1b185ffcb61a228c17eaf9b12a51bb5e_cgraph" id="aclassrex_1_1interpreter_a1b185ffcb61a228c17eaf9b12a51bb5e_cgraph">
+<area shape="rect" title=" " alt="" coords="5,83,72,109"/>
+<area shape="rect" href="namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="120,46,264,87"/>
+<area shape="rect" href="namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="312,108,435,135"/>
+<area shape="rect" href="namespacerex_1_1path.html#a8aa4377dddca123ce4dd584ba869956e" title=" " alt="" coords="317,5,429,32"/>
+<area shape="rect" href="namespacerex.html#a05529a7834f48db0c2717f57a31fc3d6" title=" " alt="" coords="334,56,413,83"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classrex_1_1interpreter_a1b185ffcb61a228c17eaf9b12a51bb5e_icgraph.png" border="0" usemap="#aclassrex_1_1interpreter_a1b185ffcb61a228c17eaf9b12a51bb5e_icgraph" alt=""/></div>
+<map name="aclassrex_1_1interpreter_a1b185ffcb61a228c17eaf9b12a51bb5e_icgraph" id="aclassrex_1_1interpreter_a1b185ffcb61a228c17eaf9b12a51bb5e_icgraph">
+<area shape="rect" title=" " alt="" coords="161,5,228,32"/>
+<area shape="rect" href="namespacerex.html#af583b91818e29eb2e9c696562d2a8361" title=" " alt="" coords="5,5,113,32"/>
 </map>
 </div>
 
@@ -693,7 +760,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00894">894</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00890">890</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -739,7 +806,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01330">1330</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01326">1326</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -784,7 +851,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01306">1306</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01302">1302</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -829,7 +896,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01054">1054</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01050">1050</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -874,7 +941,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01078">1078</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01074">1074</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -919,7 +986,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01354">1354</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01350">1350</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -964,7 +1031,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00996">996</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00992">992</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1010,7 +1077,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01102">1102</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01098">1098</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1056,7 +1123,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01170">1170</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01166">1166</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1102,7 +1169,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01238">1238</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01234">1234</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1148,7 +1215,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01204">1204</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01200">1200</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1194,7 +1261,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01272">1272</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01268">1268</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1240,7 +1307,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01378">1378</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01374">1374</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1285,7 +1352,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01402">1402</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01398">1398</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1330,7 +1397,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01030">1030</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01026">1026</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1375,7 +1442,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00962">962</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00958">958</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1421,7 +1488,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01136">1136</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l01132">1132</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1467,7 +1534,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00928">928</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interpreter_8cpp_source.html#l00924">924</a> of file <a class="el" href="interpreter_8cpp_source.html">interpreter.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="value_8cpp_source.html#l00104">value::getBool()</a>, <a class="el" href="value_8cpp_source.html#l00108">value::getDeci()</a>, <a class="el" href="value_8cpp_source.html#l00100">value::getInt()</a>, <a class="el" href="value_8cpp_source.html#l00112">value::getRef()</a>, <a class="el" href="value_8cpp_source.html#l00032">value::isRef()</a>, <a class="el" href="classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab">value::kind</a>, <a class="el" href="share_8hpp_source.html#l00076">rex::managePtr()</a>, <a class="el" href="value_8hpp_source.html#l00085">value::members</a>, and <a class="el" href="value_8hpp_source.html#l00151">valueKindComparator</a>.</p>
 <div class="dynheader">
@@ -1504,7 +1571,7 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="interpreter_8hpp_source.html#l00154">154</a> of file <a class="el" href="interpreter_8hpp_source.html">interpreter.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rex_8cpp_source.html#l00031">rex::importExternModule()</a>, <a class="el" href="rex_8cpp_source.html#l00107">rex::importExternModuleEx()</a>, <a class="el" href="rex_8cpp_source.html#l00082">rex::importExternPackage()</a>, <a class="el" href="rex_8cpp_source.html#l00169">rex::importExternPackageEx()</a>, <a class="el" href="rex_8cpp_source.html#l00056">rex::importNativeModule()</a>, <a class="el" href="rex_8cpp_source.html#l00144">rex::importNativeModuleEx()</a>, <a class="el" href="main_8cpp_source.html#l00016">interactiveShell()</a>, <a class="el" href="interpreter_8cpp_source.html#l00145">interpreter::interpret()</a>, <a class="el" href="interpreter_8cpp_source.html#l00077">interpreter::invokeFunc()</a>, and <a class="el" href="builtInMethods_8cpp_source.html#l00147">rex::nativeFn()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rex_8cpp_source.html#l00208">rex::importEx()</a>, <a class="el" href="rex_8cpp_source.html#l00031">rex::importExternModule()</a>, <a class="el" href="rex_8cpp_source.html#l00107">rex::importExternModuleEx()</a>, <a class="el" href="rex_8cpp_source.html#l00082">rex::importExternPackage()</a>, <a class="el" href="rex_8cpp_source.html#l00169">rex::importExternPackageEx()</a>, <a class="el" href="rex_8cpp_source.html#l00056">rex::importNativeModule()</a>, <a class="el" href="rex_8cpp_source.html#l00144">rex::importNativeModuleEx()</a>, <a class="el" href="main_8cpp_source.html#l00016">interactiveShell()</a>, <a class="el" href="interpreter_8cpp_source.html#l00145">interpreter::interpret()</a>, <a class="el" href="interpreter_8cpp_source.html#l00077">interpreter::invokeFunc()</a>, and <a class="el" href="builtInMethods_8cpp_source.html#l00147">rex::nativeFn()</a>.</p>
 
 </div>
 </div>
@@ -1524,7 +1591,7 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="interpreter_8hpp_source.html#l00159">159</a> of file <a class="el" href="interpreter_8hpp_source.html">interpreter.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rex_8cpp_source.html#l00107">rex::importExternModuleEx()</a>, <a class="el" href="main_8cpp_source.html#l00016">interactiveShell()</a>, and <a class="el" href="interpreter_8cpp_source.html#l00145">interpreter::interpret()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rex_8cpp_source.html#l00208">rex::importEx()</a>, <a class="el" href="rex_8cpp_source.html#l00107">rex::importExternModuleEx()</a>, <a class="el" href="main_8cpp_source.html#l00016">interactiveShell()</a>, and <a class="el" href="interpreter_8cpp_source.html#l00145">interpreter::interpret()</a>.</p>
 
 </div>
 </div>
