@@ -70,6 +70,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">interpreter.hpp File Reference</div>  </div>
@@ -140,6 +141,13 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacerex"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerex.html">rex</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ad8c755a6f191b69977fea97a9a662a04"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8hpp.html#ad8c755a6f191b69977fea97a9a662a04">eleGetRef</a>(ele)&#160;&#160;&#160;((ele).isRef() ? (ele).getRef() : (ele))</td></tr>
+<tr class="separator:ad8c755a6f191b69977fea97a9a662a04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33994ada9044de05bfa01ccba1e22754"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8hpp.html#a33994ada9044de05bfa01ccba1e22754">eleRefObj</a>(ele)&#160;&#160;&#160;((ele).isRef() ? (ele).refObj : <a class="el" href="namespacerex.html#aed32a8ff755868fb0c957d14cd68d047">rex::managePtr</a>((ele)))</td></tr>
+<tr class="separator:a33994ada9044de05bfa01ccba1e22754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:af010a14bbb0244d2a3a2730ef5351a05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerex.html#af010a14bbb0244d2a3a2730ef5351a05">rexThreadWrapper</a> (managedPtr&lt; environment &gt; env, vint tid, managedPtr&lt; value &gt; cxt, managedPtr&lt; value &gt; func, vec&lt; value &gt; args, managedPtr&lt; value &gt; passThisPtr=nullptr)</td></tr>
@@ -152,6 +160,47 @@ Functions</h2></td></tr>
 <tr class="memdesc:a17c18f55e77e943c21e40d42b5bebe61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits for the thread with the specified ID to finish execution and returns the result.  <a href="namespacerex.html#a17c18f55e77e943c21e40d42b5bebe61">More...</a><br /></td></tr>
 <tr class="separator:a17c18f55e77e943c21e40d42b5bebe61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ad8c755a6f191b69977fea97a9a662a04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8c755a6f191b69977fea97a9a662a04">&#9670;&nbsp;</a></span>eleGetRef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define eleGetRef</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ele</td><td>)</td>
+          <td>&#160;&#160;&#160;((ele).isRef() ? (ele).getRef() : (ele))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="interpreter_8hpp_source.html#l00278">278</a> of file <a class="el" href="interpreter_8hpp_source.html">interpreter.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a33994ada9044de05bfa01ccba1e22754"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33994ada9044de05bfa01ccba1e22754">&#9670;&nbsp;</a></span>eleRefObj</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define eleRefObj</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ele</td><td>)</td>
+          <td>&#160;&#160;&#160;((ele).isRef() ? (ele).refObj : <a class="el" href="namespacerex.html#aed32a8ff755868fb0c957d14cd68d047">rex::managePtr</a>((ele)))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="interpreter_8hpp_source.html#l00280">280</a> of file <a class="el" href="interpreter_8hpp_source.html">interpreter.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
