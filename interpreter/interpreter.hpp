@@ -275,6 +275,9 @@ namespace rex {
      */
     value waitForThread(const managedPtr<environment> &env, vint id);
 
+#define eleGetRef(ele) ((ele).isRef() ? (ele).getRef() : (ele))
+
+#define eleRefObj(ele) ((ele).isRef() ? (ele).refObj : rex::managePtr((ele)))
 } // rex
 
 #endif //REXSCRIPT_INTERPRETER_HPP

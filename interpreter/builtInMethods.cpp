@@ -146,7 +146,7 @@ namespace rex {
 
     nativeFn(stringMethods::encode, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
-        vstr &charsetName = args[0].isRef() ? args[0].getRef().getStr() : args[0].getStr();
+        vstr &charsetName = eleGetRef(args[0]).getStr();
         auto encoder = in->env->globalCxt->members[L"charsets"]->members[charsetName]->members[L"encoder"];
         return in->invokeFunc(encoder, {passThisPtr}, {});
     }
@@ -170,7 +170,7 @@ namespace rex {
 
     nativeFn(vecMethods::append, interpreter, args, passThisPtr) {
         for (auto &i: args)
-            passThisPtr->getVec().push_back(managePtr(i.isRef() ? i.getRef() : i));
+            passThisPtr->getVec().push_back(managePtr(eleGetRef(i)));
         return passThisPtr;
     }
 
@@ -181,7 +181,7 @@ namespace rex {
 
     nativeFn(vecMethods::remove, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
-        value lhs = args[0].isRef() ? args[0].getRef() : args[0];
+        value lhs = eleGetRef(args[0]);
         for (auto it = passThisPtr->getVec().begin(); it != passThisPtr->getVec().end();) {
             if (in->opEqual(lhs, **it).getBool()) {
                 passThisPtr->getVec().erase(it);
@@ -196,7 +196,7 @@ namespace rex {
 
     nativeFn(vecMethods::removeAll, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
-        value lhs = args[0].isRef() ? args[0].getRef() : args[0];
+        value lhs = eleGetRef(args[0]);
         for (auto it = passThisPtr->getVec().begin(); it != passThisPtr->getVec().end();) {
             if (in->opEqual(lhs, **it).getBool())
                 it = passThisPtr->getVec().erase(it);
@@ -247,7 +247,7 @@ namespace rex {
 
     nativeFn(globalMethods::stringify, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
-        auto &v = args[0].isRef() ? args[0].getRef() : args[0];
+        auto &v = eleGetRef(args[0]);
         value result = {L"", stringMethods::getMethodsCxt()};
         if (auto it = v.members.find(L"rexStr"); v.kind == value::vKind::vObject and it != v.members.end()) {
             result.getStr() += in->invokeFunc(it->second, {}, managePtr(v)).getStr();
@@ -260,7 +260,7 @@ namespace rex {
     nativeFn(globalMethods::print, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
         for (auto &item: args) {
-            auto &i = item.isRef() ? item.getRef() : item;
+            auto &i = eleGetRef(item);
             switch (i.kind) {
                 case value::vKind::vBool:
                     std::cout << i.getBool();
@@ -277,7 +277,7 @@ namespace rex {
                 default:
                     if (auto it = i.members.find(L"rexStr"); it != i.members.end()) {
                         std::cout << wstring2string(
-                                in->invokeFunc(it->second, {}, item.isRef() ? item.refObj : managePtr(item)).getStr());
+                                in->invokeFunc(it->second, {}, eleRefObj(item)).getStr());
                     } else {
                         std::cout << wstring2string(i);
                     }
@@ -289,7 +289,7 @@ namespace rex {
 
     nativeFn(globalMethods::hash, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
-        value &element = args[0].isRef() ? args[0].getRef() : args[0];
+        value &element = eleGetRef(args[0]);
         switch (element.kind) {
             case value::vKind::vInt:
                 return (unknownPtr) std::hash<vint>()(element.getInt());
@@ -362,7 +362,7 @@ namespace rex {
     }
 
     nativeFn(globalMethods::charsetsMethods::ansiEncoder, interpreter, args, passThisPtr) {
-        vstr &str = args[0].isRef() ? args[0].getRef().getStr() : args[0].getStr();
+        vstr &str = eleGetRef(args[0]).getStr();
         vbytes output{};
 
         for (auto &i: str) {
@@ -373,7 +373,7 @@ namespace rex {
     }
 
     nativeFn(globalMethods::charsetsMethods::ansiDecoder, interpreter, args, passThisPtr) {
-        vbytes &str = args[0].isRef() ? args[0].getRef().getBytes() : args[0].getBytes();
+        vbytes &str = eleGetRef(args[0]).getBytes();
         vstr output{};
 
         for (auto &i: str) {
@@ -384,14 +384,14 @@ namespace rex {
     }
 
     nativeFn(globalMethods::charsetsMethods::utf8Encoder, interpreter, args, passThisPtr) {
-        vstr &str = args[0].isRef() ? args[0].getRef().getStr() : args[0].getStr();
+        vstr &str = eleGetRef(args[0]).getStr();
         vbytes output{wstring2string(str)};
 
         return {output, bytesMethods::getMethodsCxt()};
     }
 
     nativeFn(globalMethods::charsetsMethods::utf8Decoder, interpreter, args, passThisPtr) {
-        vbytes &str = args[0].isRef() ? args[0].getRef().getBytes() : args[0].getBytes();
+        vbytes &str = eleGetRef(args[0]).getBytes();
         vstr output{string2wstring(str)};
 
         return {output, stringMethods::getMethodsCxt()};
@@ -627,7 +627,7 @@ namespace rex {
 
     nativeFn(bytesMethods::decode, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
-        vstr &charsetName = args[0].isRef() ? args[0].getRef().getStr() : args[0].getStr();
+        vstr &charsetName = eleGetRef(args[0]).getStr();
         auto decoder = in->env->globalCxt->members[L"charsets"]->members[charsetName]->members[L"decoder"];
         return in->invokeFunc(decoder, {passThisPtr}, {});
     }
@@ -685,7 +685,7 @@ namespace rex {
 
     nativeFn(linkedListMethods::remove, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
-        value lhs = args[0].isRef() ? args[0].getRef() : args[0];
+        value lhs = eleGetRef(args[0]);
         for (auto it = passThisPtr->getLinkedList().begin(); it != passThisPtr->getLinkedList().end();) {
             if (in->opEqual(lhs, **it).getBool()) {
                 passThisPtr->getLinkedList().erase(it);
@@ -700,7 +700,7 @@ namespace rex {
 
     nativeFn(linkedListMethods::removeAll, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
-        value lhs = args[0].isRef() ? args[0].getRef() : args[0];
+        value lhs = eleGetRef(args[0]);
         for (auto it = passThisPtr->getLinkedList().begin(); it != passThisPtr->getLinkedList().end();) {
             if (in->opEqual(lhs, **it).getBool())
                 it = passThisPtr->getLinkedList().erase(it);
@@ -786,7 +786,7 @@ namespace rex {
         if (passThisPtr->members[L"kvPairs"]->getLinkedList().size() + 1 >= 2 * hashTSize) {
             realloc(interpreter, {(vint) (2 * hashTSize)}, passThisPtr);
         }
-        auto &k = args[0].isRef() ? args[0].getRef() : args[0];
+        auto &k = eleGetRef(args[0]);
         auto &v = args[1].isRef() ? args[1].getRef() : args[1];
         auto hashedKey = (vsize) (globalMethods::hash(interpreter, {k}, {}).basicValue.unknown);
         passThisPtr->members[L"kvPairs"]->getLinkedList().emplace_back(managePtr(value{value::vecObject{
@@ -822,7 +822,7 @@ namespace rex {
 
     nativeFn(hashMapMethods::remove, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
-        auto &key = args[0].isRef() ? args[0].getRef() : args[0];
+        auto &key = eleGetRef(args[0]);
         auto hashedKey = (vsize) (globalMethods::hash(interpreter, {key}, {}).basicValue.unknown);
         auto &bucket = passThisPtr->members[L"hashT"]->getVec()[
                 hashedKey % passThisPtr->members[L"hashT"]->getVec().size()];
@@ -839,7 +839,7 @@ namespace rex {
 
     nativeFn(hashMapMethods::rexIndex, interpreter, args, passThisPtr) {
         auto in = static_cast<rex::interpreter *>(interpreter);
-        auto &key = args[0].isRef() ? args[0].getRef() : args[0];
+        auto &key = eleGetRef(args[0]);
         auto hashedKey = (vsize) (globalMethods::hash(interpreter, {key}, {}).basicValue.unknown);
         auto &bucket = passThisPtr->members[L"hashT"]->getVec()[
                 hashedKey % passThisPtr->members[L"hashT"]->getVec().size()];

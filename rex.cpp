@@ -40,7 +40,7 @@ namespace rex {
             // 遍历 importPrefixPath 向量中的所有字符串
             for (const auto &prefixPath: importPrefixPath) {
                 // 获取字符串对象
-                vstr fullPath = prefixPath->isRef() ? prefixPath->getRef().getStr() : prefixPath->getStr();
+                vstr fullPath = eleGetRef(*prefixPath).getStr();
 
                 path::join(fullPath, path);
                 fullPath = path::getRealpath(fullPath);
@@ -67,7 +67,7 @@ namespace rex {
             // 遍历 importPrefixPath 向量中的所有字符串
             for (const auto &prefixPath: importPrefixPath) {
                 // 获取字符串对象
-                vstr fullPath = prefixPath->isRef() ? prefixPath->getRef().getStr() : prefixPath->getStr();
+                vstr fullPath = eleGetRef(*prefixPath).getStr();
 
                 path::join(fullPath, path);
                 fullPath = path::getRealpath(fullPath);
@@ -93,7 +93,7 @@ namespace rex {
             // 遍历 importPrefixPath 向量中的所有字符串
             for (const auto &prefixPath: importPrefixPath) {
                 // 获取字符串对象
-                vstr fullPath = prefixPath->isRef() ? prefixPath->getRef().getStr() : prefixPath->getStr();
+                vstr fullPath = eleGetRef(*prefixPath).getStr();
 
                 path::join(fullPath, pkgName);
                 fullPath = path::getRealpath(fullPath);
