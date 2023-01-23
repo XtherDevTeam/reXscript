@@ -89,7 +89,14 @@ int main(int argc, const char **argv) {
     if (rex::vbytes{*current} == "-m") {
         rex::vstr modPath = rex::string2wstring(*(++current));
         getArgs(rex::rexEnvironmentInstance, argc, argv, ++current);
-        rex::importEx(interpreter.get(), modPath);
+        try {
+            rex::importEx(interpreter.get(), modPath);
+        } catch (rex::errorInAnotherInterpreter &e) {
+            std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+        } catch (std::exception &e) {
+            std::cerr << "error> " << e.what() << std::endl;
+            std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+        }
     } else if (rex::vbytes{*current} == "--generate-ffi") {
         ffiGenerator(rex::string2wstring(*(++current)));
     } else if (rex::vbytes{*current} == "--help") {
