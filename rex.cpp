@@ -128,6 +128,8 @@ namespace rex {
                 if (auto vit = moduleCxt->members.find(L"rexModInit"); vit != moduleCxt->members.end()) {
                     interpreter->invokeFunc(vit->second, {}, {});
                 }
+            } catch (rex::importError &e) {
+                throw;
             } catch (rex::signalException &e) {
                 std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
@@ -139,7 +141,7 @@ namespace rex {
             } catch (rex::errorInAnotherInterpreter &e) {
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw;
-            } catch (std::exception &e) {
+            } catch (rex::rexException &e) {
                 std::cerr << "error> " << e.what() << std::endl;
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw errorInAnotherInterpreter();
@@ -168,7 +170,24 @@ namespace rex {
 
             std::function<funcPtr> rexModInit = (funcPtr *) (dlsym(handle, "rexModInit"));
 
-            rexModInit(interpreter->env, moduleCxt);
+            try {
+                rexModInit(interpreter->env, moduleCxt);
+            } catch (rex::signalException &e) {
+                std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw errorInAnotherInterpreter();
+            } catch (rex::parserException &e) {
+                std::cerr << "error> " << e.what() << std::endl;
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw errorInAnotherInterpreter();
+            } catch (rex::errorInAnotherInterpreter &e) {
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw;
+            } catch (rex::rexException &e) {
+                std::cerr << "error> " << e.what() << std::endl;
+                std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+                throw errorInAnotherInterpreter();
+            }
 
             return moduleCxt;
         }
@@ -194,6 +213,8 @@ namespace rex {
                 if (auto vit = moduleCxt->members.find(L"rexModInit"); vit != moduleCxt->members.end()) {
                     interpreter->invokeFunc(vit->second, {}, {});
                 }
+            } catch (rex::importError &e) {
+                throw;
             } catch (rex::signalException &e) {
                 std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
@@ -205,7 +226,7 @@ namespace rex {
             } catch (rex::errorInAnotherInterpreter &e) {
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw;
-            } catch (std::exception &e) {
+            } catch (rex::rexException &e) {
                 std::cerr << "error> " << e.what() << std::endl;
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw errorInAnotherInterpreter();
