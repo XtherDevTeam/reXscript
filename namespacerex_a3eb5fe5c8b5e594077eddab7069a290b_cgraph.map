@@ -1,9 +1,12 @@
 <map id="importNativeModuleEx" name="importNativeModuleEx">
-<area shape="rect" id="node1" title="Import a native module without importPathPrefix." alt="" coords="5,112,177,139"/>
-<area shape="rect" id="node2" href="$namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="225,46,369,87"/>
-<area shape="rect" id="node4" href="$namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="472,108,565,135"/>
-<area shape="rect" id="node6" href="$namespacerex.html#aff86e41b811177c724d54ec286768dad" title=" " alt="" coords="240,163,355,189"/>
-<area shape="rect" id="node3" href="$namespacerex_1_1path.html#a8aa4377dddca123ce4dd584ba869956e" title=" " alt="" coords="463,5,575,32"/>
-<area shape="rect" id="node5" href="$namespacerex.html#a05529a7834f48db0c2717f57a31fc3d6" title=" " alt="" coords="493,56,544,83"/>
-<area shape="rect" id="node7" href="$classutf8Unicode.html#aff37372afc65f9252f5b28ba15a87f90" title=" " alt="" coords="417,163,620,189"/>
+<area shape="rect" id="node1" title="Import a native module without importPathPrefix." alt="" coords="5,144,177,171"/>
+<area shape="rect" id="node2" href="$classrex_1_1signalException.html#a446888611f82735be77df0a5f2e3e371" title=" " alt="" coords="241,5,424,32"/>
+<area shape="rect" id="node3" href="$classrex_1_1interpreter.html#a122245fc41b6c8cf0146363e2cc5d247" title=" " alt="" coords="225,56,440,83"/>
+<area shape="rect" id="node4" href="$namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="261,107,405,149"/>
+<area shape="rect" id="node6" href="$namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="543,172,636,199"/>
+<area shape="rect" id="node8" href="$classrex_1_1interpreterSignal.html#abf843cbb29dec939d0731e491bab6f70" title=" " alt="" coords="253,225,413,266"/>
+<area shape="rect" id="node9" href="$namespacerex.html#aff86e41b811177c724d54ec286768dad" title=" " alt="" coords="275,291,390,317"/>
+<area shape="rect" id="node5" href="$namespacerex_1_1path.html#a8aa4377dddca123ce4dd584ba869956e" title=" " alt="" coords="533,67,645,93"/>
+<area shape="rect" id="node7" href="$namespacerex.html#a05529a7834f48db0c2717f57a31fc3d6" title=" " alt="" coords="564,117,615,144"/>
+<area shape="rect" id="node10" href="$classutf8Unicode.html#aff37372afc65f9252f5b28ba15a87f90" title=" " alt="" coords="488,291,691,317"/>
 </map>
