@@ -191,6 +191,9 @@ namespace rex {
                 for (auto &i: ast.child) {
                     interpreter->interpret(i);
                 }
+                if (auto vit = moduleCxt->members.find(L"rexModInit"); vit != moduleCxt->members.end()) {
+                    interpreter->invokeFunc(vit->second, {}, {});
+                }
             } catch (rex::signalException &e) {
                 std::cerr << "exception> " << rex::wstring2string((rex::value) e.get()) << std::endl;
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
@@ -206,10 +209,6 @@ namespace rex {
                 std::cerr << "error> " << e.what() << std::endl;
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw errorInAnotherInterpreter();
-            }
-
-            if (auto vit = moduleCxt->members.find(L"rexModInit"); vit != moduleCxt->members.end()) {
-                interpreter->invokeFunc(vit->second, {}, {});
             }
             return moduleCxt;
         }

@@ -8,7 +8,6 @@
 #include <utility>
 #include <iomanip>
 #include "exceptions/rexException.hpp"
-#include <rex.hpp>
 
 namespace rex {
     value::funcObject::funcObject() : argsName(), code() {
