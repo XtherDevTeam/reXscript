@@ -921,17 +921,7 @@ namespace rex {
         value::cxtObject result;
         result[L"forEach"] = managePtr(value{value::nativeFuncPtr{forEach}});
         result[L"collect"] = managePtr(value{value::nativeFuncPtr{collect}});
-        result[L"map"] = managePtr(value{value::nativeFuncPtr{map}});
         return result;
-    }
-
-    nativeFn(iterMethods::map, interpreter, args, passThisPtr) {
-        auto in = static_cast<rex::interpreter *>(interpreter);
-        auto callback = args[1].isRef() ? args[1].refObj : managePtr(args[1]);
-        for (auto &i: args[0].isRef() ? args[0].getRef().members : args[0].members) {
-            in->invokeFunc(callback, {{i.first, stringMethods::getMethodsCxt()}, i.second}, {});
-        }
-        return {};
     }
 
     nativeFn(iterMethods::collect, interpreter, args, passThisPtr) {
@@ -1010,6 +1000,33 @@ namespace rex {
             in->invokeFunc(callback, {itVal}, {});
         }
 
+        return result;
+    }
+
+    nativeFn(objectMethods::iterate, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        auto callback = args[1].isRef() ? args[1].refObj : managePtr(args[1]);
+        for (auto &i: args[0].isRef() ? args[0].getRef().members : args[0].members) {
+            in->invokeFunc(callback, {{i.first, stringMethods::getMethodsCxt()}, i.second}, {});
+        }
+        return {};
+    }
+
+    nativeFn(objectMethods::addAttr, interpreter, args, passThisPtr) {
+        args[0].refObj->members[eleGetRef(args[1]).getStr()] = eleRefObj(args[2]);
+        return args[0];
+    }
+
+    nativeFn(objectMethods::removeAttr, interpreter, args, passThisPtr) {
+        args[0].refObj->members.erase(eleGetRef(args[1]).getStr());
+        return args[0];
+    }
+
+    value::cxtObject objectMethods::getMethodsCxt() {
+        value::cxtObject result;
+        result[L"iterate"] = managePtr(value{value::nativeFuncPtr {iterate}});
+        result[L"addAttr"] = managePtr(value{value::nativeFuncPtr {addAttr}});
+        result[L"removeAttr"] = managePtr(value{value::nativeFuncPtr {removeAttr}});
         return result;
     }
 }

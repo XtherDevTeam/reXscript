@@ -211,7 +211,15 @@ namespace rex {
 
         nativeFn(collect, interpreter, args, passThisPtr);
 
-        nativeFn(map, interpreter, args, passThisPtr);
+        value::cxtObject getMethodsCxt();
+    }
+
+    namespace objectMethods {
+        nativeFn(iterate, interpreter, args, passThisPtr);
+
+        nativeFn(addAttr, interpreter, args, passThisPtr);
+
+        nativeFn(removeAttr, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }

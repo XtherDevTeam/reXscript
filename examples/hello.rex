@@ -205,7 +205,12 @@ let json_test = func() {
     let json = require("../../rexStdlib/dist").json;
     let jsonStr = 
         '
-        114514
+        {
+          "name": "std",
+          "description": "reXscript Standard Library",
+          "version": "0.1",
+          "dependencies": {}
+        }
         ';
     print(jsonStr, "\n");
     print(json.loads(jsonStr), "\n");
@@ -213,8 +218,8 @@ let json_test = func() {
 
 let object_iterate_test = func() {
     let s = {a: 1, b: 2, c: [].append("RootCui", "AK", "IOI!"), d: " ".join("RootCui", "AK", "IOI!")};
-    print("iter.map: \n");
-    iter.map(s, lambda () -> (k, v) {
+    print("object.iterate: \n");
+    object.iterate(s, lambda () -> (k, v) {
         print(k, ": ", v, "\n");
     });
     return 0;
