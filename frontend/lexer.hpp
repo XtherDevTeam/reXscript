@@ -66,7 +66,6 @@ namespace rex {
                 kBreak,
                 kReturn,
                 kFunc,
-                kObject,
                 kClosure,
                 kLet,
                 kAs,

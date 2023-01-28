@@ -116,8 +116,6 @@ namespace rex {
             tok.kind = token::tokenKind::kWhile;
         } else if (tempStr == L"func") {
             tok.kind = token::tokenKind::kFunc;
-        } else if (tempStr == L"object") {
-            tok.kind = token::tokenKind::kObject;
         } else if (tempStr == L"lambda") {
             tok.kind = token::tokenKind::kClosure;
         } else if (tempStr == L"let") {

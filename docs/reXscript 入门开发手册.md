@@ -135,3 +135,36 @@ String 类型：
 | encode       | 将字符串编码为指定格式并返回编码后的 `bytes` 对象            | str.encode(charset)        |
 | trim         | 去除字符串两端的空白字符                                     | str.trim()                 |
 
+Vec (动态数组) 类型：
+
+| 方法名      | 作用                                               | 调用格式              |
+| ----------- | -------------------------------------------------- | --------------------- |
+| append      | 加入元素并返回数组自身的引用                       | vec.append(a, b, ...) |
+| pop         | 弹出尾部元素并返回数组自身的引用                   | vec.pop()             |
+| remove      | 删除在数组中首次出现的指定元素并返回数组自身的引用 | vec.remove(ele)       |
+| removeAll   | 删除数组中出现的全部指定元素并返回数组自身的引用   | vec.removeAll(ele)    |
+| length      | 返回数组长度                                       | vec.length()          |
+| rexEqual    | 判断两个 `vec` 是否相同的重载                      | vec == b              |
+| rexNotEqual | 判断两个 `vec` 是否不相同的重载                    | vec != b              |
+| rexIter     | 返回一个迭代器用于遍历数组                         | vec.rexIter()         |
+
+`Bytes` 类型：
+
+| 方法名      | 作用                                         | 调用格式              |
+| ----------- | -------------------------------------------- | --------------------- |
+| length      | 返回字节型的长度                             | bytes.length()        |
+| decode      | 解码字节型为字符串，接收一个参数代表字符编码 | bytes.decode(charset) |
+| concat      | 拼接两个字节型并返回自身引用                 | bytes.concat(b)       |
+| rexEqual    | 判断两个字节型是否相等的重载                 | bytes == b            |
+| rexNotEqual | 判断两个字节型是否不相等的重载               | bytes != b            |
+
+`linkedList` 类型：
+
+| 方法名    | 作用                           | 调用格式                  |
+| --------- | ------------------------------ | ------------------------- |
+| append    | 加入一个元素到链表尾部         | linkedList.append(ele)    |
+| pop       | 弹出链表尾部的元素             | linkedList.pop()          |
+| remove    | 删除在链表中首次出现的指定元素 | linkedList.remove(ele)    |
+| removeAll | 删除在链表中出现的所有指定元素 | linkedList.removeAll(ele) |
+| rexIter   | 返回一个迭代器用于遍历链表     | linkedList.rexIter()      |
+
