@@ -1,5 +1,6 @@
 #include <iostream>
 #include "exceptions/errorInAnotherInterpreter.hpp"
+#include "exceptions/importError.hpp"
 #include <interpreter/builtInMethods.hpp>
 #include <rex.hpp>
 #include <ffi/ffi.hpp>
@@ -42,6 +43,9 @@ void interactiveShell(rex::managedPtr<rex::interpreter> &interpreter) {
             std::cout << "output> " << rex::wstring2string(result.getStr()) << std::endl;
         } catch (rex::errorInAnotherInterpreter &e) {
             std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+        } catch (rex::importError &e) {
+            std::cerr << "importError> " << e.what() << std::endl;
+            std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
         } catch (std::exception &e) {
             std::cerr << "error> " << e.what() << std::endl;
             std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
@@ -54,7 +58,10 @@ void loadFile(rex::managedPtr<rex::interpreter> &interpreter, const rex::vstr &p
         auto moduleCxt = rex::importEx(interpreter.get(), path);
     } catch (rex::errorInAnotherInterpreter &e) {
         std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
-    } catch (std::exception &e) {
+    } catch (rex::importError &e) {
+        std::cerr << "importError> " << e.what() << std::endl;
+        std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+    }catch (std::exception &e) {
         std::cerr << "error> " << e.what() << std::endl;
         std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
     }
