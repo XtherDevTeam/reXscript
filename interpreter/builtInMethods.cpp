@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <mutex>
 #include "builtInMethods.hpp"
 #include "interpreter/interpreter.hpp"
 #include "rex.hpp"
@@ -331,6 +332,8 @@ namespace rex {
         result[L"object"] = managePtr(value{objectMethods::getMethodsCxt()});
         result[L"type"] = managePtr(value{(value::nativeFuncPtr) type});
 
+        result[L"mutex"] = managePtr(value{(value::nativeFuncPtr) mutex});
+
         result[L"threading"] = managePtr(threadingMethods::getThreadingModule());
         result[L"importPrefixPath"] = managePtr(value{value::vecObject{
                 managePtr(value{L"./modules", stringMethods::getMethodsCxt()}),
@@ -409,6 +412,10 @@ namespace rex {
         }
 
         return rex::importExternModule(in, args[0].getStr());
+    }
+
+    nativeFn(globalMethods::mutex, interpreter, args, passThisPtr) {
+        return mutexMethods::getMethodsCxt(new std::mutex());
     }
 
     nativeFn(globalMethods::rexRequireNativeMod, interpreter, args, passThisPtr) {
@@ -761,11 +768,34 @@ namespace rex {
         result[L"rexIter"] = managePtr(value{value::nativeFuncPtr{rexIter}});
         result[L"rexClone"] = managePtr(value{value::nativeFuncPtr{rexClone}});
         result[L"rexStr"] = managePtr(value{value::nativeFuncPtr{rexStr}});
+        result[L"toObject"] = managePtr(value{value::nativeFuncPtr{toObject}});
         // Members
         result[L"kvPairs"] = managePtr(value{value::linkedListObject{}, linkedListMethods::getMethodsCxt()});
         result[L"hashT"] = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
         result[L"hashT"]->getVec().resize(defaultHashTSize);
         return result;
+    }
+
+    nativeFn(hashMapMethods::toObject, interpreter, args, passThisPtr) {
+        auto &container = passThisPtr->members[L"kvPairs"]->getLinkedList();
+        value v{value::cxtObject{}};
+        for (auto &i : container) {
+            value &left = eleGetRef(*i->getVec()[1]);
+            if (left.kind == value::vKind::vStr) {
+                 v.members[left.getStr()] = eleRefObj(*i->getVec()[2]);
+            } else {
+                throw signalException(interpreter::makeErr(L"hashMapError", L"the left hand side is not string"));
+            }
+        }
+        return v;
+    }
+
+    nativeFn(hashMapMethods::fromObject, interpreter, args, passThisPtr) {
+        value &v = eleGetRef(args[0]);
+        for (auto &i : v.members) {
+            insert(interpreter, {{i.first, stringMethods::getMethodsCxt()}, i.second}, passThisPtr);
+        }
+        return passThisPtr;
     }
 
     nativeFn(hashMapMethods::rexStr, interpreter, args, passThisPtr) {
@@ -1025,10 +1055,71 @@ namespace rex {
 
     value::cxtObject objectMethods::getMethodsCxt() {
         value::cxtObject result;
-        result[L"iterate"] = managePtr(value{value::nativeFuncPtr {iterate}});
-        result[L"addAttr"] = managePtr(value{value::nativeFuncPtr {addAttr}});
-        result[L"removeAttr"] = managePtr(value{value::nativeFuncPtr {removeAttr}});
+        result[L"iterate"] = managePtr(value{value::nativeFuncPtr{iterate}});
+        result[L"addAttr"] = managePtr(value{value::nativeFuncPtr{addAttr}});
+        result[L"removeAttr"] = managePtr(value{value::nativeFuncPtr{removeAttr}});
         return result;
+    }
+
+    namespace mutexMethods {
+        value::cxtObject getMethodsCxt(std::mutex *ptr) {
+            value::cxtObject result;
+            result[L"rexInit"] = managePtr(value{value::nativeFuncPtr{rexInit}});
+            result[L"lock"] = managePtr(value{value::nativeFuncPtr{lock}});
+            result[L"tryLock"] = managePtr(value{value::nativeFuncPtr{tryLock}});
+            result[L"rexFree"] = managePtr(value{value::nativeFuncPtr{rexFree}});
+            result[L"unlock"] = managePtr(value{value::nativeFuncPtr{unlock}});
+            result[L"finalize"] = managePtr(value{value::nativeFuncPtr{finalize}});
+            result[L"__lock__"] = managePtr(value{(unknownPtr) ptr});
+            return result;
+        }
+
+        nativeFn(rexInit, interpreter, args, passThisPtr) {
+            auto lock = (std::mutex *) passThisPtr->members[L"__lock__"]->basicValue.unknown;
+            try {
+                lock->lock();
+            } catch (std::system_error &e) {
+                throw signalException(interpreter::makeErr(
+                        L"mutexError", L"[Error " + std::to_wstring(e.code().value())
+                                       + L"] " + string2wstring(e.what())));
+            }
+            return {};
+        }
+
+        nativeFn(lock, interpreter, args, passThisPtr) {
+            auto lock = (std::mutex *) passThisPtr->members[L"__lock__"]->basicValue.unknown;
+            try {
+                lock->lock();
+            } catch (std::system_error &e) {
+                throw signalException(interpreter::makeErr(
+                        L"mutexError", L"[Error " + std::to_wstring(e.code().value())
+                                       + L"] " + string2wstring(e.what())));
+            }
+            return {};
+        }
+
+        nativeFn(tryLock, interpreter, args, passThisPtr) {
+            auto lock = (std::mutex *) passThisPtr->members[L"__lock__"]->basicValue.unknown;
+            return lock->try_lock();
+        }
+
+        nativeFn(unlock, interpreter, args, passThisPtr) {
+            auto lock = (std::mutex *) passThisPtr->members[L"__lock__"]->basicValue.unknown;
+            lock->unlock();
+            return {};
+        }
+
+        nativeFn(rexFree, interpreter, args, passThisPtr) {
+            auto lock = (std::mutex *) passThisPtr->members[L"__lock__"]->basicValue.unknown;
+            lock->unlock();
+            return {};
+        }
+
+        nativeFn(finalize, interpreter, args, passThisPtr) {
+            auto lock = (std::mutex *) passThisPtr->members[L"__lock__"]->basicValue.unknown;
+            delete lock;
+            return {};
+        }
     }
 }
 #pragma clang diagnostic pop

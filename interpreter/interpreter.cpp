@@ -618,6 +618,11 @@ namespace rex {
                 stack.back().pushLocalCxt({});
                 auto &ex = stack.back().localCxt.back()[target.child[0].leaf.strVal] = eleRefObj(
                         interpret(target.child[1]));
+
+                if (auto it = ex->members.find(L"rexInit"); it != ex->members.end()) {
+                    invokeFunc(it->second, {}, ex);
+                }
+
                 try {
                     interpret(target.child[2]);
                 } catch (rex::signalBreak &e) {
@@ -653,7 +658,7 @@ namespace rex {
                 }
                 backToStackIdx(stkIdx);
                 stack.back().backToLocalCxt(cxtIdx);
-                break;
+                return {};
             }
             default: {
                 throw signalException(makeErr(L"internalError", L"unexpected AST type"));

@@ -178,6 +178,8 @@ Vec (动态数组) 类型：
 
 **入口函数**: 顶层结构中的 `rexModInit` 函数。
 
+### let
+
 `let` 语句是 reXscript 中一个重要的语句，他的作用是声明和定义变量。当然，也可以复写一个变量的值。
 
 E.g.
@@ -190,6 +192,8 @@ print(i); // Overwriting
 let a = 1919, b = 0.81; // 同时定义多个变量
 print(a, " ", b); // 1919 0.81
 ```
+
+### if
 
 `if` 语句是根据条件真假执行相应代码的语句，当条件为真时，执行 `if` 的代码块，反之，执行 `else` 的代码块（`else` 的代码块可以被省略）
 
@@ -210,6 +214,8 @@ if (RootCuiAKIOI) {
 }
 ```
 
+### while
+
 `while` 语句则是当条件为真时重复执行代码块直到条件为假。
 
 E.g.
@@ -222,6 +228,8 @@ while (i < 10) {
 }
 ```
 
+### for
+
 `for` 语句则像一个加强版的 `while` 语句，在 `while` 的功能基础上，可以在循环开始之前执行语句 `stmt1`，在代码块执行完毕后执行语句 `stmt2`，然后重复进行条件判断，直到条件为假时退出。
 
 E.g. 与上面代码等效
@@ -233,6 +241,8 @@ for (let i = 0; i < 10; ++i) {
 ```
 
 **P.S.** `for` 语句会额外创建一个局部上下文，用于保存在 `stmt1` 中可能出现的 `let` 语句所创建的变量。
+
+### break
 
 `break` 语句用于退出循环。
 
@@ -249,6 +259,8 @@ for (let i = 0;i < 10; ++i) {
 
 代码会重复执行6次 `for` 代码块然后退出循环。
 
+### continue
+
 `continue` 语句用于跳转到代码块结尾，重新开始新一轮循环。
 
 E.g.
@@ -261,6 +273,8 @@ for (let i = 0;i < 10; ++i) {
 ```
 
 上面代码的 `print` 语句永远不会被执行，因为 `continue` 在执行完 `stmt2` 后跳转到了下一次循环。
+
+### return
 
 `return` 用于函数的返回。
 
@@ -275,9 +289,13 @@ print(foo()); // 520
 
 函数在不执行 `return` 语句的情况下退出的话会返回 `null`。
 
+### with
+
 `with` 语句用于保证资源在使用完毕后得到释放，即使代码块内部执行了 `break` `continue` `return` 等语句都会先释放资源，再进行流程的跳转。
 
-使用 `with` 语句的对象必须实现 `rexFree` 方法用于释放资源。
+使用 `with` 语句的对象必须实现 `rexInit` `rexFree` 方法用于释放资源。
+
+`rexInit` 在执行代码块之前被调用，`rexFree` 在代码块结束或运行时发生异常时被调用。
 
 E.g.
 
@@ -317,3 +335,36 @@ func foo() {
 
 程序会运行五次 `lambda` 里的 `print` 后会返回 `1919.810` 回到主线程，输出线程结果。
 
+### mutex
+
+在程序运行的时候可能会出现两条线程访问同一资源的情况，这时候就可能造成写入数据损坏，可以用到 `mutex` 来对资源加锁。`mutex` 能够将资源限制为同一时间只有一条线程使用。
+
+`mutex` 在已经加锁时，如果另一条线程试图加锁，则会阻塞该线程直到另一线程解锁。
+
+E.g.
+
+```js
+let counter = 0;
+let lock = mutex();
+func foo() {
+  with (_ : lock) {
+    print("Thread ", thread_id, ": Count ", outer.counter, ": ", str, "\n");
+  	++outer.counter;
+  }
+  return null;
+}
+
+func rexModInit() {
+  let a = threading.start(foo), b = threading.start(foo);
+  threading.wait(a);
+  threading.wait(b);
+  lock.finalize(); // destroy lock object
+  return null;
+}
+```
+
+以上代码演示了 `mutex` 的基本使用，各位可以尝试一下去掉 `with` 语句后程序会输出什么。
+
+此外 `mutex` 还有 `lock` `tryLock` 等方法：`lock` 为 `rexInit` 函数的别名，用于加锁。`tryLock` 也是加锁，立即返回结果，`true` 为成功，`false` 为失败。
+
+在使用完成后，需要调用 **finalize** 释放锁的内存，该操作是 **必须** 的。

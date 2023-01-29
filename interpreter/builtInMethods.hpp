@@ -159,6 +159,8 @@ namespace rex {
 
         nativeFn(type, interpreter, args, passThisPtr);
 
+        nativeFn(mutex, interpreter, args, passThisPtr);
+
         value::cxtObject getMethodsCxt();
     }
 
@@ -203,6 +205,10 @@ namespace rex {
 
         nativeFn(rexStr, interpreter, args, passThisPtr);
 
+        nativeFn(toObject, interpreter, args, passThisPtr);
+
+        nativeFn(fromObject, interpreter, args, passThisPtr);
+
         value::cxtObject getMethodsCxt(vint defaultHashTSize = 256);
     }
 
@@ -222,6 +228,22 @@ namespace rex {
         nativeFn(removeAttr, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
+    }
+
+    namespace mutexMethods {
+        nativeFn(rexInit, interpreter, args, passThisPtr);
+
+        nativeFn(lock, interpreter, args, passThisPtr);
+
+        nativeFn(tryLock, interpreter, args, passThisPtr);
+
+        nativeFn(unlock, interpreter, args, passThisPtr);
+
+        nativeFn(rexFree, interpreter, args, passThisPtr);
+
+        nativeFn(finalize, interpreter, args, passThisPtr);
+
+        value::cxtObject getMethodsCxt(std::mutex *ptr);
     }
 }
 
