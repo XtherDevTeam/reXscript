@@ -560,6 +560,7 @@ namespace rex {
                     case AST::treeKind::rangeBasedForStmt:
                     case AST::treeKind::blockStmt:
                     case AST::treeKind::functionDefStmt:
+                    case AST::treeKind::withStmt:
                         break;
                     default: {
                         throw parserException(lex.line, lex.col, L"expected `;` after statements");
@@ -847,6 +848,7 @@ namespace rex {
                     case AST::treeKind::rangeBasedForStmt:
                     case AST::treeKind::blockStmt:
                     case AST::treeKind::functionDefStmt:
+                    case AST::treeKind::withStmt:
                         break;
                     default: {
                         throw parserException(lex.line, lex.col, L"expected `;` after statements");

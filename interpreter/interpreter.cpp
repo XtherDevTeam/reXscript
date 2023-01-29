@@ -656,6 +656,9 @@ namespace rex {
                     }
                     throw;
                 }
+                if (auto it = ex->members.find(L"rexFree"); it != ex->members.end()) {
+                    invokeFunc(it->second, {}, ex);
+                }
                 backToStackIdx(stkIdx);
                 stack.back().backToLocalCxt(cxtIdx);
                 return {};
