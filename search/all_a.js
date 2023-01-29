@@ -11,11 +11,12 @@ var searchData=
   ['kfunc_169',['kFunc',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a65a4d7dac148b85f7865b4df5267461e',1,'rex::lexer::token']]],
   ['kif_170',['kIf',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a1b0296e86c3b9454754047288951a4d2',1,'rex::lexer::token']]],
   ['kin_171',['kIn',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32adb7843524af7e7869b18c9838fd67675',1,'rex::lexer::token']]],
-  ['kind_172',['kind',['../classrex_1_1AST.html#a2cb3af883ceec7544c5dffe75d81ef69',1,'rex::AST::kind()'],['../structrex_1_1lexer_1_1token.html#a1cefeddd27ac9e950db3dc88d1d230ca',1,'rex::lexer::token::kind()'],['../structrex_1_1formatterTagInfo.html#a5f1f6d7e8498b557a1c3f9bad6098557',1,'rex::formatterTagInfo::kind()'],['../classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab',1,'rex::value::kind()']]],
+  ['kind_172',['kind',['../classrex_1_1AST.html#a2cb3af883ceec7544c5dffe75d81ef69',1,'rex::AST::kind()'],['../classrex_1_1value.html#a8d2d43dda4a94935cb163d16cfcfc0ab',1,'rex::value::kind()'],['../structrex_1_1formatterTagInfo.html#a5f1f6d7e8498b557a1c3f9bad6098557',1,'rex::formatterTagInfo::kind()'],['../structrex_1_1lexer_1_1token.html#a1cefeddd27ac9e950db3dc88d1d230ca',1,'rex::lexer::token::kind()']]],
   ['klet_173',['kLet',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32af8fdca8637b6b0964d5c47c7df466c14',1,'rex::lexer::token']]],
   ['knull_174',['kNull',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32af2655c2dee87cb9b0646f678a630394b',1,'rex::lexer::token']]],
   ['kreturn_175',['kReturn',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32ad7ec42086e89c1b1ffe3a16edfc12ef3',1,'rex::lexer::token']]],
   ['kthrow_176',['kThrow',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a35130bbee286ecb2905a1eacbddb309d',1,'rex::lexer::token']]],
   ['ktry_177',['kTry',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a96067ed75b570c414df5f392c0f00dbd',1,'rex::lexer::token']]],
-  ['kwhile_178',['kWhile',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32acb3bcda1cfaa23e65a3aeca631306cb7',1,'rex::lexer::token']]]
+  ['kwhile_178',['kWhile',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32acb3bcda1cfaa23e65a3aeca631306cb7',1,'rex::lexer::token']]],
+  ['kwith_179',['kWith',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a734602cdad1c973fc9d8ef317e2b5fd4',1,'rex::lexer::token']]]
 ];
