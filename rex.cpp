@@ -252,9 +252,11 @@ namespace rex {
                 moduleCxt = rex::importExternModule(&newIn, modPath);
             } else if (string2wstring(p.extension()) == L"." + getDylibSuffix()) {
                 moduleCxt = rex::importNativeModule(&newIn, modPath);
+            } else {
+                moduleCxt = rex::importExternPackage(&newIn, modPath);
             }
         } else {
-            moduleCxt = importExternPackage(&newIn, modPath);
+            moduleCxt = rex::importExternPackage(&newIn, modPath);
         }
 
         return moduleCxt;
