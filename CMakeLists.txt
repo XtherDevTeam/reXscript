@@ -20,7 +20,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 add_executable(rex exec/main.cpp ${REX_SRC})
 
 if (CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
-    TARGET_LINK_LIBRARIES(std ${CMAKE_DL_LIBS} pthread)
+    TARGET_LINK_LIBRARIES(rex ${CMAKE_DL_LIBS} pthread)
 elseif (CMAKE_HOST_SYSTEM_NAME MATCHES "Windows")
     set(CMAKE_CXX_FLAGS "-static -lpthread")
 endif ()
