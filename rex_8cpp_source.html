@@ -322,10 +322,10 @@ $(function() {
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="namespacerex.html#a8e21178030ca781533d628247edbbfd5">string2wstring</a>(p.extension()) == L<span class="stringliteral">&quot;.&quot;</span> + <a class="code" href="namespacerex.html#aed70875cdb80f17cd9e0865b6339be65">getDylibSuffix</a>()) {</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                moduleCxt = <a class="code" href="namespacerex.html#a1b67fc3ffe91c180017ec662ffdcb1f3">rex::importNativeModule</a>(&amp;newIn, modPath);</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                moduleCxt = <a class="code" href="namespacerex.html#a1b67fc3ffe91c180017ec662ffdcb1f3">rex::importNativeModule</a>(&amp;newIn, modPath);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                moduleCxt = <a class="code" href="namespacerex.html#a1f7b3196951c22bb1be5672084253fd8">rex::importExternPackage</a>(&amp;newIn, modPath);</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            }</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            moduleCxt = <a class="code" href="namespacerex.html#a1f7b3196951c22bb1be5672084253fd8">importExternPackage</a>(&amp;newIn, modPath);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            moduleCxt = <a class="code" href="namespacerex.html#a1f7b3196951c22bb1be5672084253fd8">rex::importExternPackage</a>(&amp;newIn, modPath);</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        }</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        <span class="keywordflow">return</span> moduleCxt;</div>
