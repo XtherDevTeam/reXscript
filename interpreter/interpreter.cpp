@@ -13,6 +13,7 @@
 #include "interpreter/value.hpp"
 #include "share/share.hpp"
 #include "exceptions/rexException.hpp"
+#include "exceptions/importError.hpp"
 
 namespace rex {
     managedPtr<environment> rexEnvironmentInstance = managePtr(environment{});
@@ -610,6 +611,49 @@ namespace rex {
             }
             case AST::treeKind::returnStmt: {
                 throw signalReturn(interpret(target.child[0]));
+            }
+            case AST::treeKind::withStmt: {
+                auto cxtIdx = stack.back().getCurLocalCxtIdx();
+                auto stkIdx = getCurStackIdx();
+                stack.back().pushLocalCxt({});
+                auto &ex = stack.back().localCxt.back()[target.child[0].leaf.strVal] = eleRefObj(
+                        interpret(target.child[1]));
+                try {
+                    interpret(target.child[2]);
+                } catch (rex::signalBreak &e) {
+                    if (auto it = ex->members.find(L"rexFree"); it != ex->members.end()) {
+                        invokeFunc(it->second, {}, ex);
+                    }
+                    throw;
+                } catch (rex::signalContinue &e) {
+                    if (auto it = ex->members.find(L"rexFree"); it != ex->members.end()) {
+                        invokeFunc(it->second, {}, ex);
+                    }
+                    throw;
+                } catch (rex::signalReturn &e) {
+                    if (auto it = ex->members.find(L"rexFree"); it != ex->members.end()) {
+                        invokeFunc(it->second, {}, ex);
+                    }
+                    throw;
+                } catch (rex::signalException &e) {
+                    if (auto it = ex->members.find(L"rexFree"); it != ex->members.end()) {
+                        invokeFunc(it->second, {}, ex);
+                    }
+                    throw;
+                } catch (rex::importError &e) {
+                    if (auto it = ex->members.find(L"rexFree"); it != ex->members.end()) {
+                        invokeFunc(it->second, {}, ex);
+                    }
+                    throw;
+                } catch (rex::rexException &e) {
+                    if (auto it = ex->members.find(L"rexFree"); it != ex->members.end()) {
+                        invokeFunc(it->second, {}, ex);
+                    }
+                    throw;
+                }
+                backToStackIdx(stkIdx);
+                stack.back().backToLocalCxt(cxtIdx);
+                break;
             }
             default: {
                 throw signalException(makeErr(L"internalError", L"unexpected AST type"));

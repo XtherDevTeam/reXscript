@@ -136,6 +136,8 @@ namespace rex {
             tok.kind = token::tokenKind::kThrow;
         } else if (tempStr == L"null") {
             tok.kind = token::tokenKind::kNull;
+        } else if (tempStr == L"with") {
+            tok.kind = token::tokenKind::kWith;
         } else if (tempStr == L"true" or tempStr == L"false") {
             tok.kind = token::tokenKind::boolean;
             tok.basicVal.vBool = tempStr == L"true";

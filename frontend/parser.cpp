@@ -774,6 +774,10 @@ namespace rex {
     AST parser::parseStmts() {
         AST result;
 
+        result = parseWithStmt();
+        if (result)
+            return result;
+
         result = parseFunctionDefStmt();
         if (result)
             return result;
@@ -924,5 +928,38 @@ namespace rex {
             throw parserException(lex.line, lex.col, L"expected a code block");
 
         return {AST::treeKind::functionDefStmt, lex.line, lex.col, (vec<AST>) {name, argumentsNode, blockNode}};
+    }
+
+    AST parser::parseWithStmt() {
+        if (lex.curToken.kind != lexer::token::tokenKind::kWith) {
+            return makeNotMatch();
+        }
+        lex.scan();
+
+        if (lex.curToken.kind != lexer::token::tokenKind::leftParentheses)
+            throw parserException(lex.line, lex.col, L"expected `(` after `with`");
+        lex.scan();
+
+        AST identifier = parseIdentifier();
+        if (!identifier)
+            throw parserException(lex.line, lex.col, L"expected an identifier after `(`");
+
+        if (lex.curToken.kind != lexer::token::tokenKind::colon)
+            throw parserException(lex.line, lex.col, L"expected `:` after the identifier");
+        lex.scan();
+
+        AST expression = parseLvalueExpression();
+        if (!expression)
+            throw parserException(lex.line, lex.col, L"expected an expression after `in`");
+
+        if (lex.curToken.kind != lexer::token::tokenKind::rightParentheses)
+            throw parserException(lex.line, lex.col, L"expected `)` after the expression");
+        lex.scan();
+
+        AST stmt = parseStmts();
+        if (!stmt)
+            throw parserException(lex.line, lex.col, L"expected statements after `)`");
+
+        return {AST::treeKind::withStmt, lex.line, lex.col, {identifier, expression, stmt}};
     }
 } // rex

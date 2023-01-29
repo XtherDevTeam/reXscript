@@ -6,6 +6,7 @@
 2. reXscript解释器的安装及使用
 3. 基础语法与变量类型
 4. 基础语句和流程控制
+5. 多线程的使用
 
 
 
@@ -273,3 +274,46 @@ print(foo()); // 520
 ```
 
 函数在不执行 `return` 语句的情况下退出的话会返回 `null`。
+
+`with` 语句用于保证资源在使用完毕后得到释放，即使代码块内部执行了 `break` `continue` `return` 等语句都会先释放资源，再进行流程的跳转。
+
+使用 `with` 语句的对象必须实现 `rexFree` 方法用于释放资源。
+
+E.g.
+
+```js
+func foo() {
+  with (i : std.fs.open("test.txt", "r")) {
+    return std.json.loads(i.read(i.length));
+  }
+}
+```
+
+## 多线程的使用
+
+`multi-threading` 是一个在现代语言非常常见的概念，它可以实现同一个进程同时运行多个任务，`reXscript` 也提供了线程库用于 `multi-threading`。
+
+使用 `threading.start(callable, arg1, arg2, ...)` 用于开启一个线程，返回该线程的 `ID`。
+
+获取当前线程的ID可以读取存储在解释器作用域的 `thread_id`。
+
+使用 `threading.wait(threadID)` 来等待一个线程的结束，并获取返回值。
+
+E.g.
+
+```js
+func foo() {
+  let counter = 0;
+  let result = threading.start(lambda (counter) -> (str) {
+    while (outer.counter < 5) {
+      print("Count ", outer.counter, ": ", str, "\n");
+      ++outer.counter;
+    }
+    return 1919.810;
+  }, "Hello, world!");
+	print(threading.wait(result), "\n");
+}
+```
+
+程序会运行五次 `lambda` 里的 `print` 后会返回 `1919.810` 回到主线程，输出线程结果。
+

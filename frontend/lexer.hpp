@@ -76,6 +76,7 @@ namespace rex {
                 kTry,
                 kCatch,
                 kNull,
+                kWith,
                 eof,
             } kind;
 
