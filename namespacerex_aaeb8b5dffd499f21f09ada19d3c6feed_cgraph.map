@@ -1,8 +1,6 @@
 <map id="nativeFn" name="nativeFn">
-<area shape="rect" id="node1" title=" " alt="" coords="5,112,84,139"/>
-<area shape="rect" id="node2" href="$namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="132,46,276,87"/>
-<area shape="rect" id="node4" href="$namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="333,108,427,135"/>
-<area shape="rect" id="node6" href="$classrex_1_1value.html#adaaee026ccf8f3b829a16cff67ea5f97" title=" " alt="" coords="137,163,271,189"/>
-<area shape="rect" id="node3" href="$namespacerex_1_1path.html#a8aa4377dddca123ce4dd584ba869956e" title=" " alt="" coords="324,5,436,32"/>
-<area shape="rect" id="node5" href="$namespacerex.html#a05529a7834f48db0c2717f57a31fc3d6" title=" " alt="" coords="355,56,405,83"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,71,84,98"/>
+<area shape="rect" id="node2" href="$namespacerex_1_1mutexMethods.html#a3cb544883269e3336d6a485fa4c70a2a" title=" " alt="" coords="132,5,289,47"/>
+<area shape="rect" id="node3" href="$namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="337,42,431,69"/>
+<area shape="rect" id="node4" href="$classrex_1_1value.html#adaaee026ccf8f3b829a16cff67ea5f97" title=" " alt="" coords="143,122,278,149"/>
 </map>

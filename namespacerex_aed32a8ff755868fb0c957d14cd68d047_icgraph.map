@@ -1,52 +1,52 @@
 <map id="managePtr" name="managePtr">
-<area shape="rect" id="node1" title=" " alt="" coords="1259,1558,1352,1584"/>
-<area shape="rect" id="node2" href="$classrex_1_1value.html#acb9ec73522d69531a4a1a1fe791af542" title=" " alt="" coords="1012,155,1172,182"/>
-<area shape="rect" id="node3" href="$classrex_1_1interpreter.html#aecbc9f89b8967e0da2bdcc6189bf5ace" title=" " alt="" coords="479,206,663,232"/>
-<area shape="rect" id="node4" href="$namespacerex.html#a3c3dc3f1101b4152e151ea2e39899161" title="Import an external reXscript module without importPathPrefix." alt="" coords="8,194,179,220"/>
-<area shape="rect" id="node5" href="$namespacerex.html#a9cf3631271ab28b8fc4e7fbda3276d79" title="Import an external package without importPathPrefix." alt="" coords="5,270,181,296"/>
-<area shape="rect" id="node6" href="$classrex_1_1interpreter.html#afd2fb832b6264dba60a76bbed18bb3d4" title=" " alt="" coords="229,155,431,182"/>
-<area shape="rect" id="node8" href="$main_8cpp.html#a90ec5a89a039a55aa91c98abc5e7fb6c" title=" " alt="" coords="782,830,854,856"/>
-<area shape="rect" id="node9" href="$main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="66,931,121,958"/>
-<area shape="rect" id="node10" href="$namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="1020,578,1164,620"/>
-<area shape="rect" id="node11" href="$namespacerex_1_1globalMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="497,764,644,805"/>
-<area shape="rect" id="node12" href="$namespacerex.html#a0047daaed96aa6a7fbf895fe2351187a" title="Get the environment object for the current reXscript interpreter." alt="" coords="255,779,405,806"/>
-<area shape="rect" id="node14" href="$namespacerex.html#a3eb5fe5c8b5e594077eddab7069a290b" title="Import a native module without importPathPrefix." alt="" coords="732,358,904,384"/>
-<area shape="rect" id="node15" href="$main_8cpp.html#a3d0e53b9bb2f64dc30662c358a48ed63" title=" " alt="" coords="756,931,880,958"/>
-<area shape="rect" id="node16" href="$classrex_1_1interpreter.html#a2399cb0d4a25847903de2a8ff0abee4e" title=" " alt="" coords="727,256,909,283"/>
-<area shape="rect" id="node17" href="$classrex_1_1interpreter.html#a1b185ffcb61a228c17eaf9b12a51bb5e" title=" " alt="" coords="731,728,905,755"/>
-<area shape="rect" id="node18" href="$namespacerex_1_1vecMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="973,1003,1211,1030"/>
-<area shape="rect" id="node19" href="$namespacerex_1_1vecMethods_1_1iterator.html#ab4e16095ae84c0152d28bf46bba06255" title=" " alt="" coords="725,1134,911,1176"/>
-<area shape="rect" id="node20" href="$namespacerex_1_1hashMapMethods.html#a5819187e3b8cd3aee03a3b9feccf0603" title=" " alt="" coords="735,1302,901,1344"/>
-<area shape="rect" id="node21" href="$namespacerex_1_1bytesMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="1017,1206,1167,1248"/>
-<area shape="rect" id="node22" href="$namespacerex_1_1linkedListMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="1007,1374,1177,1416"/>
-<area shape="rect" id="node23" href="$namespacerex_1_1linkedListMethods_1_1iterator.html#aefed59d381321cd54955aa7f2aa04aee" title=" " alt="" coords="725,1368,911,1409"/>
-<area shape="rect" id="node24" href="$namespacerex_1_1hashMapMethods_1_1iterator.html#aefed59d381321cd54955aa7f2aa04aee" title=" " alt="" coords="725,1433,911,1474"/>
-<area shape="rect" id="node25" href="$namespacerex_1_1hashMapMethods_1_1keysIterator.html#aefed59d381321cd54955aa7f2aa04aee" title=" " alt="" coords="711,1582,925,1624"/>
-<area shape="rect" id="node26" href="$namespacerex_1_1threadingMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="1007,1492,1177,1533"/>
-<area shape="rect" id="node27" href="$namespacerex_1_1iterMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="974,1558,1210,1584"/>
-<area shape="rect" id="node28" href="$namespacerex_1_1objectMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="1019,1609,1165,1650"/>
-<area shape="rect" id="node29" href="$namespacerex.html#ab0283358247156cd39ec572b09405020" title=" " alt="" coords="530,1251,611,1278"/>
-<area shape="rect" id="node30" href="$namespacerex.html#ae01007a12d732759d447a198f9e2849f" title=" " alt="" coords="1053,1726,1131,1752"/>
-<area shape="rect" id="node31" href="$classrex_1_1interpreter.html#a984df9219dbf10cddd8b1f4c846f7bb3" title=" " alt="" coords="1007,1776,1177,1803"/>
-<area shape="rect" id="node32" href="$classrex_1_1interpreter.html#a434b0233aded8c5f5ac7e62c23af0a2a" title=" " alt="" coords="987,1827,1197,1854"/>
-<area shape="rect" id="node33" href="$classrex_1_1interpreter.html#a4dbae3a9ffe85f72a0c7fa8dccb25555" title=" " alt="" coords="991,1878,1193,1904"/>
-<area shape="rect" id="node34" href="$classrex_1_1interpreter.html#a282af577acfc4e3e15a93c039e89fb8b" title=" " alt="" coords="999,1929,1185,1970"/>
-<area shape="rect" id="node35" href="$classrex_1_1interpreter.html#aeba1f7fdb2f8c3b3606710022299c12c" title=" " alt="" coords="999,1994,1185,2036"/>
-<area shape="rect" id="node36" href="$classrex_1_1interpreter.html#aca01f7c3807a919d8e73a3f4c6c9e80a" title=" " alt="" coords="988,2060,1196,2087"/>
-<area shape="rect" id="node37" href="$classrex_1_1interpreter.html#a555f641fdf45ed25191bfeb66721f824" title=" " alt="" coords="1009,2111,1175,2138"/>
-<area shape="rect" id="node38" href="$classrex_1_1interpreter.html#acad0ec032475be0aa5000f23773b83c1" title=" " alt="" coords="1002,2162,1182,2188"/>
-<area shape="rect" id="node39" href="$classrex_1_1value.html#a5797b82db3de43d55e3b6cbc985b56fc" title=" " alt="" coords="1012,2212,1172,2239"/>
-<area shape="rect" id="node40" href="$classrex_1_1interpreter.html#a001ecc3d91d065006f792c922f3c7416" title=" " alt="" coords="995,2264,1189,2305"/>
-<area shape="rect" id="node41" href="$classrex_1_1interpreter.html#a038fe072859ceb583f29fec4f2b46d12" title=" " alt="" coords="979,2330,1205,2356"/>
-<area shape="rect" id="node42" href="$classrex_1_1interpreter.html#a3d62997d886b2ecc875629aa34b63706" title=" " alt="" coords="1005,2381,1179,2422"/>
-<area shape="rect" id="node43" href="$classrex_1_1interpreter.html#a5c2d135c9c4ec7a18170a6e94c88978b" title=" " alt="" coords="989,2447,1195,2474"/>
-<area shape="rect" id="node44" href="$classrex_1_1interpreter.html#ab2cc902ce6e3b5e3a4196c6f9cae14b3" title=" " alt="" coords="991,2498,1193,2524"/>
-<area shape="rect" id="node45" href="$classrex_1_1interpreter.html#ad453c3d6dc8c747a80d0a648a96873c3" title=" " alt="" coords="995,2548,1189,2575"/>
-<area shape="rect" id="node46" href="$classrex_1_1interpreter.html#ac8a205fc02331018f508d2e9f29ca744" title=" " alt="" coords="1006,2599,1178,2626"/>
-<area shape="rect" id="node47" href="$classrex_1_1interpreter.html#af6556870fe2d06d06481020d95281423" title=" " alt="" coords="1008,2650,1176,2676"/>
-<area shape="rect" id="node48" href="$classrex_1_1interpreter.html#ada72111eb53d6aaf4015c8d3d60dfa6b" title=" " alt="" coords="991,2700,1193,2727"/>
-<area shape="rect" id="node49" href="$classrex_1_1interpreter.html#ae2182b34d8ebf3a28eea3af95f46f27c" title=" " alt="" coords="1008,2751,1176,2778"/>
-<area shape="rect" id="node50" href="$namespacerex.html#af010a14bbb0244d2a3a2730ef5351a05" title="Wrapper function for starting a new thread. This function is passed as a parameter to std::thread&#39;s c..." alt="" coords="1021,2802,1163,2828"/>
-<area shape="rect" id="node7" href="$namespacerex.html#ab8dc0fbf1252998e446a02d72e72fc67" title=" " alt="" coords="779,155,857,182"/>
-<area shape="rect" id="node13" href="$namespacerex_1_1threadingMethods.html#a0511c77642937eb611abab21dc72621e" title=" " alt="" coords="733,662,903,704"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1259,1462,1352,1488"/>
+<area shape="rect" id="node2" href="$classrex_1_1value.html#acb9ec73522d69531a4a1a1fe791af542" title=" " alt="" coords="1012,106,1172,132"/>
+<area shape="rect" id="node3" href="$classrex_1_1interpreter.html#aecbc9f89b8967e0da2bdcc6189bf5ace" title=" " alt="" coords="479,308,663,335"/>
+<area shape="rect" id="node4" href="$namespacerex.html#a3c3dc3f1101b4152e151ea2e39899161" title="Import an external reXscript module without importPathPrefix." alt="" coords="8,322,179,348"/>
+<area shape="rect" id="node5" href="$namespacerex.html#a9cf3631271ab28b8fc4e7fbda3276d79" title="Import an external package without importPathPrefix." alt="" coords="5,246,181,272"/>
+<area shape="rect" id="node6" href="$classrex_1_1interpreter.html#afd2fb832b6264dba60a76bbed18bb3d4" title=" " alt="" coords="229,207,431,234"/>
+<area shape="rect" id="node8" href="$main_8cpp.html#a90ec5a89a039a55aa91c98abc5e7fb6c" title=" " alt="" coords="782,663,854,690"/>
+<area shape="rect" id="node9" href="$main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="303,840,357,867"/>
+<area shape="rect" id="node10" href="$namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="1020,496,1164,537"/>
+<area shape="rect" id="node11" href="$namespacerex.html#a0047daaed96aa6a7fbf895fe2351187a" title="Get the environment object for the current reXscript interpreter." alt="" coords="495,840,646,867"/>
+<area shape="rect" id="node12" href="$namespacerex.html#a3eb5fe5c8b5e594077eddab7069a290b" title="Import a native module without importPathPrefix." alt="" coords="732,562,904,588"/>
+<area shape="rect" id="node13" href="$main_8cpp.html#a3d0e53b9bb2f64dc30662c358a48ed63" title=" " alt="" coords="756,612,880,639"/>
+<area shape="rect" id="node14" href="$classrex_1_1interpreter.html#a2399cb0d4a25847903de2a8ff0abee4e" title=" " alt="" coords="727,258,909,284"/>
+<area shape="rect" id="node15" href="$namespacerex_1_1vecMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="973,815,1211,842"/>
+<area shape="rect" id="node16" href="$namespacerex_1_1globalMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="745,933,891,974"/>
+<area shape="rect" id="node17" href="$namespacerex_1_1vecMethods_1_1iterator.html#ab4e16095ae84c0152d28bf46bba06255" title=" " alt="" coords="725,765,911,806"/>
+<area shape="rect" id="node18" href="$namespacerex_1_1hashMapMethods.html#a5819187e3b8cd3aee03a3b9feccf0603" title=" " alt="" coords="735,1202,901,1244"/>
+<area shape="rect" id="node19" href="$namespacerex_1_1bytesMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="1017,1034,1167,1076"/>
+<area shape="rect" id="node20" href="$namespacerex_1_1linkedListMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="1007,1486,1177,1528"/>
+<area shape="rect" id="node21" href="$namespacerex_1_1linkedListMethods_1_1iterator.html#aefed59d381321cd54955aa7f2aa04aee" title=" " alt="" coords="725,1344,911,1385"/>
+<area shape="rect" id="node22" href="$namespacerex_1_1hashMapMethods_1_1iterator.html#aefed59d381321cd54955aa7f2aa04aee" title=" " alt="" coords="725,1497,911,1538"/>
+<area shape="rect" id="node23" href="$namespacerex_1_1hashMapMethods_1_1keysIterator.html#aefed59d381321cd54955aa7f2aa04aee" title=" " alt="" coords="711,1584,925,1625"/>
+<area shape="rect" id="node24" href="$namespacerex_1_1threadingMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="1007,1304,1177,1345"/>
+<area shape="rect" id="node25" href="$namespacerex_1_1iterMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="974,1370,1210,1396"/>
+<area shape="rect" id="node26" href="$namespacerex_1_1objectMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="1019,1421,1165,1462"/>
+<area shape="rect" id="node27" href="$namespacerex_1_1mutexMethods.html#a3cb544883269e3336d6a485fa4c70a2a" title=" " alt="" coords="1013,917,1171,958"/>
+<area shape="rect" id="node28" href="$classrex_1_1interpreter.html#a1b185ffcb61a228c17eaf9b12a51bb5e" title=" " alt="" coords="731,1075,905,1102"/>
+<area shape="rect" id="node29" href="$namespacerex.html#ab0283358247156cd39ec572b09405020" title=" " alt="" coords="530,1100,611,1127"/>
+<area shape="rect" id="node30" href="$namespacerex.html#ae01007a12d732759d447a198f9e2849f" title=" " alt="" coords="1053,1654,1131,1680"/>
+<area shape="rect" id="node31" href="$classrex_1_1interpreter.html#a984df9219dbf10cddd8b1f4c846f7bb3" title=" " alt="" coords="1007,1704,1177,1731"/>
+<area shape="rect" id="node32" href="$classrex_1_1interpreter.html#a434b0233aded8c5f5ac7e62c23af0a2a" title=" " alt="" coords="987,1755,1197,1782"/>
+<area shape="rect" id="node33" href="$classrex_1_1interpreter.html#a4dbae3a9ffe85f72a0c7fa8dccb25555" title=" " alt="" coords="991,1806,1193,1832"/>
+<area shape="rect" id="node34" href="$classrex_1_1interpreter.html#a282af577acfc4e3e15a93c039e89fb8b" title=" " alt="" coords="999,1857,1185,1898"/>
+<area shape="rect" id="node35" href="$classrex_1_1interpreter.html#aeba1f7fdb2f8c3b3606710022299c12c" title=" " alt="" coords="999,1922,1185,1964"/>
+<area shape="rect" id="node36" href="$classrex_1_1interpreter.html#aca01f7c3807a919d8e73a3f4c6c9e80a" title=" " alt="" coords="988,1988,1196,2015"/>
+<area shape="rect" id="node37" href="$classrex_1_1interpreter.html#a555f641fdf45ed25191bfeb66721f824" title=" " alt="" coords="1009,2039,1175,2066"/>
+<area shape="rect" id="node38" href="$classrex_1_1interpreter.html#acad0ec032475be0aa5000f23773b83c1" title=" " alt="" coords="1002,2090,1182,2116"/>
+<area shape="rect" id="node39" href="$classrex_1_1value.html#a5797b82db3de43d55e3b6cbc985b56fc" title=" " alt="" coords="1012,2140,1172,2167"/>
+<area shape="rect" id="node40" href="$classrex_1_1interpreter.html#a001ecc3d91d065006f792c922f3c7416" title=" " alt="" coords="995,2192,1189,2233"/>
+<area shape="rect" id="node41" href="$classrex_1_1interpreter.html#a038fe072859ceb583f29fec4f2b46d12" title=" " alt="" coords="979,2258,1205,2284"/>
+<area shape="rect" id="node42" href="$classrex_1_1interpreter.html#a3d62997d886b2ecc875629aa34b63706" title=" " alt="" coords="1005,2309,1179,2350"/>
+<area shape="rect" id="node43" href="$classrex_1_1interpreter.html#a5c2d135c9c4ec7a18170a6e94c88978b" title=" " alt="" coords="989,2375,1195,2402"/>
+<area shape="rect" id="node44" href="$classrex_1_1interpreter.html#ab2cc902ce6e3b5e3a4196c6f9cae14b3" title=" " alt="" coords="991,2426,1193,2452"/>
+<area shape="rect" id="node45" href="$classrex_1_1interpreter.html#ad453c3d6dc8c747a80d0a648a96873c3" title=" " alt="" coords="995,2476,1189,2503"/>
+<area shape="rect" id="node46" href="$classrex_1_1interpreter.html#ac8a205fc02331018f508d2e9f29ca744" title=" " alt="" coords="1006,2527,1178,2554"/>
+<area shape="rect" id="node47" href="$classrex_1_1interpreter.html#af6556870fe2d06d06481020d95281423" title=" " alt="" coords="1008,2578,1176,2604"/>
+<area shape="rect" id="node48" href="$classrex_1_1interpreter.html#ada72111eb53d6aaf4015c8d3d60dfa6b" title=" " alt="" coords="991,2628,1193,2655"/>
+<area shape="rect" id="node49" href="$classrex_1_1interpreter.html#ae2182b34d8ebf3a28eea3af95f46f27c" title=" " alt="" coords="1008,2679,1176,2706"/>
+<area shape="rect" id="node50" href="$namespacerex.html#af010a14bbb0244d2a3a2730ef5351a05" title="Wrapper function for starting a new thread. This function is passed as a parameter to std::thread&#39;s c..." alt="" coords="1021,2730,1163,2756"/>
+<area shape="rect" id="node7" href="$namespacerex.html#ab8dc0fbf1252998e446a02d72e72fc67" title=" " alt="" coords="779,55,857,82"/>
 </map>
