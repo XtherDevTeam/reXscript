@@ -5,6 +5,7 @@
 #ifndef REXSCRIPT_BUILTINMETHODS_HPP
 #define REXSCRIPT_BUILTINMETHODS_HPP
 
+#include <mutex>
 #include "value.hpp"
 
 namespace rex {

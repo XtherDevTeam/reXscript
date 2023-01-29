@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include <iomanip>
-#include <mutex>
 #include "builtInMethods.hpp"
 #include "interpreter/interpreter.hpp"
 #include "rex.hpp"
