@@ -5,6 +5,7 @@
 1. reXscript介绍
 2. reXscript解释器的安装及使用
 3. 基础语法与变量类型
+4. 基础语句和流程控制
 
 
 
@@ -168,3 +169,107 @@ Vec (动态数组) 类型：
 | removeAll | 删除在链表中出现的所有指定元素 | linkedList.removeAll(ele) |
 | rexIter   | 返回一个迭代器用于遍历链表     | linkedList.rexIter()      |
 
+## 基础语句和流程控制
+
+`reXscript` 的模组由顶层结构和一个入口函数组成。
+
+**顶层结构**: 即文件所不被大括号包含，在模组作用域范围的语句集合。
+
+**入口函数**: 顶层结构中的 `rexModInit` 函数。
+
+`let` 语句是 reXscript 中一个重要的语句，他的作用是声明和定义变量。当然，也可以复写一个变量的值。
+
+E.g.
+
+```js
+let i = 114514; // 定义一个值为 114514 的变量 i
+print(i); // 114514
+let i = "Overwriting"; // 复写 i 的值为 "Overwriting"
+print(i); // Overwriting
+let a = 1919, b = 0.81; // 同时定义多个变量
+print(a, " ", b); // 1919 0.81
+```
+
+`if` 语句是根据条件真假执行相应代码的语句，当条件为真时，执行 `if` 的代码块，反之，执行 `else` 的代码块（`else` 的代码块可以被省略）
+
+`let` 会在当前代码的作用域进行定义和复写变量。
+
+每一个代码块都会创建一个局部作用域，局部作用域可以访问所有局部作用域的变量，但不同局部作用域的 `let` 语句不能修改另外的作用域的变量。
+
+函数调用时产生的作用域有两个，一个是栈帧作用域（存放参数），另一个是代码块的局部作用域。
+
+E.g.
+
+```js
+let RootCuiAKIOI = true;
+if (RootCuiAKIOI) {
+  print("cyy nb!");
+} else {
+  print("that's impossible");
+}
+```
+
+`while` 语句则是当条件为真时重复执行代码块直到条件为假。
+
+E.g.
+
+```js
+let i = 0;
+while (i < 10) {
+  print("RootCui AK IOI\n");
+  ++i;
+}
+```
+
+`for` 语句则像一个加强版的 `while` 语句，在 `while` 的功能基础上，可以在循环开始之前执行语句 `stmt1`，在代码块执行完毕后执行语句 `stmt2`，然后重复进行条件判断，直到条件为假时退出。
+
+E.g. 与上面代码等效
+
+```js
+for (let i = 0; i < 10; ++i) {
+  print("RootCui AK IOI!\n");
+}
+```
+
+**P.S.** `for` 语句会额外创建一个局部上下文，用于保存在 `stmt1` 中可能出现的 `let` 语句所创建的变量。
+
+`break` 语句用于退出循环。
+
+E.g.
+
+```js
+for (let i = 0;i < 10; ++i) {
+  print("RootCui AK IOI\n");
+  if (i > 5) {
+    break;
+  }
+}
+```
+
+代码会重复执行6次 `for` 代码块然后退出循环。
+
+`continue` 语句用于跳转到代码块结尾，重新开始新一轮循环。
+
+E.g.
+
+```js
+for (let i = 0;i < 10; ++i) {
+  continue;
+  print("I won't be executed");
+}
+```
+
+上面代码的 `print` 语句永远不会被执行，因为 `continue` 在执行完 `stmt2` 后跳转到了下一次循环。
+
+`return` 用于函数的返回。
+
+E.g.
+
+```js
+func foo() {
+  return 1 + 1 + 4 + 514;
+}
+print(foo()); // 520
+```
+
+函数在不执行 `return` 语句的情况下退出的话会返回 `null`。

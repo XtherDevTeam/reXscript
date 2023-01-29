@@ -328,6 +328,7 @@ namespace rex {
         result[L"hashMap"] = managePtr(value{(value::nativeFuncPtr) hashMap});
         result[L"stringify"] = managePtr(value{(value::nativeFuncPtr) stringify});
         result[L"iter"] = managePtr(value{iterMethods::getMethodsCxt()});
+        result[L"object"] = managePtr(value{objectMethods::getMethodsCxt()});
         result[L"type"] = managePtr(value{(value::nativeFuncPtr) type});
 
         result[L"threading"] = managePtr(threadingMethods::getThreadingModule());
