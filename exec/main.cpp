@@ -36,10 +36,11 @@ void interactiveShell(rex::managedPtr<rex::interpreter> &interpreter) {
         code = std::move(rex::string2wstring(buf));
         std::wistringstream ss(code);
         code.clear();
-        rex::lexer lexer{ss};
-        rex::parser parser{lexer};
-        rex::AST ast = parser.parseStmts();
         try {
+            rex::lexer lexer{ss};
+            rex::parser parser{lexer};
+            rex::AST ast = parser.parseStmts();
+
             rex::value result = rex::globalMethods::stringify(
                     (void *) interpreter.get(), {interpreter->interpret(ast)}, {});
             std::cout << "output> " << rex::wstring2string(result.getStr()) << std::endl;
