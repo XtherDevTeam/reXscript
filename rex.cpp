@@ -15,16 +15,14 @@ namespace rex {
 
     rex::managedPtr<rex::environment> getRexEnvironment() {
         auto env = rex::managePtr(rex::environment{managePtr(value{globalMethods::getMethodsCxt()})});
-        auto cstr = std::getenv("rexPackagesPath");
+        auto cstr = std::getenv("rexModulesPath");
         auto str = rex::string2wstring(cstr == nullptr ? "" : cstr);
-        managedPtr<value> rexPackagesPath = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
         if (!str.empty()) {
             split(str, vstr{L";"}, [&](const vstr &i, vsize) {
-                rexPackagesPath->getVec().push_back(
+                env->globalCxt->members[L"importPrefixPath"]->getVec().push_back(
                         managePtr(value{i, rex::stringMethods::getMethodsCxt()}));
             });
         }
-        env->globalCxt->members[L"rexPackagesPath"] = rexPackagesPath;
         env->globalCxt->members[L"rexArgs"] = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
         return env;
     }

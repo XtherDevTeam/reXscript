@@ -1091,7 +1091,7 @@ namespace rex {
             case valueKindComparator(value::vKind::vBool, value::vKind::vBool):
                 return (vint) a.getBool() % (vint) b.getBool();
             default: {
-                if (auto it = a.members.find(L"rexAdd"); it != a.members.end())
+                if (auto it = a.members.find(L"rexMod"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
                     throw signalException(makeErr(L"typeError", L"unsupported operation"));

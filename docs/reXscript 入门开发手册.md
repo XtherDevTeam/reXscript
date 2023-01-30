@@ -6,7 +6,10 @@
 2. reXscript解释器的安装及使用
 3. 基础语法与变量类型
 4. 基础语句和流程控制
-5. 多线程的使用
+5. 迭代器与 `forEach`
+6. 多线程的使用
+7. reXscript 提供的内置方法和变量。
+8. 操作符重载
 
 
 
@@ -307,6 +310,32 @@ func foo() {
 }
 ```
 
+## 迭代器与 `forEach`
+
+在 `reXscript` 中，迭代器通常与 `forEach` 搭配使用，用于按序获取资源，对象可以创建一个名为 `rexIter` 的方法返回一个实现了 `next` 方法的对象（即 迭代器 ）。
+
+`next` 函数不接收参数，返回一个拥有两个元素的 `vec` 对象：第一个元素为 `next` 方法的结果，第二个元素为 `bool` 类型，当元素遍历完成时为 `true`，且第一个元素为 `null`。
+
+forEach 会根据 `next` 函数返回的结果来控制流程并创建相应的变量存放 `next` 结果。
+
+E.g.
+
+```js
+forEach (i in object) {
+  print(i);
+}
+```
+
+与以下代码等效：
+
+```js
+let _ = object.rexIter();
+for (let i = _.next(); i[1] != true; i = _.next()) {
+  i = i[0];
+  print(i);
+}
+```
+
 ## 多线程的使用
 
 `multi-threading` 是一个在现代语言非常常见的概念，它可以实现同一个进程同时运行多个任务，`reXscript` 也提供了线程库用于 `multi-threading`。
@@ -368,3 +397,69 @@ func rexModInit() {
 此外 `mutex` 还有 `lock` `tryLock` 等方法：`lock` 为 `rexInit` 函数的别名，用于加锁。`tryLock` 也是加锁，立即返回结果，`true` 为成功，`false` 为失败。
 
 在使用完成后，需要调用 **finalize** 释放锁的内存，该操作是 **必须** 的。
+
+## reXscript 提供的内置方法和变量。
+
+reXscript 提供了一些必须的内置方法，以下是列表。
+
+| 方法名           | 作用                             | 调用格式               |
+| ---------------- | -------------------------------- | ---------------------- |
+| hashMap          | 创建哈希映射                     | hashMap()              |
+| print            | 打印信息                         | print(arg1, arg2, ...) |
+| input            | 从 `stdin` 获取一行字符串        | input()                |
+| stringify        | 将一个变量转化为字符串           | stringify(object)      |
+| require          | 导入包、模块、二进制模块         | require(path)          |
+| requireNativeMod | 导入二进制模块                   | requireNativeMod(path) |
+| requirePackage   | 导入包                           | requirePackage(path)   |
+| format           | 根据给出的格式对字符串进行格式化 | format(formatStr, ...) |
+| hash             | 对变量进行哈希                   | hash(object)           |
+| linkedList       | 创建链表                         | linkedList()           |
+| type             | 获取一个变量的类型字符串         | type(object)           |
+| mutex            | 创建一个 `mutex` 锁              | mutex()                |
+
+此外，还有一些在创建环境实例时被加载的变量：
+
+| 变量名           | 作用                                       | 类型                                                         |
+| ---------------- | ------------------------------------------ | ------------------------------------------------------------ |
+| rexPlatform      | 获取操作系统名称                           | 字符串，值为 `darwin` `windows` 或 `linux`                   |
+| rexArch          | 获取平台 `CPU` 架构                        | 字符串，值为 `arm64` `amd64` `i386` `arm` 或 `unknown`       |
+| rexDylibSuffix   | 获取平台动态库后缀                         | 字符串，值为 `so` `dylib` 或 `dll`                           |
+| charsets         | 解释器可用的编码集合                       | `Vec`，内部元素均为实现了 `encoder` 和 `decoder` 方法的字符编码对象 |
+| importPrefixPath | 解释器的导入路径前缀                       | `Vec`，内部元素均为字符串                                    |
+| rexArgs          | 解释器所接收的参数                         | `Vec`，内部元素均为字符串                                    |
+| rexPkgRoot       | 当前包的根目录，当包对模组进行导入时有效。 | 字符串                                                       |
+
+## 操作符重载
+
+reXscript 允许用户手动重载对象的操作符从而使语法表达变得更加简洁，如 `str` 中就重载了 `+` `+=` `==` `!=` 等操作符。
+
+| 方法名              | 对应符号 | 调用格式     |
+| ------------------- | -------- | ------------ |
+| rexInvoke           | ()       | f(a, b, ...) |
+| rexIndex            | []       | f[a]         |
+| rexNegate           | -        | -f           |
+| rexIncrement        | ++       | ++f          |
+| rexDecrement        | --       | --f          |
+| rexClone            | *        | *f           |
+| rexAddAssign        | +=       | f += a       |
+| rexSubAssign        | -=       | f -= a       |
+| rexMulAssign        | *=       | f *= a       |
+| rexDivAssign        | /=       | f /= a       |
+| rexModAssign        | %=       | f %= a       |
+| rexAdd              | +        | f + a        |
+| rexSub              | -        | f - a        |
+| rexMul              | *        | f * a        |
+| rexDiv              | /        | f / a        |
+| rexMod              | %        | f % a        |
+| rexBinaryShiftLeft  | <<       | f << a       |
+| rexBinaryShiftRight | >>       | f >> a       |
+| rexEqual            | ==       | f == a       |
+| rexNotEqual         | !=       | f != a       |
+| rexGreaterEqual     | >=       | f >= a       |
+| rexLessEqual        | <=       | f <= a       |
+| rexLessThan         | <        | f < a        |
+| rexGreaterThan      | >        | f > a        |
+| rexBinaryOr         | \|       | f \| a       |
+| rexBinaryAnd        | &        | f & a        |
+| rexLogicAnd         | &&       | f && a       |
+| rexLogicOr          | \|\|     | f \|\| a     |
