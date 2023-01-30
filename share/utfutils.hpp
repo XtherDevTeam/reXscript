@@ -11,7 +11,7 @@ public:
         unsigned int utf8Cursor = 0;
         unsigned int offset;
         unsigned char* p;
-        unsigned int e;
+        wchar_t e;
         unicode.clear();
         while (utf8Cursor < utf8Length) {
             p = (unsigned char*)&utf8[utf8Cursor];
