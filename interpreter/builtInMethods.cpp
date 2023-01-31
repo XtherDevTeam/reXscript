@@ -153,6 +153,7 @@ namespace rex {
 
     value::cxtObject vecMethods::getMethodsCxt() {
         value::cxtObject result;
+        result[L"contains"] = managePtr(value{(value::nativeFuncPtr) contains});
         result[L"append"] = managePtr(value{(value::nativeFuncPtr) append});
         result[L"pop"] = managePtr(value{(value::nativeFuncPtr) pop});
         result[L"remove"] = managePtr(value{(value::nativeFuncPtr) remove});
@@ -166,6 +167,17 @@ namespace rex {
 
     nativeFn(vecMethods::length, interpreter, args, passThisPtr) {
         return {(vint) passThisPtr->getVec().size()};
+    }
+
+    nativeFn(vecMethods::contains, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        value lhs = eleGetRef(args[0]);
+        for (auto it = passThisPtr->getVec().begin(); it != passThisPtr->getVec().end();) {
+            if (in->opEqual(lhs, **it).getBool()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     nativeFn(vecMethods::append, interpreter, args, passThisPtr) {
@@ -713,12 +725,24 @@ namespace rex {
 
     value::cxtObject linkedListMethods::getMethodsCxt() {
         value::cxtObject result;
+        result[L"contains"] = managePtr(value{(value::nativeFuncPtr) contains});
         result[L"append"] = managePtr(value{(value::nativeFuncPtr) append});
         result[L"pop"] = managePtr(value{(value::nativeFuncPtr) pop});
         result[L"remove"] = managePtr(value{(value::nativeFuncPtr) remove});
         result[L"removeAll"] = managePtr(value{(value::nativeFuncPtr) removeAll});
         result[L"rexIter"] = managePtr(value{(value::nativeFuncPtr) rexIter});
         return result;
+    }
+
+    nativeFn(linkedListMethods::contains, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        value lhs = eleGetRef(args[0]);
+        for (auto it = passThisPtr->getLinkedList().begin(); it != passThisPtr->getLinkedList().end();) {
+            if (in->opEqual(lhs, **it).getBool()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     nativeFn(linkedListMethods::append, interpreter, args, passThisPtr) {

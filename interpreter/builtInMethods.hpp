@@ -68,6 +68,8 @@ namespace rex {
             value::cxtObject getMethodsCxt(const value::vecObject &container);
         }
 
+        nativeFn(contains, interpreter, args, passThisPtr);
+
         nativeFn(append, interpreter, args, passThisPtr);
 
         nativeFn(pop, interpreter, args, passThisPtr);
@@ -111,6 +113,8 @@ namespace rex {
 
             value::cxtObject getMethodsCxt(value::linkedListObject &container);
         }
+
+        nativeFn(contains, interpreter, args, passThisPtr);
 
         nativeFn(append, interpreter, args, passThisPtr);
 
