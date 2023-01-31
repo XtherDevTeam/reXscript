@@ -239,6 +239,39 @@ namespace rex {
         return {iterator::getMethodsCxt(passThisPtr->getVec())};
     }
 
+    nativeFn(globalMethods::rexDeci, interpreter, args, passThisPtr) {
+        value &ref = eleGetRef(args[0]);
+        switch (ref.kind) {
+            case value::vKind::vInt:
+                return (vdeci) ref.getInt();
+            case value::vKind::vDeci:
+                return ref;
+            case value::vKind::vBool:
+                return (vdeci) ref.getBool();
+            case value::vKind::vStr:
+                return (vdeci) std::stod(ref.getStr());
+            default:
+                throw signalException(interpreter::makeErr(L"typeError", L"cannot covert to decimal"));
+        }
+    }
+
+    nativeFn(globalMethods::rexInt, interpreter, args, passThisPtr) {
+        value &ref = eleGetRef(args[0]);
+        switch (ref.kind) {
+            case value::vKind::vInt:
+                return ref;
+            case value::vKind::vDeci:
+                return (vint) ref.getDeci();
+            case value::vKind::vBool:
+                return (vint) ref.getBool();
+            case value::vKind::vStr:
+                return (vint) std::stol(ref.getStr(), nullptr,
+                                        args.size() > 1 ? (int) eleGetRef(args[1]).getInt() : 10);
+            default:
+                throw signalException(interpreter::makeErr(L"typeError", L"cannot covert to integer"));
+        }
+    }
+
     nativeFn(globalMethods::input, interpreter, args, passThisPtr) {
         std::string s;
         std::getline(std::cin, s);
@@ -316,6 +349,8 @@ namespace rex {
 
     value::cxtObject globalMethods::getMethodsCxt() {
         value::cxtObject result;
+        result[L"int"] = managePtr(value{(value::nativeFuncPtr) rexInt});
+        result[L"deci"] = managePtr(value{(value::nativeFuncPtr) rexDeci});
         result[L"input"] = managePtr(value{(value::nativeFuncPtr) input});
         result[L"print"] = managePtr(value{(value::nativeFuncPtr) print});
         result[L"requireMod"] = managePtr(value{(value::nativeFuncPtr) rexRequireMod});
@@ -778,10 +813,10 @@ namespace rex {
     nativeFn(hashMapMethods::toObject, interpreter, args, passThisPtr) {
         auto &container = passThisPtr->members[L"kvPairs"]->getLinkedList();
         value v{value::cxtObject{}};
-        for (auto &i : container) {
+        for (auto &i: container) {
             value &left = eleGetRef(*i->getVec()[1]);
             if (left.kind == value::vKind::vStr) {
-                 v.members[left.getStr()] = eleRefObj(*i->getVec()[2]);
+                v.members[left.getStr()] = eleRefObj(*i->getVec()[2]);
             } else {
                 throw signalException(interpreter::makeErr(L"hashMapError", L"the left hand side is not string"));
             }
@@ -791,7 +826,7 @@ namespace rex {
 
     nativeFn(hashMapMethods::fromObject, interpreter, args, passThisPtr) {
         value &v = eleGetRef(args[0]);
-        for (auto &i : v.members) {
+        for (auto &i: v.members) {
             insert(interpreter, {{i.first, stringMethods::getMethodsCxt()}, i.second}, passThisPtr);
         }
         return passThisPtr;
@@ -873,13 +908,32 @@ namespace rex {
         auto hashedKey = (vsize) (globalMethods::hash(interpreter, {key}, {}).basicValue.unknown);
         auto &bucket = passThisPtr->members[L"hashT"]->getVec()[
                 hashedKey % passThisPtr->members[L"hashT"]->getVec().size()];
-        for (auto it = bucket->getLinkedList().begin(); it != bucket->getLinkedList().end(); ++it) {
-            auto &kvPair = **(*it)->linkedListIterObj;
-            if (in->opEqual(*kvPair->getVec()[1], key).getBool()) {
-                return kvPair->getVec()[2];
+        if (bucket->linkedListObj) {
+            for (auto it = bucket->getLinkedList().begin(); it != bucket->getLinkedList().end(); ++it) {
+                auto &kvPair = **(*it)->linkedListIterObj;
+                if (in->opEqual(*kvPair->getVec()[1], key).getBool()) {
+                    return kvPair->getVec()[2];
+                }
             }
         }
         throw signalException(interpreter::makeErr(L"mappingError", L"undefined key: " + vstr{key}));
+    }
+
+    nativeFn(hashMapMethods::contains, interpreter, args, passThisPtr) {
+        auto in = static_cast<rex::interpreter *>(interpreter);
+        auto &key = eleGetRef(args[0]);
+        auto hashedKey = (vsize) (globalMethods::hash(interpreter, {key}, {}).basicValue.unknown);
+        auto &bucket = passThisPtr->members[L"hashT"]->getVec()[
+                hashedKey % passThisPtr->members[L"hashT"]->getVec().size()];
+        if (bucket->linkedListObj) {
+            for (auto it = bucket->getLinkedList().begin(); it != bucket->getLinkedList().end(); ++it) {
+                auto &kvPair = **(*it)->linkedListIterObj;
+                if (in->opEqual(*kvPair->getVec()[1], key).getBool()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     nativeFn(hashMapMethods::rexIter, interpreter, args, passThisPtr) {
@@ -1052,11 +1106,16 @@ namespace rex {
         return args[0];
     }
 
+    nativeFn(objectMethods::contains, interpreter, args, passThisPtr) {
+        return args[0].refObj->members.contains(eleGetRef(args[1]).getStr());
+    }
+
     value::cxtObject objectMethods::getMethodsCxt() {
         value::cxtObject result;
         result[L"iterate"] = managePtr(value{value::nativeFuncPtr{iterate}});
         result[L"addAttr"] = managePtr(value{value::nativeFuncPtr{addAttr}});
         result[L"removeAttr"] = managePtr(value{value::nativeFuncPtr{removeAttr}});
+        result[L"contains"] = managePtr(value{value::nativeFuncPtr{contains}});
         return result;
     }
 

@@ -136,6 +136,10 @@ namespace rex {
             nativeFn(utf8Decoder, interpreter, args, passThisPtr);
         }
 
+        nativeFn(rexInt, interpreter, args, passThisPtr);
+
+        nativeFn(rexDeci, interpreter, args, passThisPtr);
+
         nativeFn(input, interpreter, args, passThisPtr);
 
         nativeFn(print, interpreter, args, passThisPtr);
@@ -198,6 +202,8 @@ namespace rex {
 
         nativeFn(rexIndex, interpreter, args, passThisPtr);
 
+        nativeFn(contains, interpreter, args, passThisPtr);
+
         nativeFn(keys, interpreter, args, passThisPtr);
 
         nativeFn(rexIter, interpreter, args, passThisPtr);
@@ -227,6 +233,8 @@ namespace rex {
         nativeFn(addAttr, interpreter, args, passThisPtr);
 
         nativeFn(removeAttr, interpreter, args, passThisPtr);
+
+        nativeFn(contains, interpreter, args, passThisPtr);
 
         value::cxtObject getMethodsCxt();
     }
