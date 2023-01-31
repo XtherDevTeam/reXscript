@@ -641,6 +641,11 @@ namespace rex {
         return {getMethodsCxt()};
     }
 
+    nativeFn(bytesMethods::slice, interpreter, args, passThisPtr) {
+        return {passThisPtr->getBytes().substr(eleGetRef(args[0]).getInt(), eleGetRef(args[1]).getInt()),
+                bytesMethods::getMethodsCxt()};
+    }
+
     nativeFn(bytesMethods::length, interpreter, args, passThisPtr) {
         return {(vint) passThisPtr->bytesObj->length()};
     }
@@ -681,6 +686,7 @@ namespace rex {
         result[L"rexNotEqual"] = managePtr(value{(value::nativeFuncPtr) rexNotEqual});
         result[L"concat"] = managePtr(value{(value::nativeFuncPtr) concat});
         result[L"decode"] = managePtr(value{(value::nativeFuncPtr) decode});
+        result[L"slice"] = managePtr(value{(value::nativeFuncPtr) slice});
 
         return result;
     }

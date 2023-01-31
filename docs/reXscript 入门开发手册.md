@@ -162,6 +162,7 @@ Vec (动态数组) 类型：
 | concat      | 拼接两个字节型并返回自身引用                 | bytes.concat(b)       |
 | rexEqual    | 判断两个字节型是否相等的重载                 | bytes == b            |
 | rexNotEqual | 判断两个字节型是否不相等的重载               | bytes != b            |
+| slice       | 获取一个字节类型的部分                       | bytes.slice(pos, n)   |
 
 `linkedList` 类型：
 

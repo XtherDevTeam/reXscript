@@ -88,6 +88,8 @@ namespace rex {
     }
 
     namespace bytesMethods {
+        nativeFn(slice, interpreter, args, passThisPtr);
+
         nativeFn(length, interpreter, args, passThisPtr);
 
         nativeFn(rexEqual, interpreter, args, passThisPtr);
