@@ -236,6 +236,8 @@ namespace rex {
         value interpret(const AST &target);
     };
 
+    extern managedPtr<interpreter> rexInterpreterInstance;
+
     /**
      * @brief Wrapper function for starting a new thread. This function is passed as a parameter to std::thread's constructor.
      *

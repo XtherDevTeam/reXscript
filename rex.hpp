@@ -19,6 +19,8 @@ namespace rex {
      */
     rex::managedPtr<rex::environment> getRexEnvironment();
 
+    rex::managedPtr<rex::interpreter> getRexInterpreter();
+
     /**
      * @brief Import an external reXscript module
      * @param interpreter The environment object for the current interpreter
@@ -75,6 +77,8 @@ namespace rex {
     importEx(interpreter *interpreter, const vstr &modPath);
 
     AST getFileAST(const vstr &path);
+
+    void atExitHandler();
 }
 
 #endif //REXSCRIPT_REX_HPP

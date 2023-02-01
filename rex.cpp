@@ -24,6 +24,7 @@ namespace rex {
             });
         }
         env->globalCxt->members[L"rexArgs"] = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
+        env->globalCxt->members[L"rexAtExit"] = managePtr(value{value::vecObject{}, vecMethods::getMethodsCxt()});
         return env;
     }
 
@@ -280,4 +281,35 @@ namespace rex {
         }
     }
 
+    rex::managedPtr<rex::interpreter> getRexInterpreter() {
+        rex::managedPtr<rex::interpreter> result = rex::managePtr(
+                rex::interpreter{rex::rexEnvironmentInstance, rex::managePtr(rex::value{rex::value::cxtObject{}})});
+        result->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{rex::vint{0}});
+
+        return result;
+    }
+
+    void atExitHandler() {
+        try {
+            auto &v = rex::rexEnvironmentInstance->globalCxt->members[L"rexAtExit"]->getVec();
+            for (auto it = v.rbegin(); it != v.rend(); it++) {
+                rexInterpreterInstance->invokeFunc(*it, {}, {});
+            }
+        } catch (rex::signalException &e) {
+            std::cerr << "Uncaught exception at exit handler> " << rex::wstring2string((rex::value) e.get())
+                      << std::endl;
+            std::cerr << wstring2string(rexInterpreterInstance->getBacktrace()) << std::endl;
+        } catch (rex::rexException &e) {
+            std::cerr << "Uncaught exception at exit handler> " << e.what() << std::endl;
+            std::cerr << wstring2string(rexInterpreterInstance->getBacktrace()) << std::endl;
+        } catch (std::exception &e) {
+            std::cerr << "Uncaught exception at exit handler> " << e.what() << std::endl;
+            std::cerr << wstring2string(rexInterpreterInstance->getBacktrace()) << std::endl;
+        }
+
+        if (rexInterpreterInstance)
+            rexInterpreterInstance.reset();
+        if (rexEnvironmentInstance)
+            rexEnvironmentInstance.reset();
+    }
 }

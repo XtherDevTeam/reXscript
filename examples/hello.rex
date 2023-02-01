@@ -225,15 +225,6 @@ let object_iterate_test = func() {
     return 0;
 };
 
-let module_cxt_test = func() {
-    let mod = require("../examples/test.rex");
-    for (let i = 0;i < 100;++i) {
-        mod.fucker();
-    }
-    print("草泥马:", mod.fuck, "\n");
-    return 0;
-};
-
 let zip_test = func () {
     let zip = require("../../rexStdlib/dist").zip;
     let archive = zip.open("test.zip", zip.ZIP_DEFAULT_COMPRESSION_LEVEL, zip.M_WRITE);
@@ -273,7 +264,6 @@ let main_test = func() {
     json_test();
     http_test();
     object_iterate_test();
-    module_cxt_test();
     zip_test();
     return 0;
 };

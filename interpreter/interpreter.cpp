@@ -16,7 +16,8 @@
 #include "exceptions/importError.hpp"
 
 namespace rex {
-    managedPtr<environment> rexEnvironmentInstance = managePtr(environment{});
+    managedPtr<environment> rexEnvironmentInstance;
+    managedPtr<interpreter> rexInterpreterInstance;
 
     void environment::stackFrame::pushLocalCxt(const value::cxtObject &cxt) {
         localCxt.push_back(cxt);
@@ -339,7 +340,7 @@ namespace rex {
                             throw signalException(
                                     makeErr(
                                             L"internalError",
-                                            L"undefined identifier: `" + target.child[1].leaf.strVal + L"`"));
+                                            L"undefined identifier: `" + target.child[1].child[0].leaf.strVal + L"`"));
                         }
                     }
                     default: {

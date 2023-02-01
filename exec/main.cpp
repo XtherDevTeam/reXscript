@@ -7,6 +7,29 @@
 #include <rex.hpp>
 #include <ffi/ffi.hpp>
 
+#if defined(_WIN32)
+#include <windows.h>
+BOOL WINAPI rexAtExitWin32Handler(DWORD type) {
+    rex::atExitHandler();
+    std::exit(0);
+}
+bool reXscriptIsTheBestProgrammingLanguageInTheWorld = []() {
+    SetConsoleCtrlHandler(rexAtExitWin32Handler, TRUE);
+    return true;
+}();
+#else
+void rexAtExitUnixHandler(int fn) {
+    rex::atExitHandler();
+    std::exit(0);
+}
+bool reXscriptIsTheBestProgrammingLanguageInTheWorld = []() {
+    signal(SIGINT, rexAtExitUnixHandler);
+    signal(SIGTERM, rexAtExitUnixHandler);
+    signal(SIGKILL, rexAtExitUnixHandler);
+    return true;
+}();
+#endif
+
 const char *helpMsg = "Usage: rex [--help] [-m module] [file] args\n"
                       "\n"
                       "Optional arguments: \n"
@@ -92,12 +115,10 @@ void getArgs(const rex::managedPtr<rex::environment> &env, int argc, const char 
 int main(int argc, const char **argv) {
     rex::rexEnvironmentInstance = rex::getRexEnvironment();
 
-    auto interpreter = rex::managePtr(
-            rex::interpreter{rex::rexEnvironmentInstance, rex::managePtr(rex::value{rex::value::cxtObject{}})});
-    interpreter->interpreterCxt[L"thread_id"] = rex::managePtr(rex::value{rex::vint{0}});
+    rex::rexInterpreterInstance = rex::getRexInterpreter();
 
     if (argc == 1) {
-        interactiveShell(interpreter);
+        interactiveShell(rex::rexInterpreterInstance);
         return 0;
     }
 
@@ -106,15 +127,15 @@ int main(int argc, const char **argv) {
         rex::vstr modPath = rex::string2wstring(*(++current));
         getArgs(rex::rexEnvironmentInstance, argc, argv, ++current);
         try {
-            rex::importEx(interpreter.get(), modPath);
+            rex::importEx(rex::rexInterpreterInstance.get(), modPath);
         } catch (rex::errorInAnotherInterpreter &e) {
-            std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+            std::cerr << rex::wstring2string(rex::rexInterpreterInstance->getBacktrace()) << std::endl;
         } catch (rex::importError &e) {
             std::cerr << "importError> " << e.what() << std::endl;
-            std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+            std::cerr << rex::wstring2string(rex::rexInterpreterInstance->getBacktrace()) << std::endl;
         } catch (std::exception &e) {
             std::cerr << "error> " << e.what() << std::endl;
-            std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
+            std::cerr << rex::wstring2string(rex::rexInterpreterInstance->getBacktrace()) << std::endl;
         }
     } else if (rex::vbytes{*current} == "--generate-ffi") {
         ffiGenerator(rex::string2wstring(*(++current)));
@@ -123,7 +144,8 @@ int main(int argc, const char **argv) {
     } else {
         rex::vstr file = rex::string2wstring(*current);
         getArgs(rex::rexEnvironmentInstance, argc, argv, ++current);
-        loadFile(interpreter, file);
+        loadFile(rex::rexInterpreterInstance, file);
     }
-    return 0;
+    rex::atExitHandler();
+    std::exit(0);
 }
