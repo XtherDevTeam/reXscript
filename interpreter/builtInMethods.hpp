@@ -30,6 +30,8 @@ namespace rex {
     };
 
     namespace stringMethods {
+        nativeFn(contains, interpreter, args, passThisPtr);
+
         nativeFn(substr, interpreter, args, passThisPtr);
 
         nativeFn(startsWith, interpreter, args, passThisPtr);
@@ -90,6 +92,8 @@ namespace rex {
     }
 
     namespace bytesMethods {
+        nativeFn(contains, interpreter, args, passThisPtr);
+
         nativeFn(slice, interpreter, args, passThisPtr);
 
         nativeFn(length, interpreter, args, passThisPtr);

@@ -31,7 +31,16 @@ namespace rex {
         result[L"encode"] = managePtr(value{(value::nativeFuncPtr) encode});
         result[L"trim"] = managePtr(value{(value::nativeFuncPtr) trim});
         result[L"split"] = managePtr(value{(value::nativeFuncPtr) split});
+        result[L"contains"] = managePtr(value{(value::nativeFuncPtr) contains});
         return result;
+    }
+
+    nativeFn(stringMethods::contains, interpreter, args, passThisPtr) {
+        if (passThisPtr->getStr().find(eleGetRef(args[0]).getStr()) != vstr::npos) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     nativeFn(stringMethods::substr, interpreter, args, passThisPtr) {
@@ -653,6 +662,14 @@ namespace rex {
         return {getMethodsCxt()};
     }
 
+    nativeFn(bytesMethods::contains, interpreter, args, passThisPtr) {
+        if (passThisPtr->getBytes().find(eleGetRef(args[0]).getBytes()) != vbytes::npos) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     nativeFn(bytesMethods::slice, interpreter, args, passThisPtr) {
         return {passThisPtr->getBytes().substr(eleGetRef(args[0]).getInt(), eleGetRef(args[1]).getInt()),
                 bytesMethods::getMethodsCxt()};
@@ -699,6 +716,7 @@ namespace rex {
         result[L"concat"] = managePtr(value{(value::nativeFuncPtr) concat});
         result[L"decode"] = managePtr(value{(value::nativeFuncPtr) decode});
         result[L"slice"] = managePtr(value{(value::nativeFuncPtr) slice});
+        result[L"contains"] = managePtr(value{(value::nativeFuncPtr) contains});
 
         return result;
     }
