@@ -1,9 +1,10 @@
 <map id="opMul" name="opMul">
-<area shape="rect" id="node1" title=" " alt="" coords="5,132,68,159"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,181,68,208"/>
 <area shape="rect" id="node2" href="$classrex_1_1value.html#a61e9f72cd13048327562081a87558e3d" title=" " alt="" coords="116,5,261,32"/>
 <area shape="rect" id="node3" href="$classrex_1_1value.html#a68afcd2ea072fe98b6e921d7f74c59a5" title=" " alt="" coords="116,56,261,83"/>
 <area shape="rect" id="node4" href="$classrex_1_1value.html#ae3dbb45089f7bece3f5a31d9bf8e2bd5" title=" " alt="" coords="122,107,255,133"/>
-<area shape="rect" id="node5" href="$classrex_1_1value.html#a11b6e653dde2aa1dd2d7ffd0541c626c" title=" " alt="" coords="119,157,258,184"/>
-<area shape="rect" id="node6" href="$classrex_1_1value.html#a3912d9fc27f6bfa694452240314fbffb" title=" " alt="" coords="125,208,253,235"/>
-<area shape="rect" id="node7" href="$namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="127,259,250,285"/>
+<area shape="rect" id="node5" href="$classrex_1_1value.html#a39e80965a782ace1f41e9a4464b947ba" title=" " alt="" coords="116,181,261,208"/>
+<area shape="rect" id="node6" href="$classrex_1_1value.html#a11b6e653dde2aa1dd2d7ffd0541c626c" title=" " alt="" coords="309,207,448,233"/>
+<area shape="rect" id="node7" href="$classrex_1_1value.html#a3912d9fc27f6bfa694452240314fbffb" title=" " alt="" coords="125,283,253,309"/>
+<area shape="rect" id="node8" href="$namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="127,333,250,360"/>
 </map>
