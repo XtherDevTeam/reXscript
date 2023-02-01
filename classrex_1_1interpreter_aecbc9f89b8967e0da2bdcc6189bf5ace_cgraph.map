@@ -1,24 +1,24 @@
 <map id="interpret" name="interpret">
-<area shape="rect" id="node1" title=" " alt="" coords="5,461,84,488"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,485,84,512"/>
 <area shape="rect" id="node2" href="$classrex_1_1interpreter.html#acb7014997ba5643b460baf956b2f9597" title="Set the current index of the stack." alt="" coords="170,5,293,32"/>
-<area shape="rect" id="node3" href="$classrex_1_1value.html#acb9ec73522d69531a4a1a1fe791af542" title=" " alt="" coords="628,259,788,285"/>
-<area shape="rect" id="node4" href="$namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="875,689,997,716"/>
-<area shape="rect" id="node5" href="$classrex_1_1signalException.html#a446888611f82735be77df0a5f2e3e371" title=" " alt="" coords="140,157,323,184"/>
-<area shape="rect" id="node6" href="$classrex_1_1value.html#a61e9f72cd13048327562081a87558e3d" title=" " alt="" coords="387,151,533,177"/>
-<area shape="rect" id="node7" href="$classrex_1_1interpreter.html#a471f42024b9f9ae3d9c1d78cc4ec1bb4" title="Get the current index of the stack." alt="" coords="171,259,292,285"/>
-<area shape="rect" id="node8" href="$classrex_1_1value.html#a68afcd2ea072fe98b6e921d7f74c59a5" title=" " alt="" coords="387,245,533,272"/>
-<area shape="rect" id="node9" href="$classrex_1_1value.html#ae3dbb45089f7bece3f5a31d9bf8e2bd5" title=" " alt="" coords="393,335,527,361"/>
-<area shape="rect" id="node10" href="$namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="636,817,780,858"/>
-<area shape="rect" id="node13" href="$namespacerex_1_1vecMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="589,664,827,691"/>
-<area shape="rect" id="node14" href="$classrex_1_1value.html#a11b6e653dde2aa1dd2d7ffd0541c626c" title=" " alt="" coords="391,399,529,425"/>
-<area shape="rect" id="node15" href="$classrex_1_1value.html#adaaee026ccf8f3b829a16cff67ea5f97" title=" " alt="" coords="164,563,299,589"/>
-<area shape="rect" id="node16" href="$classrex_1_1value.html#aab37eccfe4085f49af4ab1f384fc5beb" title=" " alt="" coords="162,613,301,640"/>
-<area shape="rect" id="node17" href="$classrex_1_1interpreter.html#a73a1124a930d8519685db7f6c38cd53f" title=" " alt="" coords="150,360,313,387"/>
-<area shape="rect" id="node18" href="$classrex_1_1value.html#a3912d9fc27f6bfa694452240314fbffb" title=" " alt="" coords="396,461,524,488"/>
-<area shape="rect" id="node19" href="$classrex_1_1interpreter.html#a744603f79d6d6d08b9673be55815dac1" title=" " alt="" coords="132,765,331,792"/>
-<area shape="rect" id="node20" href="$classrex_1_1interpreter.html#afd2fb832b6264dba60a76bbed18bb3d4" title=" " alt="" coords="184,816,279,843"/>
-<area shape="rect" id="node22" href="$classrex_1_1interpreter.html#a2399cb0d4a25847903de2a8ff0abee4e" title=" " alt="" coords="422,715,498,741"/>
-<area shape="rect" id="node11" href="$namespacerex_1_1path.html#a8aa4377dddca123ce4dd584ba869956e" title=" " alt="" coords="880,849,992,876"/>
-<area shape="rect" id="node12" href="$namespacerex.html#a05529a7834f48db0c2717f57a31fc3d6" title=" " alt="" coords="897,799,975,825"/>
-<area shape="rect" id="node21" href="$classrex_1_1signalReturn.html#aff561c103ed430a54212743a4580dbf5" title=" " alt="" coords="379,816,541,843"/>
+<area shape="rect" id="node3" href="$classrex_1_1value.html#acb9ec73522d69531a4a1a1fe791af542" title=" " alt="" coords="151,435,311,461"/>
+<area shape="rect" id="node4" href="$classrex_1_1value.html#a11b6e653dde2aa1dd2d7ffd0541c626c" title=" " alt="" coords="391,333,529,360"/>
+<area shape="rect" id="node5" href="$namespacerex.html#aed32a8ff755868fb0c957d14cd68d047" title=" " alt="" coords="875,460,997,487"/>
+<area shape="rect" id="node6" href="$classrex_1_1signalException.html#a446888611f82735be77df0a5f2e3e371" title=" " alt="" coords="140,688,323,715"/>
+<area shape="rect" id="node7" href="$classrex_1_1value.html#a61e9f72cd13048327562081a87558e3d" title=" " alt="" coords="387,108,533,135"/>
+<area shape="rect" id="node8" href="$classrex_1_1interpreter.html#a471f42024b9f9ae3d9c1d78cc4ec1bb4" title="Get the current index of the stack." alt="" coords="171,739,292,765"/>
+<area shape="rect" id="node9" href="$classrex_1_1value.html#a68afcd2ea072fe98b6e921d7f74c59a5" title=" " alt="" coords="387,161,533,188"/>
+<area shape="rect" id="node10" href="$classrex_1_1value.html#ae3dbb45089f7bece3f5a31d9bf8e2bd5" title=" " alt="" coords="393,217,527,244"/>
+<area shape="rect" id="node11" href="$namespacerex_1_1stringMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="636,318,780,359"/>
+<area shape="rect" id="node14" href="$namespacerex_1_1vecMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="589,561,827,588"/>
+<area shape="rect" id="node15" href="$classrex_1_1value.html#adaaee026ccf8f3b829a16cff67ea5f97" title=" " alt="" coords="164,789,299,816"/>
+<area shape="rect" id="node16" href="$classrex_1_1value.html#aab37eccfe4085f49af4ab1f384fc5beb" title=" " alt="" coords="162,840,301,867"/>
+<area shape="rect" id="node17" href="$classrex_1_1interpreter.html#a73a1124a930d8519685db7f6c38cd53f" title=" " alt="" coords="150,208,313,235"/>
+<area shape="rect" id="node18" href="$classrex_1_1value.html#a3912d9fc27f6bfa694452240314fbffb" title=" " alt="" coords="396,280,524,307"/>
+<area shape="rect" id="node19" href="$classrex_1_1interpreter.html#a744603f79d6d6d08b9673be55815dac1" title=" " alt="" coords="132,891,331,917"/>
+<area shape="rect" id="node20" href="$classrex_1_1interpreter.html#afd2fb832b6264dba60a76bbed18bb3d4" title=" " alt="" coords="184,536,279,563"/>
+<area shape="rect" id="node22" href="$classrex_1_1interpreter.html#a2399cb0d4a25847903de2a8ff0abee4e" title=" " alt="" coords="422,435,498,461"/>
+<area shape="rect" id="node12" href="$namespacerex_1_1path.html#a8aa4377dddca123ce4dd584ba869956e" title=" " alt="" coords="880,300,992,327"/>
+<area shape="rect" id="node13" href="$namespacerex.html#a05529a7834f48db0c2717f57a31fc3d6" title=" " alt="" coords="897,351,975,377"/>
+<area shape="rect" id="node21" href="$classrex_1_1signalReturn.html#aff561c103ed430a54212743a4580dbf5" title=" " alt="" coords="379,536,541,563"/>
 </map>
