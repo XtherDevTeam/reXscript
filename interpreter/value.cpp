@@ -41,7 +41,9 @@ namespace rex {
             case vKind::vObject:
             case vKind::vNull:
             case vKind::vNativeFuncPtr:
+                break;
             case vKind::vRef:
+                this->getRef().deepCopy(dest);
                 break;
             case vKind::vLinkedListIter: {
                 dest.linkedListIterObj = managePtr(*linkedListIterObj);
