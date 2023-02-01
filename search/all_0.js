@@ -13,5 +13,6 @@ var searchData=
   ['ast_2ecpp_10',['ast.cpp',['../ast_8cpp.html',1,'']]],
   ['ast_2ehpp_11',['ast.hpp',['../ast_8hpp.html',1,'']]],
   ['asterisk_12',['asterisk',['../structrex_1_1lexer_1_1token.html#a813647b1bf8cc722a45770b5bee77f32a51e63a3da6425a39aecc045ec45f1ae8',1,'rex::lexer::token']]],
-  ['asteriskstart_13',['asteriskStart',['../classrex_1_1lexer.html#a7858df88c9240c44f98a10f42d948417',1,'rex::lexer']]]
+  ['asteriskstart_13',['asteriskStart',['../classrex_1_1lexer.html#a7858df88c9240c44f98a10f42d948417',1,'rex::lexer']]],
+  ['atexithandler_14',['atExitHandler',['../namespacerex.html#aab48156f53d757dcf13afcf980d9a6c5',1,'rex']]]
 ];
