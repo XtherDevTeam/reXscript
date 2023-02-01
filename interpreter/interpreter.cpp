@@ -968,7 +968,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexAdd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1002,7 +1002,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexSub"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1036,7 +1036,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexMul"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1070,7 +1070,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexDiv"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1094,7 +1094,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexMod"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1118,7 +1118,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexBinaryShiftLeft"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1142,7 +1142,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexBinaryShiftLeft"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1176,7 +1176,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1210,7 +1210,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexNotEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1244,7 +1244,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexGreaterEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1278,7 +1278,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexLessEqual"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1312,7 +1312,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexGreaterThan"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1346,7 +1346,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexLessThan"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1370,7 +1370,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexBinaryOr"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1394,7 +1394,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexBinaryAnd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1418,7 +1418,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexBinaryXor"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1442,7 +1442,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexLogicAnd"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
@@ -1466,7 +1466,7 @@ namespace rex {
                 if (auto it = a.members.find(L"rexLogicOr"); it != a.members.end())
                     return invokeFunc(it->second, {b}, managePtr(a));
                 else
-                    throw signalException(makeErr(L"typeError", L"unsupported operation"));
+                    throw signalException(makeErr(L"typeError", L"unsupported operation between " + a.getKind() + L" and " + b.getKind()));
             }
         }
     }
