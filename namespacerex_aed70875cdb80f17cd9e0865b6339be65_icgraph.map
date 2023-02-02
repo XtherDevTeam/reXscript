@@ -1,9 +1,10 @@
 <map id="getDylibSuffix" name="getDylibSuffix">
-<area shape="rect" id="node1" title=" " alt="" coords="501,56,616,83"/>
-<area shape="rect" id="node2" href="$namespacerex_1_1globalMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="307,9,453,50"/>
-<area shape="rect" id="node5" href="$namespacerex.html#ab0283358247156cd39ec572b09405020" title=" " alt="" coords="339,85,421,112"/>
-<area shape="rect" id="node3" href="$namespacerex.html#a0047daaed96aa6a7fbf895fe2351187a" title="Get the environment object for the current reXscript interpreter." alt="" coords="108,5,259,32"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="5,56,60,83"/>
-<area shape="rect" id="node6" href="$main_8cpp.html#ab7267c7b55370e1e159a714c7f015692" title=" " alt="" coords="147,107,220,133"/>
-<area shape="rect" id="node7" href="$namespacerex.html#a728069e054d88b5a10fff12927c4dbfc" title=" " alt="" coords="144,157,223,184"/>
+<area shape="rect" id="node1" title=" " alt="" coords="628,53,743,79"/>
+<area shape="rect" id="node2" href="$namespacerex_1_1globalMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="433,5,580,47"/>
+<area shape="rect" id="node6" href="$namespacerex.html#ab0283358247156cd39ec572b09405020" title=" " alt="" coords="269,103,351,130"/>
+<area shape="rect" id="node3" href="$namespacerex.html#a0047daaed96aa6a7fbf895fe2351187a" title="Get the environment object for the current reXscript interpreter." alt="" coords="235,10,385,37"/>
+<area shape="rect" id="node4" href="$namespacerex.html#a25a40b6614565f755233080a384c35f1" title=" " alt="" coords="108,7,187,34"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="5,58,60,85"/>
+<area shape="rect" id="node7" href="$main_8cpp.html#ab7267c7b55370e1e159a714c7f015692" title=" " alt="" coords="111,109,184,135"/>
+<area shape="rect" id="node8" href="$namespacerex.html#a728069e054d88b5a10fff12927c4dbfc" title=" " alt="" coords="108,159,187,186"/>
 </map>

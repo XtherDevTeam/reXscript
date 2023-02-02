@@ -1,10 +1,11 @@
 <map id="getMethodsCxt" name="getMethodsCxt">
-<area shape="rect" id="node1" title=" " alt="" coords="752,71,873,98"/>
-<area shape="rect" id="node2" href="$namespacerex_1_1globalMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="336,5,483,47"/>
-<area shape="rect" id="node5" href="$namespacerex_1_1threadingMethods.html#a0511c77642937eb611abab21dc72621e" title=" " alt="" coords="533,35,702,76"/>
-<area shape="rect" id="node6" href="$classrex_1_1interpreter.html#a1b185ffcb61a228c17eaf9b12a51bb5e" title=" " alt="" coords="531,101,704,127"/>
-<area shape="rect" id="node8" href="$namespacerex.html#a5c9a3d1d34106ee64130778255883b5f" title=" " alt="" coords="563,151,671,178"/>
-<area shape="rect" id="node3" href="$namespacerex.html#a0047daaed96aa6a7fbf895fe2351187a" title="Get the environment object for the current reXscript interpreter." alt="" coords="108,13,288,39"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="5,13,60,39"/>
-<area shape="rect" id="node7" href="$namespacerex.html#af583b91818e29eb2e9c696562d2a8361" title=" " alt="" coords="355,101,463,127"/>
+<area shape="rect" id="node1" title=" " alt="" coords="907,71,1028,98"/>
+<area shape="rect" id="node2" href="$namespacerex_1_1globalMethods.html#a04beadf4579352c879f027a48ebf8bb8" title=" " alt="" coords="491,5,637,47"/>
+<area shape="rect" id="node6" href="$namespacerex_1_1threadingMethods.html#a0511c77642937eb611abab21dc72621e" title=" " alt="" coords="687,35,857,76"/>
+<area shape="rect" id="node7" href="$classrex_1_1interpreter.html#a1b185ffcb61a228c17eaf9b12a51bb5e" title=" " alt="" coords="685,101,859,127"/>
+<area shape="rect" id="node9" href="$namespacerex.html#a5c9a3d1d34106ee64130778255883b5f" title=" " alt="" coords="718,151,826,178"/>
+<area shape="rect" id="node3" href="$namespacerex.html#a0047daaed96aa6a7fbf895fe2351187a" title="Get the environment object for the current reXscript interpreter." alt="" coords="263,13,443,39"/>
+<area shape="rect" id="node4" href="$namespacerex.html#a25a40b6614565f755233080a384c35f1" title=" " alt="" coords="108,13,215,39"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a217dbf8b442f20279ea00b898af96f52" title=" " alt="" coords="5,13,60,39"/>
+<area shape="rect" id="node8" href="$namespacerex.html#af583b91818e29eb2e9c696562d2a8361" title=" " alt="" coords="510,101,618,127"/>
 </map>
