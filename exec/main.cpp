@@ -7,29 +7,6 @@
 #include <rex.hpp>
 #include <ffi/ffi.hpp>
 
-#if defined(_WIN32)
-#include <windows.h>
-BOOL WINAPI rexAtExitWin32Handler(DWORD type) {
-    rex::atExitHandler();
-    std::exit(0);
-}
-bool reXscriptIsTheBestProgrammingLanguageInTheWorld = []() {
-    SetConsoleCtrlHandler(rexAtExitWin32Handler, TRUE);
-    return true;
-}();
-#else
-void rexAtExitUnixHandler(int fn) {
-    rex::atExitHandler();
-    std::exit(0);
-}
-bool reXscriptIsTheBestProgrammingLanguageInTheWorld = []() {
-    signal(SIGINT, rexAtExitUnixHandler);
-    signal(SIGTERM, rexAtExitUnixHandler);
-    signal(SIGKILL, rexAtExitUnixHandler);
-    return true;
-}();
-#endif
-
 const char *helpMsg = "Usage: rex [--help] [-m module] [file] args\n"
                       "\n"
                       "Optional arguments: \n"
@@ -113,9 +90,7 @@ void getArgs(const rex::managedPtr<rex::environment> &env, int argc, const char 
 }
 
 int main(int argc, const char **argv) {
-    rex::rexEnvironmentInstance = rex::getRexEnvironment();
-
-    rex::rexInterpreterInstance = rex::getRexInterpreter();
+    rex::initialize();
 
     if (argc == 1) {
         interactiveShell(rex::rexInterpreterInstance);

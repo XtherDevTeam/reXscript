@@ -79,6 +79,12 @@ namespace rex {
     AST getFileAST(const vstr &path);
 
     void atExitHandler();
+
+    void atExitWrapper(int sig);
+
+    void initializeAtExitHandler();
+
+    void initialize();
 }
 
 #endif //REXSCRIPT_REX_HPP

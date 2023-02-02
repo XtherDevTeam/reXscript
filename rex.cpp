@@ -312,4 +312,20 @@ namespace rex {
         if (rexEnvironmentInstance)
             rexEnvironmentInstance.reset();
     }
+
+    void initializeAtExitHandler() {
+        signal(SIGINT, atExitWrapper);
+        signal(SIGTERM, atExitWrapper);
+    }
+
+    void atExitWrapper(int sig) {
+        atExitHandler();
+        std::exit(0);
+    }
+
+    void initialize() {
+        rex::rexEnvironmentInstance = rex::getRexEnvironment();
+        rex::rexInterpreterInstance = rex::getRexInterpreter();
+        initializeAtExitHandler();
+    }
 }
