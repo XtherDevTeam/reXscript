@@ -134,7 +134,7 @@ namespace rex {
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw errorInAnotherInterpreter();
             } catch (rex::parserException &e) {
-                std::cerr << "error> " << e.what() << std::endl;
+                std::cerr << "error> file " << wstring2string(fullPath) << e.what() << std::endl;
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw errorInAnotherInterpreter();
             } catch (rex::errorInAnotherInterpreter &e) {
@@ -176,7 +176,7 @@ namespace rex {
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw errorInAnotherInterpreter();
             } catch (rex::parserException &e) {
-                std::cerr << "error> " << e.what() << std::endl;
+                std::cerr << "error> file " << wstring2string(fullPath) << e.what() << std::endl;
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw errorInAnotherInterpreter();
             } catch (rex::errorInAnotherInterpreter &e) {
@@ -219,7 +219,7 @@ namespace rex {
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw errorInAnotherInterpreter();
             } catch (rex::parserException &e) {
-                std::cerr << "error> " << e.what() << std::endl;
+                std::cerr << "error> file " << wstring2string(fullPath) << e.what() << std::endl;
                 std::cerr << rex::wstring2string(interpreter->getBacktrace()) << std::endl;
                 throw errorInAnotherInterpreter();
             } catch (rex::errorInAnotherInterpreter &e) {
