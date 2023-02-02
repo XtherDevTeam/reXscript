@@ -8,6 +8,7 @@
 #include <iostream>
 #include <frontend/ast.hpp>
 #include <frontend/parser.hpp>
+#include <csignal>
 #include "interpreter/value.hpp"
 #include "interpreter/builtInMethods.hpp"
 #include "interpreter/interpreter.hpp"
