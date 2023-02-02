@@ -358,4 +358,9 @@ namespace rex {
                 return L"linkedListIter";
         }
     }
+
+    void getSelfRef(value &r) {
+        auto toCopy = r.refObj;
+        r = *toCopy;
+    }
 } // rex

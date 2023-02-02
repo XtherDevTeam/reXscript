@@ -139,7 +139,7 @@ namespace rex {
     nativeFn(stringMethods::join, interpreter, args, passThisPtr) {
         for (auto &i: args)
             if (i.isRef())
-                i = i.getRef();
+                getSelfRef(i);
 
         value result = {L"", getMethodsCxt()};
         if (!args.empty())
@@ -505,7 +505,7 @@ namespace rex {
     nativeFn(globalMethods::format, interpreter, args, passThisPtr) {
         for (auto &i: args)
             if (i.isRef())
-                i = i.getRef();
+                getSelfRef(i);
 
         formatterTagInfo tag;
         value result{L"", rex::stringMethods::getMethodsCxt()};

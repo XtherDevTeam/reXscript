@@ -213,7 +213,7 @@ namespace rex {
                 value &l = val.isRef() ? val.getRef() : val;
                 value r = interpret(target.child[1]);
                 if (r.isRef())
-                    r = r.getRef();
+                    getSelfRef(r);
                 switch (l.kind) {
                     case value::vKind::vStr:
                         return {(vint) {(*l.strObj)[r.getInt()]}};
@@ -247,7 +247,7 @@ namespace rex {
                 for (auto &i: target.child[0].child) {
                     value it = interpret(i);
                     if (it.isRef())
-                        it = it.getRef();
+                        getSelfRef(it);
                     lambda.outerCxt->members[i.leaf.strVal] = managePtr(it);
                 }
                 for (auto &i: target.child[1].child) {
@@ -304,7 +304,7 @@ namespace rex {
                             value &lhs = *it->second;
                             value r = interpret(target.child[1].child[1]);
                             if (r.isRef())
-                                r = r.getRef();
+                                getSelfRef(r);
 
                             switch (lhs.kind) {
                                 case value::vKind::vStr:
@@ -471,7 +471,7 @@ namespace rex {
             case AST::treeKind::whileStmt: {
                 value expr = interpret(target.child[0]);
                 if (expr.isRef())
-                    expr = expr.getRef();
+                    getSelfRef(expr);
 
                 auto cxtIdx = stack.back().getCurLocalCxtIdx();
                 while (expr.getBool()) {
@@ -486,7 +486,7 @@ namespace rex {
 
                     expr = interpret(target.child[0]);
                     if (expr.isRef())
-                        expr = expr.getRef();
+                        getSelfRef(expr);
                 }
 
                 return {};
@@ -499,7 +499,7 @@ namespace rex {
 
                 value expr = interpret(target.child[1]);
                 if (expr.isRef())
-                    expr = expr.getRef();
+                    getSelfRef(expr);
 
                 while (expr.getBool()) {
                     try {
@@ -514,7 +514,7 @@ namespace rex {
 
                     expr = interpret(target.child[1]);
                     if (expr.isRef())
-                        expr = expr.getRef();
+                        getSelfRef(expr);
                 }
 
                 stack.back().popLocalCxt();
@@ -571,7 +571,7 @@ namespace rex {
             case AST::treeKind::ifStmt: {
                 value cond = interpret(target.child[0]);
                 if (cond.isRef())
-                    cond = cond.getRef();
+                    getSelfRef(cond);
 
                 if (cond.getBool())
                     interpret(target.child[1]);
@@ -580,7 +580,7 @@ namespace rex {
             case AST::treeKind::ifElseStmt: {
                 value cond = interpret(target.child[0]);
                 if (cond.isRef())
-                    cond = cond.getRef();
+                    getSelfRef(cond);
                 if (cond.getBool())
                     interpret(target.child[1]);
                 else
@@ -721,7 +721,7 @@ namespace rex {
         auto &l = lhs.refObj;
         value rhs = interpret(target.child[2]);
         if (rhs.isRef())
-            rhs = rhs.getRef();
+            getSelfRef(rhs);
 
         switch (target.child[1].leaf.kind) {
             case lexer::token::tokenKind::assignSign: {
@@ -942,9 +942,9 @@ namespace rex {
 
     value interpreter::opAdd(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -976,9 +976,9 @@ namespace rex {
 
     value interpreter::opSub(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1010,9 +1010,9 @@ namespace rex {
 
     value interpreter::opMul(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1044,9 +1044,9 @@ namespace rex {
 
     value interpreter::opDiv(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1078,9 +1078,9 @@ namespace rex {
 
     value interpreter::opMod(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1102,9 +1102,9 @@ namespace rex {
 
     value interpreter::opBinaryShiftLeft(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1126,9 +1126,9 @@ namespace rex {
 
     value interpreter::opBinaryShiftRight(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1150,9 +1150,9 @@ namespace rex {
 
     value interpreter::opEqual(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1184,9 +1184,9 @@ namespace rex {
 
     value interpreter::opNotEqual(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1218,9 +1218,9 @@ namespace rex {
 
     value interpreter::opGreaterEqual(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1252,9 +1252,9 @@ namespace rex {
 
     value interpreter::opLessEqual(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1286,9 +1286,9 @@ namespace rex {
 
     value interpreter::opGreaterThan(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1320,9 +1320,9 @@ namespace rex {
 
     value interpreter::opLessThan(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1354,9 +1354,9 @@ namespace rex {
 
     value interpreter::opBinaryOr(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1378,9 +1378,9 @@ namespace rex {
 
     value interpreter::opBinaryAnd(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1402,9 +1402,9 @@ namespace rex {
 
     value interpreter::opBinaryXor(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1426,9 +1426,9 @@ namespace rex {
 
     value interpreter::opLogicAnd(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):
@@ -1450,9 +1450,9 @@ namespace rex {
 
     value interpreter::opLogicOr(value &a, value &b) {
         if (a.isRef())
-            a = a.getRef();
+            getSelfRef(a);
         if (b.isRef())
-            b = b.getRef();
+            getSelfRef(b);
 
         switch (valueKindComparator(a.kind, b.kind)) {
             case valueKindComparator(value::vKind::vInt, value::vKind::vInt):

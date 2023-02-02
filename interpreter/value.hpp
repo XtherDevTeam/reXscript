@@ -146,6 +146,8 @@ namespace rex {
         vstr getKind();
     };
 
+    void getSelfRef(value &r);
+
 #define valueKindComparator(x, y) ((vsize)((vsize)(x) << 16) | (vsize)(y))
 } // rex
 
