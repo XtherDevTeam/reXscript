@@ -205,7 +205,7 @@ namespace rex {
                     return {vit->second->isRef() ? vit->second->refObj : vit->second};
                 }
                 // 符号不存在
-                throw signalException(makeErr(L"internalError", L"undefined symbol: `" + target.leaf.strVal + L"`"));
+                throw signalException(makeErr(L"internalError", (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": undefined symbol: `" + target.leaf.strVal + L"`"));
             }
             case AST::treeKind::subscriptExpression: {
                 // 处理最左下的subscript，在memberExpression右端的交给memberExpression处理分支
@@ -227,7 +227,7 @@ namespace rex {
                         if (r.kind == value::vKind::vStr)
                             return l[r.getStr()];
                         else
-                            throw signalException(makeErr(L"internalError", L"not a subscript-able object"));
+                            throw signalException(makeErr(L"internalError", (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": not a subscript-able object"));
                     }
                 }
             }
@@ -295,7 +295,7 @@ namespace rex {
                             throw signalException(
                                     makeErr(
                                             L"internalError",
-                                            L"undefined identifier: `" + target.child[1].leaf.strVal + L"`"));
+                                            (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": undefined identifier: `" + target.child[1].leaf.strVal + L"`"));
                         }
                     }
                     case AST::treeKind::subscriptExpression: {
@@ -325,7 +325,7 @@ namespace rex {
                             throw signalException(
                                     makeErr(
                                             L"internalError",
-                                            L"undefined identifier: `" + target.child[1].child[0].leaf.strVal + L"`"));
+                                            (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": undefined identifier: `" + target.child[1].child[0].leaf.strVal + L"`"));
                         }
                     }
                     case AST::treeKind::invokingExpression: {
@@ -340,7 +340,7 @@ namespace rex {
                             throw signalException(
                                     makeErr(
                                             L"internalError",
-                                            L"undefined identifier: `" + target.child[1].child[0].leaf.strVal + L"`"));
+                                            (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": undefined identifier: `" + target.child[1].child[0].leaf.strVal + L"`"));
                         }
                     }
                     default: {
@@ -365,14 +365,14 @@ namespace rex {
                                     return invokeFunc(it->second, {}, rhs.isRef() ? rhs.refObj : managePtr(r));
                                 else
                                     throw signalException(makeErr(L"internalError",
-                                                                  L"no overloaded callable objects for `rexNegate` operation"));
+                                                                  (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": no overloaded callable objects for `rexNegate` operation"));
                             }
                         }
                         break;
                     }
                     case lexer::token::tokenKind::incrementSign: {
                         if (!rhs.isRef())
-                            throw signalException(makeErr(L"internalError", L"expected a referenced object"));
+                            throw signalException(makeErr(L"internalError", (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": expected a referenced object"));
 
                         switch (r.kind) {
                             case value::vKind::vInt: {
@@ -388,14 +388,14 @@ namespace rex {
                                     return invokeFunc(it->second, {}, rhs.isRef() ? r.refObj : managePtr(r));
                                 else
                                     throw signalException(makeErr(L"internalError",
-                                                                  L"no overloaded callable objects for `rexIncrement` operation"));
+                                                                  (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": no overloaded callable objects for `rexIncrement` operation"));
                             }
                         }
                         break;
                     }
                     case lexer::token::tokenKind::decrementSign: {
                         if (!rhs.isRef())
-                            throw signalException(makeErr(L"internalError", L"expected a referenced object"));
+                            throw signalException(makeErr(L"internalError", (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": expected a referenced object"));
 
                         switch (r.kind) {
                             case value::vKind::vInt: {
@@ -411,7 +411,7 @@ namespace rex {
                                     return invokeFunc(it->second, {}, rhs.isRef() ? r.refObj : managePtr(r));
                                 else
                                     throw signalException(makeErr(L"internalError",
-                                                                  L"no overloaded callable objects for `rexDecrement` operation"));
+                                                                  (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": no overloaded callable objects for `rexDecrement` operation"));
                             }
                         }
                     }
@@ -528,7 +528,7 @@ namespace rex {
                 if (auto it = obj->members.find(L"rexIter"); it != obj->members.end()) {
                     rexIter = it->second;
                 } else {
-                    throw signalException(makeErr(L"internalError", L"undefined identifier: `rexIter`"));
+                    throw signalException(makeErr(L"internalError", (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": undefined identifier: `rexIter`"));
                 }
                 std::shared_ptr<value> rIter = managePtr(invokeFunc(rexIter, {}, obj));
                 if (rIter->isRef())
@@ -546,7 +546,7 @@ namespace rex {
                 if (auto it = rIter->members.find(L"next"); it != rIter->members.end())
                     itNext = it->second;
                 else
-                    throw signalException(makeErr(L"internalError", L"undefined identifier: `next`"));
+                    throw signalException(makeErr(L"internalError", (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": undefined identifier: `next`"));
 
                 while (true) {
                     if (auto val = invokeFunc(itNext, {}, rIter); val.getVec()[1]->getBool()) {
@@ -665,7 +665,7 @@ namespace rex {
                 return {};
             }
             default: {
-                throw signalException(makeErr(L"internalError", L"unexpected AST type"));
+                throw signalException(makeErr(L"internalError", (vstr)(env->dumpRuntimeSourceFileMsg(stack.empty() ? moduleCxt : stack.back().moduleCxt, target)) + L": unexpected AST type"));
             }
         }
     }
@@ -1535,6 +1535,11 @@ namespace rex {
     environment::runtimeSourceFileMsg environment::dumpRuntimeSourceFileMsg(const value::lambdaObject &lambda) {
         return {lambda.func.moduleCxt->members[L"__path__"]->getStr(), lambda.func.code.leaf.line,
                 lambda.func.code.leaf.col};
+    }
+
+    environment::runtimeSourceFileMsg
+    environment::dumpRuntimeSourceFileMsg(const managedPtr<value> &moduleCxt, AST target) {
+        return {moduleCxt->members[L"__path__"]->getStr(), target.leaf.line, target.leaf.col};
     }
 
     environment::runtimeSourceFileMsg::operator vstr() {

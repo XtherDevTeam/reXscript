@@ -20,6 +20,8 @@ namespace rex {
             operator vstr();
         };
 
+        static runtimeSourceFileMsg dumpRuntimeSourceFileMsg(const managedPtr<value> &moduleCxt, AST target);
+
         static runtimeSourceFileMsg dumpRuntimeSourceFileMsg(const value::funcObject &func);
 
         static runtimeSourceFileMsg dumpRuntimeSourceFileMsg(const value::lambdaObject &lambda);
