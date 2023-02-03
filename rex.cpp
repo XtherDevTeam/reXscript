@@ -262,7 +262,7 @@ namespace rex {
     }
 
     AST getFileAST(const vstr &path) {
-        std::ifstream f(wstring2string(path), std::ios::in);
+        std::ifstream f(wstring2string(path), std::ios::in | std::ios::binary);
         if (f.is_open()) {
             f.seekg(0, std::ios::end);
             long fileLen = f.tellg();
