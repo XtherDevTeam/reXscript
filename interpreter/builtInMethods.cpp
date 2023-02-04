@@ -759,6 +759,7 @@ namespace rex {
         result[L"front"] = managePtr(value{(value::nativeFuncPtr) front});
         result[L"back"] = managePtr(value{(value::nativeFuncPtr) back});
         result[L"length"] = managePtr(value{(value::nativeFuncPtr) length});
+        result[L"empty"] = managePtr(value{(value::nativeFuncPtr) empty});
         return result;
     }
 
