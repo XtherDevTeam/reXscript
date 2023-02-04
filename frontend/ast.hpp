@@ -27,7 +27,7 @@ namespace rex {
             memberExpression,           // member expression like aaa.bbb.ccc,
             // both 2 terms in expression are subscriptExpression
             // primary means match a literal or memberExpression
-            uniqueExpression,           // like -[primary], --[primary], ++[primary], ![primary]
+            uniqueExpression,           // like -[primary], --[primary], ++[primary], ![primary], *[primary], #[primary]
             multiplicationExpression,   // multiplication expressions like a * b, a / b, a % b
             additionExpression,         // addition expressions like a + b, a - b
             binaryShiftExpression,      // like a << b, a >> b

@@ -350,7 +350,7 @@ namespace rex {
             }
             case AST::treeKind::uniqueExpression: {
                 value rhs = interpret(target.child[1]);
-                value &r = rhs.isRef() ? rhs.getRef() : rhs;
+                value &r = eleGetRef(rhs);
                 switch (target.child[0].leaf.kind) {
                     case lexer::token::tokenKind::minus: {
                         switch (r.kind) {
@@ -427,6 +427,9 @@ namespace rex {
                             r.deepCopy(dest);
                         }
                         return dest;
+                    }
+                    case lexer::token::tokenKind::sharp: {
+                        return eleRefObj(rhs);
                     }
                     default: {
                         return {};

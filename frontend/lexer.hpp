@@ -59,6 +59,7 @@ namespace rex {
                 colon,      // :
                 comma,      // ,
                 dot,        // .
+                sharp,      // #
                 kFor,
                 kForEach,
                 kWhile,
@@ -166,6 +167,8 @@ namespace rex {
         token commaStart();
 
         token dotStart();
+
+        token sharpStart();
 
         token leftParenthesesStart();
 

@@ -326,7 +326,8 @@ namespace rex {
             lex.curToken.kind == lexer::token::tokenKind::decrementSign or
             lex.curToken.kind == lexer::token::tokenKind::minus or
             lex.curToken.kind == lexer::token::tokenKind::binaryAnd or
-            lex.curToken.kind == lexer::token::tokenKind::asterisk) {
+            lex.curToken.kind == lexer::token::tokenKind::asterisk or
+            lex.curToken.kind == lexer::token::tokenKind::sharp) {
             AST vOperator = {AST::treeKind::operators, lex.curToken};
             lex.scan();
             AST vItem = parseMemberExpression();

@@ -84,7 +84,9 @@ namespace rex {
             return curToken = orStart();
         } else if (curCh == L'^') {
             return curToken = xorStart();
-        } else if (curCh == L'\0') {
+        } else if (curCh == L'#') {
+            return curToken = sharpStart();
+        }else if (curCh == L'\0') {
             return curToken = {line, col, token::tokenKind::eof, false};
         } else {
             throw unexpectedTokenException(line, col, curCh);
@@ -414,6 +416,12 @@ namespace rex {
 
     lexer::token lexer::xorStart() {
         lexer::token tok{line, col, token::tokenKind::binaryXor};
+        getCh();
+        return tok;
+    }
+
+    lexer::token lexer::sharpStart() {
+        lexer::token tok{line, col, token::tokenKind::sharp};
         getCh();
         return tok;
     }
