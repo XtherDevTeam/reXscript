@@ -171,6 +171,7 @@ namespace rex {
         result[L"rexEqual"] = managePtr(value{(value::nativeFuncPtr) rexEqual});
         result[L"rexNotEqual"] = managePtr(value{(value::nativeFuncPtr) rexNotEqual});
         result[L"rexIter"] = managePtr(value{(value::nativeFuncPtr) rexIter});
+        result[L"empty"] = managePtr(value{(value::nativeFuncPtr) empty});
         return result;
     }
 
@@ -198,6 +199,10 @@ namespace rex {
     nativeFn(vecMethods::pop, interpreter, args, passThisPtr) {
         passThisPtr->getVec().pop_back();
         return passThisPtr;
+    }
+
+    nativeFn(vecMethods::empty, interpreter, args, passThisPtr) {
+        return passThisPtr->getVec().empty();
     }
 
     nativeFn(vecMethods::remove, interpreter, args, passThisPtr) {
@@ -749,6 +754,11 @@ namespace rex {
         result[L"remove"] = managePtr(value{(value::nativeFuncPtr) remove});
         result[L"removeAll"] = managePtr(value{(value::nativeFuncPtr) removeAll});
         result[L"rexIter"] = managePtr(value{(value::nativeFuncPtr) rexIter});
+        result[L"pushFront"] = managePtr(value{(value::nativeFuncPtr) pushFront});
+        result[L"popFront"] = managePtr(value{(value::nativeFuncPtr) popFront});
+        result[L"front"] = managePtr(value{(value::nativeFuncPtr) front});
+        result[L"back"] = managePtr(value{(value::nativeFuncPtr) back});
+        result[L"empty"] = managePtr(value{(value::nativeFuncPtr) empty});
         return result;
     }
 
@@ -764,13 +774,35 @@ namespace rex {
     }
 
     nativeFn(linkedListMethods::append, interpreter, args, passThisPtr) {
-        passThisPtr->getLinkedList().push_back(args[0].isRef() ? args[0].refObj : managePtr(args[0]));
-        return {};
+        passThisPtr->getLinkedList().push_back(eleRefObj(args[0]));
+        return passThisPtr;
     }
 
     nativeFn(linkedListMethods::pop, interpreter, args, passThisPtr) {
         passThisPtr->getLinkedList().pop_back();
-        return {};
+        return passThisPtr;
+    }
+
+    nativeFn(linkedListMethods::popFront, interpreter, args, passThisPtr) {
+        passThisPtr->getLinkedList().pop_front();
+        return passThisPtr;
+    }
+
+    nativeFn(linkedListMethods::pushFront, interpreter, args, passThisPtr) {
+        passThisPtr->getLinkedList().push_front(eleRefObj(args[0]));
+        return passThisPtr;
+    }
+
+    nativeFn(linkedListMethods::front, interpreter, args, passThisPtr) {
+        return passThisPtr->getLinkedList().front();
+    }
+
+    nativeFn(linkedListMethods::back, interpreter, args, passThisPtr) {
+        return passThisPtr->getLinkedList().back();
+    }
+
+    nativeFn(linkedListMethods::empty, interpreter, args, passThisPtr) {
+        return passThisPtr->getLinkedList().empty();
     }
 
     nativeFn(linkedListMethods::remove, interpreter, args, passThisPtr) {

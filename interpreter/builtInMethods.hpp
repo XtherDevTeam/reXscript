@@ -76,6 +76,8 @@ namespace rex {
 
         nativeFn(pop, interpreter, args, passThisPtr);
 
+        nativeFn(empty, interpreter, args, passThisPtr);
+
         nativeFn(remove, interpreter, args, passThisPtr);
 
         nativeFn(removeAll, interpreter, args, passThisPtr);
@@ -123,6 +125,16 @@ namespace rex {
         nativeFn(append, interpreter, args, passThisPtr);
 
         nativeFn(pop, interpreter, args, passThisPtr);
+
+        nativeFn(popFront, interpreter, args, passThisPtr);
+
+        nativeFn(pushFront, interpreter, args, passThisPtr);
+
+        nativeFn(front, interpreter, args, passThisPtr);
+
+        nativeFn(back, interpreter, args, passThisPtr);
+
+        nativeFn(empty, interpreter, args, passThisPtr);
 
         // O(n)
         nativeFn(remove, interpreter, args, passThisPtr);
