@@ -758,7 +758,7 @@ namespace rex {
         result[L"popFront"] = managePtr(value{(value::nativeFuncPtr) popFront});
         result[L"front"] = managePtr(value{(value::nativeFuncPtr) front});
         result[L"back"] = managePtr(value{(value::nativeFuncPtr) back});
-        result[L"empty"] = managePtr(value{(value::nativeFuncPtr) empty});
+        result[L"length"] = managePtr(value{(value::nativeFuncPtr) length});
         return result;
     }
 
@@ -803,6 +803,10 @@ namespace rex {
 
     nativeFn(linkedListMethods::empty, interpreter, args, passThisPtr) {
         return passThisPtr->getLinkedList().empty();
+    }
+
+    nativeFn(linkedListMethods::length, interpreter, args, passThisPtr) {
+        return (vint) passThisPtr->getLinkedList().size();
     }
 
     nativeFn(linkedListMethods::remove, interpreter, args, passThisPtr) {

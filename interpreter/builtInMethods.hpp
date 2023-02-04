@@ -136,6 +136,8 @@ namespace rex {
 
         nativeFn(empty, interpreter, args, passThisPtr);
 
+        nativeFn(length, interpreter, args, passThisPtr);
+
         // O(n)
         nativeFn(remove, interpreter, args, passThisPtr);
 
