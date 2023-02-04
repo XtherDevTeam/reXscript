@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['unknownptr_824',['unknownPtr',['../namespacerex.html#afc27abb67a0ccc14f309b0b32c94c772',1,'rex']]],
-  ['unsafeptr_825',['unsafePtr',['../namespacerex.html#ad8074c3416400c2a1bdc9e149ef9a44e',1,'rex']]]
+  ['unknownptr_827',['unknownPtr',['../namespacerex.html#afc27abb67a0ccc14f309b0b32c94c772',1,'rex']]],
+  ['unsafeptr_828',['unsafePtr',['../namespacerex.html#ad8074c3416400c2a1bdc9e149ef9a44e',1,'rex']]]
 ];

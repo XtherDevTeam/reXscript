@@ -1,9 +1,9 @@
 <map id="parseBasicLiterals" name="parseBasicLiterals">
-<area shape="rect" id="node1" title=" " alt="" coords="5,655,147,681"/>
-<area shape="rect" id="node2" href="$classrex_1_1parser.html#af9f250e282e7c7e45dec89c1e9370a10" title=" " alt="" coords="195,629,316,656"/>
-<area shape="rect" id="node3" href="$classrex_1_1lexer.html#a22359d6cf8e440f564bb2ca956cee6cf" title=" " alt="" coords="195,680,316,707"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,680,147,707"/>
+<area shape="rect" id="node2" href="$classrex_1_1parser.html#af9f250e282e7c7e45dec89c1e9370a10" title=" " alt="" coords="195,655,316,681"/>
+<area shape="rect" id="node3" href="$classrex_1_1lexer.html#a22359d6cf8e440f564bb2ca956cee6cf" title=" " alt="" coords="195,705,316,732"/>
 <area shape="rect" id="node4" href="$classrex_1_1lexer.html#a62f5792763fde6e35ac89ab4fe5dbefc" title=" " alt="" coords="385,5,543,32"/>
-<area shape="rect" id="node5" href="$classrex_1_1lexer.html#a8681018b11c6579e04ba611130c8cc78" title=" " alt="" coords="612,651,741,677"/>
+<area shape="rect" id="node5" href="$classrex_1_1lexer.html#a8681018b11c6579e04ba611130c8cc78" title=" " alt="" coords="612,680,741,707"/>
 <area shape="rect" id="node6" href="$classrex_1_1lexer.html#a3470a39cb02cb8b1f41fd1c4fe58a707" title=" " alt="" coords="391,107,537,133"/>
 <area shape="rect" id="node7" href="$classrex_1_1lexer.html#a7858df88c9240c44f98a10f42d948417" title=" " alt="" coords="377,157,551,184"/>
 <area shape="rect" id="node8" href="$classrex_1_1lexer.html#ad2fc283e0d94fb9f8ea52974bc8140e0" title=" " alt="" coords="385,208,543,235"/>
@@ -25,8 +25,9 @@
 <area shape="rect" id="node24" href="$classrex_1_1lexer.html#aa09f40e2882f2056e06b2f87e52871bc" title=" " alt="" coords="379,1035,549,1077"/>
 <area shape="rect" id="node25" href="$classrex_1_1lexer.html#af5a7c493f08b8e6fadc4798b790bbd80" title=" " alt="" coords="364,1101,564,1142"/>
 <area shape="rect" id="node26" href="$classrex_1_1lexer.html#a2f0c80d4ea2591bb608b0662fcb40c8f" title=" " alt="" coords="369,1167,559,1193"/>
-<area shape="rect" id="node27" href="$classrex_1_1lexer.html#a971f9ff65b52c70eb02783703c43334d" title=" " alt="" coords="386,1217,542,1244"/>
-<area shape="rect" id="node28" href="$classrex_1_1lexer.html#a4245a46d19c13a95a71ce94fb24daa75" title=" " alt="" coords="395,1319,533,1345"/>
-<area shape="rect" id="node30" href="$classrex_1_1lexer.html#a6bd6ac4da70d5ee139b48a91301df5ee" title=" " alt="" coords="393,1268,535,1295"/>
-<area shape="rect" id="node29" href="$namespacerex.html#a3d203970403d9e36f6e51d07e6db9d53" title=" " alt="" coords="614,1319,739,1345"/>
+<area shape="rect" id="node27" href="$classrex_1_1lexer.html#ab6cdf69f04dd87caf9100c688d724028" title=" " alt="" coords="385,1217,543,1244"/>
+<area shape="rect" id="node28" href="$classrex_1_1lexer.html#a971f9ff65b52c70eb02783703c43334d" title=" " alt="" coords="386,1268,542,1295"/>
+<area shape="rect" id="node29" href="$classrex_1_1lexer.html#a4245a46d19c13a95a71ce94fb24daa75" title=" " alt="" coords="395,1369,533,1396"/>
+<area shape="rect" id="node31" href="$classrex_1_1lexer.html#a6bd6ac4da70d5ee139b48a91301df5ee" title=" " alt="" coords="393,1319,535,1345"/>
+<area shape="rect" id="node30" href="$namespacerex.html#a3d203970403d9e36f6e51d07e6db9d53" title=" " alt="" coords="614,1369,739,1396"/>
 </map>
